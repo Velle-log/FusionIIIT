@@ -1,5 +1,6 @@
 from django.utils import timezone
 
+
 def critical_section(critical_view):
 
     def wrapper(request, *args, **kwargs):
@@ -10,7 +11,7 @@ def critical_section(critical_view):
         if session_life <= timeout:
             return critical_view(request, *args, **kwargs)
 
-        # TODO: Add redirect to critical_section authentication \
+        # TODO: Add redirect to critical_section authentication
         # page, to reauthenticate the user.
 
     return wrapper
