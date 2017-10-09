@@ -1,7 +1,10 @@
 from django.db import models
 from applications.globals.models import Student, ExtraInfo
 
+# Class definitions:
 
+
+# # Class for various choices on the enumerations
 class Constants:
     SEM_CHOICES = (
         ('1', '1')
