@@ -1,6 +1,7 @@
 from django.db import models
 from applications.globals.models import Student, Faculty, ExtraInfo
 
+
 class Thesis(models.Model):
     reg_id = models.ForeignKey(ExtraInfo, on_delete=models.CASCADE)
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
