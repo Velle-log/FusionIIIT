@@ -1,5 +1,6 @@
 from django.db import models
-from applications.globals.models import Student, ExtraInfo
+
+from applications.globals.models import ExtraInfo, Student
 
 # Class definitions:
 
@@ -26,9 +27,3 @@ class FinalRegistrations(models.Model):
 
     def __str__(self):
         return str(self.id)
-
-
-
-
-
-
