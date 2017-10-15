@@ -126,7 +126,7 @@ ROOT_URLCONF = 'Fusion.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/', '/templates'],
+        'DIRS': ['/', 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -196,3 +196,5 @@ SITE_ID = 1
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/static'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+MEDIA_URL= '/media/'
