@@ -303,7 +303,7 @@ class Director_silver_UG_sports(models.Model):
     correspondance_address = models.CharField(max_length=300)
     participation_details = models.TextField(max_length=1500)
     participation_documents = models.FileField()
-    #student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
     dm_silver_id = models.IntegerField(primary_key=True)
     class Meta:
         db_table = 'Director_silver_UG_sports'
