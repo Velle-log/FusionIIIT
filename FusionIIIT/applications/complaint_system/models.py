@@ -1,8 +1,8 @@
 # imports
 from django.db import models
-from applications.globals.models import Student, Staff
 from django.utils import timezone
 
+from applications.globals.models import Faculty, Staff, Student
 
 # Class definations:
 
@@ -58,3 +58,8 @@ class Workers(models.Model):
     age = models.CharField(default='M')
     phone = models.IntegerField(blank=True)
     worker_type = models.CharField(choices=Constants.COMPLAINT_TYPE)
+
+
+class Supervisor(models.Model):
+    sup_id = models.ForeignKey(Faculty, on_delete=models.CASCADE)
+    caretaker_id = models.ForeignKey(Caretaker, on_delete=models.CASCADE)
