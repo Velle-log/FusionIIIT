@@ -2,7 +2,7 @@
 from django.db import models
 from django.utils import timezone
 
-from applications.globals.models import Staff, Student
+from applications.globals.models import ExtraInfo
 
 # Class definations:
 
@@ -30,7 +30,7 @@ class Constants:
 
 
 class Caretaker(models.Model):
-    staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    staff_id = models.ForeignKey(ExtraInfo, on_delete=models.CASCADE)
     area = models.CharField(choices=Constants.AREA)
 
 
@@ -43,7 +43,7 @@ class Workers(models.Model):
 
 
 class StudentComplain(models.Model):
-    complainer = models.ForeignKey(Student, on_delete=models.CASCADE)
+    complainer = models.ForeignKey(ExtraInfo, on_delete=models.CASCADE)
     complaint_date = models.DateTimeField(default=timezone.now)
     complaint_finish = models.DateTimeField
     complaint_type = models.CharField(choices=Constants.COMPLAINT_TYPE)
