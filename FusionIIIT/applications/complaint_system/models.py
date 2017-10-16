@@ -1,55 +1,60 @@
+# imports
 from django.db import models
+from applications.globals.models import Student, Staff
 from django.utils import timezone
 
 
+# Class definations:
+
+
+class Constants:
+    AREA = (
+        ('hall-1', 'hall-1'),
+        ('hall-3', 'hall-3'),
+        ('hall-4', 'hall-4'),
+        ('CC1', 'CC1'),
+        ('CC2', 'CC2'),
+        ('core_lab', 'core_lab'),
+        ('LHTC', 'LHTC'),
+        ('NR2', 'NR2'),
+        ('Rewa_Residency', 'Rewa_Residency'),
+    )
+    COMPLAINT_TYPE = (
+        ('Electricity', 'Electricity'),
+        ('carpenter', 'carpenter'),
+        ('plumber', 'plumber'),
+        ('garbage', 'garbage'),
+        ('dustbin', 'dustbin'),
+        ('internet', 'internet'),
+    )
+
+
 class StudentComplain(models.Model):
+    id = models.IntegerField(auto_created=True, primary_key=True)
+    complainer = models.ForeignKey(Student, on_delete=models.CASCADE)
     complaint_date = models.DateTimeField(default=timezone.now)
     complaint_finish = models.DateTimeField
-    location = models.CharField(max_length=20)
-    specific_location = models.CharField(max_length=50, blank=True, default='')
+    complaint_type = models.CharField(choices=Constants.COMPLAINT_TYPE)
+    location = models.CharField(max_length=20, choices=Constants.AREA)
+    specific_location = models.CharField(max_length=50, blank=True)
     details = models.CharField(max_length=100)
     status = models.IntegerField(default='0')
-    user_id = models.CharField(max_length=8, default='0')
     remarks = models.CharField(max_length=300, default="Pending")
     flag = models.IntegerField(default='0')
-
-    def __str__(self):
-        return self.location
-
-
-class s_user_name(models.Model):
-    s_userid = models.CharField(max_length=8)
-
-    def __str__(self):
-        return self.s_userid
+    reason = models.CharField(max_length=100)
+    feedback = models.CharField(max_length=500)
 
 
-class c_user_name(models.Model):
-    c_user_id = models.CharField(max_length=8)
-    c_location = models.CharField(max_length=8)
-
-    def __str__(self):
-        return self.c_user_id + '--' + self.c_location
+class Caretaker(models.Model):
+    id = models.IntegerField(auto_created=True, primary_key=True)
+    staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    area = models.CharField(choices=Constants.AREA)
 
 
-class w_user_name(models.Model):
-    w_user_id = models.CharField(max_length=8)
-    w_location = models.CharField(max_length=8)
-
-    def __str__(self):
-        return self.w_user_id + '--' + self.w_location
-
-
-class supvisor_user_name(models.Model):
-    sup_user_id = models.CharField(max_length=8)
-
-    def __str__(self):
-        return self.sup_user_id
-
-
-class feedback(models.Model):
-    compl_id = models.IntegerField()
-    detail = models.CharField(max_length=500)
-
-    def __str__(self):
-        return self.compl_id
+class Workers(models.Model):
+    id = models.IntegerField(auto_created=True, primary_key=True)
+    caretaker_id = models.ForeignKey(Caretaker, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    age = models.CharField(default='M')
+    phone = models.IntegerField(blank=True)
+    worker_type = models.CharField(choices=Constants.COMPLAINT_TYPE)
