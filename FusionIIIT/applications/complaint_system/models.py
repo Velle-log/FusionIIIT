@@ -29,8 +29,18 @@ class Constants:
     )
 
 
-class StudentComplain(models.Model):
-    id = models.IntegerField(auto_created=True, primary_key=True)
+class Caretaker(models.Model):
+    staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    area = models.CharField(choices=Constants.AREA)
+
+
+class Workers(models.Model):
+    caretaker_id = models.ForeignKey(Caretaker, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    age = models.CharField(max_length=10)
+    phone = models.IntegerField(blank=True)
+    worker_type = models.CharField(choices=Constants.COMPLAINT_TYPE)
+    class StudentComplain(models.Model):
     complainer = models.ForeignKey(Student, on_delete=models.CASCADE)
     complaint_date = models.DateTimeField(default=timezone.now)
     complaint_finish = models.DateTimeField
@@ -43,17 +53,4 @@ class StudentComplain(models.Model):
     flag = models.IntegerField(default='0')
     reason = models.CharField(max_length=100)
     feedback = models.CharField(max_length=500)
-
-
-class Caretaker(models.Model):
-    id = models.IntegerField(auto_created=True, primary_key=True)
-    staff_id = models.ForeignKey(Staff, on_delete=models.CASCADE)
-    area = models.CharField(choices=Constants.AREA)
-
-
-class Workers(models.Model):
-    caretaker_id = models.ForeignKey(Caretaker, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
-    age = models.CharField(max_length=10)
-    phone = models.IntegerField(blank=True)
-    worker_type = models.CharField(choices=Constants.COMPLAINT_TYPE)
+    worker_id = models.ForeignKey(Workers, on_delete=models.CASCADE)
