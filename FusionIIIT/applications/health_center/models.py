@@ -45,6 +45,8 @@ class Constants:
 
 
 class Doctor:
+    doctor_name = models.CharField(max_length=50)
+    doctor_phone = models.CharField(max_length=10)
     specialization = models.CharField(max_length=10, choices=Constants.SPECIALIZATION)
 
 
