@@ -3,6 +3,7 @@
 # Create your models here.
 from django.db import models
 from applications.academic_information.models import Student
+from datetime import datetime
 # Create your models here
 
 
@@ -76,10 +77,13 @@ class Constants:
 class Mcm(models.Model):
     mcm_id              = models.IntegerField()
     student_id          = models.ForeignKeyField(Student, on_delete=models.CASCADE)
+    mobile_no           = models.CharField(max_length=10)
+    email_id            = models.CharField(max_length=25)
     income_total        = models.IntegerField()
-    income_file         = models.FileField(max_length=10)
+    income_file         = models.FileField(null=True, blank=True)
     bank_acc_name       = models.TextField(max_length=50)
     banck_acc_no        = models.IntegerField()
+    loan_amount         = models.IntegerField()
     brother_name        = models.CharField(max_length=30)
     brother_occupation  = models.TextField(max_length=100)
     sister_name         = models.CharField(max_length=30)
@@ -139,6 +143,7 @@ class Previous_winner(models.Model):
     previous_id        = models.IntegerField(primary_key=True)
     student_id         = models.ForeignKey(Student)
     award_id           = models.ForeignKey(Award_and_scholarship)
+    year               = models.DateTimeField(default=datetime.now().year)
     class Meta:
         db_table       = 'Previous_winner'
         
@@ -150,7 +155,7 @@ class Release(models.Model):
     award_id          = models.ForeignKey(Award_and_scholarship)
     startdate         = models.DateTimeField(("Start date"), default=datetime.date.today)
     enddate           = models.DateTimeField(("End date"))
-    venu              = models.CharField(max_length=50)
+    venue             = models.CharField(max_length=50)
     time              = models.CharField(max_length=10, choices=Constants.time)
     batch             = models.CharField(max_length=10, choices=Constants.batch)
     class Meta:
