@@ -1,8 +1,8 @@
 # imports
+from applications.globals.models import ExtraInfo
 from django.db import models
 from django.utils import timezone
 
-from applications.globals.models import ExtraInfo
 
 # Class definations:
 

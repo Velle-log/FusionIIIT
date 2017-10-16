@@ -1,6 +1,5 @@
-from django import forms
-
 from applications.academic_information.models import Course
+from django import forms
 
 
 class AddDropCourseForm(forms.ModelForm):

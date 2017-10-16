@@ -1,8 +1,7 @@
 import datetime
 
-from django.db import models
-
 from applications.academic_information.models import Student
+from django.db import models
 
 # Create your models here.
 MEAL = (
