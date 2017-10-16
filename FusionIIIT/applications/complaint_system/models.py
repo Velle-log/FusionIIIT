@@ -40,7 +40,9 @@ class Workers(models.Model):
     age = models.CharField(max_length=10)
     phone = models.IntegerField(blank=True)
     worker_type = models.CharField(choices=Constants.COMPLAINT_TYPE)
-    class StudentComplain(models.Model):
+
+
+class StudentComplain(models.Model):
     complainer = models.ForeignKey(Student, on_delete=models.CASCADE)
     complaint_date = models.DateTimeField(default=timezone.now)
     complaint_finish = models.DateTimeField
