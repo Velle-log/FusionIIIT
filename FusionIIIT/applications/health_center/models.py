@@ -1,5 +1,6 @@
-from django.db import models
 from applications.globals.models import ExtraInfo
+from django.db import models
+
 
 # Create your models here.
 
