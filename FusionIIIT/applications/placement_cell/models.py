@@ -1,10 +1,10 @@
 # imports
 import datetime
 
+from applications.academic_information.models import Student
 from django.db import models
 from django.utils.translation import gettext as _
 
-from applications.academic_information.models import Student
 
 # Class definations:
 
