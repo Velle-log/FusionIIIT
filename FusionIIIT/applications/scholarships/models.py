@@ -81,6 +81,7 @@ class Constants:
 
 
 class Mcm(models.Model):
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
     email_id = models.CharField(max_length=25)
     extrainfo_id = models.ForeignKey(ExtraInfo, on_delete=models.CASCADE)
     income_total = models.IntegerField()
@@ -126,6 +127,7 @@ class Award_and_scholarship(models.Model):
 
 
 class Previous_winner(models.Model):
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
     year = models.IntegerField(default=datetime.datetime.now().year)
 
     class Meta:
@@ -133,7 +135,9 @@ class Previous_winner(models.Model):
 
 
 class Release(models.Model):
+    startdate = models.DateTimeField(("Start date"), default=datetime.date.today)
     enddate = models.DateTimeField(("End date"))
+    award_id = models.ForeignKey(Award_and_scholarship)
     venue = models.CharField(max_length=50)
     time = models.CharField(max_length=10, choices=Constants.time)
     batch = models.CharField(max_length=10, choices=Constants.batch)
@@ -147,6 +151,7 @@ class Financial_assitance(models.Model):
     amount_month = models.IntegerField()
     awarding_authority = models.CharField(max_length=50)
     total_amount = models.IntegerField()
+    student_id = models.ForeignKey(Student)
 
     class Meta:
         db_table = 'Financial_assitance'
@@ -159,9 +164,10 @@ class Dm_proficiency_gold_PG(models.Model):
     title_thesis = models.CharField(max_length=100)
     thesis_details = models.TextField(max_length=1500)
     thesis_document = models.FileField()
+    student_id = models.ForeignKey(Student)
 
     class Meta:
-        db_table = 'Dm_proficiency_gold_PG')
+        db_table = 'Dm_proficiency_gold_PG'
 
 
 class IIITDMJ_proficiency_gold_PG(models.Model):
@@ -171,12 +177,14 @@ class IIITDMJ_proficiency_gold_PG(models.Model):
     title_thesis = models.CharField(max_length=100)
     thesis_details = models.TextField(max_length=1500)
     thesis_document = models.FileField()
+    student_id = models.ForeignKey(Student)
 
     class Meta:
         db_table = 'IIITDMJ_proficiency_gold_PG'
 
 
 class Dm_proficiency_gold_UG(models.Model):
+    student_id = models.ForeignKey(Student)
     correspondance_address = models.CharField(max_length=300)
     title = models.CharField(max_length=100)
     project_details = models.TextField(max_length=1500)
@@ -187,6 +195,7 @@ class Dm_proficiency_gold_UG(models.Model):
 
 
 class IIITDMJ_proficiency_gold_UG(models.Model):
+    student_id = models.ForeignKey(Student)
     IIITDMJ_gold_UG = models.IntegerField(primary_key=True)
     correspondance_address = models.CharField(max_length=300)
     title = models.CharField(max_length=100)
@@ -199,14 +208,16 @@ class IIITDMJ_proficiency_gold_UG(models.Model):
 
 class Group_students(models.Model):
     dm_gold_UG = models.ForeignKey(Dm_proficiency_gold_UG)
+    student_id = models.ForeignKey(Student)
 
     class Meta:
         db_table = 'Group_students'
-        unique_together = ('student_id', 'dm_gold_UG'
+        unique_together = ('student_id', 'dm_gold_UG')
 
 
 class Director_gold_UG(models.Model):
     nearst_policestation = models.CharField(max_length=100)
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
     nearst_railwaystation = models.CharField(max_length=100)
     correspondance_address = models.CharField(max_length=300)
     academic_achievements = models.TextField(max_length=1500)
@@ -235,6 +246,7 @@ class Director_gold_PG(models.Model):
     science_achievements = models.TextField(max_length=1500)
     cultural_achievements = models.TextField(max_length=1500)
     games_achievements = models.TextField(max_length=1500)
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
     social_service = models.TextField(max_length=1500)
     academic_documents = models.FileField()
     research_documents = models.FileField()
@@ -253,6 +265,7 @@ class Director_silver_UG_cultural(models.Model):
     correspondance_address = models.CharField(max_length=300)
     participation_details = models.TextField(max_length=1500)
     participation_documents = models.FileField()
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'Director_silver_UG_cultural'
@@ -264,6 +277,7 @@ class Director_silver_UG_sports(models.Model):
     correspondance_address = models.CharField(max_length=300)
     participation_details = models.TextField(max_length=1500)
     participation_documents = models.FileField()
+    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
 
     class Meta:
         db_table = 'Director_silver_UG_sports'
