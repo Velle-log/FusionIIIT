@@ -81,8 +81,6 @@ class Constants:
 
 
 class Mcm(models.Model):
-    mcm_id = models.IntegerField(default=1)
-    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
     email_id = models.CharField(max_length=25)
     extrainfo_id = models.ForeignKey(ExtraInfo, on_delete=models.CASCADE)
     income_total = models.IntegerField()
@@ -118,39 +116,23 @@ class Mcm(models.Model):
     class Meta:
         db_table = 'Mcm'
 
-    def __str__(self):
-        return self.mcm_id
-
 
 class Award_and_scholarship(models.Model):
-    award_id = models.IntegerField()
     award_name = models.CharField(max_length=1000, default='')
     catalog = models.TextField()
 
     class Meta:
         db_table = 'Award_and_scholarship'
 
-    def __str__(self):
-        return str(self.award_id)
-
 
 class Previous_winner(models.Model):
-    previous_id = models.IntegerField(primary_key=True, default=1)
-    student_id = models.ForeignKey(Student)
-    award_id = models.ForeignKey(Award_and_scholarship)
     year = models.IntegerField(default=datetime.datetime.now().year)
 
     class Meta:
         db_table = 'Previous_winner'
 
-    def __str__(self):
-        return self.previous_id
-
 
 class Release(models.Model):
-    release_id = models.IntegerField()
-    award_id = models.ForeignKey(Award_and_scholarship)
-    startdate = models.DateTimeField(("Start date"), default=datetime.date.today)
     enddate = models.DateTimeField(("End date"))
     venue = models.CharField(max_length=50)
     time = models.CharField(max_length=10, choices=Constants.time)
@@ -159,23 +141,15 @@ class Release(models.Model):
     class Meta:
         db_table = 'Release'
 
-    def __str__(self):
-        return str(self.release_id)
-
 
 class Financial_assitance(models.Model):
     name = models.CharField(max_length=60)
-    financial_id = models.IntegerField(primary_key=True)
     amount_month = models.IntegerField()
     awarding_authority = models.CharField(max_length=50)
     total_amount = models.IntegerField()
-    student_id = models.ForeignKey(Student)
 
     class Meta:
         db_table = 'Financial_assitance'
-
-    def __str__(self):
-        return self.financial_id
 
 
 class Dm_proficiency_gold_PG(models.Model):
@@ -185,14 +159,9 @@ class Dm_proficiency_gold_PG(models.Model):
     title_thesis = models.CharField(max_length=100)
     thesis_details = models.TextField(max_length=1500)
     thesis_document = models.FileField()
-    student_id = models.ForeignKey(Student)
-    dm_id = models.IntegerField(primary_key=True)
 
     class Meta:
-        db_table = 'Dm_proficiency_gold_PG'
-
-    def __str__(self):
-        return str(self.dm_id)
+        db_table = 'Dm_proficiency_gold_PG')
 
 
 class IIITDMJ_proficiency_gold_PG(models.Model):
@@ -202,19 +171,12 @@ class IIITDMJ_proficiency_gold_PG(models.Model):
     title_thesis = models.CharField(max_length=100)
     thesis_details = models.TextField(max_length=1500)
     thesis_document = models.FileField()
-    student_id = models.ForeignKey(Student)
-    dm_id = models.IntegerField(primary_key=True)
 
     class Meta:
         db_table = 'IIITDMJ_proficiency_gold_PG'
 
-    def __str__(self):
-        return str(self.dm_id)
-
 
 class Dm_proficiency_gold_UG(models.Model):
-    student_id = models.ForeignKey(Student)
-    dm_gold_UG = models.IntegerField(primary_key=True)
     correspondance_address = models.CharField(max_length=300)
     title = models.CharField(max_length=100)
     project_details = models.TextField(max_length=1500)
@@ -223,12 +185,8 @@ class Dm_proficiency_gold_UG(models.Model):
     class Meta:
         db_table = 'Dm_proficiency_gold_UG'
 
-    def __str__(self):
-        return str(self.dm_gold_UG)
-
 
 class IIITDMJ_proficiency_gold_UG(models.Model):
-    student_id = models.ForeignKey(Student)
     IIITDMJ_gold_UG = models.IntegerField(primary_key=True)
     correspondance_address = models.CharField(max_length=300)
     title = models.CharField(max_length=100)
@@ -238,27 +196,19 @@ class IIITDMJ_proficiency_gold_UG(models.Model):
     class Meta:
         db_table = 'IIITDMJ_proficiency_gold_UG'
 
-    def __str__(self):
-        return str(self.IIITDMJ_gold_UG)
-
 
 class Group_students(models.Model):
     dm_gold_UG = models.ForeignKey(Dm_proficiency_gold_UG)
-    student_id = models.ForeignKey(Student)
 
     class Meta:
         db_table = 'Group_students'
-        unique_together = ('student_id', 'dm_gold_UG')
-
-    def __str__(self):
-        return self.student_id
+        unique_together = ('student_id', 'dm_gold_UG'
 
 
 class Director_gold_UG(models.Model):
     nearst_policestation = models.CharField(max_length=100)
     nearst_railwaystation = models.CharField(max_length=100)
     correspondance_address = models.CharField(max_length=300)
-    student_id = models.ForeignKey(Student)
     academic_achievements = models.TextField(max_length=1500)
     research_achievements = models.TextField(max_length=1500)
     science_achievements = models.TextField(max_length=1500)
@@ -271,20 +221,15 @@ class Director_gold_UG(models.Model):
     cultural_documents = models.FileField()
     games_documents = models.FileField()
     social_service_documents = models.FileField()
-    directors_gold_id = models.IntegerField(primary_key=True)
 
     class Meta:
         db_table = 'Director_gold_UG'
-
-    def __str__(self):
-        return str(self.directors_gold_id)
 
 
 class Director_gold_PG(models.Model):
     nearst_policestation = models.CharField(max_length=100)
     nearst_railwaystation = models.CharField(max_length=100)
     correspondance_address = models.CharField(max_length=300)
-    student_id = models.ForeignKey(Student)
     academic_achievements = models.TextField(max_length=1500)
     research_achievements = models.TextField(max_length=1500)
     science_achievements = models.TextField(max_length=1500)
@@ -297,13 +242,9 @@ class Director_gold_PG(models.Model):
     cultural_documents = models.FileField()
     games_documents = models.FileField()
     social_service_documents = models.FileField()
-    directors_gold_id = models.IntegerField(primary_key=True)
 
     class Meta:
         db_table = 'Director_gold_PG'
-
-    def __str__(self):
-        return str(self.directors_gold_id)
 
 
 class Director_silver_UG_cultural(models.Model):
@@ -312,15 +253,9 @@ class Director_silver_UG_cultural(models.Model):
     correspondance_address = models.CharField(max_length=300)
     participation_details = models.TextField(max_length=1500)
     participation_documents = models.FileField()
-    student_id = models.ForeignKey(Student)
-    dm_silver_id = models.IntegerField(primary_key=True)
 
     class Meta:
         db_table = 'Director_silver_UG_cultural'
-
-    def __str__(self):
-
-        return str(self.directors_silver_id)
 
 
 class Director_silver_UG_sports(models.Model):
@@ -329,11 +264,6 @@ class Director_silver_UG_sports(models.Model):
     correspondance_address = models.CharField(max_length=300)
     participation_details = models.TextField(max_length=1500)
     participation_documents = models.FileField()
-    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
-    dm_silver_id = models.IntegerField(primary_key=True)
 
     class Meta:
         db_table = 'Director_silver_UG_sports'
-
-    def __str__(self):
-        return str(self.directors_silver_id)
