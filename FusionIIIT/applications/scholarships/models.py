@@ -80,12 +80,11 @@ class Constants:
 class Mcm(models.Model):
     mcm_id = models.IntegerField(default=1)
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
-    mobile_no = models.ForeignKey(EtraInfo, on_delete=models.CASCADE)
     email_id = models.CharField(max_length=25)
-    address = models.ForeignKey(ExtraInfo, on_delete=models.CASCADE)
+    extrainfo_id= models.ForeignKey(ExtraInfo,on_delete=models.CASCADE)
     income_total = models.IntegerField()
     income_file = models.FileField(null=True, blank=True)
-    bank_acc_name = models.TextField(max_length=50)
+    loan_bank_details = models.TextField(max_length=200)
     banck_acc_no = models.IntegerField()
     loan_amount = models.IntegerField()
     brother_name = models.CharField(max_length=30)
@@ -98,9 +97,9 @@ class Mcm(models.Model):
     father_occ = models.TextField(max_length=100)
     mother_occ_choice = models.CharField(max_length=10,choices=Constants.MOTHER_OCC_CHOICES)
     mother_occ = models.TextField(max_length=100)
-    four_wheeler = models.IntegerField()
+    four_wheeler = models.IntegerField(default=0)
     four_wheeler_des = models.TextField(max_length=30) 
-    two_wheeler = models.IntegerField()
+    two_wheeler = models.IntegerField(default=0)
     two_wheeler_des = models.TextField(max_length=30)
     house_type = models.CharField(max_length=5,choices=Constants.HOUSE_TYPE_CHOICES)
     house_area = models.IntegerField()
@@ -164,7 +163,6 @@ class Financial_assitance(models.Model):
     def __str__(self):
         return self.financial_id
 
-
 class Dm_proficiency_gold_PG(models.Model):
     nearst_policestation = models.CharField(max_length=100)
     nearst_railwaystation = models.CharField(max_length=100)
@@ -193,6 +191,7 @@ class IIITDMJ_proficiency_gold_PG(models.Model):
 
     class Meta:
         db_table = 'IIITDMJ_proficiency_gold_PG'
+
     def __str__(self):
         return str(self.dm_id)
 
@@ -204,11 +203,12 @@ class Dm_proficiency_gold_UG(models.Model):
     title = models.CharField(max_length=100)
     project_details = models.TextField(max_length=1500)
     project_documents = models.FileField()
+
     class Meta:
         db_table = 'Dm_proficiency_gold_UG'
+
     def __str__(self):
         return str(self.dm_gold_UG)
-
 
 class IIITDMJ_proficiency_gold_UG(models.Model):
     student_id = models.ForeignKey(Student)
@@ -217,8 +217,10 @@ class IIITDMJ_proficiency_gold_UG(models.Model):
     title = models.CharField(max_length=100)
     project_details  = models.TextField(max_length=1500)
     project_documents = models.FileField()
+
     class Meta:
         db_table = 'IIITDMJ_proficiency_gold_UG'
+
     def __str__(self):
         return str(self.IIITDMJ_gold_UG)
    
@@ -226,11 +228,9 @@ class IIITDMJ_proficiency_gold_UG(models.Model):
 class Group_students(models.Model):
     dm_gold_UG = models.ForeignKey(Dm_proficiency_gold_UG)
     student_id = models.ForeignKey(Student)
-
-    class Meta:
-        db_table        = 'Group_students'
+     class Meta:
+        db_table ='Group_students'
         unique_together = ('student_id', 'dm_gold_UG')
-
     def __str__(self):
         return self.student_id
 
@@ -253,6 +253,7 @@ class Director_gold_UG(models.Model):
     games_documents = models.FileField()
     social_service_documents = models.FileField()
     directors_gold_id = models.IntegerField(primary_key=True)
+    
     class Meta:
         db_table = 'Director_gold_UG'
     def __str__(self):
@@ -291,6 +292,7 @@ class Director_silver_UG_cultural(models.Model):
     participation_documents = models.FileField()
     student_id = models.ForeignKey(Student)
     dm_silver_id = models.IntegerField(primary_key=True)
+    
     class Meta:
         db_table = 'Director_silver_UG_cultural'
     def __str__(self):
