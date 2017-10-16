@@ -4,6 +4,7 @@ from .models import (Feedback, Menu, Menu_change_request, Mess, Mess_meeting,
                      Monthly_bill, Nonveg_data, Nonveg_menu, Payments, Rebate,
                      Special_request, Vacation_food)
 
+
 # Register your models here.
 
 
