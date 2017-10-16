@@ -3,6 +3,7 @@
 # Create your models here.
 from django.db import models
 from applications.academic_information.models import Student
+from applications.globals.models import ExtraInfo
 from datetime import datetime
 # Create your models here
 
@@ -143,7 +144,7 @@ class Previous_winner(models.Model):
     previous_id        = models.IntegerField(primary_key=True)
     student_id         = models.ForeignKey(Student)
     award_id           = models.ForeignKey(Award_and_scholarship)
-    year               = models.DateTimeField(default=datetime.now().year)
+    year               = models.IntegerField(default=datetime.datetime.now().year)
     class Meta:
         db_table       = 'Previous_winner'
         
