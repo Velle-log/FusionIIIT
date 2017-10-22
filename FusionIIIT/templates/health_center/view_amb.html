@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Appointment</title>
+</head>
+
+<body>
+
+  <table cellpadding=5 cellspacing=10>
+    <tr><th>UserId (click to look into details)</th><th>Date Request</th><th>StartDate</th><th>End Date</th><th>Reason</th><th></th></tr>
+  {% for obj in query%}
+
+        <tr>  <td> {{obj.user_id}}</td>
+              <td>{{obj.date_request}}</td>
+              <td>{{obj.start_date}}</td>
+              <td>{{obj.end_date}}</td>
+              <td>{{obj.reason}}</td>
+              {% if obj.end_date == None %}
+              <form method='POST'>{% csrf_token %}
+              <input type="hidden" name="id" value={{obj.id}} />
+              <td><input type="submit" name="end" class="but" value="End"/></td>
+              </form>
+              {% endif %}
+
+        </tr>
+
+
+  {% endfor %}
+  </table>
+    <!--      Add constraints for format of file-->
+
+</body>
+
+</html>

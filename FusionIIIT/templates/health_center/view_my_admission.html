@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Appointment</title>
+</head>
+
+<body>
+
+  <table cellpadding=5 cellspacing=10>
+    <tr><th>User</th><th>Doctor</th><th>Hospital</th><th>Admission Date</th><th>Discharge Date</th><th>Reason</th></tr>
+  {% for obj in query%}
+
+        <tr>  <td> {{obj.user_id}}</td>
+              <td>{{obj.doctor_id}}</td>
+              <td>{{obj.hospital_name}}</td>
+              <td>{{obj.admission_date}}</td>
+              <td>{{obj.discharge_date}}</td>
+              <td>{{obj.reason}}</td>
+        </tr>
+
+
+  {% endfor %}
+  </table>
+    <!--      Add constraints for format of file-->
+
+</body>
+
+</html>

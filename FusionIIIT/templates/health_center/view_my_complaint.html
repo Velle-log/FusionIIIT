@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Appointment</title>
+</head>
+
+<body>
+
+  <table cellpadding=5 cellspacing=10>
+    <tr><th>UserId</th><th>Complaint</th><th>Feedback</th><th></th></tr>
+  {% for obj in query%}
+
+        <tr>  <td> {{obj.user_id}}</td>
+              <td>{{obj.complaint}}</td>
+              <td>{{obj.feedback}}</td>
+        </tr>
+
+
+  {% endfor %}
+  </table>
+    <!--      Add constraints for format of file-->
+
+</body>
+
+</html>
