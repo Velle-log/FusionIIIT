@@ -1,3 +1,7 @@
-# from django.contrib import admin
+from django.contrib import admin
 
-# Register your models here.
+from .models import Caretaker, StudentComplain, Workers
+
+admin.site.register(Caretaker)
+admin.site.register(Workers)
+admin.site.register(StudentComplain)
