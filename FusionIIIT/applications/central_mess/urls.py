@@ -7,6 +7,6 @@ app_name = 'mess'
 
 urlpatterns = [
 
-    url(r'^', views.mess, name='mess'),
-    url(r'^applynonveg', views.nonveg, name='applynonveg')
+    url(r'^',views.mess, name='mess'),
+    url(r'^applynonveg/',views.applynonveg) #this url not working, method not called, 123 not printed
 ]

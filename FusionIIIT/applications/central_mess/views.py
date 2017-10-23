@@ -12,18 +12,19 @@ from .models import (Feedback, Menu, Menu_change_request, Mess, Mess_meeting,
                                  Special_request, Vacation_food) 
 
 def mess(request):
-
-	context = {
-
-	}
-	return render(request, "messModule/mess.html", context)
-
-def nonveg(request):
-
-    x = Nonveg_menu.objects.get(id=1)
-
-    context = {
+    
+    x = Nonveg_menu.objects.all()
+    context={
     'nonveg':x
     }
+    return render(request, "messModule/mess.html", context)
+
+def applynonveg(request):
     
-    return render(request, "messModule/nonvegfood.html", context)
+    print("xyz")
+    # x = Nonveg_menu.objects.all()
+    # context={
+    # 'nonveg':x
+    # } this code works for Mess method but not applynonveg -->this method not called only.
+    print("abc")
+    return render(request, "messModule/nonvegfood.html", {'nonveg': '1'})

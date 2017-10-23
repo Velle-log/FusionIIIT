@@ -49,18 +49,20 @@
                                     <form class="ui form">
                                         <div class="ui row">
                                             <div class="two fields">
+                                                {% for item in nonveg%}
                                                 <div class="field">
                                                     <label>
-                                                        Boiled Egg {{nonveg}}
-                                                        <!-- {{ nonveg.dish }} -->   
+                                                      
+                                                       {{item.dish}} {{item.price}}
+                                                        
                                                     </label>
 
                                                     <div class="ui input">
                                                         <input placeholder="Quantity">
                                                     </div>
                                                 </div>
-                                            
-                                                <div class="field">
+                                                {% endfor %}
+                                                <!-- <div class="field">
                                                     <label>
                                                         Omelette
                                                     </label>
@@ -70,7 +72,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
 
                                         <div class="ui row">
                                             <br>
