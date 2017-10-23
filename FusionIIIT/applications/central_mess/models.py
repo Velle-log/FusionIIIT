@@ -92,6 +92,9 @@ class Mess(models.Model):
     count = models.IntegerField(default='135')
     current_bill = models.IntegerField(default='0')
 
+    def __str__(self):
+        return self.student.id
+
 
 class Monthly_bill(models.Model):
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
@@ -100,6 +103,9 @@ class Monthly_bill(models.Model):
 
     class Meta:
         unique_together = (('student_id', 'month'),)
+
+    def __str__(self):
+        return '{} - {}'.format(self.student_id.id, self.month)
 
 
 class Payments(models.Model):
@@ -110,11 +116,17 @@ class Payments(models.Model):
     class Meta:
         unique_together = (('student_id', 'sem'),)
 
+    def __str__(self):
+        return '{} - {}'.format(self.student_id.id, self.sem)
+
 
 class Menu(models.Model):
     mess_option = models.CharField(max_length=20, choices=MESS_OPTION, default='mess2')
     meal_time = models.CharField(max_length=20, choices=MEAL)
     dish = models.CharField(max_length=20)
+
+    def __str__(self):
+        return '{} - {} - {}'.format(self.mess_option, self.meal_time, self.dish)
 
 
 class Rebate(models.Model):
@@ -124,6 +136,9 @@ class Rebate(models.Model):
     purpose = models.TextField()
     status = models.IntegerField(choices=STATUS, default='1')
 
+    def __str__(self):
+        return self.student_id.id
+
 
 class Vacation_food(models.Model):
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
@@ -132,10 +147,16 @@ class Vacation_food(models.Model):
     purpose = models.TextField()
     status = models.IntegerField(choices=STATUS, default='1')
 
+    def __str__(self):
+        return self.student_id.id
+
 
 class Nonveg_menu(models.Model):
     dish = models.CharField(max_length=20)
     price = models.IntegerField()
+
+    def __str__(self):
+        return '{} - {}'.format(self.dish, self.price)
 
 
 class Nonveg_data(models.Model):
@@ -143,6 +164,9 @@ class Nonveg_data(models.Model):
     order_date = models.DateField(default=datetime.date.today)
     order_interval = models.CharField(max_length=20, choices=INTERVAL, default='Breakfast')
     dish = models.ForeignKey(Nonveg_menu, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.student_id.id
 
 
 class Special_request(models.Model):
@@ -152,6 +176,9 @@ class Special_request(models.Model):
     request = models.TextField()
     status = models.IntegerField(choices=STATUS, default='1')
 
+    def __str__(self):
+        return self.student_id.id
+
 
 class Mess_meeting(models.Model):
     meeting_date = models.DateField()
@@ -160,11 +187,17 @@ class Mess_meeting(models.Model):
     meeting_time = models.CharField(max_length=20, choices=TIME)
     mess_minutes = models.CharField(max_length=50)
 
+    def __str__(self):
+        return '{} - {}'.format(self.meeting_date, self.agenda)
+
 
 class Menu_change_request(models.Model):
     dish = models.ForeignKey(Menu, on_delete=models.CASCADE)
     request = models.TextField()
     status = models.IntegerField(choices=STATUS, default='1')
+
+    def __str__(self):
+        return self.id
 
 
 class Feedback(models.Model):
@@ -172,3 +205,6 @@ class Feedback(models.Model):
     fdate = models.DateField(default=datetime.date.today)
     description = models.TextField()
     feedback_type = models.CharField(max_length=20, choices=FEEDBACK_TYPE)
+
+    def __str__(self):
+        return self.student_id.id
