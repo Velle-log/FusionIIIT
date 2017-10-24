@@ -12,7 +12,7 @@ VISITOR_CATEGORY = (
 
 ROOM_TYPE = (
     ('SingleBed', 'SingleBed'),
-    ('Doublebed', 'DoubleBed'),
+    ('DoubleBed', 'DoubleBed'),
     )
 
 ROOM_FLOOR = (
@@ -65,9 +65,13 @@ class Visitor_bill(models.Model):
 
 class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
+    room_number  = models.CharField(max_length=4, unique=True)
     room_type = models.CharField(max_length=12, choices=ROOM_TYPE)
     room_floor = models.CharField(max_length=12, choices=ROOM_FLOOR)
     room_status = models.CharField(max_length=12, choices=ROOM_STATUS)
+
+    def __str__(self):
+        return self.room_number
 
 
 class Visitor_room(models.Model):
