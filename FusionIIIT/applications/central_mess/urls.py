@@ -7,6 +7,8 @@ app_name = 'mess'
 
 urlpatterns = [
 
-    url(r'^',views.mess, name='mess'),
-    url(r'^applynonveg/',views.applynonveg) #this url not working, method not called, 123 not printed
+    url(r'^$',views.mess, name='mess'),
+    url(r'^applynonveg/',views.applynonveg),
+    url(r'^viewmenu/',views.viewmenu, name='viewmenu'),
+    # url(r'^submit/',views.submit, name='submit')
 ]

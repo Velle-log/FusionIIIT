@@ -123,7 +123,7 @@ class Payments(models.Model):
 class Menu(models.Model):
     mess_option = models.CharField(max_length=20, choices=MESS_OPTION, default='mess2')
     meal_time = models.CharField(max_length=20, choices=MEAL)
-    dish = models.CharField(max_length=20)
+    dish = models.CharField(max_length=200)
 
     def __str__(self):
         return '{} - {} - {}'.format(self.mess_option, self.meal_time, self.dish)
@@ -154,6 +154,7 @@ class Vacation_food(models.Model):
 class Nonveg_menu(models.Model):
     dish = models.CharField(max_length=20)
     price = models.IntegerField()
+    order_interval = models.CharField(max_length=20, choices=INTERVAL, default='Breakfast')
 
     def __str__(self):
         return '{} - {}'.format(self.dish, self.price)

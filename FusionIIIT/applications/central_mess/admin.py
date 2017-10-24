@@ -80,9 +80,10 @@ class Nonveg_menuAdmin(admin.ModelAdmin):
     model = Nonveg_menu
     fieldsets = [
         ('dish', {'fields': ['dish']}),
-        ('price', {'fields': ['price']})
+        ('price', {'fields': ['price']}),
+        ('order_interval', {'fields': ['order_interval']}),
         ]
-    list_display = ('dish', 'price')
+    list_display = ('dish', 'price', 'order_interval')
 
 
 class Nonveg_dataAdmin(admin.ModelAdmin):
@@ -90,10 +91,10 @@ class Nonveg_dataAdmin(admin.ModelAdmin):
     fieldsets = [
         ('student_id', {'fields': ['student_id']}),
         ('order_date', {'fields': ['order_date']}),
+        ('dish', {'fields': ['dish']}),
         ('order_interval', {'fields': ['order_interval']}),
-        ('dish', {'fields': ['dish']})
         ]
-    list_display = ('student_id', 'order_date', 'order_interval', 'dish')
+    list_display = ('student_id', 'order_date', 'dish', 'order_interval')
 
 
 class Special_requestAdmin(admin.ModelAdmin):

@@ -1,4 +1,6 @@
+{% extends 'globals/base.html'%}
 {% load static %}
+{% block body %}
 {% block nonvegfood %}
 
     {% comment %}The tab menu starts here!{% endcomment %}
@@ -48,31 +50,25 @@
                                 <div class="ui active tab" data-tab="breakfast">
                                     <form class="ui form">
                                         <div class="ui row">
-                                            <div class="two fields">
-                                                {% for item in nonveg%}
+                                            <!-- <div class="four fields"> -->
+                                                {% for x in nonveg %}
                                                 <div class="field">
+                                                    {% if x.order_interval == 'Breakfast' %}
                                                     <label>
-                                                      
-                                                       {{item.dish}} {{item.price}}
+                                                    
+                                                       {{x.dish}} - {{x.price}}
                                                         
                                                     </label>
-
+                                                    
                                                     <div class="ui input">
                                                         <input placeholder="Quantity">
                                                     </div>
+                                                    {% endif %}
                                                 </div>
                                                 {% endfor %}
-                                                <!-- <div class="field">
-                                                    <label>
-                                                        Omelette
-                                                    </label>
-
-                                                    <div class="ui input">
-                                                        <input placeholder="Quantity">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div> -->
+                                                
+                                            <!-- </div> -->
+                                        </div> 
 
                                         <div class="ui row">
                                             <br>
@@ -86,27 +82,22 @@
                                 <div class="ui tab" data-tab="lunch">
                                     <form class="ui form">
                                         <div class="ui row">
-                                            <div class="two fields">
+                                            <!-- <div class="four fields"> -->
+                                            {% for x in nonveg %}
                                                 <div class="field">
+                                                    {% if x.order_interval == 'Lunch' %}
                                                     <label>
-                                                        Egg Curry
+                                                       {{x.dish}} - {{x.price}} 
                                                     </label>
 
                                                     <div class="ui input">
                                                         <input placeholder="Quantity">
                                                     </div>
+                                                    {% endif %}
                                                 </div>
+                                            {% endfor %}
 
-                                                <div class="field">
-                                                    <label>
-                                                        Chicken Curry
-                                                    </label>
-
-                                                    <div class="ui input">
-                                                        <input placeholder="Quantity">
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <!-- </div> -->
                                         </div>
 
                                         <div class="ui row">
@@ -121,27 +112,23 @@
                                 <div class="ui tab" data-tab="dinner">
                                     <form class="ui form">
                                         <div class="ui row">
-                                            <div class="two fields">
+                                            
+                                            <!-- <div class="four fields"> -->
+                                                {% for x in nonveg %}
                                                 <div class="field">
+                                                    {% if x.order_interval == 'Dinner' %}
                                                     <label>
-                                                        Egg Curry
+                                                      {{x.dish}} - {{x.price}}  
                                                     </label>
 
                                                     <div class="ui input">
                                                         <input placeholder="Quantity">
                                                     </div>
+                                                    {% endif %}
                                                 </div>
+                                                {% endfor %}
 
-                                                <div class="field">
-                                                    <label>
-                                                        Chicken Curry
-                                                    </label>
-
-                                                    <div class="ui input">
-                                                        <input placeholder="Quantity">
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <!-- </div> -->
                                         </div>
 
                                         <div class="ui row">
@@ -324,4 +311,5 @@
             <div class="ui divider"></div>
         </div>
     </div>
+{% endblock %}
 {% endblock %}
