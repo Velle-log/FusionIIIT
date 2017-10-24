@@ -105,6 +105,7 @@ INSTALLED_APPS = [
     'applications.scholarships.apps.ScholarshipsConfig',
     'applications.visitor_hostel.apps.VisitorHostelConfig',
     'applications.eis.apps.EisConfig',
+    'applications.gymkhana.apps.GymkhanaConfig',
     'allauth.account',
     'allauth.socialaccount',
     'allauth',
