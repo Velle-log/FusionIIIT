@@ -22,50 +22,15 @@ def mess(request):
     }
     return render(request, "messModule/mess.html", context)
 
-# @login_required
-# def submit(request):
-
-#         user = request.user
-#         extrainfo = ExtraInfo.objects.get(user=user)
-
-#         if extrainfo.user_type == 'student':
-#             student = Student.objects.get(id=extrainfo)
-
-#             stu=Mess.objects.get(student=student)
-#                 if stu.mess_option == 'mess1':
-
-#                     order_date=datetime.datetime.now().date()
-                    
-#                     nonveg_obj=Nonveg_data(student_id=student,order_date=order_date,order_interval=request.POST.get('order_interval'),dish=request.POST.get('dish'))
-        
-        
-
-        
-        
-       
-#             if mess_option = 'mess2':
-#                 message = "you can't apply for this application., Facility available for Nonveg Mess students"
-#                 context={
-#                 'message': message
-#                 }
-
-#             return render(request,'mess.html',context)
-
-#             else:
-#                 nonveg_obj.save()   
-
-#         else:
-#             return redirect('globals:dashboard')
 
 
 def applynonveg(request):
     
-    print("xyz")
     x = Nonveg_menu.objects.all()
     context={
     'nonveg':x
     } 
-    print("abc")
+    
     return render(request, "messModule/nonvegfood.html", context)
 
 def viewmenu(request):
