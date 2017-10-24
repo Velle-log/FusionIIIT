@@ -100,3 +100,4 @@ class Inventory(models.Model):
     inuse = models.IntegerField(default=0)
     total_usable = models.IntegerField(default=0)
     remark = models.TextField()
+
