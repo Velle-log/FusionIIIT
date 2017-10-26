@@ -18,7 +18,7 @@
         <div class="ui vertical segment">
 
             {% comment %}Form Tag starts here!{% endcomment %}
-            <form>
+            <form method="post" action="placeorder/">
                 {% comment %}The add a new skill Accordian starts here!{% endcomment %}
                 <div class="ui form" style="padding: 8px; padding-left: 24px; padding-right: 24px;">
 
@@ -50,7 +50,7 @@
                                 <div class="ui active tab" data-tab="breakfast">
                                     <form class="ui form">
                                         <div class="ui row">
-                                            <!-- <div class="four fields"> -->
+                                            <div class="three fields">
                                                 {% for x in nonveg %}
                                                 <div class="field">
                                                     {% if x.order_interval == 'Breakfast' %}
@@ -61,13 +61,13 @@
                                                     </label>
                                                     
                                                     <div class="ui input">
-                                                        <input placeholder="Quantity">
+                                                        <input type="checkbox">
                                                     </div>
                                                     {% endif %}
                                                 </div>
                                                 {% endfor %}
                                                 
-                                            <!-- </div> -->
+                                            </div>
                                         </div> 
 
                                         <div class="ui row">
@@ -91,7 +91,8 @@
                                                     </label>
 
                                                     <div class="ui input">
-                                                        <input placeholder="Quantity">
+                                                        
+                                                        <input type="checkbox" id="">
                                                     </div>
                                                     {% endif %}
                                                 </div>

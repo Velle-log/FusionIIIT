@@ -12,12 +12,9 @@ from .models import (Feedback, Menu, Menu_change_request, Mess, Mess_meeting,
                                  Special_request, Vacation_food) 
 
 def mess(request):
-    
-    
-   
 
     context={
-    
+        
     
     }
     return render(request, "messModule/mess.html", context)
@@ -39,3 +36,34 @@ def viewmenu(request):
     'menu':y
     }
     return render(request, "messModule/views.html", context)
+
+@login_required
+def placeorder(request):
+
+    user = request.user
+    extrainfo = ExtraInfo.objects.get(user=user)
+
+    if extrainfo.user_type == 'student':
+        student = Student.objects.get(id=extrainfo)
+        stu=Mess.objects.get(student=student)
+        
+        if stu.mess_option == 'mess1':
+            order_date=datetime.datetime.now().date()
+            nonveg_obj=Nonveg_data(student_id=student,order_date=order_date,order_interval=request.POST.get('order_interval'),dish=request.POST.get('dish'))
+            nonveg_obj.save()
+
+            return redirect('mess.html')
+
+        else:
+            message = "you can't apply for this application., Facility available for Nonveg Mess students"
+            context={
+            'message': message
+            }
+
+            return render(request,'mess.html',context)
+
+            
+                   
+
+    else:
+        return redirect('globals:dashboard')
