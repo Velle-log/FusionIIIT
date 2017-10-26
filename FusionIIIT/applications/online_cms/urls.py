@@ -14,4 +14,12 @@ urlpatterns = [
         name='add_document'),
     url(r'^(?P<course_code>[A-z]+[0-9]+)/add_video$', views.add_videos,
         name='add_videos'),
+    url(r'^(?P<course_code>[A-z]+[0-9]+)/forum$', views.forum,
+        name='forum'),
+    url(r'^(?P<course_code>[A-z]+[0-9]+)/ajax_reply$', views.ajax_reply,
+        name='ajax_reply'),
+    url(r'^(?P<course_code>[A-z]+[0-9]+)/ajax_new$', views.ajax_new,
+        name='ajax_new'),
+    url(r'^(?P<course_code>[A-z]+[0-9]+)/ajax_remove$', views.ajax_remove,
+        name='ajax_remove'),
 ]

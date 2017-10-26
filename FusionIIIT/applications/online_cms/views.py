@@ -1,13 +1,14 @@
 from __future__ import unicode_literals
-
+import json
 import os
 import subprocess
+import collections
 from datetime import datetime
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 
 from applications.academic_information.models import (Course, Instructor,
@@ -17,7 +18,8 @@ from applications.globals.models import ExtraInfo
 
 from .forms import AddDocuments, AddVideos
 from .helpers import semester
-from .models import CourseDocuments, CourseVideo
+from .models import CourseDocuments, CourseVideo, Forum, ForumReply
+
 
 
 @login_required
@@ -151,3 +153,92 @@ def add_videos(request, course_code):
                       {'form': form,
                        'video': video,
                        'extrainfo': extrainfo})
+@login_required
+def forum(request, course_code):
+    #take care od sem
+    course=Course.objects.get(course_id=course_code, sem=5)
+    comments = Forum.objects.filter(course_id=course).order_by('comment_time')
+    instructor = Instructor.objects.get(course_id=course)
+    if instructor.instructor_id.user.pk == request.user.pk:
+        lec=1
+    else:
+        lec=0
+    question = {}
+    answers = collections.OrderedDict()
+    for comment in comments:
+        fr = ForumReply.objects.filter(forum_reply=comment)
+        fr1= ForumReply.objects.filter(forum_ques=comment)
+        if not fr :
+            # question['{}'.format(comment.pk)]=comment
+            # answers['{}'.format(comment.pk)]=fr1
+            print(comment.comment)
+            answers[comment]=fr1
+    print(answers)
+
+    context = {'course':course, 'answers': answers,'Lecturer':lec}
+    return render(request,'online_cms/forum.html',context)
+
+@login_required
+def ajax_reply(request, course_code):
+    course = Course.objects.get(course_id=course_code, sem=5)
+    ex = ExtraInfo.objects.get(user=request.user)
+    f = Forum(
+        course_id=course,
+        commenter_id=ex,
+        comment=request.POST.get('reply')
+    )
+    f.save()
+    print(f.comment)
+    print(request.POST.get('question'))
+    ques = Forum.objects.get(pk=request.POST.get('question'))
+    fr = ForumReply(
+        forum_ques=ques,
+        forum_reply=f
+    )
+    # fo=Forum.objects.filter(pk=f.pk)
+    # dat=serializers.serialize('json',fo)
+    fr.save()
+    time = f.comment_time.strftime('%b. %d, %Y, %I:%M %P')
+    data = {'pk':f.pk,'reply':f.comment, 'replier':f.commenter_id.user.username,'time':time}
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+@login_required
+def ajax_new(request, course_code):
+    course = Course.objects.get(course_id=course_code, sem=5)
+    ex = ExtraInfo.objects.get(user=request.user)
+    f = Forum(
+        course_id=course,
+        commenter_id=ex,
+        comment=request.POST.get('question')
+    )
+    f.save()
+
+    time = f.comment_time.strftime('%b. %d, %Y, %I:%M %P')
+    data = {'pk':f.pk,'question':f.comment, 'replier':f.commenter_id.user.username,'time':time}
+    print(data,"new")
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+@login_required
+def ajax_remove(request, course_code):
+    course = Course.objects.get(course_id=course_code, sem=5)
+    ex = ExtraInfo.objects.get(user=request.user)
+    f = Forum.objects.get(
+        pk=request.POST.get('question')
+    )
+    fr = ForumReply.objects.filter(
+        forum_reply=f
+    )
+
+    if not fr:
+        fr1=ForumReply.objects.filter(
+            forum_ques=f
+        )
+        for x in fr1:
+            x.forum_reply.delete()
+            x.delete()
+        f.delete()
+    else:
+        fr.delete()
+        f.delete()
+    data = {'message':'deleted'}
+    return HttpResponse(json.dumps(data), content_type='application/json')

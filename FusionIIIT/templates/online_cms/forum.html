@@ -2,9 +2,217 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+
     <title></title>
+    <style media="screen">
+      .comment_q{
+        margin-bottom: 10px;
+        display:block;
+      }
+      .comment_r{
+        margin-bottom: 10px;
+        display:block;
+      }
+      .question{
+        display: block;
+      }
+    </style>
   </head>
   <body>
+    {% for key, value in answers.items %}
+    <div class="question" id="question{{key.pk}}">
+      <div class="comment_q" id="comment{{key.pk}}" >
+        <span data-pk="{{key.pk}}" id="question{{key.pk}}"style="color:red">{{key.comment}}{{key.comment_time}}</span>
+        <button type="button" class="remove_q" data-user="{{key.commenter_id.user.pk}}"data-pk="{{key.pk}}" id="remove{{key.pk}}" name="remove{{key.pk}}">x</button>
+      </div>
+      <div class="answer">
+        {% for v in value %}
+          <div class="comment_r" id="comment{{v.forum_reply.pk}}">
+            <span style="color:blue">{{v.forum_reply.comment}}{{v.forum_reply.comment_time}}</span >
+            <button type="button" class="remove_r" data-user="{{v.forum_reply.commenter_id.user.pk}}"data-pk="{{v.forum_reply.pk}}" id="remove{{v.forum_reply.pk}}" name="remove{{v.forum_reply.pk}}">x</button>
+          </div>
+        {% endfor %}
+        <form id="{{key.pk}}" data-pk="{{key.pk}}"method="post">
+          {% csrf_token %}
+          <input type="text" name="comment{{key.pk}}" placeholder="Enter Your Comment">
+          <input class="submit_r"type="submit" data-pk="{{key.pk}}" name="submit" value="Submit">
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+    <form id="new" method="post">
+      {% csrf_token %}
+      <input type="text" name="new_comment" placeholder="Enter Your Comment">
+      <input class="submit_new" type="submit" name="submit" value="Submit">
+    </form>
 
+
+    <script type="text/javascript">
+
+      //reseting the form
+      function resetForm($form1) {
+          $form1.find('input:text, input:password').val('');
+      }
+
+      //on clicking enter submit text in the new added text box
+      function key_down(input_r){
+          var pk=input_r.getAttribute('data-pk');
+          if(event.keyCode == 13){
+              $("#button_r"+pk).click();
+          }
+      }
+
+      // submitting a new question
+      $('.submit_new').click(function(event){
+        var parent = $(this).parent();
+        event.preventDefault();
+        var question= $('input[name=new_comment]').val();
+        var csrf = $('input[name=csrfmiddlewaretoken]').val();
+        $.ajax({
+          type:'POST',
+          url:'/ocms/{{course.course_id}}/ajax_new',
+          data:{'question': question, 'csrfmiddlewaretoken':csrf},
+          success:function(data){
+            resetForm($('#new'));
+            $('<div class="question" id="question'+data.pk+'"><div class="comment_q" id="comment'+data.pk+'"><span data-pk="'+data.pk+'" id="question'+data.pk+'"style="color:red">'+data.question+' '+data.time+'</span><button type="button" onclick="func_q(this)" class="remove_q" data-pk="'+data.pk+'" id="remove'+data.pk+'"name="remove'+data.pk+'">x</button></div><div class="answer"><input type="text" onkeydown="key_down(this)"'+
+            'id="reply_n_'+data.pk+'" data-pk="'+data.pk+'"name="comment'+data.pk+'" placeholder="Enter'+ 'Your Comment"><button class="submit_r" type="button" id="button_r'+data.pk+'" onclick="reply_q(this)"  data-pk="'+data.pk+'" name="submit_r" >Submit</button></div></div>').insertBefore(parent);
+          },
+          error: function(data,err){
+            alert(err.message);
+          }
+        });
+      });
+
+      // submittin a new reply
+      $('.submit_r').click(function(event){
+        var parent=$(this).parent();
+        event.preventDefault();
+        pk=$(this).attr('data-pk');
+        var reply= $('input[name=comment'+pk+']').val();
+        var csrf = $('input[name=csrfmiddlewaretoken]').val();
+        $.ajax({
+          type:'POST',
+          url:'/ocms/{{course.course_id}}/ajax_reply',
+          data:{ 'question':pk,'reply': reply,'csrfmiddlewaretoken':csrf},
+          success:function(data){
+            resetForm($('#'+pk));
+            $('<div class="comment_r" id="comment'+data.pk+'" style="display:block"><span style="color:blue">'+data.reply+' '+data.time+'</span><button type="button" onclick="func(this)"class="remove_r" data-pk="'+data.pk+'"id="remove'+data.pk+'"name="remove'+data.pk+'">x</button></div>').insertBefore(parent);
+          },
+          error: function(data,err){
+            alert(err);
+          }
+        });
+      });
+      //submitting a new reply to a newly posted question using ajax
+      function reply_q(current){
+        var pk=current.getAttribute('data-pk');
+        var parent=current.parentNode;
+        var p=$(parent);
+        var reply= $('input[name=comment'+pk+']').val();
+        $.ajax({
+          type:'POST',
+          url:'/ocms/{{course.course_id}}/ajax_reply',
+          data:{ 'question':pk,'reply': reply,'csrfmiddlewaretoken':'{{ csrf_token }}'},
+          success:function(data){
+            $('#reply_n_'+pk).val("");
+            $('<div class="comment_r" id="comment'+data.pk+'" style="display:block"><span style="color:blue">'+data.reply+' '+data.time+'</span><button type="button" onclick="func(this)"class="remove_r" data-pk="'+data.pk+'"id="remove'+data.pk+'"name="remove'+data.pk+'">x</button></div>').insertBefore(p);
+          },
+          error: function(data,err){
+            alert(err);
+          }
+        });
+      }
+
+      //to check if a user is autherized to delete a comment
+      function check_user(user){
+        if({{Lecturer}})
+        {
+            return 1;
+        }
+        else {
+          if (user == {{ user.pk }})
+            return 1;
+          else
+          {
+            alert("you are not authourized to remove the comment");
+            return 0;
+          }
+
+        }
+      }
+
+      //removing a old reply
+      $('.remove_r').click(function(){
+        pk = $(this).attr('data-pk');
+        user = $(this).attr('data-user');
+        if(check_user(user))
+          {
+            $.ajax({
+              type:'POST',
+              url:'/ocms/{{course.course_id}}/ajax_remove',
+              data:{ 'question':pk,'csrfmiddlewaretoken':'{{ csrf_token }}'},
+              success:function(data){
+                $('#comment'+pk).hide();
+              },
+              error: function(data,err){
+                alert(err);
+              }
+            });
+          }
+      });
+
+      //removing a old question
+      $('.remove_q').click(function(){
+        pk = $(this).attr('data-pk');
+        user = $(this).attr('data-user');
+        if(check_user(user))
+          {
+              $.ajax({
+              type:'POST',
+              url:'/ocms/{{course.course_id}}/ajax_remove',
+              data:{ 'question':pk,'csrfmiddlewaretoken':'{{ csrf_token }}'},
+              success:function(data){
+                $('#question'+pk).hide();
+              },
+              error: function(data,err){
+                alert(err);
+              }
+            });
+          }
+      });
+
+      // deletng the reply just created
+      function func(btn){
+        var pk = btn.getAttribute('data-pk');
+        $.ajax({
+          type:'POST',
+          url:'/ocms/{{course.course_id}}/ajax_remove',
+          data:{ 'question':pk,'csrfmiddlewaretoken':'{{ csrf_token }}'},
+          success:function(data){
+            btn.parentNode.style.display="none";
+          },
+          error: function(data,err){
+            alert(err);
+          }
+        });
+      }
+
+      //deleting a question just created
+      function func_q(btn){
+        var pk=btn.getAttribute('data-pk');
+        $.ajax({
+          type:'POST',
+          url:'/ocms/{{course.course_id}}/ajax_remove',
+          data:{ 'question':pk,'csrfmiddlewaretoken':'{{ csrf_token }}'},
+          success:function(data){
+            btn.parentNode.parentNode.style.display="none";
+          },
+          error: function(data,err){
+            alert(err);
+          }
+        });
+      }
+    </script>
   </body>
 </html>
