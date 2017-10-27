@@ -55,7 +55,7 @@ def course(request, course_code):
         roll = student.id.id[:4]
         course = Course.objects.filter(course_id=course_code, sem=semester(roll))
         instructor = Instructor.objects.get(course_id=course[0])
-        return render(request, 'online_cms/course.html',
+        return render(request, 'coursemanagement/viewcourse.html',
                       {'course': course[0],
                        'instructor': instructor,
                        'extrainfo': extrainfo})
@@ -65,7 +65,7 @@ def course(request, course_code):
         for ins in instructor:
             if ins.course_id.course_id is course_code:
                 course = ins.course_id
-        return render(request, 'online_cms/course.html',
+        return render(request, 'coursemanagement/viewcourse.html',
                       {'instructor': instructor,
                        'extrainfo': extrainfo})
 
