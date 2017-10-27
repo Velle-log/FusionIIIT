@@ -1,12 +1,11 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html>
 <head>
-	<title>view booking</title>
-
+	<title>Date Input</title>
 </head>
 <body>
-<form  method="POST" >
-{% csrf_token %}
+<form action="/visitorhostel/vh_homepage/" method="post">
+    {% csrf_token %}
 <table>
 <tr>
     	<th>Visitor Name</th>
@@ -16,11 +15,9 @@
     	<th>Number of room</th>
     	<th>Booking From</th>
     	<th>Booking to</th>
-    	<th>Room No</th>
-    	<th>Confirm</th>
-    	<th>Cancel</th>
+    	<th>Status</th>
  </tr>
-{% for context1 in context %}
+{% for context1 in booking %}
     <div class="context">
         <tr>
             <td>{{context1.visitor_id.visitor_name}}</td> 
@@ -30,16 +27,16 @@
             <td>{{context1.room_count}}</td>
             <td>{{context1.booking_from}}</td>
             <td>{{context1.Booking_to}}</td>
-            <td>
-            {% for room1 in room %}
-            	<input type="checkbox" name="room" value= {{room1}} > {{room1}}<br>
-            {% endfor %}</td>
-            <td><button type="submit" value = {{context1.br_id}} name = "confirm">confirm</button></td>
-            <td><button type="submit" value = {{context1.br_id}} name = "cancel">cancel</button></td>
+            <td>{% if status == "True" %}
+            		Confirm
+            	{% else %}
+            		pending</td>
+            	{% endif %}
         </tr>
      </div>
 {% endfor %}
 </table>
+    <input type="submit" value="home" name ="home" />
 </form>
 </body>
 </html>

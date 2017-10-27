@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'^$', views.visitorhostel, name='visitorhostel'),
     url(r'^vh_homepage/', views.vh_homepage, name ='vh_homepage'),
     url(r'^vh_booking_request/' , views.booking_request , name ='booking_request'),
+    url(r'^view_booking/', views.all_booking, name = 'view_all_booking')
 ]

@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-# Create your models here.
 
 VISITOR_CATEGORY = (
     ('A', 'A'),
@@ -70,8 +69,7 @@ class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
     room_number  = models.CharField(max_length=4, unique=True)
     room_type = models.CharField(max_length=12, choices=ROOM_TYPE)
-    room_floor = models.CharField(max_length=12, choices=ROOM_FLOOR)
-    room_status = models.CharField(max_length=12, choices=ROOM_STATUS)
+    room_floor = models.CharField(max_length=12, choices=ROOM_FLOOR) 
 
     def __str__(self):
         return self.room_number
@@ -104,3 +102,9 @@ class Inventory(models.Model):
     total_usable = models.IntegerField(default=0)
     remark = models.TextField()
 
+class Room_Status(models.Model):
+    date = models.DateField(null=True, blank=True)
+    room_id = models.ForeignKey(Room, on_delete=models.CASCADE, primary_key = True)
+    status = models.CharField(max_length=12, choices=ROOM_STATUS, default = "Available")
+    def __str__(self):
+        return str(self.room_id)
