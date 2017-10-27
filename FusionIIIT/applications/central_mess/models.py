@@ -85,7 +85,8 @@ MESS_OPTION = (
 
 
 class Mess(models.Model):
-    mess_option = models.CharField(max_length=20, choices=MESS_OPTION, default='mess2')
+    mess_option = models.CharField(max_length=20, choices=MESS_OPTION,
+                                   default='mess2')
     student = models.OneToOneField(Student, on_delete=models.CASCADE)
     nonveg_total_bill = models.IntegerField(default='0')
     rebate_count = models.IntegerField(default='0')
@@ -121,12 +122,14 @@ class Payments(models.Model):
 
 
 class Menu(models.Model):
-    mess_option = models.CharField(max_length=20, choices=MESS_OPTION, default='mess2')
+    mess_option = models.CharField(max_length=20, choices=MESS_OPTION,
+                                   default='mess2')
     meal_time = models.CharField(max_length=20, choices=MEAL)
     dish = models.CharField(max_length=200)
 
     def __str__(self):
-        return '{} - {} - {}'.format(self.mess_option, self.meal_time, self.dish)
+        return '{} - {} - {}'.format(self.mess_option,
+                                     self.meal_time, self.dish)
 
 
 class Rebate(models.Model):
@@ -154,7 +157,8 @@ class Vacation_food(models.Model):
 class Nonveg_menu(models.Model):
     dish = models.CharField(max_length=20)
     price = models.IntegerField()
-    order_interval = models.CharField(max_length=20, choices=INTERVAL, default='Breakfast')
+    order_interval = models.CharField(max_length=20, choices=INTERVAL,
+                                      default='Breakfast')
 
     def __str__(self):
         return '{} - {}'.format(self.dish, self.price)
@@ -163,7 +167,8 @@ class Nonveg_menu(models.Model):
 class Nonveg_data(models.Model):
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
     order_date = models.DateField(default=datetime.date.today)
-    order_interval = models.CharField(max_length=20, choices=INTERVAL, default='Breakfast')
+    order_interval = models.CharField(max_length=20, choices=INTERVAL,
+                                      default='Breakfast')
     dish = models.ForeignKey(Nonveg_menu, on_delete=models.CASCADE)
 
     def __str__(self):

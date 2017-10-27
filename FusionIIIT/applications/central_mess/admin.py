@@ -10,16 +10,16 @@ from .models import (Feedback, Menu, Menu_change_request, Mess, Mess_meeting,
 class MessAdmin(admin.ModelAdmin):
     model = Mess
     fieldsets = [
-        ('mess_option', {'fields': ['department']}),
-        ('student', {'fields': ['sanction_cl_rh']}),
+        ('mess_option', {'fields': ['mess_option']}),
+        ('student', {'fields': ['student']}),
         ('nonveg_total_bill', {'fields': ['nonveg_total_bill']}),
         ('rebate_count', {'fields': ['rebate_count']}),
         ('count', {'fields': ['count']}),
         ('current_bill', {'fields': ['current_bill']})
 
     ]
-    list_display = ('student', 'mess_option', 'nonveg_total_bill', 'rebate_count',
-                    'count', 'current_bill')
+    list_display = ('student', 'mess_option', 'nonveg_total_bill',
+                    'rebate_count', 'count', 'current_bill')
 
 
 class MenuAdmin(admin.ModelAdmin):
@@ -61,7 +61,8 @@ class RebateAdmin(admin.ModelAdmin):
         ('purpose', {'fields': ['purpose']}),
         ('status', {'fields': ['status']}),
         ]
-    list_display = ('student_id', 'start_date', 'end_date', 'purpose', 'status')
+    list_display = ('student_id', 'start_date', 'end_date',
+                    'purpose', 'status')
 
 
 class Vacation_foodAdmin(admin.ModelAdmin):
@@ -73,7 +74,8 @@ class Vacation_foodAdmin(admin.ModelAdmin):
         ('purpose', {'fields': ['purpose']}),
         ('status', {'fields': ['status']}),
         ]
-    list_display = ('student_id', 'start_date', 'end_date', 'purpose', 'status')
+    list_display = ('student_id', 'start_date', 'end_date',
+                    'purpose', 'status')
 
 
 class Nonveg_menuAdmin(admin.ModelAdmin):
@@ -106,7 +108,8 @@ class Special_requestAdmin(admin.ModelAdmin):
         ('request', {'fields': ['request']}),
         ('status', {'fields': ['status']}),
         ]
-    list_display = ('student_id', 'start_date', 'end_date', 'request', 'status')
+    list_display = ('student_id', 'start_date', 'end_date',
+                    'request', 'status')
 
 
 class Menu_change_requestAdmin(admin.ModelAdmin):
@@ -128,7 +131,8 @@ class Mess_meetingAdmin(admin.ModelAdmin):
         ('meeting_time', {'fields': ['meeting_time']}),
         ('mess_minutes', {'fields': ['mess_minutes']}),
         ]
-    list_display = ('meeting_date', 'agenda', 'venue', 'meeting_time', 'mess_minutes')
+    list_display = ('meeting_date', 'agenda', 'venue',
+                    'meeting_time', 'mess_minutes')
 
 
 class FeedbackAdmin(admin.ModelAdmin):

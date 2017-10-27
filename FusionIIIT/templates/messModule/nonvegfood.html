@@ -18,7 +18,8 @@
         <div class="ui vertical segment">
 
             {% comment %}Form Tag starts here!{% endcomment %}
-            <form method="post" action="placeorder/">
+            <form method="post" action="{% url 'mess:placeorder' %}">
+                {% csrf_token %}
                 {% comment %}The add a new skill Accordian starts here!{% endcomment %}
                 <div class="ui form" style="padding: 8px; padding-left: 24px; padding-right: 24px;">
 
@@ -50,18 +51,13 @@
                                 <div class="ui active tab" data-tab="breakfast">
                                     <form class="ui form">
                                         <div class="ui row">
-                                            <div class="three fields">
+                                            <div class="two fields">
                                                 {% for x in nonveg %}
                                                 <div class="field">
                                                     {% if x.order_interval == 'Breakfast' %}
-                                                    <label>
-                                                    
-                                                       {{x.dish}} - {{x.price}}
-                                                        
-                                                    </label>
                                                     
                                                     <div class="ui input">
-                                                        <input type="checkbox">
+                                                        <input type="checkbox" name='dish' value='{{x.dish}}'>{{x.dish}} - {{x.price}}
                                                     </div>
                                                     {% endif %}
                                                 </div>
@@ -80,25 +76,23 @@
                                 </div>
 
                                 <div class="ui tab" data-tab="lunch">
-                                    <form class="ui form">
+                                    <form class="ui form" method="post" action="{% url 'mess:placeorder' %}">
+                                        {% csrf_token %}
                                         <div class="ui row">
-                                            <!-- <div class="four fields"> -->
+                                            <div class="two fields">
                                             {% for x in nonveg %}
                                                 <div class="field">
                                                     {% if x.order_interval == 'Lunch' %}
-                                                    <label>
-                                                       {{x.dish}} - {{x.price}} 
-                                                    </label>
 
                                                     <div class="ui input">
                                                         
-                                                        <input type="checkbox" id="">
+                                                        <input type="checkbox" name='dish' value='{{x.dish}}'>{{x.dish}} - {{x.price}}
                                                     </div>
                                                     {% endif %}
                                                 </div>
                                             {% endfor %}
 
-                                            <!-- </div> -->
+                                            </div>
                                         </div>
 
                                         <div class="ui row">
@@ -111,25 +105,23 @@
                                 </div>
 
                                 <div class="ui tab" data-tab="dinner">
-                                    <form class="ui form">
+                                    <form class="ui form" method="post" action="{% url 'mess:placeorder' %}">
+                                        {% csrf_token %}
                                         <div class="ui row">
                                             
-                                            <!-- <div class="four fields"> -->
+                                            <div class="two fields">
                                                 {% for x in nonveg %}
                                                 <div class="field">
                                                     {% if x.order_interval == 'Dinner' %}
-                                                    <label>
-                                                      {{x.dish}} - {{x.price}}  
-                                                    </label>
 
                                                     <div class="ui input">
-                                                        <input placeholder="Quantity">
+                                                        <input type="checkbox" name='dish' value='{{x.dish}}'>{{x.dish}} - {{x.price}}
                                                     </div>
                                                     {% endif %}
                                                 </div>
                                                 {% endfor %}
 
-                                            <!-- </div> -->
+                                            </div>
                                         </div>
 
                                         <div class="ui row">
@@ -200,32 +192,30 @@
                 </thead>
 
                 <tbody>
+                    {% for info in data %}
                     <tr>
                         <td>
                             <h4 class="ui image header">
                                 <img src="{% static 'globals/img/zlatan.jpg' %}" class="ui mini circular image">
                                 <div class="content">
-                                    Zlatan Ibrahimovic
+                                    {{extrainfo.user.username}}
                                     <div class="sub header">
-                                        {% comment %}
-                                            TODO: Replace with Roll Number!
-                                        {% endcomment %}
-                                        King Of Sweden
+                                        {{extrainfo.id}}
                                     </div>
                                 </div>
                             </h4>
                         </td>
 
                         <td>
-                            18 Oct'17
+                            {{info.order_date}}
                         </td>
 
                         <td>
-                            Breakfast
+                            {{info.order_interval}}
                         </td>
 
                         <td>
-                            Omelette
+                            {{info.dish}}
                         </td>
 
                         <td>
@@ -233,11 +223,11 @@
                         </td>
 
                         <td>
-                            &#8377; 19
+                            &#8377; {{info.dish.price}}
                         </td>
                     </tr>
 
-                    <tr>
+                    <!-- <tr>
                         <td>
                             <h4 class="ui image header">
                                 <img src="{% static 'globals/img/zlatan.jpg' %}" class="ui mini circular image">
@@ -303,7 +293,8 @@
                         <td>
                             &#8377; 25
                         </td>
-                    </tr>
+                    </tr> -->
+                    {% endfor %}
 
                 </tbody>
             </table>
