@@ -3,7 +3,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'^viewcourses/$', views.viewcourses, name='viewcourses'),
+    url(r'^$', views.viewcourses, name='viewcourses'),
     url(r'^(?P<course_code>[A-z]+[0-9]+)/$', views.course,
         name='course'),
     # course_name will have blank spaces in between which is not possible

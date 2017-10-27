@@ -31,12 +31,16 @@ def viewcourses(request):
 
         roll = student.id.id[:4]
         register = Register.objects.filter(student_id=student, semester=semester(roll))
-        return render(request, 'online_cms/viewcourses.html',
-                      {'register': register,
+        courses = collections.OrderedDict()
+        for reg in register:
+            instructor=Instructor.objects.get(course_id=reg.course_id)
+            courses[reg]=instructor
+        return render(request, 'coursemanagement/coursemanagement.html',
+                      {'courses': courses,
                        'extrainfo': extrainfo})
     else:
         instructor = Instructor.objects.filter(instructor_id=extrainfo)
-        return render(request, 'online_cms/viewcourses.html',
+        return render(request, 'coursemanagement/coursemanagement.html',
                       {'instructor': instructor,
                        'extrainfo': extrainfo})
 

@@ -1,7 +1,7 @@
 {% load static %}
 
 {% block viewcourses %}
- 
+
   {% comment %}The CSS starts here!{% endcomment %}
       <style>
       #pdf_modal iframe{
@@ -44,19 +44,19 @@
               background-color:#fff;
             }
     /*timer css ends*/
-        
 
-       
+
+
      </style>
 
    {% comment %}The CSS ends  here!{% endcomment %}
 
     {% comment %}The tab menu starts here!{% endcomment %}
-    <div class="ui pointing secondary menu">
-        <a class="active item" data-tab="coursedetails">
+    <div class="ui pointing centered grid secondary menu">
+        <h1 class="active item" data-tab="coursedetails">
             Basic Course Details
-        </a>
-
+        </h1>
+<!--
         <a class="item" data-tab="assignment">
             Assignment
         </a>
@@ -72,7 +72,7 @@
         </a>
         <a class="item" data-tab="quiz">
             Quizzes
-        </a>
+        </a> -->
     </div>
 
 
@@ -86,28 +86,28 @@
                         <th>Instructor</th>
                       </tr></thead><tbody>
                         <tr>
-                          <td>Software Engineering</td>
+                          <td><a href="#">Software Engineering</a></td>
                           <td>CS-308</td>
                           <td>Atul Gupta</td>
                         </tr>
                         <tr>
-                          <td>Computer Networks</td>
+                          <td><a href="#">Computer Networks</a></td>
                           <td>CS-305</td>
                           <td>Vinod Kumar Jain</td>
                         </tr>
                         <tr>
-                          <td>Operating Systems</td>
+                          <td><a href="">Operating Systems</a></td>
                           <td>CS-306</td>
                           <td>Manish Kumar Bajpai</td>
                         </tr>
                       </tbody>
                     </table>
-              
+
     </div>
 
     {% comment %}The Basic Course details segment ends here!{% endcomment %}
 
-           
+
 
     {% comment %}The Assignment segment starts here!{% endcomment %}
 
@@ -115,7 +115,7 @@
 
       <p> </p>
       <div class="ui form">
-  
+
   <div class="grouped fields">
     <label for="fruit">1)   From the following which quality deals with maintaining the quality of the software product?</label>
     <div class="field">
@@ -144,10 +144,10 @@
     </div>
   </div>
 </div>
-       
+
     </div>
     {% comment %}The assignment ends here!{% endcomment %}
-    
+
 
     {% comment %}The video  segment starts here!{% endcomment %}
     <div class="ui tab segment" data-tab="videos">
@@ -156,55 +156,55 @@
           <div class="row">
             <div class="column">
                <div class="ui embed" data-source="youtube" data-id="O6Xo21L0ybE" data-placeholder="/images/image-16by9.png">
-              </div> 
+              </div>
 
             </div>
             <div class="column">
-                
+
             <div class="ui embed" data-url="https://www.youtube.com/embed/O6Xo21L0ybE" data-placeholder="/images/bear-waving.jpg"></div>
 
             </div>
             <div class="column">
-                
+
                 <div class="ui embed" data-source="youtube" data-id="O6Xo21L0ybE" data-placeholder="/images/image-16by9.png">
                </div>
 
             </div>
             <div class="column">
               <div class="ui embed" data-source="youtube" data-id="O6Xo21L0ybE" data-placeholder="/images/image-16by9.png">
-             </div>  
+             </div>
 
             </div>
           </div>
-         
-        </div> 
+
+        </div>
 
         <h4 class="ui dividing header">Computer Networks Videos</h4>
         <div class="ui four column grid">
           <div class="row">
             <div class="column">
                <div class="ui embed" data-source="youtube" data-id="O6Xo21L0ybE" data-placeholder="/images/image-16by9.png">
-              </div> 
+              </div>
 
             </div>
             <div class="column">
-                
+
             <div class="ui embed" data-url="https://www.youtube.com/embed/O6Xo21L0ybE" data-placeholder="/images/bear-waving.jpg"></div>
 
             </div>
             <div class="column">
-                
+
                 <div class="ui embed" data-source="youtube" data-id="O6Xo21L0ybE" data-placeholder="/images/image-16by9.png">
                </div>
 
             </div>
             <div class="column">
               <div class="ui embed" data-source="youtube" data-id="O6Xo21L0ybE" data-placeholder="/images/image-16by9.png">
-             </div>  
+             </div>
 
             </div>
           </div>
-         
+
         </div>
 
         <h4 class="ui dividing header">Operating System Videos Videos</h4>
@@ -212,33 +212,33 @@
           <div class="row">
             <div class="column">
                <div class="ui embed" data-source="youtube" data-id="O6Xo21L0ybE" data-placeholder="/images/image-16by9.png">
-              </div> 
+              </div>
 
             </div>
             <div class="column">
-                
+
             <div class="ui embed" data-url="https://www.youtube.com/embed/O6Xo21L0ybE" data-placeholder="/images/bear-waving.jpg"></div>
 
             </div>
             <div class="column">
-                
+
                 <div class="ui embed" data-source="youtube" data-id="O6Xo21L0ybE" data-placeholder="/images/image-16by9.png">
                </div>
 
             </div>
             <div class="column">
               <div class="ui embed" data-source="youtube" data-id="O6Xo21L0ybE" data-placeholder="/images/image-16by9.png">
-             </div>  
+             </div>
 
             </div>
           </div>
-         
+
         </div>
 
 
     </div>
 
-     
+
 
 
     {% comment %}The video segment ends here!{% endcomment %}
@@ -255,29 +255,29 @@
                <div id='pdf_modal' class="ui sixteen wide column fullscreen modal">
             <iframe src="http://jasonczaja.com/blog/wp-content/uploads/2009/01/jason_czaja_resume-791x1024.png"></iframe>
            </div>
-      
+
              <button class="ui primary button">
                     <a id='visualize' style="color:white;">Open PDF</a>
                 </button>
 
             </div>
             <div class="column">
-                
+
               <div id='pdf_modal' class="ui sixteen wide column fullscreen modal">
             <iframe src="http://jasonczaja.com/blog/wp-content/uploads/2009/01/jason_czaja_resume-791x1024.png"></iframe>
            </div>
-      
+
              <button class="ui primary button">
                     <a id='visualize' style="color:white;">Open PDF</a>
                 </button>
 
             </div>
             <div class="column">
-                
+
                <div id='pdf_modal' class="ui sixteen wide column fullscreen modal">
              <iframe src="http://jasonczaja.com/blog/wp-content/uploads/2009/01/jason_czaja_resume-791x1024.png"></iframe>
            </div>
-      
+
              <button class="ui primary button">
                     <a id='visualize' style="color:white;">Open PDF</a>
                 </button>
@@ -287,14 +287,14 @@
                <div id='pdf_modal' class="ui sixteen wide column fullscreen modal">
                <iframe src="http://jasonczaja.com/blog/wp-content/uploads/2009/01/jason_czaja_resume-791x1024.png"></iframe>
               </div>
-      
+
              <button class="ui primary button">
                     <a id='visualize' style="color:white;">Open PDF</a>
-                </button>  
+                </button>
 
             </div>
           </div>
-         
+
         </div>
 
 
@@ -307,29 +307,29 @@
                <div id='pdf_modal' class="ui sixteen wide column fullscreen modal">
             <iframe src="http://jasonczaja.com/blog/wp-content/uploads/2009/01/jason_czaja_resume-791x1024.png"></iframe>
            </div>
-      
+
              <button class="ui primary button">
                     <a id='visualize' style="color:white;">Open PDF</a>
                 </button>
 
             </div>
             <div class="column">
-                
+
               <div id='pdf_modal' class="ui sixteen wide column fullscreen modal">
             <iframe src="http://jasonczaja.com/blog/wp-content/uploads/2009/01/jason_czaja_resume-791x1024.png"></iframe>
            </div>
-      
+
              <button class="ui primary button">
                     <a id='visualize' style="color:white;">Open PDF</a>
                 </button>
 
             </div>
             <div class="column">
-                
+
                <div id='pdf_modal' class="ui sixteen wide column fullscreen modal">
              <iframe src="http://jasonczaja.com/blog/wp-content/uploads/2009/01/jason_czaja_resume-791x1024.png"></iframe>
            </div>
-      
+
              <button class="ui primary button">
                     <a id='visualize' style="color:white;">Open PDF</a>
                 </button>
@@ -339,14 +339,14 @@
                <div id='pdf_modal' class="ui sixteen wide column fullscreen modal">
                <iframe src="http://jasonczaja.com/blog/wp-content/uploads/2009/01/jason_czaja_resume-791x1024.png"></iframe>
               </div>
-      
+
              <button class="ui primary button">
                     <a id='visualize' style="color:white;">Open PDF</a>
-                </button>  
+                </button>
 
             </div>
           </div>
-         
+
         </div>
 
 
@@ -358,29 +358,29 @@
                <div id='pdf_modal' class="ui sixteen wide column fullscreen modal">
             <iframe src="http://jasonczaja.com/blog/wp-content/uploads/2009/01/jason_czaja_resume-791x1024.png"></iframe>
            </div>
-      
+
              <button class="ui primary button">
                     <a id='visualize' style="color:white;">Open PDF</a>
                 </button>
 
             </div>
             <div class="column">
-                
+
               <div id='pdf_modal' class="ui sixteen wide column fullscreen modal">
             <iframe src="http://jasonczaja.com/blog/wp-content/uploads/2009/01/jason_czaja_resume-791x1024.png"></iframe>
            </div>
-      
+
              <button class="ui primary button">
                     <a id='visualize' style="color:white;">Open PDF</a>
                 </button>
 
             </div>
             <div class="column">
-                
+
                <div id='pdf_modal' class="ui sixteen wide column fullscreen modal">
              <iframe src="http://jasonczaja.com/blog/wp-content/uploads/2009/01/jason_czaja_resume-791x1024.png"></iframe>
            </div>
-      
+
              <button class="ui primary button">
                     <a id='visualize' style="color:white;">Open PDF</a>
                 </button>
@@ -390,27 +390,27 @@
                <div id='pdf_modal' class="ui sixteen wide column fullscreen modal">
                <iframe src="http://jasonczaja.com/blog/wp-content/uploads/2009/01/jason_czaja_resume-791x1024.png"></iframe>
               </div>
-      
+
              <button class="ui primary button">
                     <a id='visualize' style="color:white;">Open PDF</a>
-                </button>  
+                </button>
 
             </div>
           </div>
-         
+
         </div>
 
-        
 
-      
+
+
     </div>
 
-   
+
     {% comment %}The Slides segment ends here!{% endcomment %}
 
 
     {% comment %}The time-table segment starts here!{% endcomment %}
-       
+
          <div class="ui tab segment" data-tab="time-table">
            <h4 class="ui dividing header">Class Time Table</h4>
              <table class="ui single line table">
@@ -505,23 +505,23 @@
                 </table>
 
          </div>
-      
+
     {% comment %}The time-table segment ends here!{% endcomment %}
 
       {% comment %}The quiz segment starts here!{% endcomment %}
          <div class="ui tab segment" data-tab="quiz">
            <div id="clock">
-  
+
                   <div class="block">
                     <span class="digit" id="hours"></span>
                     Hours
                   </div>
-                  
+
                   <div class="block">
                     <span class="digit" id="minutes"></span>
                     Minutes
                   </div>
-                  
+
                   <div class="block">
                     <span class="digit" id="seconds"></span>
                     Seconds
