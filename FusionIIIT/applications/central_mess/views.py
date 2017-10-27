@@ -9,8 +9,7 @@ from django.shortcuts import render
 from applications.academic_information.models import Student
 from applications.globals.models import ExtraInfo
 
-from .models import (Feedback, Menu, Nonveg_data,
-                     Nonveg_menu, Vacation_food)
+from .models import Feedback, Menu, Nonveg_data, Nonveg_menu, Vacation_food
 
 
 def mess(request):
