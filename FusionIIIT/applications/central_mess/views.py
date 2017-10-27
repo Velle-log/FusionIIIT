@@ -1,17 +1,16 @@
 import datetime
 
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+# from django.contrib.auth.decorators import login_required
+# from django.contrib.auth.models import User
 from django.db import transaction
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 
 from applications.academic_information.models import Student
 from applications.globals.models import ExtraInfo
 
-from .models import (Feedback, Menu, Menu_change_request, Mess, Mess_meeting,
-                     Monthly_bill, Nonveg_data, Nonveg_menu, Payments, Rebate,
-                     Special_request, Vacation_food)
+from .models import (Feedback, Menu, Nonveg_data,
+                     Nonveg_menu, Vacation_food)
 
 
 def mess(request):
