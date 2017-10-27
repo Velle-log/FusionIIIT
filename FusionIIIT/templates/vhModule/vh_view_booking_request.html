@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>view booking</title>
+
+</head>
+<body>
+<form  method="POST" >
+{% csrf_token %}
+<table>
+<tr>
+    	<th>Visitor Name</th>
+    	<th>Intender Name</th>
+    	<th>Category</th>
+    	<th>Number of person</th>
+    	<th>Number of room</th>
+    	<th>Booking From</th>
+    	<th>Booking to</th>
+    	<th>Room No</th>
+    	<th>Confirm</th>
+    	<th>Cancel</th>
+ </tr>
+{% for context1 in context %}
+    <div class="context">
+        <tr>
+            <td>{{context1.visitor_id.visitor_name}}</td> 
+            <td>{{context1.visitor_id.intender_id}}</td> 
+            <td>{{context1.visitor_category}}</td>
+            <td>{{context1.person_count}}</td>
+            <td>{{context1.room_count}}</td>
+            <td>{{context1.booking_from}}</td>
+            <td>{{context1.Booking_to}}</td>
+            <td>
+            {% for room1 in room %}
+            	<input type="checkbox" name="room" value= {{room1.room_number}} > {{room1.room_number}}<br>
+            {% endfor %}</td>
+            <td><button type="submit" value = {{context1.br_id}} name = "confirm">confirm</button></td>
+            <td><button type="submit" value = {{context1.br_id}} name = "cancel">cancel</button></td>
+        </tr>
+     </div>
+{% endfor %}
+</table>
+</form>
+</body>
+</html>

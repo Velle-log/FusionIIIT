@@ -102,7 +102,7 @@ INSTALLED_APPS = [
     'applications.health_center.apps.HealthCenterConfig',
     'applications.leave.apps.LeaveConfig',
     'applications.online_cms.apps.OnlineCmsConfig',
-    # 'applications.placement_cell.apps.PlacementCellConfig',
+    'applications.placement_cell.apps.PlacementCellConfig',
     'applications.scholarships.apps.ScholarshipsConfig',
     'applications.visitor_hostel.apps.VisitorHostelConfig',
     'applications.eis.apps.EisConfig',

@@ -37,7 +37,10 @@ class Visitor(models.Model):
     visitor_phone = models.CharField(max_length=12)
     visitor_address = models.TextField()
     nationality = models.CharField(max_length=20)
-    intender_id = models.ForeignKey(User, unique=True)
+    intender_id = models.ForeignKey(User, unique=False)
+
+    def __str__(self):
+        return self.visitor_name
 
 
 class Book_room(models.Model):
@@ -50,9 +53,9 @@ class Book_room(models.Model):
     booking_from = models.DateField()
     Booking_to = models.DateField()
     status = models.BooleanField(default=False)
-    remark = models.CharField(max_length=40)
-    check_in = models.DateField()
-    check_out = models.DateField()
+    remark = models.CharField(max_length=40,blank=True)
+    check_in = models.DateField(null=True, blank=True)
+    check_out = models.DateField(null=True, blank=True)
 
 
 class Visitor_bill(models.Model):
