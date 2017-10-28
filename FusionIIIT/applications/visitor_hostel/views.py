@@ -8,9 +8,8 @@ from applications.visitor_hostel.forms import ViewBooking
 
 def visitorhostel(request):
     context = {}
-
-    return render(request, "vhModule/visitorhostel.html", context)
-
+    print("gluqegurg")
+    return render(request, "visitor_hostel/visitorhostel.html", context)
 def vh_homepage(request):
 	context = {}
 
@@ -35,7 +34,7 @@ def booking_request(request):
 				print(room_id)
 				book_from = book_room.booking_from
 				book_to = book_room.Booking_to
-				delta = (book_to - book_from).days 
+				delta = (book_to - book_from).days
 				print(delta)
 				for i in range(delta):
 					date_1 = book_from+ datetime.timedelta(days=i)
@@ -49,7 +48,7 @@ def booking_request(request):
 			messages.success(request, 'succesfully cancelled')
 			return HttpResponseRedirect('/visitorhostel/vh_homepage/')
 
-		return HttpResponseRedirect('/visitorhostel/vh_homepage/')		
+		return HttpResponseRedirect('/visitorhostel/vh_homepage/')
 
 	else :
 		context = Book_room.objects.filter(status = False)
@@ -60,7 +59,7 @@ def booking_request(request):
 			messages.success(request, 'No new request')
 			return HttpResponseRedirect('/visitorhostel/vh_homepage/')
 		return render(request, "vhModule/vh_view_booking_request.html" ,{ 'context' : context , 'room' : room })
-		
+
 
 def all_booking(request):
 	if request.method == 'POST' :

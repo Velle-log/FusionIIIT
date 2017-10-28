@@ -104,7 +104,7 @@ class Inventory(models.Model):
 
 class Room_Status(models.Model):
     date = models.DateField(null=True, blank=True)
-    room_id = models.ForeignKey(Room, on_delete=models.CASCADE, primary_key = True)
+    room_id = models.OneToOneField(Room, on_delete=models.CASCADE)
     status = models.CharField(max_length=12, choices=ROOM_STATUS, default = "Available")
     def __str__(self):
         return str(self.room_id)
