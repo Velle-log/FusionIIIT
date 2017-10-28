@@ -18,7 +18,7 @@ from applications.globals.models import ExtraInfo
 
 from .forms import AddDocuments, AddVideos
 from .helpers import semester
-from .models import CourseDocuments, CourseVideo, Forum, ForumReply
+from .models import CourseDocuments, CourseVideo, Forum, ForumReply, Quiz
 
 def create_thumbnail(course,row, attach_str, thumb_time, thumb_size):
     # filepath = settings.MEDIA_ROOT + 'online_cms/' + course.course_id + 'vid/' + str(row.name) + '/' + str(row.tutorial_detail_id) + '/'
@@ -64,7 +64,6 @@ def viewcourses(request):
 def course(request, course_code):
     user = request.user
     extrainfo = ExtraInfo.objects.get(user=user)
-
     if extrainfo.user_type == 'student':
         student = Student.objects.get(id=extrainfo)
         roll = student.id.id[:4]
@@ -72,22 +71,52 @@ def course(request, course_code):
         instructor = Instructor.objects.get(course_id=course[0])
         videos=CourseVideo.objects.filter(course_id=course[0])
         slides=CourseDocuments.objects.filter(course_id=course[0])
+        quiz=Quiz.objects.filter(course_id=course)
         print(len(slides),"DADASDA")
+        lec=0
+        comments = Forum.objects.filter(course_id=course).order_by('comment_time')
+        answers = collections.OrderedDict()
+        for comment in comments:
+            fr = ForumReply.objects.filter(forum_reply=comment)
+            fr1= ForumReply.objects.filter(forum_ques=comment)
+            if not fr :
+                # question['{}'.format(comment.pk)]=comment
+                # answers['{}'.format(comment.pk)]=fr1
+                print(comment.comment)
+                answers[comment]=fr1
         return render(request, 'coursemanagement/viewcourse.html',
                       {'course': course[0],
+                       'quizs':quiz,
                        'videos':videos,
                        'instructor': instructor,
                        'slides':slides,
-                       'extrainfo': extrainfo})
+                       'extrainfo': extrainfo,
+                       'answers': answers,
+                       'Lecturer':lec})
 
     else:
         instructor = Instructor.objects.filter(instructor_id=extrainfo)
         for ins in instructor:
             if ins.course_id.course_id is course_code:
                 course = ins.course_id
+        lec=1
+        comments = Forum.objects.filter(course_id=course).order_by('comment_time')
+        answers = collections.OrderedDict()
+        for comment in comments:
+            fr = ForumReply.objects.filter(forum_reply=comment)
+            fr1= ForumReply.objects.filter(forum_ques=comment)
+            if not fr :
+                # question['{}'.format(comment.pk)]=comment
+                # answers['{}'.format(comment.pk)]=fr1
+                print(comment.comment)
+                answers[comment]=fr1
         return render(request, 'coursemanagement/viewcourse.html',
                       {'instructor': instructor,
-                       'extrainfo': extrainfo})
+                       'extrainfo': extrainfo,
+                       'course':course,
+                       'answers': answers,
+                       'Lecturer':lec
+                       })
 
 
 @login_required

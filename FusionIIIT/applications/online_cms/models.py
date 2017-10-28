@@ -28,6 +28,7 @@ class CourseVideo(models.Model):
 
 class Quiz(models.Model):
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
+    quiz_name=models.CharField(max_length=20)
     end_time = models.DateTimeField()
     start_time = models.DateTimeField()
     d_day = models.CharField(max_length=2)
