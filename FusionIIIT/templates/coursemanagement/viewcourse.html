@@ -660,7 +660,7 @@
           data:{ 'question':pk,'reply': reply,'csrfmiddlewaretoken':'{{ csrf_token }}'},
           success:function(data){
             $('#reply_n_'+pk).val("");
-            $('<div class="comment comment_r" id="comment'+data.pk+'"><a class="avatar"><img src="{% static "globals/img/zlatan.jpg" %}"></a><div class="content"><a class="author">'+data.name+'</a><div class="metadata"><span class="date">'+data.time+'</span></div><div class="text">'+data.reply+'</div><div class="actions"><a class="reply remove_r"data-user="'+data.pk+'"data-pk="'+data.pk+'" id="remove'+data.pk+'" name="remove'+data.pk+'">remove</a></div></div></div>').insertBefore(p);
+            $('<div class="comment comment_r" id="comment'+data.pk+'"><a class="avatar"><img src="{% static "globals/img/zlatan.jpg" %}"></a><div class="content"><a class="author">'+data.name+'</a><div class="metadata"><span class="date">'+data.time+'</span></div><div class="text">'+data.reply+'</div><div class="actions"><a class="reply remove_r"data-user="'+data.pk+'"data-pk="'+data.pk+'" onclick="func(this)" id="remove'+data.pk+'"name="remove'+data.pk+'">remove</a></div></div></div>').insertBefore(p);
 
           },
           error: function(data,err){
@@ -731,7 +731,7 @@
           url:'/ocms/{{course.course_id}}/ajax_remove',
           data:{ 'question':pk,'csrfmiddlewaretoken':'{{ csrf_token }}'},
           success:function(data){
-            btn.parentNode.style.display="none";
+            btn.parentNode.parentNode.parentNode.style.display="none";
           },
           error: function(data,err){
             alert(err);
@@ -747,7 +747,7 @@
           url:'/ocms/{{course.course_id}}/ajax_remove',
           data:{ 'question':pk,'csrfmiddlewaretoken':'{{ csrf_token }}'},
           success:function(data){
-            btn.parentNode.parentNode.style.display="none";
+            btn.parentNode.parentNode.parentNode.parentNode.style.display="none";
           },
           error: function(data,err){
             alert(err);
