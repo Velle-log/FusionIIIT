@@ -109,26 +109,5 @@
 
 </div>
 {% comment %}The grid ends here!{% endcomment %} {% endblock %} {% block javascript %}
-<script type="text/javascript" src="{% static 'fusion/js/editProfile.js' %}"></script>
-<script type="text/javascript" src="{% static 'fusion/js/tablesort.js' %}"></script>
-
-<script>
-    $(document).ready(function() {
-        $('table').tablesort();
-    });
-
-    function toggleContent() {
-        $('.modulesContent').toggle();
-
-        if ($('.modulesContent').is(':visible')) {
-            $('#toggleIcon').removeClass("chevron down");
-            $('#toggleIcon').addClass("chevron up");
-        } else if (!$('.modulesContent').is(':visible')) {
-            $('#toggleIcon').removeClass("chevron up");
-            $('#toggleIcon').addClass("chevron down");
-        }
-    }
-
-</script>
 
 {% endblock %}
