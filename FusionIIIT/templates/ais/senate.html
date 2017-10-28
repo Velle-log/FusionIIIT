@@ -27,7 +27,8 @@
 
        <h4 class="ui dividing header">Edit Members</h4>
 
-       <form class="ui form">
+       <form class="ui form" method="POST" action="{% url 'input' %}">
+            {% csrf_token %}
             <div class="field">
                  <div class="three fields">
                     <div class="field">
@@ -55,7 +56,7 @@
                 
                  <div class="field">
                         <label>Roll Number</label>
-                        <input placeholder="Roll Number" type="text">
+                        <input placeholder="Roll Number" type="text" name="Roll Number">
                     </div>
                     
                 </div>
@@ -66,7 +67,7 @@
                     <div class="one wide field">
                         <label><br></label>
                         <div class="ui primary button">
-                            Save
+                                <input type="submit" value="Save" />                            
                             <i class="ui save icon right floated"></i>
                         </div>
                     </div> 
@@ -84,13 +85,19 @@
                     </tr>
                   </thead>
                   <tbody>
+                      {% if senates %}
+                      {% for senate in senates%}
+                      {% if senate.department.name == "CSE" %}
                     <tr>
-                       <td>Prajwal </td>
-                      <td>B.Tech </td>
-                      <td>2015183</td>
+                       <td>{{senate.user.username}} </td>
+                      <td>B. Tech </td>
+                      <td>{{senate.id}}</td>
                       <td><i class="refresh icon" style="font-size:1.3vw"></i><i class="trash outline icon" style="font-size:1.3vw"></i></td>
                      
                     </tr>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
                     <tr>
                      
 
@@ -108,8 +115,9 @@
     <div class="ui  tab segment" data-tab="ece">
 
         <h4 class="ui dividing header">Edit Members</h4>
+        <form class="ui form" method="POST" action="{% url 'input' %}">
+                {% csrf_token %}
 
-       <form class="ui form">
             <div class="field">
                  <div class="three fields">
                     <div class="field">
@@ -148,13 +156,13 @@
                     <div class="one wide field">
                         <label><br></label>
                         <div class="ui primary button">
-                            Save
+                                <input type="submit" value="Save" /> 
                             <i class="ui save icon right floated"></i>
                         </div>
                     </div> 
                 </div>
         </form>  
-
+                
           <table class="ui single line table">
                   <thead>
                     <tr>
@@ -166,12 +174,18 @@
                     </tr>
                   </thead>
                   <tbody>
+                        {% if senates %}
+                        {% for senate in senates%}
+                        {% if senate.department.name == "ECE" %}
                     <tr>
-                       <td>Prajwal </td>
+                       <td>{{senate.user.username}} </td>
                       <td>B.Tech </td>
-                      <td>2015183</td>
+                      <td>{{senate.id}}</td>
                       <td><i class="refresh icon" style="font-size:1.3vw"></i><i class="trash outline icon" style="font-size:1.3vw"></i></td>
                     </tr>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
                     <tr>
                      
 
@@ -190,8 +204,9 @@
     <div class="ui  tab segment" data-tab="mech">
 
         <h4 class="ui dividing header">Edit Members</h4>
+        <form class="ui form" method="POST" action="{% url 'input' %}">
+                {% csrf_token %}
 
-       <form class="ui form">
             <div class="field">
                  <div class="three fields">
                     <div class="field">
@@ -230,7 +245,7 @@
                     <div class="one wide field">
                         <label><br></label>
                         <div class="ui primary button">
-                            Save
+                                <input type="submit" value="Save" /> 
                             <i class="ui save icon right floated"></i>
                         </div>
                     </div> 
@@ -248,13 +263,19 @@
                     </tr>
                   </thead>
                   <tbody>
+                        {% if senates %}
+                        {% for senate in senates%}
+                        {% if senate.department.name == "MECH" %}
                     <tr>
-                       <td>Prajwal </td>
+                       <td>{{senate.user.username}} </td>
                       <td>B.Tech </td>
-                      <td>2015183</td>
+                      <td>{{senate.id}}</td>
                       <td><i class="refresh icon" style="font-size:1.3vw"></i><i class="trash outline icon" style="font-size:1.3vw"></i></td>
                      
                     </tr>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
                     <tr>
                      
 
@@ -273,8 +294,9 @@
     <div class="ui  tab segment" data-tab="design">
 
         <h4 class="ui dividing header">Edit Members</h4>
+        <form class="ui form" method="POST" action="{% url 'input' %}">
+                {% csrf_token %}
 
-       <form class="ui form">
             <div class="field">
                  <div class="three fields">
                     <div class="field">
@@ -313,7 +335,7 @@
                     <div class="one wide field">
                         <label><br></label>
                         <div class="ui primary button">
-                            Save
+                                <input type="submit" value="Save" />
                             <i class="ui save icon right floated"></i>
                         </div>
                     </div> 
@@ -331,12 +353,18 @@
                     </tr>
                   </thead>
                   <tbody>
+                        {% if senates %}
+                        {% for senate in senates%}
+                        {% if senate.department.name == "DESIGN" %} 
                     <tr>
-                       <td>Meru </td>
+                       <td>{{senate.user.username}}</td>
                       <td>B.Des </td>
-                      <td>2015183</td>
+                      <td>{{senate.id}}</td>
                       <td><i class="refresh icon" style="font-size:1.3vw"></i><i class="trash outline icon" style="font-size:1.3vw"></i></td>
                     </tr>
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
                     <tr>
                      
 
