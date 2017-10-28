@@ -384,7 +384,7 @@
             {% block addcontent %} {% include 'coursemanagement/addcontent.html' %} {% endblock %}
         </div>
         {% endcomment %} {% comment %}The add content ends here!{% endcomment %}
-      </div>
+    </div>
     <div class="three wide column">
         <div class="row">
 
@@ -401,10 +401,10 @@
 </div>
 
 {% comment %}The grid ends here!{% endcomment %} {% endblock %} {% block javascript %}
-<script type="text/javascript" src="{% static 'fusion/js/editProfile.js' %}"></script>
-<script type="text/javascript" src="{% static 'fusion/js/tablesort.js' %}"></script>
-<script type="text/javascript" src="{% static 'fusion/js/jquery.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'fusion/js/semantic.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'globals/js/editProfile.js' %}"></script>
+<script type="text/javascript" src="{% static 'globals/js/tablesort.js' %}"></script>
+<script type="text/javascript" src="{% static 'globals/js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'globals/js/semantic.min.js' %}"></script>
 <script>
     $(document).ready(function() {
         $('table').tablesort();
