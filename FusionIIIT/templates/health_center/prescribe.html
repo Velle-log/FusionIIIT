@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Documents</title>
+</head>
+
+<body>
+        RollNo={{ form.user_id }} <br>
+        Detail of the disease={{ form.detail }}<br>
+        Doctor={{ form.doctor_id }} <br>
+        <form method='POST'>{% csrf_token %}
+        {{form.medicine}}    <input type="submit" name="add_medicine" value="Add Medicine">
+        </form>
+        <br>
+        {{form.extra_meds}}<br>
+        <form method='POST' action='/prescription/'>{% csrf_token %}
+        <input type="submit" name="Submit" value="submit">
+        </form>
+
+    <!--      Add constraints for format of file-->
+
+</body>
+
+</html>

@@ -50,6 +50,9 @@ class Doctor(models.Model):
     doctor_phone = models.CharField(max_length=10)
     specialization = models.CharField(max_length=10, choices=Constants.SPECIALIZATION)
 
+    def __str__(self):
+        return self.doctor_name
+
 
 class Health_Card(models.Model):
     health_card = models.CharField(max_length=20, primary_key=True)
@@ -67,13 +70,17 @@ class Prescription(models.Model):
 
 class Complaint(models.Model):
     user_id = models.ForeignKey(ExtraInfo)
-    feedback = models.CharField(max_length=100)
+    feedback = models.CharField(max_length=100, null=True, blank=True)
     complaint = models.CharField(max_length=100)
+    date = models.DateField(auto_now=True)
 
 
 class Stock(models.Model):
     medicine_name = models.CharField(max_length=100)
     quantity = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.medicine_name
 
 
 class Stockinventory(models.Model):
@@ -81,33 +88,41 @@ class Stockinventory(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     quantity = models.IntegerField(default=0)
 
+    def __str__(self):
+        return self.medicine_id
+
 
 class Prescribed_medicine(models.Model):
     prescription_id = models.ForeignKey(Prescription)
     medicine_id = models.ForeignKey(Stock)
+    quantity = models.IntegerField(default=0)
 
 
 class Appointment(models.Model):
     user_id = models.ForeignKey(ExtraInfo)
     doctor_id = models.ForeignKey(Doctor)
     description = models.CharField(max_length=50)
-    approval = models.BooleanField()
-    appointment_date_time = models.DateTimeField()
+    approval = models.NullBooleanField()
+    appointment_date = models.DateField(blank=True, null=True)
+    appointment_time = models.CharField(max_length=10, blank=True,
+                                        null=True, choices=Constants.TIME)
+
+    def __str__(self):
+        return self.description
 
 
 class Ambulance_request(models.Model):
     user_id = models.ForeignKey(ExtraInfo)
-    doctor_id = models.ForeignKey(Doctor)
     date_request = models.DateTimeField()
     start_date = models.DateField()
-    end_date = models.DateField()
+    end_date = models.DateField(null=True, blank=True)
     reason = models.CharField(max_length=50)
 
 
 class Hospital_admit(models.Model):
     user_id = models.ForeignKey(ExtraInfo)
-    doctor_id = models.ForeignKey(Doctor)
+    doctor_id = models.ForeignKey(Doctor, null=True, blank=True)
     hospital_name = models.CharField(max_length=50)
     admission_date = models.DateField()
-    discharge_date = models.DateField()
+    discharge_date = models.DateField(null=True, blank=True)
     reason = models.CharField(max_length=50)

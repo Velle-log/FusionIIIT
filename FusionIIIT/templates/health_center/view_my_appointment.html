@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Appointment</title>
+</head>
+
+<body>
+  <table cellpadding=5 cellspacing=10>
+    <tr><th>UserId (click to look into details)</th><th>Doctor</th><th>description</th><th>Date and Time</th><th>Status</th></tr>
+  {% for obj in query%}
+
+        <tr>  <td> {{obj.user_id}}</td>
+              <td>{{obj.doctor_id}}</td>
+              <td>{{obj.description}}</td>
+              <td>{{obj.appointment_date_time}}</td>
+              {% if  obj.approval == None %}
+              <td>Not yet updated</td>
+              {% elif obj.approval == True%}
+              <td>Approved</td>
+              {% else %}
+              <td>Disapproved</td>
+              {% endif %}
+        </tr>
+
+
+  {% endfor %}
+</table>
+</body>
+
+</html>

@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^ocms/', include('applications.online_cms.urls')),
+    url(r'^phc/', include('applications.health_center.urls')),
     url(r'^login/', auth_views.login, name='login'),
     url(r'^logout/', auth_views.logout, name='logout'),
     url(r'^academic-procedures/', include('applications.academic_procedures.urls',

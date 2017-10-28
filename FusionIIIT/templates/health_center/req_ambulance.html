@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Request Ambulance </title>
+</head>
+
+<body>
+         <br><br>
+        <form method='POST'>{% csrf_token %}
+          Reason={{ form.reason }}<br>
+          Start Date(yyyy-mm-dd)={{form.start_date}}<br>
+          End Date(yyyy-mm-dd)={{form.end_date}}<br>
+        <input type="submit" name="Submit" value="submit">
+        </form>
+
+    <!--      Add constraints for format of file-->
+
+</body>
+
+</html>
