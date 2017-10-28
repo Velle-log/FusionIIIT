@@ -96,10 +96,15 @@ def course(request, course_code):
 
     else:
         instructor = Instructor.objects.filter(instructor_id=extrainfo)
+        print(instructor)
         for ins in instructor:
-            if ins.course_id.course_id is course_code:
+            # print(ins.course_id.course_id)
+            if ins.course_id.course_id == course_code:
+                print(ins.course_id.course_id)
                 course = ins.course_id
+                print(course)
         lec=1
+
         comments = Forum.objects.filter(course_id=course).order_by('comment_time')
         answers = collections.OrderedDict()
         for comment in comments:
