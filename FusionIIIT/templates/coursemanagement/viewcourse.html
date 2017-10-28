@@ -118,8 +118,19 @@
               background-color:#fff;
             }
     /*timer css ends*/
-        
-       
+            .play-icon{
+            cursor: pointer;
+            position: absolute;
+            top : 50%;
+            left : 50%;
+            transform: translate(-50%, -50%);
+            }
+
+            svg:hover #play-svg{
+            fill: #CC181E;
+            }
+
+
      </style>
 
    {% comment %}The CSS ends  here!{% endcomment %}
@@ -131,7 +142,7 @@
             Assignment
         </a>
 
-        <a class="item" data-tab="videos">
+        <a class="item" id="videos" data-tab="videos">
             Videos
         </a>
         <a class="item" data-tab="slides">
@@ -143,7 +154,7 @@
         <a class="item" data-tab="quiz">
             Quizzes
         </a>
-    </div>       
+    </div>
 
     {% comment %}The Assignment segment starts here!{% endcomment %}
 
@@ -151,7 +162,7 @@
 
       <p> </p>
       <div class="ui form">
-  
+
   <div class="grouped fields">
     <label for="fruit">1)   From the following which quality deals with maintaining the quality of the software product?</label>
     <div class="field">
@@ -180,43 +191,58 @@
     </div>
   </div>
 </div>
-       
+
     </div>
     {% comment %}The assignment ends here!{% endcomment %}
-    
+
 
     {% comment %}The video  segment starts here!{% endcomment %}
     <div class="ui tab segment" data-tab="videos">
        <div class="ui four column grid">
           <div class="row">
+            {% for video in videos %}
             <div class="column">
-               <div class="ui embed" data-source="youtube" data-id="O6Xo21L0ybE" data-placeholder="/images/image-16by9.png">
-              </div> 
-
+              <div class="container">
+                <img src="{{video.video_url}}-Small.png" >
+                </img>
+                <div class="play-icon modal-btn"><svg width="60" height="42" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <g> <title>Videos</title> <g id="icomoon-ignore"/>
+                <use x="5.397434" y="-68.326835" transform="matrix(0.15880563740596462,0,0,0.1590301359360811,-34.233496722840435,-44.6817534019825) " id="icon" xlink:href="#svg_1"/> <path id="svg_4" d="m24,8.380953l0.190475,22.761904l16.952381,-11.333332l-17.142857,-11.428572z" stroke-linecap="null" stroke-linejoin="null" stroke-width="5" stroke="null" fill="#ffffff"/> <path id="relleno" d="m24.285713,8.666666l0,22.666666l17.238094,-11.523809l-17.238094,-11.142857z" stroke-linecap="null" stroke-linejoin="null" stroke-width="5" stroke="null" fill="#ffffff"/> </g> <defs> <svg id="svg_1" viewBox="0 0 944 1024" height="1024" width="944" xmlns:xlink="http://www.w3.org/1999/xlink"> <g id="icomoon-ignore"/> <path id="play-svg" d="m589.426025,406.15799c0,-31.289978 -25.345032,-56.652985 -56.618042,-56.652985h-265.616974c-31.27301,0 -56.618011,25.359985 -56.618011,56.652985v151.894989c0,31.290039 25.345001,56.653015 56.618011,56.653015h265.616974c31.273987,0 56.618042,-25.361023 56.618042,-56.653015v-151.894989l0,0zm-227.311035,140.032013v-142.677002l108.192017,71.339996l-108.19101,71.339996l-0.001007,-0.002991z"/> </svg> </defs> </svg>
+              </div>
+              <h4>{{video.video_name}}</h4>
             </div>
-            <div class="column">
-                
-            <div class="ui embed" data-url="https://www.youtube.com/embed/O6Xo21L0ybE" data-placeholder="/images/bear-waving.jpg"></div>
 
+              <div class="ui modal">
+                <i class="close icon"></i>
+                <div class="header">
+                  Profile Picture
+                </div>
+                <div class="image content">
+                  <div class="ui medium image">
+                    <img src="/images/avatar/large/chris.jpg">
+                  </div>
+                  <div class="description">
+                    <div class="ui header">We've auto-chosen a profile image for you.</div>
+                    <p>We've grabbed the following image from the <a href="https://www.gravatar.com" target="_blank">gravatar</a> image associated with your registered e-mail address.</p>
+                    <p>Is it okay to use this photo?</p>
+                  </div>
+                </div>
+                <div class="actions">
+                  <div class="ui black deny button">
+                    Nope
+                  </div>
+                  <div class="ui positive right labeled icon button">
+                    Yep, that's me
+                    <i class="checkmark icon"></i>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="column">
-                
-                <div class="ui embed" data-source="youtube" data-id="O6Xo21L0ybE" data-placeholder="/images/image-16by9.png">
-               </div>
-
-            </div>
-            <div class="column">
-              <div class="ui embed" data-source="youtube" data-id="O6Xo21L0ybE" data-placeholder="/images/image-16by9.png">
-             </div>  
-
-            </div>
+            {% endfor %}
           </div>
-         
-        </div> 
-
+        </div>
     </div>
 
-     
+
 
 
     {% comment %}The video segment ends here!{% endcomment %}
@@ -225,62 +251,31 @@
     {% comment %}The slides segment starts here!{% endcomment %}
 
     <div class="ui tab segment" data-tab="slides">
-       
+
         <div class="ui four column grid">
           <div class="row">
+            {% for slide in slides %}
             <div class="column">
                <div id='pdf_modal' class="ui sixteen wide column fullscreen modal">
-            <iframe src="http://jasonczaja.com/blog/wp-content/uploads/2009/01/jason_czaja_resume-791x1024.png"></iframe>
-           </div>
-      
-             <button class="ui primary button">
-                    <a id='visualize' style="color:white;">Title 1</a>
-                </button>
-
-            </div>
-            <div class="column">
-                
-              <div id='pdf_modal' class="ui sixteen wide column fullscreen modal">
-            <iframe src="http://jasonczaja.com/blog/wp-content/uploads/2009/01/jason_czaja_resume-791x1024.png"></iframe>
-           </div>
-      
-             <button class="ui primary button">
-                    <a id='visualize' style="color:white;">Title 2</a>
-                </button>
-
-            </div>
-            <div class="column">
-                
-               <div id='pdf_modal' class="ui sixteen wide column fullscreen modal">
-             <iframe src="http://jasonczaja.com/blog/wp-content/uploads/2009/01/jason_czaja_resume-791x1024.png"></iframe>
-           </div>
-      
-             <button class="ui primary button">
-                    <a id='visualize' style="color:white;">Title 3</a>
-                </button>
-
-            </div>
-            <div class="column">
-               <div id='pdf_modal' class="ui sixteen wide column fullscreen modal">
-               <iframe src="http://jasonczaja.com/blog/wp-content/uploads/2009/01/jason_czaja_resume-791x1024.png"></iframe>
+            <!-- <iframe src="http://jasonczaja.com/blog/wp-content/uploads/2009/01/jason_czaja_resume-791x1024.png"></iframe> -->
               </div>
-      
-             <button class="ui primary button">
-                    <a id='visualize' style="color:white;">Title 4</a>
-                </button>  
 
+               <button class="ui primary button">
+                      <a id='visualize' style="color:white;">{{slide.document_name}}</a>
+              </button>
+            {% endfor %}
             </div>
+
           </div>
-         
-        </div>   
+        </div>
     </div>
 
-   
+
     {% comment %}The Slides segment ends here!{% endcomment %}
 
 
     {% comment %}The time-table segment starts here!{% endcomment %}
-       
+
          <div class="ui tab segment" data-tab="time-table">
            <h4 class="ui dividing header">Class Time Table</h4>
              <table class="ui single line table">
@@ -375,23 +370,23 @@
                 </table>
 
          </div>
-      
+
     {% comment %}The time-table segment ends here!{% endcomment %}
 
       {% comment %}The quiz segment starts here!{% endcomment %}
          <div class="ui tab segment" data-tab="quiz">
            <div id="clock">
-  
+
                   <div class="block">
                     <span class="digit" id="hours"></span>
                     Hours
                   </div>
-                  
+
                   <div class="block">
                     <span class="digit" id="minutes"></span>
                     Minutes
                   </div>
-                  
+
                   <div class="block">
                     <span class="digit" id="seconds"></span>
                     Seconds
@@ -479,12 +474,12 @@
 
             {% comment %}The add content ends here!{% endcomment %}
 
-           
-           
 
-           
 
-           
+
+
+
+
 
         </div>
         {% comment %}The central-rail segment ends here!{% endcomment %}
@@ -492,7 +487,7 @@
         {% comment %}The right-rail segment starts here!{% endcomment %}
         <div class="three wide column">
             <div class="row">
-             
+
             </div>
                 {% comment %}The Instructor Note:{% endcomment %}
                 {% block note %}
@@ -529,6 +524,22 @@
             $('table').tablesort();
         });
     </script>
+
+    <!-- <script type="text/javascript">
+      $('#videos').click(function(){
+          $.ajax({
+            type:'POST',
+            url:'/ocms/{{course.course_id}}/videos',
+            data:{'csrfmiddlewaretoken':'{{ csrf_token }}'},
+            success:function(data){
+              $('#question'+pk).hide();
+            },
+            error: function(data,err){
+              alert(err);
+            }
+          });
+      });
+    </script> -->
 
     <script>
         function toggleContent() {
@@ -577,6 +588,10 @@
              var interval = setInterval(updateClock,1000);
             });//EOF DOCUMENT.READY
               /*JS mof timer ends*/
+              $('.modal-btn').click(function(){
+                $('.ui.modal')
+                  .modal('show');
+                });
     </script>
 
 {% endblock %}
