@@ -126,7 +126,7 @@ class Forum(models.Model):
             self.pk, self.course_id,
             self.commenter_id,
             self.comment)
-
+    
 
 class ForumReply(models.Model):
     forum_ques = models.ForeignKey(Forum, on_delete=models.CASCADE,
