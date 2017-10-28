@@ -167,8 +167,9 @@
                                   <thead>
                                     <tr><th>Name Of the Courses</th>
                                     <th>Course Code</th>
-                                    <th>Instructor</th>
+                                  {% if extrainfo.designation == student %}  <th>Instructor</th> {% endif %}
                                   </tr></thead><tbody>
+                                    {% if extrainfo.designation == student %}
                                     {% for course,instructor in courses.items %}
                                     <tr>
                                       <td><a href="{{course.course_id.course_id}}">{{course.course_id.course_name}}</a></td>
@@ -176,6 +177,14 @@
                                       <td>{{instructor.instructor_id.user.username}}</td>
                                     </tr>
                                     {% endfor %}
+                                    {% else %}
+                                    {% for ins in instructor %}
+                                    <tr>
+                                      <td><a href="{{ins.course_id.course_id}}">{{ins.course_id.course_name}}</a></td>
+                                      <td>{{ins.course_id.course_id}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% endif %}
                                     <!-- <tr>
                                       <td><a href="#">Computer Networks</a></td>
                                       <td>CS-305</td>
