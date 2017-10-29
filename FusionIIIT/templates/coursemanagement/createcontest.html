@@ -21,63 +21,55 @@
 
         </div>
         <div class="field">
-            <B>  <label>Type of Contest</label>
-                  <div class="ui input left icon">
-                      {{ form.ctype }}
-                  </div>
-                </div>
-
-
-                 <label>Start Date</label>
-
-                    {{ form.startdate }}
-
-                 <div class="ui calendar field" id='example6'>
-                   <label>Start Time</label>
-                    <div class="ui input left icon">
-                      <i class="hourglass empty icon"></i>
-                      {{ form.starttime}}
-                    </div>
-                  </div>
-                  <label>End Date</label>
-
-                     {{ form.enddate }}
-                     <div class="ui calendar field" id='example7'>
-                       <label>End Time</label>
-                        <div class="ui input left icon">
-                          <i class="hourglass full icon"></i>
-                          {{ form.endtime}}
-                        </div>
-                      </div></B>
-            <div class="ui calendar field">
-                <label>Description</label>
-                <div class="ui input left icon">
-                    <i class="comments icon"></i> {{ form.description }}
-                </div>
+            <label>Type of Contest</label>
+            <div class="ui input left icon">
+                {{ form.ctype }}
             </div>
-            <div class="ui calendar field">
-                <label>Rules And Regulations</label>
-                <div class="ui input left icon">
-                    {{ form.rules }}
-                </div>
-            </div>
-            <div class="ui calendar field">
-                <label>Prizes</label>
-                <div class="ui input left icon">
-                    {{ form.prizes }}
+        </div>
 
-                </div>
+
+        <label>Start Date</label> {{ form.startdate }}
+
+        <div class="ui calendar field" id='example6'>
+            <label>Start Time</label>
+            <div class="ui input left icon">
+                <i class="hourglass empty icon"></i> {{ form.starttime}}
             </div>
-            <div class="ui checkbox">
-                {{form.enable_negative}}
-                <label>Enable Penalty</label>
+        </div>
+        <label>End Date</label> {{ form.enddate }}
+        <div class="ui calendar field" id='example7'>
+            <label>End Time</label>
+            <div class="ui input left icon">
+                <i class="hourglass full icon"></i> {{ form.endtime}}
             </div>
-            </br>
-            </br>
-            <input type="submit" class="ui primary button" value="Submit" />
+        </div>
+        <div class="ui calendar field">
+            <label>Description</label>
+            <div class="ui input left icon">
+                <i class="comments icon"></i> {{ form.description }}
+            </div>
+        </div>
+        <div class="ui calendar field">
+            <label>Rules And Regulations</label>
+            <div class="ui input left icon">
+                {{ form.rules }}
+            </div>
+        </div>
+        <div class="ui calendar field">
+            <label>Prizes</label>
+            <div class="ui input left icon">
+                {{ form.prizes }}
+
+            </div>
+        </div>
+        <div class="ui checkbox">
+            {{form.enable_negative}}
+            <label>Enable Penalty</label>
+        </div>
+        <br>
+        <br>
+        <input type="submit" class="ui primary button" value="Submit" />
     </form>
-    </div>
-</div>
 </div>
 
 {% endblock %} {% block Javascript %} {% if user.is_authenticated %}
