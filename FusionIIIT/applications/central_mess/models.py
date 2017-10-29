@@ -83,6 +83,11 @@ MESS_OPTION = (
     ('mess2', 'Veg_mess')
 )
 
+LEAVE_TYPE = (
+    ('casual', 'Casual'),
+    ('vacation', 'Vacation')
+)
+
 
 class Mess(models.Model):
     mess_option = models.CharField(max_length=20, choices=MESS_OPTION, default='mess2')
@@ -119,6 +124,7 @@ class Menu(models.Model):
 
 class Rebate(models.Model):
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
+    leave_type = models.CharField(max_length=20, choices=LEAVE_TYPE, default='casual')
     start_date = models.DateField(default=datetime.date.today)
     end_date = models.DateField(default=datetime.date.today)
     purpose = models.TextField()

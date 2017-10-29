@@ -56,12 +56,13 @@ class RebateAdmin(admin.ModelAdmin):
     model = Rebate
     fieldsets = [
         ('student_id', {'fields': ['student_id']}),
+        ('leave_type', {'fields': ['leave_type']}),
         ('start_date', {'fields': ['start_date']}),
         ('end_date', {'fields': ['end_date']}),
         ('purpose', {'fields': ['purpose']}),
         ('status', {'fields': ['status']}),
         ]
-    list_display = ('student_id', 'start_date', 'end_date', 'purpose', 'status')
+    list_display = ('student_id', 'leave_type', 'start_date', 'end_date', 'purpose', 'status')
 
 
 class Vacation_foodAdmin(admin.ModelAdmin):
