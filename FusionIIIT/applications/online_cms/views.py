@@ -18,7 +18,7 @@ from applications.globals.models import ExtraInfo
 
 from .forms import AddDocuments, AddVideos
 from .helpers import semester
-from .models import CourseDocuments, CourseVideo, Forum, ForumReply, Quiz, QuizResult
+from .models import CourseDocuments, CourseVideo, Forum, ForumReply, Quiz, QuizResult, StudentAssignment
 
 def create_thumbnail(course,row, attach_str, thumb_time, thumb_size):
     # filepath = settings.MEDIA_ROOT + 'online_cms/' + course.course_id + 'vid/' + str(row.name) + '/' + str(row.tutorial_detail_id) + '/'
@@ -139,7 +139,36 @@ def course(request, course_code):
                        'Lecturer':lec
                        })
 
-
+# @login_required
+# def upload_assignment(request, course_code):
+#     extrainfo = ExtraInfo.objects.get(user=request.user)
+#     if extrainfo.designation.name == "student":
+#         student = Student.objects.get(id=extrainfo)
+#         roll = student.id.id[:4]
+#         course = Course.objects.filter(course_id=course_code, sem=semester(roll))
+#         description = request.POST.get('description')
+#         doc = request.FILES.get('img')
+#         print(doc)
+#         filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
+#         full_path = settings.MEDIA_ROOT+"/online_cms/"+course_code+"/assignment_submission/"+request.user.id+"/"
+#         url = settings.MEDIA_URL+filename
+#         if not os.path.isdir(full_path):
+#             cmd = "mkdir "+full_path
+#             subprocess.call(cmd, shell=True)
+#         fs = FileSystemStorage(full_path, url)
+#         fs.save(doc.name, doc)
+#         uploaded_file_url = "/media/online_cms/"+course_code+"/assignment_submission/"+request.user.id+"/"+doc.name
+#         index = uploaded_file_url.rfind('/')
+#         name = uploaded_file_url[index+1:]
+#         sa=StudentAssignment(
+#             student_id=student,
+#             assignment_id=description,
+#             document_url=uploaded_file_url,
+#             document_name=name
+#         )
+#         return HttpResponse("Upload successful.")
+#     else:
+#         return HttpResponse("not found")
 @login_required
 def add_document(request, course_code):
     #    CHECK FOR ERRORS IN UPLOADING
@@ -260,8 +289,9 @@ def ajax_reply(request, course_code):
     # fo=Forum.objects.filter(pk=f.pk)
     # dat=serializers.serialize('json',fo)
     fr.save()
+    name=request.user.first_name+" "+request.user.last_name
     time = f.comment_time.strftime('%b. %d, %Y, %I:%M %P')
-    data = {'pk':f.pk,'reply':f.comment, 'replier':f.commenter_id.user.username,'time':time}
+    data = {'pk':f.pk,'reply':f.comment, 'replier':name,'time':time}
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 @login_required
@@ -274,9 +304,9 @@ def ajax_new(request, course_code):
         comment=request.POST.get('question')
     )
     f.save()
-
+    name=request.user.first_name+" "+request.user.last_name
     time = f.comment_time.strftime('%b. %d, %Y, %I:%M %P')
-    data = {'pk':f.pk,'question':f.comment, 'replier':f.commenter_id.user.username,'time':time}
+    data = {'pk':f.pk,'question':f.comment, 'replier':f.commenter_id.user.username,'time':time, 'name':name }
     print(data,"new")
     return HttpResponse(json.dumps(data), content_type='application/json')
 

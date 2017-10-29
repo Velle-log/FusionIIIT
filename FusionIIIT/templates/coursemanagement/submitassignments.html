@@ -21,13 +21,13 @@
 <div class="ui active tab segment box" data-tab="uploadassignment">
 
     <h4 class="ui dividing header">Submit Assignment</h4>
-    <form class="ui form" enctype="multipart/form-data">
+    <form class="ui form" id="form3" enctype="multipart/form-data">
         <div class="field">
 
             <div class="One field">
                 <div class="field">
                     <label> Name</label>
-                    <input placeholder="Name" type="text">
+                    <input placeholder="Name" name="name" type="text">
                 </div>
 
             </div>
@@ -37,14 +37,14 @@
             <div class="fields">
                 <div class="twelve wide field">
                     <label>Assignment File</label>
-                    <input placeholder="Assignment File" type="file">
+                    <input placeholder="Assignment File" id="assign" accept=".zip" type="file">
                 </div>
             </div>
 
             <div class="fields">
 
                 <div class="two wide field">
-                    <div class="ui labeled button" tabindex="0">
+                    <div class="ui labeled button" id="submit_assign" tabindex="0">
                         <div class="ui blue button">
                             <i class="save icon"></i>
                         </div>

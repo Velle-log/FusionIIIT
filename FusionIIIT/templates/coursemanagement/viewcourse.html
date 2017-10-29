@@ -33,18 +33,19 @@
                     View Courses
                     <i class="right floated chevron right icon"></i>
                 </a>
-
+                {% if Lecturer is 0%}
                 <a class="item sidetab" data-tab="second" data-num="12">
 
                     Assignments
                     <i class="right floated chevron right icon"></i>
                 </a>
+                {% endif %}
 
                 <a class="item sidetab" data-tab="third" data-num="13">
                     View Performance
                     <i class="right floated chevron right icon"></i>
                 </a>
-
+                {% if Lecturer == 1 %}
                 <a class="item sidetab" data-tab="fourth" data-num="14">
 
                     Add Content
@@ -55,7 +56,7 @@
                     Assessment
                     <i class="right floated chevron right icon"></i>
                 </a>
-
+                {% endif %}
             </div>
 
 
@@ -384,7 +385,7 @@
                     {% include 'coursemanagement/note.html' %}
                 {% endblock %}
               </div>
-            <div class="row">
+            <div class="row" style="margin-top:1em">
 
                 {% block comments %}
                     {% include 'coursemanagement/comments.html' %}
@@ -441,10 +442,10 @@
       $('#submit_doc').click(function(){
         var data = new FormData();
         var img = $('#doc')[0].files;
-        alert(img.length)
+        // alert(img.length)
         for(var i = 0;i<img.length;i++){
               data.append("img", img[i]);
-              alert("a");
+              // alert("a");
           }
         data.append('img', img);
         var other_data = $('#form2').serializeArray();
@@ -465,6 +466,34 @@
           }
       });
       });
+
+      // $('#submit_assign').click(function(){
+      //   var data = new FormData();
+      //   var img = $('#assign')[0].files;
+      //   alert(img.length)
+      //   for(var i = 0;i<img.length;i++){
+      //         data.append("img", img[i]);
+      //         alert("a");
+      //     }
+      //   data.append('img', img);
+      //   var other_data = $('#form3').serializeArray();
+      //     $.each(other_data,function(key,input){
+      //         data.append(input.name,input.value);
+      //       });
+      //   $.ajax({
+      //     url : "/ocms/{{course.course_id}}/upload_assignment",
+      //     processData : false,
+      //     contentType : false,
+      //     type : 'POST',
+      //     data : data,
+      //     success : function(data){
+      //       alert(data);
+      //     },
+      //     error: function(data,err){
+      //       alert(err.message);
+      //     }
+      // });
+      // });
 
 
     </script>
@@ -648,7 +677,7 @@
             data:{ 'question':pk,'reply': reply,'csrfmiddlewaretoken':'{{ csrf_token }}'},
             success:function(data){
               $('#reply_n_'+pk).val("");
-              $('<div class="comment comment_r" id="comment'+data.pk+'"><a class="avatar"><img src="{% static "globals/img/zlatan.jpg" %}"></a><div class="content"><a class="author">'+data.name+'</a><div class="metadata"><span class="date">'+data.time+'</span></div><div class="text">'+data.reply+'</div><div class="actions"><a class="reply remove_r"data-user="'+data.pk+'"data-pk="'+data.pk+'" onclick="func(this)" id="remove'+data.pk+'"name="remove'+data.pk+'">remove</a></div></div></div>').insertBefore(p);
+              $('<div class="comment comment_r" id="comment'+data.pk+'"><a class="avatar"><img src="{% static "globals/img/zlatan.jpg" %}"></a><div class="content"><a class="author">'+data.replier+'</a><div class="metadata"><span class="date">'+data.time+'</span></div><div class="text">'+data.reply+'</div><div class="actions"><a class="reply remove_r"data-user="'+data.pk+'"data-pk="'+data.pk+'" onclick="func(this)" id="remove'+data.pk+'"name="remove'+data.pk+'">remove</a></div></div></div>').insertBefore(p);
 
             },
             error: function(data,err){
