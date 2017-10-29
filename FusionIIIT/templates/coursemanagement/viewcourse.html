@@ -193,37 +193,6 @@
              </a>
          </div>
 
-
-
-         <!-- <div class="ui active tab" data-tab="coursedetails">
-            <br> <br>
-                 <table class="ui orange table">
-                           <thead>
-                             <tr><th>Name Of the Courses</th>
-                             <th>Course Code</th>
-                             <th>Instructor</th>
-                           </tr></thead><tbody>
-                             <tr>
-                               <td>Software Engineering</td>
-                               <td>CS-308</td>
-                               <td>Atul Gupta</td>
-                             </tr>
-                             <tr>
-                               <td>Computer Networks</td>
-                               <td>CS-305</td>
-                               <td>Vinod Kumar Jain</td>
-                             </tr>
-                             <tr>
-                               <td>Operating Systems</td>
-                               <td>CS-306</td>
-                               <td>Manish Kumar Bajpai</td>
-                             </tr>
-                           </tbody>
-                         </table>
-
-         </div> -->
-
-
           <div class="ui tab segment" id="1" data-tab="quiz" style="display:block">
            <div id="clock">
 
@@ -314,8 +283,7 @@
              {% for video in videos %}
              <div class="column">
                <div class="container">
-                 <img src="{{video.video_url}}-Small.png" >
-                  </img>
+                 <img src="{{video.video_url}}-Small.png" />
                 <div class="play-icon modal-btn" data-pk="{{forloop.counter}}"><svg width="60" height="42" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <g> <title>Videos</title> <g id="icomoon-ignore"/>
                 <use x="5.397434" y="-68.326835" transform="matrix(0.15880563740596462,0,0,0.1590301359360811,-34.233496722840435,-44.6817534019825) " id="icon" xlink:href="#svg_1"/> <path id="svg_4" d="m24,8.380953l0.190475,22.761904l16.952381,-11.333332l-17.142857,-11.428572z" stroke-linecap="null" stroke-linejoin="null" stroke-width="5" stroke="null" fill="#ffffff"/> <path id="relleno" d="m24.285713,8.666666l0,22.666666l17.238094,-11.523809l-17.238094,-11.142857z" stroke-linecap="null" stroke-linejoin="null" stroke-width="5" stroke="null" fill="#ffffff"/> </g> <defs> <svg id="svg_1" viewBox="0 0 944 1024" height="1024" width="944" xmlns:xlink="http://www.w3.org/1999/xlink"> <g id="icomoon-ignore"/> <path id="play-svg" d="m589.426025,406.15799c0,-31.289978 -25.345032,-56.652985 -56.618042,-56.652985h-265.616974c-31.27301,0 -56.618011,25.359985 -56.618011,56.652985v151.894989c0,31.290039 25.345001,56.653015 56.618011,56.653015h265.616974c31.273987,0 56.618042,-25.361023 56.618042,-56.653015v-151.894989l0,0zm-227.311035,140.032013v-142.677002l108.192017,71.339996l-108.19101,71.339996l-0.001007,-0.002991z"/> </svg> </defs> </svg>
                 </div>
@@ -361,7 +329,7 @@
                 </div>
               </div>
             </div>
-          </div>
+
           <div class="ui tab segment" id="5" data-tab="time-table" style="display:none">
             <h4 class="ui dividing header">Quiz Time Table</h4>
              <table class="ui single line table">
@@ -383,7 +351,7 @@
                </tbody>
              </table>
             </div>
-
+          </div>
           <div class="ui tab segment" id="12" data-tab="second" style="display:none">
                 {% block submitassignments %}
                     {% include 'coursemanagement/submitassignments.html' %}
@@ -560,19 +528,26 @@
         var parent = $(this).parent();
         var question= $('input[name=new_comment]').val();
         var csrf = $('input[name=csrfmiddlewaretoken]').val();
-        $.ajax({
-          type:'POST',
-          url:'/ocms/{{course.course_id}}/ajax_new',
-          data:{'question': question, 'csrfmiddlewaretoken':csrf},
-          success:function(data){
-            resetForm($('#new'));
-            $('<div class="question"id="question'+data.pk+'"><div class="comment comment_q" id="comment'+data.pk+'"><a class="avatar"><img src="{% static "globals/img/zlatan.jpg" %}"></a><div class="content" data-pk="'+data.pk+'" id="question'+data.pk+'"><a class="author">'+data.name+'</a><div class="metadata"><span class="date">'+data.time+'</span></div><div class="text"><p>'+data.question+'</p></div><div class="actions" ><a class="reply remove_q" onclick="func_q(this)" data-pk="'+data.pk
-            +'" id = "remove' + data.pk + '"name = "remove'+data.pk+'">remove</a></div></div></div><div class="comments answer" style="padding:10px"><div class="ui form field" style="margin-bottom:10px"><input type="text" onkeydown="key_down(this)" id="reply_n_'+data.pk+'" data-pk="'+data.pk+'" name="comment'+data.pk+'" placeholder="Enter Your Comment"></div><input type="submit" id="button_r'+data.pk+'" onclick="reply_q(this)" class="ui blue submit button submit_r" data-pk="'+data.pk+'" name="submit" value="Reply"></input></div>').insertBefore(parent);
-          },
-          error: function(data,err){
-            alert(err.message);
-          }
-        });
+        if (question != ""){
+          $.ajax({
+            type:'POST',
+            url:'/ocms/{{course.course_id}}/ajax_new',
+            data:{'question': question, 'csrfmiddlewaretoken':csrf},
+            success:function(data){
+              resetForm($('#new'));
+              $('<div class="question"id="question'+data.pk+'"><div class="comment comment_q" id="comment'+data.pk+'"><a class="avatar"><img src="{% static "globals/img/zlatan.jpg" %}"></a><div class="content" data-pk="'+data.pk+'" id="question'+data.pk+'"><a class="author">'+data.name+'</a><div class="metadata"><span class="date">'+data.time+'</span></div><div class="text"><p>'+data.question+'</p></div><div class="actions" ><a class="reply remove_q" onclick="func_q(this)" data-pk="'+data.pk
+              +'" id = "remove' + data.pk + '"name = "remove'+data.pk+'">remove</a></div></div></div><div class="comments answer" style="padding:10px"><div class="ui form field" style="margin-bottom:10px"><input type="text" onkeydown="key_down(this)" id="reply_n_'+data.pk+'" data-pk="'+data.pk+'" name="comment'+data.pk+'" placeholder="Enter Your Comment"></div><input type="submit" id="button_r'+data.pk+'" onclick="reply_q(this)" class="ui blue submit button submit_r" data-pk="'+data.pk+'" name="submit" value="Reply"></input></div>').insertBefore(parent);
+            },
+            error: function(data,err){
+              alert(err.message);
+            }
+          });
+        }
+        else {
+          $('input[name=new_comment]').css('border-color', '#C80000');
+          setTimeout(function(){ $('input[name=new_comment]').css('border-color', 'rgba(34,36,38,0.15)') }, 1000);
+        }
+
       });
       // submittin a new reply
       $('.submit_r').click(function(event){
@@ -582,18 +557,27 @@
 
         var reply= $('input[name=comment'+pk+']').val();
         var csrf = $('input[name=csrfmiddlewaretoken]').val();
-        $.ajax({
-          type:'POST',
-          url:'/ocms/{{course.course_id}}/ajax_reply',
-          data:{ 'question':pk,'reply': reply,'csrfmiddlewaretoken':csrf},
-          success:function(data){
-            resetForm($('#'+pk));
-            $('<div class="comment comment_r" id="comment'+data.pk+'"><a class="avatar"><img src="{% static "globals/img/zlatan.jpg" %}"></a><div class="content"><a class="author">'+data.replier+'</a><div class="metadata"><span class="date">'+data.time+'</span></div><div class="text">'+data.reply+'</div><div class="actions"><a class="reply remove_r"data-user="'+data.pk+'"data-pk="'+data.pk+'"  onclick="func(this)" id="remove' + data.pk + '"name="remove' + data.pk + '">remove</a></div></div></div>').insertBefore(parent);
-          },
-          error: function(data,err){
-            alert(err);
-          }
-        });
+        if( reply != "")
+        {
+          $.ajax({
+            type:'POST',
+            url:'/ocms/{{course.course_id}}/ajax_reply',
+            data:{ 'question':pk,'reply': reply,'csrfmiddlewaretoken':csrf},
+            success:function(data){
+              resetForm($('#'+pk));
+              $('<div class="comment comment_r" id="comment'+data.pk+'"><a class="avatar"><img src="{% static "globals/img/zlatan.jpg" %}"></a><div class="content"><a class="author">'+data.replier+'</a><div class="metadata"><span class="date">'+data.time+'</span></div><div class="text">'+data.reply+'</div><div class="actions"><a class="reply remove_r"data-user="'+data.pk+'"data-pk="'+data.pk+'"  onclick="func(this)" id="remove' + data.pk + '"name="remove' + data.pk + '">remove</a></div></div></div>').insertBefore(parent);
+            },
+            error: function(data,err){
+              alert(err.message);
+            }
+          });
+        }
+        else {
+
+          $('input[name=comment'+pk+']').css('border-color', '#C80000');
+          setTimeout(function(){ $('input[name=comment'+pk+']').css('border-color', 'rgba(34,36,38,0.15)') }, 1000);
+        }
+
       });
       //submitting a new reply to a newly posted question using ajax
       function reply_q(current){
@@ -601,19 +585,28 @@
         var parent=current.parentNode.lastChild.previousSibling;
         var p=$(parent);
         var reply= $('input[name=comment'+pk+']').val();
-        $.ajax({
-          type:'POST',
-          url:'/ocms/{{course.course_id}}/ajax_reply',
-          data:{ 'question':pk,'reply': reply,'csrfmiddlewaretoken':'{{ csrf_token }}'},
-          success:function(data){
-            $('#reply_n_'+pk).val("");
-            $('<div class="comment comment_r" id="comment'+data.pk+'"><a class="avatar"><img src="{% static "globals/img/zlatan.jpg" %}"></a><div class="content"><a class="author">'+data.name+'</a><div class="metadata"><span class="date">'+data.time+'</span></div><div class="text">'+data.reply+'</div><div class="actions"><a class="reply remove_r"data-user="'+data.pk+'"data-pk="'+data.pk+'" onclick="func(this)" id="remove'+data.pk+'"name="remove'+data.pk+'">remove</a></div></div></div>').insertBefore(p);
+        if(reply != ""){
+          $.ajax({
+            type:'POST',
+            url:'/ocms/{{course.course_id}}/ajax_reply',
+            data:{ 'question':pk,'reply': reply,'csrfmiddlewaretoken':'{{ csrf_token }}'},
+            success:function(data){
+              $('#reply_n_'+pk).val("");
+              $('<div class="comment comment_r" id="comment'+data.pk+'"><a class="avatar"><img src="{% static "globals/img/zlatan.jpg" %}"></a><div class="content"><a class="author">'+data.name+'</a><div class="metadata"><span class="date">'+data.time+'</span></div><div class="text">'+data.reply+'</div><div class="actions"><a class="reply remove_r"data-user="'+data.pk+'"data-pk="'+data.pk+'" onclick="func(this)" id="remove'+data.pk+'"name="remove'+data.pk+'">remove</a></div></div></div>').insertBefore(p);
 
-          },
-          error: function(data,err){
-            alert(err);
-          }
-        });
+            },
+            error: function(data,err){
+              alert(err);
+            }
+          });
+        }
+        else {
+
+          $('input[name=comment'+pk+']').css('border-color', '#C80000');
+          setTimeout(function(){ $('input[name=comment'+pk+']').css('border-color', 'rgba(34,36,38,0.15)') }, 1000);
+        }
+
+
       }
       //to check if a user is autherized to delete a comment
       function check_user(user){
