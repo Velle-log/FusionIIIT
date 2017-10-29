@@ -340,18 +340,24 @@
 
          <div class="ui tab segment" id="4" data-tab="slides" style="display:none">
              <div class="ui four column grid">
+               <div class="row" style="margin-left:20px">
+                 <h4 class="ui dividing header">{{course.course_name}}</h4><br>
+               </div>
+
                <div class="row">
+
                  {% for slide in slides %}
                  <div class="column">
                    <div id='pdf_modal' class="ui sixteen wide column fullscreen modal">
              <!-- <iframe src="http://jasonczaja.com/blog/wp-content/uploads/2009/01/jason_czaja_resume-791x1024.png"></iframe> -->
                     </div>
 
-                    <button class="ui primary button">
+                    <button class="ui primary button" style="mae">
                        <a id='visualize' style="color:white;">{{slide.document_name}}</a>
                      </button>
+                     </div>
                  {% endfor %}
-                </div>
+
                 </div>
               </div>
             </div>
@@ -377,7 +383,7 @@
                </tbody>
              </table>
             </div>
-          </div>
+
           <div class="ui tab segment" id="12" data-tab="second" style="display:none">
                 {% block submitassignments %}
                     {% include 'coursemanagement/submitassignments.html' %}
@@ -402,11 +408,7 @@
                         {% include 'coursemanagement/addcontent.html' %}
                     {% endblock %}
                 </div>
-
-
-
-        </div>
-
+              </div>
         <div class="three wide column">
             <div class="row">
 
@@ -458,7 +460,7 @@
           });
       });
     </script> -->
-
+    
     <script>
         function toggleContent() {
             $('.modulesContent').toggle();

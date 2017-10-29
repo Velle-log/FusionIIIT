@@ -18,7 +18,7 @@ from applications.globals.models import ExtraInfo
 
 from .forms import AddDocuments, AddVideos
 from .helpers import semester
-from .models import CourseDocuments, CourseVideo, Forum, ForumReply, Quiz
+from .models import CourseDocuments, CourseVideo, Forum, ForumReply, Quiz, QuizResult
 
 def create_thumbnail(course,row, attach_str, thumb_time, thumb_size):
     # filepath = settings.MEDIA_ROOT + 'online_cms/' + course.course_id + 'vid/' + str(row.name) + '/' + str(row.tutorial_detail_id) + '/'
@@ -72,7 +72,14 @@ def course(request, course_code):
         videos=CourseVideo.objects.filter(course_id=course[0])
         slides=CourseDocuments.objects.filter(course_id=course[0])
         quiz=Quiz.objects.filter(course_id=course)
-        print(len(slides),"DADASDA")
+        marks=[]
+        print(QuizResult._meta.get_fields(),"adasd")
+        for q in quiz:
+            qs=QuizResult.objects.filter(quiz_id=q,student_id=student)
+            if len(qs) is not 0:
+                marks.append(qs[0])
+                # print(qs.quiz_id.quiz_name)
+        # print(len(marks),"DADASDA")
         lec=0
         comments = Forum.objects.filter(course_id=course).order_by('comment_time')
         answers = collections.OrderedDict()
@@ -86,7 +93,7 @@ def course(request, course_code):
                 answers[comment]=fr1
         return render(request, 'coursemanagement/viewcourse.html',
                       {'course': course[0],
-                       'quizs':quiz,
+                       'quizs':marks,
                        'videos':videos,
                        'instructor': instructor,
                        'slides':slides,

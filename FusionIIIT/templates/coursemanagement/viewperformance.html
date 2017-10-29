@@ -1,0 +1,67 @@
+{% load static %} {% block viewperformance %}
+<div class="ui top attached tabular menu">
+  {% if quizs|length  %}
+  {% for quiz in quizs %}
+    <a class="{% if forloop.counter is 1 %}active {% endif %}item per"  data-tab="{{forloop.counter}}" >{{quiz.quiz_id.quiz_name}}</a>
+  {% endfor %}
+
+</div>
+{% for quiz in quizs %}
+<div class="ui {% if forloop.counter is 1 %}active {% endif %} bottom attached tab segment performance" id="{{forloop.counter}}" data-tab="{{forloop.counter}}">
+    <table class="ui very basic collapsing celled table">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Total Marks</th>
+                <th>Feedback</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td>
+                    <h4 class="ui image header">
+                        <img src="{% static 'globals/img/jenny.jpg' %}" class="ui  rounded image">
+                        <div class="content">
+                            {{request.user.first_name}}  {{request.user.last_name}}
+                            <div class="sub header">
+                            </div>
+                        </div>
+                    </h4>
+                </td>
+
+                <td>
+                  {{quiz.score}}
+                </td>
+                <td>
+                  {{quiz.feedback}}
+                </td>
+
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+{% endfor %}
+{% else %}
+    <h3>You didn't participated in any quiz or no quiz was conducted</h3>
+  </div>
+{% endif %}
+<script type="text/javascript">
+$(document).ready(function(){
+  var x=document.getElementsByClassName('item per')[0];
+  ini=x.getAttribute('data-tab');
+  var y=document.getElementsByClassName('performance')[0];
+  alert(y.getAttribute('data-tab'));
+  y.style.display="block";
+});
+// $('.per').click(function(){
+//   event.preventDefault();
+//   var x = document.getElementById(ini);
+//   num = $(this).attr('data-tab');
+//   var y = document.getElementById(num);
+//   x.style.display = "none";
+//   y.style.display = "block";
+// });
+</script>
+{% endblock %}
