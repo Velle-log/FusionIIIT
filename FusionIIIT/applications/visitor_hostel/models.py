@@ -42,7 +42,7 @@ class Visitor(models.Model):
     visitor_phone = models.CharField(max_length=12)
     visitor_address = models.TextField()
     nationality = models.CharField(max_length=20)
-    intender_id = models.ForeignKey(User, unique=False)
+    intender_id = models.OneToOneField(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.visitor_name
@@ -65,7 +65,7 @@ class Book_room(models.Model):
 
 class Visitor_bill(models.Model):
     visitor_id = models.ForeignKey(Visitor, on_delete=models.CASCADE)
-    caretaker_id = models.ForeignKey(User, unique=True)
+    caretaker_id = models.OneToOneField(User, on_delete=models.CASCADE)
     meal_bill = models.IntegerField(default=0)
     room_bill = models.IntegerField(default=0)
     payment_status = models.BooleanField(default=False)
@@ -75,7 +75,7 @@ class Room(models.Model):
     room_id = models.AutoField(primary_key=True)
     room_number  = models.CharField(max_length=4, unique=True)
     room_type = models.CharField(max_length=12, choices=ROOM_TYPE)
-    room_floor = models.CharField(max_length=12, choices=ROOM_FLOOR) 
+    room_floor = models.CharField(max_length=12, choices=ROOM_FLOOR)
 
     def __str__(self):
         return self.room_number
@@ -110,7 +110,7 @@ class Inventory(models.Model):
 
 class Room_Status(models.Model):
     date = models.DateField(null=True, blank=True)
-    room_id = models.ForeignKey(Room, on_delete=models.CASCADE, primary_key = True)
+    room_id = models.OneToOneField(Room, on_delete=models.CASCADE)
     status = models.CharField(max_length=12, choices=ROOM_STATUS, default = "Available")
     br_id = models.ForeignKey(Visitor , on_delete =models.CASCADE,unique=False, null=True, blank=True)
     def __str__(self):
