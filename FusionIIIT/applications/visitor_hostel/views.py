@@ -26,7 +26,7 @@ def booking_request(request):
 			br_id = request.POST.getlist('confirm')
 			br_id = br_id[0]
 			print(br_id)
-			Book_room.objects.filter(br_id = br_id).update (status = True )
+			Book_room.objects.filter(br_id = br_id).update (status = "Confirm" )
 			book_room = Book_room.objects.get(br_id = br_id)
 			rooms=request.POST.getlist('room')
 			print(rooms)
@@ -39,7 +39,7 @@ def booking_request(request):
 				print(delta)
 				for i in range(delta):
 					date_1 = book_from+ datetime.timedelta(days=i)
-					Room_Status.objects.filter(room_id = room_id).update(date=date_1 , status="Booked")
+					Room_Status.objects.filter(room_id = room_id).update(date=date_1 , status="Booked", br_id=br_id)
 					print("hello")
 			messages.success(request, 'you allot room succesfully')
 			return HttpResponseRedirect('/visitorhostel/vh_homepage/')
@@ -52,7 +52,7 @@ def booking_request(request):
 		return HttpResponseRedirect('/visitorhostel/vh_homepage/')		
 
 	else :
-		context = Book_room.objects.filter(status = False)
+		context = Book_room.objects.filter(status = "Pending")
 		room = Room_Status.objects.filter(status="Available")
 		print(room)
 		print("hello")
@@ -81,3 +81,51 @@ def all_booking(request):
 		print("hii")
 		form = ViewBooking()
 		return render(request, "vhModule/input_booking_date.html" , { 'form' : form})
+
+
+def cancel_booked_booking(request):
+	if request.method == 'POST' :
+		print("yes")
+		br_id = request.POST.getlist('cancel')
+		br_id = br_id[0]
+		Book_room.objects.filter(br_id = br_id).update (status = "Cancel" )
+		Room_Status.objects.filter(br_id=br_id).update(status = "Available")
+		messages.success(request, 'cancelled successfully ')
+		context = Book_room.objects.filter(status =True)
+		return render(request, "vhModule/cancel_booked_room.html" , { 'context' : context})
+	else :
+		context = Book_room.objects.filter(status = "Confirm")
+		print(context)
+		if not context:
+			messages.success(request, 'No confirm booking available')
+			return HttpResponseRedirect('/visitorhostel/vh_homepage/')
+		return render(request, "vhModule/cancel_booked_room.html" , { 'context' : context})
+
+
+def check_in(request):
+	if request.method =='POST' :
+		print("checkin")
+		messages.success(request, 'check in succesfully')
+		Room_Status.objects.filter(br_id=request.POST.getlist('checkedin')[0]).update(status="CheckedIn")
+		context = Book_room.objects.filter(br_id__in=Room_Status.objects.filter(status = "Booked", date__gte=datetime.datetime.today()))
+		if not context:
+			messages.success(request, 'No booking available')
+			return HttpResponseRedirect('/visitorhostel/vh_homepage/')
+		return render(request, "vhModule/checkin1.html" , { 'context' : context})
+	else :
+		context = Book_room.objects.filter(br_id__in=Room_Status.objects.filter(status = "Booked", date__gte=datetime.datetime.today()))
+		visitor_id = context
+		if not context:
+			messages.success(request, 'No booking available')
+			return HttpResponseRedirect('/visitorhostel/vh_homepage/')
+		return render(request, "vhModule/checkin1.html" , { 'context' : context})
+
+def check_out(request):
+	if request.method == 'POST':
+		print("check_out")
+	else
+		context = Book_room.objects.filter(br_id__in=Room_Status.objects.filter(status = "CheckedIn", date__gte=datetime.datetime.today()))
+		if not context:
+			messages.success(request, 'No booking available')
+			return HttpResponseRedirect('/visitorhostel/vh_homepage/')
+		return render(request, "vhModule/checkin1.html" , { 'context' : context})

@@ -1,11 +1,16 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-	<title>Date Input</title>
+	<title>Cancel booked Room</title>
 </head>
 <body>
-<form action="/visitorhostel/vh_homepage/" method="post">
+<form  method="post">
     {% csrf_token %}
+    <ul class="messages">
+    {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
 <table>
 <tr>
     	<th>Visitor Name</th>
@@ -15,9 +20,9 @@
     	<th>Number of room</th>
     	<th>Booking From</th>
     	<th>Booking to</th>
-    	<th>Status</th>
+    	<th>Cancel</th>
  </tr>
-{% for context1 in booking %}
+{% for context1 in context %}
     <div class="context">
         <tr>
             <td>{{context1.visitor_id.visitor_name}}</td> 
@@ -27,18 +32,10 @@
             <td>{{context1.room_count}}</td>
             <td>{{context1.booking_from}}</td>
             <td>{{context1.Booking_to}}</td>
-            <td>{% if context1.status == "Confirm" %}
-            		Confirm
-            	{% elif context1.status == "Pending" %}
-            		pending</td>
-            	{% else %}
-            		Cancelled
-            	{% endif %}
+            <td><button type="submit" value = {{context1.br_id}} name = "cancel">cancel</button></td>
         </tr>
      </div>
 {% endfor %}
-</table>
-    <input type="submit" value="home" name ="home" />
-</form>
+<a href="/visitorhostel/vh_homepage/">click here to goto home</a>
 </body>
 </html>

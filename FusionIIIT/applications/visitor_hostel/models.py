@@ -28,6 +28,12 @@ ROOM_STATUS = (
     ('UnderMaintenance', 'UnderMaintenance'),
     )
 
+BOOK_ROOM = (
+    ('Confirm' , 'Confirm'),
+    ('Pending' , 'Pending'),
+    ('Cancel' , 'Cancel'),
+    )
+
 
 class Visitor(models.Model):
     visitor_id = models.AutoField(primary_key=True)
@@ -51,7 +57,7 @@ class Book_room(models.Model):
     purpose = models.TextField()
     booking_from = models.DateField()
     Booking_to = models.DateField()
-    status = models.BooleanField(default=False)
+    status = models.CharField(max_length=10, choices=BOOK_ROOM , default ="Pending")
     remark = models.CharField(max_length=40,blank=True)
     check_in = models.DateField(null=True, blank=True)
     check_out = models.DateField(null=True, blank=True)
@@ -106,5 +112,6 @@ class Room_Status(models.Model):
     date = models.DateField(null=True, blank=True)
     room_id = models.ForeignKey(Room, on_delete=models.CASCADE, primary_key = True)
     status = models.CharField(max_length=12, choices=ROOM_STATUS, default = "Available")
+    br_id = models.ForeignKey(Visitor , on_delete =models.CASCADE,unique=False, null=True, blank=True)
     def __str__(self):
         return str(self.room_id)
