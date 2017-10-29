@@ -12,52 +12,42 @@
 
 
 <div class="ui active tab segment" data-tab="video">
-    <h4 class="ui dividing header">Add a Thesis</h4>
-    <form class="ui form" enctype="multipart/form-data">
+    <h4 class="ui dividing header">Add a video</h4>
+    <form class="ui form" id="form1" enctype="multipart/form-data">
+      {% csrf_token %}
         <div class="field">
             <!--  code change starts -->
             <div class="One field">
                 <div class="field">
                     <label> Name</label>
-                    <input placeholder="Name" type="text">
+                    <input placeholder="Name" name="name" type="text">
                 </div>
-
-                <!--  <div class="field">
-                        <label>Last Name</label>
-                        <input placeholder="Last Name" type="text">
-                    </div> -->
             </div>
             <!-- code change ends -->
         </div>
-
         <div class="field">
             <div class="fields">
                 <div class="six wide field">
                     <label>Description</label>
-                    <input placeholder="Description" type="text">
+                    <input placeholder="Description" name="description" type="text">
                 </div>
 
                 <div class="six wide field">
                     <label>Video File</label>
-                    <input placeholder="Video File" type="file">
+                    <input placeholder="Video File" id="vid" name="vid" accept="video/*" type="file">
                 </div>
-
-
             </div>
-
             <div class="fields">
-
-                <div class="two wide field">
-                    <label><br></label>
-                    <div class="ui primary button">
-                        Save
-                        <i class="ui save icon right floated"></i>
-                    </div>
-                </div>
+              <div class="two wide field">
+                <label><br></label>
+                  <div class="ui primary button" id="submit_vid">
+                    Save
+                    <i class="ui save icon right floated"></i>
+                  </div>
+              </div>
             </div>
-
-        </div>
-    </form>
+          </div>
+        </form>
     <br>
     <h4 class="ui dividing header">Report:</h4>
 
@@ -109,6 +99,44 @@
 </div>
 
 <div class="ui tab segment" data-tab="slide">
+  <h4 class="ui dividing header">Add a Slide</h4>
+  <form class="ui form" id="form2" enctype="multipart/form-data">
+    {% csrf_token %}
+      <div class="field">
+          <!--  code change starts -->
+          <div class="One field">
+              <div class="field">
+                  <label> Name</label>
+                  <input placeholder="Name" name="name" type="text">
+              </div>
+          </div>
+          <!-- code change ends -->
+      </div>
+      <div class="field">
+          <div class="fields">
+              <div class="six wide field">
+                  <label>Description</label>
+                  <input placeholder="Description" name="description" type="text">
+              </div>
 
+              <div class="six wide field">
+                  <label>Slide File</label>
+                  <input placeholder="Slide File" id="doc" name="doc"  type="file">
+              </div>
+          </div>
+          <div class="fields">
+            <div class="two wide field">
+              <label><br></label>
+                <div class="ui primary button" id="submit_doc">
+                  Save
+                  <i class="ui save icon right floated"></i>
+                </div>
+            </div>
+          </div>
+        </div>
+      </form>
+  <br>
 </div>
+
+
 {% endblock %}

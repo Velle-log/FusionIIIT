@@ -1,4 +1,5 @@
 {% load static %} {% block viewperformance %}
+{% if lec is 0 %}
 <div class="ui top attached tabular menu">
   {% if quizs|length  %}
   {% for quiz in quizs %}
@@ -45,6 +46,55 @@
 {% else %}
     <h3>You didn't participated in any quiz or no quiz was conducted</h3>
   </div>
+{% endif %}
+{% else %}
+<div class="ui top attached tabular menu">
+  {% if quizs|length  %}
+  {% for quiz in quizs %}
+    <a class="{% if forloop.counter is 1 %}active {% endif %}item per"  data-tab="{{forloop.counter}}" >{{quiz.0.quiz_id.quiz_name}}</a>
+  {% endfor %}
+
+</div>
+{% for quiz in quizs %}
+<div class="ui {% if forloop.counter is 1 %}active {% endif %} bottom attached tab segment performance" id="{{forloop.counter}}" data-tab="{{forloop.counter}}">
+    <table class="ui very basic collapsing celled table">
+        <thead>
+            <tr>
+                <th>Student</th>
+                <th>Total Marks</th>
+                <th>Feedback</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for stu in quiz %}
+            <tr>
+                <td>
+                    <h4 class="ui image header">
+                        <img src="{% static 'globals/img/jenny.jpg' %}" class="ui  rounded image">
+                        <div class="content">
+                            <p style="text-align:center">{{stu.student_id.id.user.first_name}} {{stu.student_id.id.user.last_name}}</p>
+
+                        </div>
+                    </h4>
+                </td>
+
+                <td>
+                  {{stu.score}}
+                </td>
+                <td>
+                  {{stu.feedback}}
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endfor %}
+{% else %}
+    <h3>No quiz was conducted</h3>
+  </div>
+{% endif %}
 {% endif %}
 <script type="text/javascript">
 $(document).ready(function(){

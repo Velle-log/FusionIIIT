@@ -22,9 +22,9 @@ from .models import CourseDocuments, CourseVideo, Forum, ForumReply, Quiz, QuizR
 
 def create_thumbnail(course,row, attach_str, thumb_time, thumb_size):
     # filepath = settings.MEDIA_ROOT + 'online_cms/' + course.course_id + 'vid/' + str(row.name) + '/' + str(row.tutorial_detail_id) + '/'
-    filepath = settings.MEDIA_ROOT + '/online_cms/' + course.course_id + '/vid/' + str(row.video_name)+'.mp4'
+    filepath = settings.MEDIA_ROOT + '/online_cms/' + course.course_id + '/vid/' + str(row.video_name)
     print(filepath)
-    video_name=row.video_name
+    video_name=row.video_name[:-4]
     filename =settings.MEDIA_ROOT + '/online_cms/' + course.course_id + '/vid/' + video_name.replace(' ', '-') + '-' + attach_str + '.png'
     print (filename)
     # try:
@@ -111,7 +111,13 @@ def course(request, course_code):
                 course = ins.course_id
                 print(course)
         lec=1
-
+        videos=CourseVideo.objects.filter(course_id=course)
+        slides=CourseDocuments.objects.filter(course_id=course)
+        quizs=Quiz.objects.filter(course_id=course)
+        marks=[]
+        for quiz in quizs:
+            qs=QuizResult.objects.filter(quiz_id=quiz)
+            marks.append(qs)
         comments = Forum.objects.filter(course_id=course).order_by('comment_time')
         answers = collections.OrderedDict()
         for comment in comments:
@@ -125,6 +131,9 @@ def course(request, course_code):
         return render(request, 'coursemanagement/viewcourse.html',
                       {'instructor': instructor,
                        'extrainfo': extrainfo,
+                       'quizs':marks,
+                       'videos':videos,
+                       'slides':slides,
                        'course':course,
                        'answers': answers,
                        'Lecturer':lec
@@ -135,45 +144,35 @@ def course(request, course_code):
 def add_document(request, course_code):
     #    CHECK FOR ERRORS IN UPLOADING
     extrainfo = ExtraInfo.objects.get(user=request.user)
-    instructor = Instructor.objects.filter(instructor_id=extrainfo)
-    for ins in instructor:
-        if ins.course_id.course_id == course_code:
-            course = ins.course_id
-
-    if request.method == 'POST':
-        form = AddDocuments(request.POST, request.FILES)
-        if form.is_valid():
-            description = request.POST.get('description')
-            doc = request.FILES['doc']
-            filename, file_extenstion = os.path.splitext(request.FILES['doc'].name)
-            full_path = settings.MEDIA_ROOT+"/online_cms/"+course_code+"/doc/"
-            url = settings.MEDIA_URL+filename
-            if not os.path.isdir(full_path):
-                cmd = "mkdir "+full_path
-                subprocess.call(cmd, shell=True)
-            fs = FileSystemStorage(full_path, url)
-            fs.save(doc.name, doc)
-            uploaded_file_url = "/media/online_cms/"+course_code+"/doc/"+doc.name
-            index = uploaded_file_url.rfind('/')
-            name = uploaded_file_url[index+1:]
-            CourseDocuments.objects.create(
-                course_id=course,
-                upload_time=datetime.now(),
-                description=description,
-                document_url=uploaded_file_url,
-                document_name=name
-            )
-            return HttpResponse("Upload successful.")
-        elif form.errors:
-            form.errors
+    if extrainfo.designation.name == "faculty":
+        instructor = Instructor.objects.filter(instructor_id=extrainfo)
+        for ins in instructor:
+            if ins.course_id.course_id == course_code:
+                course = ins.course_id
+        description = request.POST.get('description')
+        doc = request.FILES.get('img')
+        print(doc)
+        filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
+        full_path = settings.MEDIA_ROOT+"/online_cms/"+course_code+"/doc/"
+        url = settings.MEDIA_URL+filename
+        if not os.path.isdir(full_path):
+            cmd = "mkdir "+full_path
+            subprocess.call(cmd, shell=True)
+        fs = FileSystemStorage(full_path, url)
+        fs.save(doc.name, doc)
+        uploaded_file_url = "/media/online_cms/"+course_code+"/doc/"+doc.name
+        index = uploaded_file_url.rfind('/')
+        name = uploaded_file_url[index+1:]
+        CourseDocuments.objects.create(
+            course_id=course,
+            upload_time=datetime.now(),
+            description=description,
+            document_url=uploaded_file_url,
+            document_name=name
+        )
+        return HttpResponse("Upload successful.")
     else:
-        form = AddDocuments()
-        document = CourseDocuments.objects.filter(course_id=course)
-        return render(request, 'online_cms/add_doc.html',
-                      {'form': form,
-                       'document': document,
-                       'extrainfo': extrainfo})
-
+        return HttpResponse("not found")
 
 @login_required
 def add_videos(request, course_code):
@@ -186,43 +185,34 @@ def add_videos(request, course_code):
         for ins in instructor:
             if ins.course_id.course_id == course_code:
                 course = ins.course_id
-
-        if request.method == 'POST':
-            form = AddVideos(request.POST, request.FILES)
-            if form.is_valid():
-                description = request.POST.get('description')
-                vid = request.FILES['vid']
-                filename, file_extenstion = os.path.splitext(request.FILES['vid'].name)
-                full_path = settings.MEDIA_ROOT+"/online_cms/"+course_code+"/vid/"
-                url = settings.MEDIA_URL+filename
-                if not os.path.isdir(full_path):
-                    cmd = "mkdir "+full_path
-                    subprocess.call(cmd, shell=True)
-                fs = FileSystemStorage(full_path, url)
-                fs.save(vid.name, vid)
-                uploaded_file_url = "/media/online_cms/"+course_code+"/vid/"+vid.name
-                index = uploaded_file_url.rfind('/')
-                name = uploaded_file_url[index+1:]
-
-                video=CourseVideo.objects.create(
-                    course_id=course,
-                    upload_time=datetime.now(),
-                    description=description,
-                    video_url=uploaded_file_url[:-4],
-                    video_name=name[:-4]
-                )
-                create_thumbnail(course,video, 'Big',1, '700:500')
-                create_thumbnail(course,video, 'Small',1, '170:127')
-                return HttpResponse("Upload successful.")
-            elif form.errors:
-                form.errors
-        else:
-            form = AddVideos()
-            video = CourseVideo.objects.filter(course_id=course)
-            return render(request, 'online_cms/add_vid.html',
-                          {'form': form,
-                           'video': video,
-                           'extrainfo': extrainfo})
+        description = request.POST.get('description')
+        vid = request.FILES.get('img')
+        # name =request.POST.get('name')
+        print (vid)
+        filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
+        full_path = settings.MEDIA_ROOT+"/online_cms/"+course_code+"/vid/"
+        url = settings.MEDIA_URL+filename
+        if not os.path.isdir(full_path):
+            cmd = "mkdir "+full_path
+            subprocess.call(cmd, shell=True)
+        fs = FileSystemStorage(full_path, url)
+        fs.save(vid.name, vid)
+        uploaded_file_url = "/media/online_cms/"+course_code+"/vid/"+vid.name
+        index = uploaded_file_url.rfind('/')
+        name=uploaded_file_url[index+1:]
+        video=CourseVideo.objects.create(
+            course_id=course,
+            upload_time=datetime.now(),
+            description=description,
+            video_url=uploaded_file_url[:-4],
+            video_name=name
+        )
+        create_thumbnail(course,video, 'Big',1, '700:500')
+        create_thumbnail(course,video, 'Small',1, '170:127')
+        print (request.POST.get('name'))
+        return HttpResponse("Upload successful.")
+        # elif form.errors:
+        #     form.errors
     else:
         return HttpResponse("not found")
 @login_required

@@ -411,6 +411,62 @@
         $(document).ready(function() {
             $('table').tablesort();
         });
+        $('#submit_vid').click(function(){
+          var data = new FormData();
+          var img = $('#vid')[0].files;
+          alert(img.length)
+          for(var i = 0;i<img.length;i++){
+                data.append("img", img[i]);
+                // alert("a");
+            }
+          data.append('img', img);
+          var other_data = $('#form1').serializeArray();
+            $.each(other_data,function(key,input){
+                data.append(input.name,input.value);
+              });
+          $.ajax({
+            url : "/ocms/{{course.course_id}}/add_video",
+            processData : false,
+            contentType : false,
+            type : 'POST',
+            data : data,
+            success : function(data){
+              alert(data);
+            },
+            error: function(data,err){
+              alert(err.message);
+            }
+        });
+      });
+      $('#submit_doc').click(function(){
+        var data = new FormData();
+        var img = $('#doc')[0].files;
+        alert(img.length)
+        for(var i = 0;i<img.length;i++){
+              data.append("img", img[i]);
+              alert("a");
+          }
+        data.append('img', img);
+        var other_data = $('#form2').serializeArray();
+          $.each(other_data,function(key,input){
+              data.append(input.name,input.value);
+            });
+        $.ajax({
+          url : "/ocms/{{course.course_id}}/add_documents",
+          processData : false,
+          contentType : false,
+          type : 'POST',
+          data : data,
+          success : function(data){
+            alert(data);
+          },
+          error: function(data,err){
+            alert(err.message);
+          }
+      });
+      });
+
+
     </script>
 
     <!-- <script type="text/javascript">
