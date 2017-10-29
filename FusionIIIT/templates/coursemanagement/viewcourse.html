@@ -1,17 +1,15 @@
 {% extends 'globals/base.html' %} {% load static %} {% block title %} Course Management {% endblock %} {% block body %} {% block navBar %} {% include 'dashboard/navbar.html' %} {% endblock %} {% comment %}The grid starts here!{% endcomment %}
 <div class="ui stackable doubling grid">
 
-    {% comment %}The left-margin segment!{% endcomment %}
     <div class="column"></div>
 
-    {% comment %} The left-rail segment starts here! {% endcomment %}
+
     <div class="three wide column">
 
-        {% comment %}The user image card starts here!{% endcomment %} {% block usercard %} {% include 'globals/usercard.html' %} {% endblock %} {% comment %}The user image card ends here!{% endcomment %}
+        {% block usercard %} {% include 'globals/usercard.html' %} {% endblock %}
 
         <div class="ui divider"></div>
 
-        {% comment %}The Tab-Menu starts here!{% endcomment %}
         <div class="ui huge fluid vertical pointing menu" style="max-width: 320px;">
 
             <a class="active item" data-tab="first">
@@ -40,15 +38,11 @@
                 </a>
 
         </div>
-        {% comment %}The Tab-Menu ends here!{% endcomment %}
 
     </div>
-    {% comment %} The left-rail segment ends here! {% endcomment %} {% comment %} The central-rail segment starts here! {% endcomment %}
 
     <div class="eight wide column">
-        {% comment %}The view courses start here!{% endcomment %}
         <div class="ui active tab segment" data-tab="first">
-            {% comment %}The CSS starts here!{% endcomment %}
             <style>
                 #pdf_modal iframe {
                     width: 100%;
@@ -117,7 +111,6 @@
 
             </style>
 
-            {% comment %}The CSS starts here!{% endcomment %}
             <style>
                 #pdf_modal iframe {
                     width: 100%;
@@ -167,9 +160,11 @@
 
             </style>
 
-            {% comment %}The CSS ends here!{% endcomment %} {% comment %}The tab menu starts here!{% endcomment %}
             <div class="ui pointing secondary menu">
-                <a class="active item" data-tab="assignment">
+                <a class="active item" data-tab="quiz">
+                 Quizzes
+             </a>
+                <a class="item" data-tab="assignment">
                  Assignment
              </a>
 
@@ -182,44 +177,57 @@
                 <a class="item" data-tab="time-table">
                  Time-Table/Quiz
              </a>
-                <a class="item" data-tab="quiz">
-                 Quizzes
-             </a>
             </div>
 
+            <div class="ui active tab segment" data-tab="quiz">
+                <div id="clock">
 
-            {% comment %}The Basic Course details segment starts here!{% endcomment %}
-            <!-- <div class="ui active tab" data-tab="coursedetails">
-            <br> <br>
-                 <table class="ui orange table">
-                           <thead>
-                             <tr><th>Name Of the Courses</th>
-                             <th>Course Code</th>
-                             <th>Instructor</th>
-                           </tr></thead><tbody>
-                             <tr>
-                               <td>Software Engineering</td>
-                               <td>CS-308</td>
-                               <td>Atul Gupta</td>
-                             </tr>
-                             <tr>
-                               <td>Computer Networks</td>
-                               <td>CS-305</td>
-                               <td>Vinod Kumar Jain</td>
-                             </tr>
-                             <tr>
-                               <td>Operating Systems</td>
-                               <td>CS-306</td>
-                               <td>Manish Kumar Bajpai</td>
-                             </tr>
-                           </tbody>
-                         </table>
+                    <div class="block">
+                        <span class="digit" id="hours"></span> Hours
+                    </div>
 
-         </div> -->
+                    <div class="block">
+                        <span class="digit" id="minutes"></span> Minutes
+                    </div>
 
-            {% comment %}The Basic Course details segment ends here!{% endcomment %} {% comment %}The Assignment segment starts here!{% endcomment %}
+                    <div class="block">
+                        <span class="digit" id="seconds"></span> Seconds
+                    </div>
 
-            <div class="ui active tab" data-tab="assignment">
+                </div>
+
+                <br> <br>
+                <div class="grouped fields">
+                    <label for="fruit">1)From the following which quality deals with maintaining the quality of the software product?</label>
+
+                    <div class="field">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="fruit" checked="" tabindex="0" class="hidden">
+                            <label>Apples</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="fruit" tabindex="0" class="hidden">
+                            <label>Oranges</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="fruit" tabindex="0" class="hidden">
+                            <label>Pears</label>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui radio checkbox">
+                            <input type="radio" name="fruit" tabindex="0" class="hidden">
+                            <label>Grapefruit</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui tab" data-tab="assignment">
 
                 <p> </p>
                 <div class="ui form">
@@ -254,7 +262,6 @@
                 </div>
 
             </div>
-            {% comment %}The assignment ends here!{% endcomment %} {% comment %}The video segment starts here!{% endcomment %}
             <div class="ui tab segment" data-tab="videos">
                 <!-- <h4 class="ui dividing header">Software Engineering Videos</h4> -->
                 <div class="ui four column grid">
@@ -262,8 +269,7 @@
                         {% for video in videos %}
                         <div class="column">
                             <div class="container">
-                                <img src="{{video.video_url}}-Small.png">
-                                </img>
+                                <img src="{{video.video_url}}-Small.png" />
                                 <div class="play-icon modal-btn" data-pk="{{forloop.counter}}"><svg width="60" height="42" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"> <g> <title>Videos</title> <g id="icomoon-ignore"/>
                 <use x="5.397434" y="-68.326835" transform="matrix(0.15880563740596462,0,0,0.1590301359360811,-34.233496722840435,-44.6817534019825) " id="icon" xlink:href="#svg_1"/> <path id="svg_4" d="m24,8.380953l0.190475,22.761904l16.952381,-11.333332l-17.142857,-11.428572z" stroke-linecap="null" stroke-linejoin="null" stroke-width="5" stroke="null" fill="#ffffff"/> <path id="relleno" d="m24.285713,8.666666l0,22.666666l17.238094,-11.523809l-17.238094,-11.142857z" stroke-linecap="null" stroke-linejoin="null" stroke-width="5" stroke="null" fill="#ffffff"/> </g> <defs> <svg id="svg_1" viewBox="0 0 944 1024" height="1024" width="944" xmlns:xlink="http://www.w3.org/1999/xlink"> <g id="icomoon-ignore"/> <path id="play-svg" d="m589.426025,406.15799c0,-31.289978 -25.345032,-56.652985 -56.618042,-56.652985h-265.616974c-31.27301,0 -56.618011,25.359985 -56.618011,56.652985v151.894989c0,31.290039 25.345001,56.653015 56.618011,56.653015h265.616974c31.273987,0 56.618042,-25.361023 56.618042,-56.653015v-151.894989l0,0zm-227.311035,140.032013v-142.677002l108.192017,71.339996l-108.19101,71.339996l-0.001007,-0.002991z"/> </svg> </defs>
                                     </svg>
@@ -288,11 +294,6 @@
                 </div>
             </div>
 
-
-
-
-            {% comment %}The video segment ends here!{% endcomment %} {% comment %}The slides segment starts here!{% endcomment %}
-
             <div class="ui tab segment" data-tab="slides">
                 <h4 class="ui dividing header">Software Engineering Slides</h4>
 
@@ -313,7 +314,6 @@
                 </div>
             </div>
         </div>
-        {% comment %}The Slides segment ends here!{% endcomment %} {% comment %}The time-table segment starts here!{% endcomment %}
 
         <div class="ui tab segment" data-tab="time-table">
             <h4 class="ui dividing header">Quiz Time Table</h4>
@@ -339,96 +339,37 @@
 
         </div>
 
-        {% comment %}The time-table segment ends here!{% endcomment %} {% comment %}The quiz segment starts here!{% endcomment %}
-        <div class="ui tab segment" data-tab="quiz">
-            <div id="clock">
+        <div class="ui tab segment" data-tab="second">
+            {% block submitassignments %} {% include 'coursemanagement/submitassignments.html' %} {% endblock %}
+        </div>
 
-                <div class="block">
-                    <span class="digit" id="hours"></span> Hours
-                </div>
-
-                <div class="block">
-                    <span class="digit" id="minutes"></span> Minutes
-                </div>
-
-                <div class="block">
-                    <span class="digit" id="seconds"></span> Seconds
-                </div>
-
-            </div>
-
-            <br> <br>
-            <div class="grouped fields">
-                <label for="fruit">1)From the following which quality deals with maintaining the quality of the software product?</label>
-
-                <div class="field">
-                    <div class="ui radio checkbox">
-                        <input type="radio" name="fruit" checked="" tabindex="0" class="hidden">
-                        <label>Apples</label>
-                    </div>
-                </div>
-                <div class="field">
-                    <div class="ui radio checkbox">
-                        <input type="radio" name="fruit" tabindex="0" class="hidden">
-                        <label>Oranges</label>
-                    </div>
-                </div>
-                <div class="field">
-                    <div class="ui radio checkbox">
-                        <input type="radio" name="fruit" tabindex="0" class="hidden">
-                        <label>Pears</label>
-                    </div>
-                </div>
-                <div class="field">
-                    <div class="ui radio checkbox">
-                        <input type="radio" name="fruit" tabindex="0" class="hidden">
-                        <label>Grapefruit</label>
-                    </div>
-                </div>
-            </div>
+        <div class="ui tab segment" data-tab="third">
+            {% block viewperformance %} {% include 'coursemanagement/viewperformance.html' %} {% endblock %}
         </div>
 
 
-        {% comment %}The quiz segment ends here!{% endcomment %} {% comment %}The quiz segment ends here!{% endcomment %}
-    </div>
-    {% comment %}The view courses end here!{% endcomment %} {% comment %}The submit assignment starts here!{% endcomment %}
+        <div class="ui tab segment" data-tab="fourth">
+            {% block assessment %} {% include 'coursemanagement/assessment.html' %} {% endblock %}
+        </div>
 
-    <div class="ui tab segment" data-tab="second">
-        {% block submitassignments %} {% include 'coursemanagement/submitassignments.html' %} {% endblock %}
-    </div>
-
-    {% comment %}The submit assignment ends here!{% endcomment %} {% comment %}The view performance starts here!{% endcomment %}
-
-    <div class="ui tab segment" data-tab="third">
-        {% block viewperformance %} {% include 'coursemanagement/viewperformance.html' %} {% endblock %}
+        <div class="ui tab segment" data-tab="fifth">
+            {% block addcontent %} {% include 'coursemanagement/addcontent.html' %} {% endblock %}
+        </div>
     </div>
 
-    {% comment %}The view performance ends here!{% endcomment %} {% comment %}The assessment starts here!{% endcomment %}
+    <div class="three wide column">
+        <div class="row">
 
-    <div class="ui tab segment" data-tab="fourth">
-        {% block assessment %} {% include 'coursemanagement/assessment.html' %} {% endblock %}
+
+            {% comment %}The Instructor Note:{% endcomment %} {% block note %} {% include 'coursemanagement/note.html' %} {% endblock %}
+        </div>
+        <div class="row">
+            {% comment %}The comments:{% endcomment %} {% block comments %} {% include 'coursemanagement/comments.html' %} {% endblock %}
+        </div>
+
     </div>
 
-    {% comment %}The assessment ends here!{% endcomment %} {% comment %}The add contents starts here!{% endcomment %} {% comment %}
-    <div class="ui tab segment" data-tab="fifth">
-        {% block addcontent %} {% include 'coursemanagement/addcontent.html' %} {% endblock %}
-    </div>
-    {% endcomment %} {% comment %}The add content ends here!{% endcomment %}
-</div>
-{% comment %}The central-rail segment ends here!{% endcomment %} {% comment %}The right-rail segment starts here!{% endcomment %}
-<div class="three wide column">
-    <div class="row">
-
-
-        {% comment %}The Instructor Note:{% endcomment %} {% block note %} {% include 'coursemanagement/note.html' %} {% endblock %}
-    </div>
-    <div class="row">
-        {% comment %}The comments:{% endcomment %} {% block comments %} {% include 'coursemanagement/comments.html' %} {% endblock %}
-    </div>
-
-</div>
-{% comment %}The right-rail segment ends here!{% endcomment %} {% comment %}The right-margin segment!{% endcomment %}
-<div class="column"></div>
+    <div class="column"></div>
 
 </div>
 {% comment %}The grid ends here!{% endcomment %} {% endblock %} {% block javascript %}
