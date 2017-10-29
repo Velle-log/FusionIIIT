@@ -1,4 +1,4 @@
-{% load static %} {% block assessment %} {% comment %}The tab menu starts here!{% endcomment %}
+{% load static %} {% block assessment %}
 <div class="ui pointing secondary menu">
     <a class="active item" data-tab="quiz">
             Quiz
@@ -8,8 +8,7 @@
         </a>
 </div>
 
-{% comment %}The assess quiz segment starts here!{% endcomment %}
-<div class="ui active tab" data-tab="quiz">
+<div class="ui active tab segment" data-tab="quiz">
     <h4 class="ui dividing header">Software Engineering Course</h4>
 
     <div class="ui top attached tabular menu">
@@ -17,6 +16,7 @@
         <a class="item" data-tab="two">Quiz 2</a>
         <a class="item" data-tab="three">Quiz 3</a>
     </div>
+
     <div class="ui bottom attached active tab segment" data-tab="one">
         <table class="ui very basic collapsing celled table">
             <thead>
@@ -129,7 +129,7 @@
         </table>
     </div>
 
-    <div class="ui bottom attached tab" data-tab="two">
+    <div class="ui bottom attached tab segment" data-tab="two">
         <table class="ui very basic collapsing celled table">
             <thead>
                 <tr>
@@ -239,9 +239,9 @@
                 </tr>
             </tbody>
         </table>
-
     </div>
-    <div class="ui bottom attached tab " data-tab="three">
+
+    <div class="ui bottom attached tab segment" data-tab="three">
         <table class="ui very basic collapsing celled table">
             <thead>
                 <tr>
@@ -307,7 +307,7 @@
                             <img src="{% static 'globals/img/matthew.png' %}" class="ui  rounded image">
                             <div class="content">
                                 Chinmay
-                                <div class="sub header">adadasdad
+                                <div class="sub header">2015093
                                 </div>
                             </div>
                         </h4>
@@ -358,8 +358,6 @@
 
 </div>
 
-
-{% comment %}The assess quiz ends here!{% endcomment %} {% comment %}The assess assignment ends here!{% endcomment %}
 <div class="ui  tab segment" data-tab="assignment">
     <h4 class="ui dividing header">Software Engineering Course</h4>
 
@@ -368,6 +366,7 @@
         <a class="item" data-tab="two">Assignment 2</a>
         <a class="item" data-tab="three">Assignment 3</a>
     </div>
+
     <div class="ui bottom attached active tab segment" data-tab="one">
         <table class="ui very basic collapsing celled table">
             <thead>
@@ -479,6 +478,7 @@
             </tbody>
         </table>
     </div>
+
     <div class="ui bottom attached tab segment" data-tab="two">
         <table class="ui very basic collapsing celled table">
             <thead>
@@ -591,7 +591,8 @@
         </table>
 
     </div>
-    <div class="ui bottom attached tab segment " data-tab="three">
+
+    <div class="ui bottom attached tab segment" data-tab="three">
         <table class="ui very basic collapsing celled table">
             <thead>
                 <tr>
@@ -704,7 +705,5 @@
 
     </div>
 
-
-
 </div>
-{% comment %}The assess assignment ends here!{% endcomment %} {% endblock %}
+{% endblock %}
