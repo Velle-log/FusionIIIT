@@ -84,7 +84,7 @@ def course(request, course_code):
                 # answers['{}'.format(comment.pk)]=fr1
                 print(comment.comment)
                 answers[comment]=fr1
-        return render(request, 'coursemanagement/viewcourse1.html',
+        return render(request, 'coursemanagement/viewcourse.html',
                       {'course': course[0],
                        'quizs':quiz,
                        'videos':videos,
@@ -115,7 +115,7 @@ def course(request, course_code):
                 # answers['{}'.format(comment.pk)]=fr1
                 print(comment.comment)
                 answers[comment]=fr1
-        return render(request, 'coursemanagement/viewcourse1.html',
+        return render(request, 'coursemanagement/viewcourse.html',
                       {'instructor': instructor,
                        'extrainfo': extrainfo,
                        'course':course,
