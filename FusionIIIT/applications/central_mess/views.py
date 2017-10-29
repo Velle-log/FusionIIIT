@@ -100,3 +100,26 @@ def vacasubmit(request):
 
     vaca_obj.save()
     return HttpResponse("data added to vacation food table")
+
+# def bill(request):
+#     extrainfo = ExtraInfo.objects.get(id='2015034')
+#     student = Student.objects.get(id=extrainfo)
+ 
+#     # stu=Mess.objects.get(student=student)
+#     # if stu.mess_option='mess1'
+#     # add nonveg
+    
+#     data = Nonveg_data.objects.filter(student_id=student)
+#     amount = 0
+#     nonveg_total_bill = 0 
+#     for i in data:
+#         nonveg_total_bill += i.price
+
+#     rebate_count = Rebate.objects.filter(student_id=student)
+#     foodforvaca = Vacation_food.objects.filter(student_id=student)
+#     monthly_bill = Monthly_bill.objects.filter(student_id=student)
+
+#     amount = monthly_bill.amount + nonveg_total_bill
+
+    
+    
