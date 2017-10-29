@@ -12,6 +12,8 @@ urlpatterns = [
     # lecturer
     url(r'^(?P<course_code>[A-z]+[0-9]+)/add_documents$', views.add_document,
         name='add_document'),
+    url(r'^(?P<course_code>[A-z]+[0-9]+)/add_assigment$', views.add_assignment,
+        name='add_assignment'),
     # url(r'^(?P<course_code>[A-z]+[0-9]+)/upload_assignment$', views.upload_assignment,
     #     name='upload_assignment'),
     url(r'^(?P<course_code>[A-z]+[0-9]+)/add_video$', views.add_videos,

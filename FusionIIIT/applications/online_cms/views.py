@@ -18,7 +18,7 @@ from applications.globals.models import ExtraInfo
 
 from .forms import AddDocuments, AddVideos
 from .helpers import semester
-from .models import CourseDocuments, CourseVideo, Forum, ForumReply, Quiz, QuizResult, StudentAssignment
+from .models import CourseDocuments, CourseVideo, Forum, ForumReply, Quiz, QuizResult, StudentAssignment, Assignment
 
 def create_thumbnail(course,row, attach_str, thumb_time, thumb_size):
     # filepath = settings.MEDIA_ROOT + 'online_cms/' + course.course_id + 'vid/' + str(row.name) + '/' + str(row.tutorial_detail_id) + '/'
@@ -69,10 +69,11 @@ def course(request, course_code):
         roll = student.id.id[:4]
         course = Course.objects.filter(course_id=course_code, sem=semester(roll))
         instructor = Instructor.objects.get(course_id=course[0])
-        videos=CourseVideo.objects.filter(course_id=course[0])
+        videos = CourseVideo.objects.filter(course_id=course[0])
         slides=CourseDocuments.objects.filter(course_id=course[0])
         quiz=Quiz.objects.filter(course_id=course)
         marks=[]
+        assignment=Assignment.objects.filter(course_id=course[0])
         print(QuizResult._meta.get_fields(),"adasd")
         for q in quiz:
             qs=QuizResult.objects.filter(quiz_id=q,student_id=student)
@@ -99,6 +100,7 @@ def course(request, course_code):
                        'slides':slides,
                        'extrainfo': extrainfo,
                        'answers': answers,
+                       'assignment' : assignment,
                        'Lecturer':lec})
 
     else:
@@ -169,6 +171,7 @@ def course(request, course_code):
 #         return HttpResponse("Upload successful.")
 #     else:
 #         return HttpResponse("not found")
+
 @login_required
 def add_document(request, course_code):
     #    CHECK FOR ERRORS IN UPLOADING
@@ -202,6 +205,7 @@ def add_document(request, course_code):
         return HttpResponse("Upload successful.")
     else:
         return HttpResponse("not found")
+
 
 @login_required
 def add_videos(request, course_code):
@@ -244,6 +248,8 @@ def add_videos(request, course_code):
         #     form.errors
     else:
         return HttpResponse("not found")
+
+
 @login_required
 def forum(request, course_code):
     #take care od sem
@@ -268,6 +274,7 @@ def forum(request, course_code):
 
     context = {'course':course, 'answers': answers,'Lecturer':lec}
     return render(request,'online_cms/forum.html',context)
+
 
 @login_required
 def ajax_reply(request, course_code):
@@ -294,6 +301,7 @@ def ajax_reply(request, course_code):
     data = {'pk':f.pk,'reply':f.comment, 'replier':name,'time':time}
     return HttpResponse(json.dumps(data), content_type='application/json')
 
+
 @login_required
 def ajax_new(request, course_code):
     course = Course.objects.get(course_id=course_code, sem=5)
@@ -309,6 +317,7 @@ def ajax_new(request, course_code):
     data = {'pk':f.pk,'question':f.comment, 'replier':f.commenter_id.user.username,'time':time, 'name':name }
     print(data,"new")
     return HttpResponse(json.dumps(data), content_type='application/json')
+
 
 @login_required
 def ajax_remove(request, course_code):
@@ -334,3 +343,37 @@ def ajax_remove(request, course_code):
         f.delete()
     data = {'message':'deleted'}
     return HttpResponse(json.dumps(data), content_type='application/json')
+
+
+@login_required
+def add_assignment(request, course_code):
+    #    CHECK FOR ERRORS IN UPLOADING
+    extrainfo = ExtraInfo.objects.get(user=request.user)
+    if extrainfo.designation.name == "faculty":
+        instructor = Instructor.objects.filter(instructor_id=extrainfo)
+        for ins in instructor:
+            if ins.course_id.course_id == course_code:
+                course = ins.course_id
+        description = request.POST.get('description')
+        assi = request.FILES.get('img')
+        print(assi)
+        filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
+        full_path = settings.MEDIA_ROOT+"/online_cms/"+course_code+"/assi/"
+        url = settings.MEDIA_URL+filename
+        if not os.path.isdir(full_path):
+            cmd = "mkdir "+full_path
+            subprocess.call(cmd, shell=True)
+        fs = FileSystemStorage(full_path, url)
+        fs.save(assi.name, assi)
+        uploaded_file_url = "/media/online_cms/"+course_code+"/assi/"+assi.name
+        index = uploaded_file_url.rfind('/')
+        name = uploaded_file_url[index+1:]
+        CourseDocuments.objects.create(
+            course_id=course,
+            upload_time=datetime.now(),
+            assignment_url=uploaded_file_url,
+            assignment_name=name
+        )
+        return HttpResponse("Upload successful.")
+    else:
+        return HttpResponse("not found")
