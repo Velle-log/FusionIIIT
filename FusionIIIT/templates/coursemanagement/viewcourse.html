@@ -275,10 +275,16 @@
                             <div class="one wide field">
                               <label><br></label>
                               <!-- <a href="/ocms/quiz/{{quiz.pk}}" > -->
+                              {% if Lecturer is 0 %}
                                 <div class="ui primary button disabled quiz_btn" data-start="{{quiz.start_time|date:'Y-m-d'}}" data-pk="{{quiz.pk}}"id="quiz{{quiz.pk}}">
                                  Enter
                                  <i class="arrow right icon"></i>
                                </div>
+                               {% else %}
+                               <a class="ui blue button" href="/ocms/{{course.course_id}}/edit_quiz/{{quiz.pk}}">
+                                Edit Quiz
+                               </a>
+                               {% endif %}
                              <!-- </a> -->
                            </div>
                          </div>
@@ -287,6 +293,11 @@
                       {% endfor %}
                     </tbody>
                     </table>
+                    {% if Lecturer is 1 %}
+                    <a class="ui blue button" href="/ocms/{{course.course_id}}/create_quiz/">
+                     Create a New Quiz
+                    </a>
+                    {% endif %}
 
 
                 </div>
@@ -358,7 +369,7 @@
                                 <th>Time</th>
                         </thead>
                         <tbody>
-                            {% for quiz in quizs %}
+                            {% for quiz in fut_quiz %}
                             <tr>
                                 <td>{{quiz.quiz_name}}</td>
                                 <td>{{quiz.start_time |date:'Y-m-d'}}</td>
@@ -427,11 +438,14 @@
 
           function fun()
           {
-            var now=new Date();
-            if (start < now)
-            {
-              $('#quiz'+pk).removeClass('disabled');
+            if({{Lecturer}} == "0"){
+              var now=new Date();
+              if (start < now)
+              {
+                $('#quiz'+pk).removeClass('disabled');
+              }
             }
+
           }
           }
       });
@@ -715,7 +729,7 @@
     $('#submit_vid').click(function() {
         var data = new FormData();
         var img = $('#vid')[0].files;
-        alert(img.length)
+        // alert(img.length)
         for (var i = 0; i < img.length; i++) {
             data.append("img", img[i]);
             // alert("a");
@@ -797,10 +811,10 @@
         var data = new FormData();
         var img = $('#assign')[0].files;
         var selectedValue = $('#assign_topic').val();
-        alert(selectedValue)
+        // alert(selectedValue)
         for (var i = 0; i < img.length; i++) {
             data.append("img", img[i]);
-            alert("a");
+            // alert("a");
         }
         data.append('img', img);
         var other_data = $('#form3').serializeArray();

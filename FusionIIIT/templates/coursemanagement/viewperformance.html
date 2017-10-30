@@ -1,5 +1,6 @@
 {% load static %} {% block viewperformance %}
 {% if Lecturer is 0 %}
+<h4>Results</h4>
 <div class="ui top attached tabular menu">
   {% if quizs|length  %}
   {% for quiz in quizs %}
@@ -48,6 +49,7 @@
   </div>
 {% endif %}
 {% else %}
+<h4>Results</h4>
 <div class="ui top attached tabular menu">
   {% if quizs|length  %}
   {% for quiz in quizs %}
@@ -97,20 +99,20 @@
 {% endif %}
 {% endif %}
 <script type="text/javascript">
-$(document).ready(function(){
-  var x=document.getElementsByClassName('item per')[0];
-  ini=x.getAttribute('data-tab');
-  var y=document.getElementsByClassName('performance')[0];
-  alert(y.getAttribute('data-tab'));
-  y.style.display="block";
-});
-// $('.per').click(function(){
-//   event.preventDefault();
-//   var x = document.getElementById(ini);
-//   num = $(this).attr('data-tab');
-//   var y = document.getElementById(num);
-//   x.style.display = "none";
-//   y.style.display = "block";
+// $(document).ready(function(){
+//   var x=document.getElementsByClassName('item per')[0];
+//   ini=x.getAttribute('data-tab');
+//   var y=document.getElementsByClassName('performance')[0];
+//   // alert(y.getAttribute('data-tab'));
+//   y.style.display="block";
 // });
+$('.per').click(function(){
+  event.preventDefault();
+  var x = document.getElementById(ini);
+  num = $(this).attr('data-tab');
+  var y = document.getElementById(num);
+  x.style.display = "none";
+  y.style.display = "block";
+});
 </script>
 {% endblock %}

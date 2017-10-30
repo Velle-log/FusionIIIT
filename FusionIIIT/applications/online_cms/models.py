@@ -36,6 +36,9 @@ class Quiz(models.Model):
     d_minute = models.CharField(max_length=2)
     negative_marks = models.FloatField(default=0)
     number_of_question=models.IntegerField(default=0)
+    description=models.TextField(max_length=1000)
+    rules=models.TextField(max_length=2000)
+    total_score=models.IntegerField(default=0)
     def __str__(self):
         return '{} - {} - {} - {} - {}'.format(
                 self.pk, self.course_id,
