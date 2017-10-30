@@ -10,7 +10,7 @@ from django.template.loader import get_template
 
 from applications.academic_information.models import Student
 from applications.globals.models import ExtraInfo
-from xhtml2pdf import pisa
+#from xhtml2pdf import pisa
 
 from .forms import AddEducation
 from .models import (Achievement, Course, Education, Experience, Has, Project,

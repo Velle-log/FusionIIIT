@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^vh_booking_request/' , views.booking_request , name ='booking_request'),
     url(r'^view_booking/', views.all_booking, name = 'view_all_booking'),
     url(r'^cancel_booking/', views.cancel_booked_booking, name = 'cancel_booking'),
-    url(r'^checkin/', views.check_in, name = 'cancel_booking'),
+    url(r'^checkin/', views.check_in, name = 'guest check in'),
+    url(r'^checkout/', views.check_out, name = 'guest check out'),
 ]
