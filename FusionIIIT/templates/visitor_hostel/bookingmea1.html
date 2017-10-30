@@ -1,0 +1,21 @@
+
+<html>
+<head>
+	<title>Date Input</title>
+</head>
+<body>
+<center>
+<h1>Meal Booking</h1>
+ <ul class="messages">
+    {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+<form  method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <br>
+    <input type="submit" value="Submit" />
+</form>
+</center>
+</body>
+</html>

@@ -4,7 +4,7 @@ from applications.visitor_hostel.models import *
 from datetime import date
 import datetime
 from django.contrib import messages
-from applications.visitor_hostel.forms import ViewBooking
+from applications.visitor_hostel.forms import *
 
 def visitorhostel(request):
     context = {}
@@ -167,6 +167,7 @@ def check_out(request):
         Book_room.objects.all().filter(br_id=br_id).update(check_out=datetime.datetime.today())
         Room_Status.objects.filter(br_id=br_id).update(status="Available",date='',br_id='')
         print("checkout")
+
     else :
         room_status=Room_Status.objects.filter(status = "CheckedIn")
         book_room = Book_room.objects.all().filter(Booking_to__lte=datetime.datetime.today())
@@ -185,3 +186,68 @@ def check_out(request):
             messages.success(request, 'No guest checked in currently')
             return HttpResponseRedirect('/visitorhostel/vh_homepage/')
         return render(request, "visitor_hostel/checkout1.html" , { 'context' : context})
+
+
+def meal_book(request):
+    if request.method == "POST":
+        form=MealBooking(request.POST)
+        if form.is_valid:
+            br_id=request.POST.getlist('visitor_id')
+            print(br_id)
+            br_id=br_id[0]
+            visitor=Visitor.objects.all().filter(visitor_id=br_id)
+            print(visitor)
+            br_id=visitor[0]
+            date_1=request.POST.getlist('date')
+            if not date_1:
+                form=MealBooking
+                messages.success(request, 'No guest checked in currently')
+                return HttpResponseRedirect('/visitorhostel/bookingmea1.html/')
+            else:
+                date_1=date_1[0]
+
+            m_tea=request.POST.getlist('morning_tea')
+            if m_tea:
+                m_tea=True
+            else:
+                m_tea=False
+
+            e_tea=request.POST.getlist('eve_tea')
+            if e_tea:
+                e_tea=True
+            else:
+                e_tea=False
+
+
+            breakfast=request.POST.getlist('breakfast')
+            if breakfast:
+                breakfast=True
+            else:
+                breakfast=False
+
+
+            lunch=request.POST.getlist('lunch')
+            if lunch:
+                lunch=True
+            else:
+                lunch=False
+
+
+            dinner=request.POST.getlist('dinner')
+            if dinner:
+                dinner=True
+            else:
+                dinner=False
+
+
+            person=request.POST.getlist('persons')[0]
+
+            Meal.objects.create(visitor_id=br_id,morning_tea=m_tea,eve_tea=e_tea,meal_date=date_1,breakfast=breakfast,lunch=lunch,dinner=dinner)
+            print("ok")
+
+        messages.success(request, 'No guest checked in currently')
+        return HttpResponseRedirect('/visitorhostel/vh_homepage/')
+
+    else:
+        form=MealBooking
+        return render(request, "visitor_hostel/bookingmea1.html",{'form':form})
