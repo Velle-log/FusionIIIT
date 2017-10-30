@@ -29,13 +29,12 @@
                 <div class="default text"></div>
                 <div class="menu">
                     {% for assign in assignment %}
-                    <div class="item" data-value="{{assign.pk}}">{{assign.assignment_name}}</div>
+                    <div class="item" name="assign_topic" data-value="{{assign.pk}}">{{assign.assignment_name}}</div>
                     {% endfor %}
                 </div>
             </div>
         </div>
         <div class="field">
-
             <div class="One field">
                 <div class="field">
                     <label> Name</label>
@@ -138,18 +137,21 @@
             <div class="fields">
                 <div class="twelve wide field">
                     <label>Submit Date</label>
+                    <!--
                     <div class="ui calendar" id="submitdate">
                         <div class="ui input left icon">
                             <i class="calendar icon"></i>
                             <input type="text" placeholder="Date">
                         </div>
                     </div>
+-->
+                    <input type="date" id="myDate" name="myDate">
                     <br/>
                 </div>
             </div>
             <div class="fields">
                 <div class="two wide field">
-                    <div class="ui labeled button" id="submit_assignment" tabindex="0">
+                    <div class="ui labeled button" id="add_assignment" tabindex="0">
                         <div class="ui blue button">
                             <i class="save icon"></i>
                         </div>
@@ -202,5 +204,13 @@
 {% endif %}
 
 <script type="text/javascript" src="{% static 'globals/js/semantic.min.js' %}"></script>
-
+<!--
+<script type="text/javascript">
+    $(document).ready(function() {
+        var currentTime = new Date();
+        alert(currentTime);
+        $('#mydate').val(currentTime);
+    });
+</script>
+-->
 {% endblock %}

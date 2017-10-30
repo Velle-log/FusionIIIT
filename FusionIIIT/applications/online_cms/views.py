@@ -141,36 +141,39 @@ def course(request, course_code):
                        'Lecturer':lec
                        })
 
-# @login_required
-# def upload_assignment(request, course_code):
-#     extrainfo = ExtraInfo.objects.get(user=request.user)
-#     if extrainfo.designation.name == "student":
-#         student = Student.objects.get(id=extrainfo)
-#         roll = student.id.id[:4]
-#         course = Course.objects.filter(course_id=course_code, sem=semester(roll))
-#         description = request.POST.get('description')
-#         doc = request.FILES.get('img')
-#         print(doc)
-#         filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
-#         full_path = settings.MEDIA_ROOT+"/online_cms/"+course_code+"/assignment_submission/"+request.user.id+"/"
-#         url = settings.MEDIA_URL+filename
-#         if not os.path.isdir(full_path):
-#             cmd = "mkdir "+full_path
-#             subprocess.call(cmd, shell=True)
-#         fs = FileSystemStorage(full_path, url)
-#         fs.save(doc.name, doc)
-#         uploaded_file_url = "/media/online_cms/"+course_code+"/assignment_submission/"+request.user.id+"/"+doc.name
-#         index = uploaded_file_url.rfind('/')
-#         name = uploaded_file_url[index+1:]
-#         sa=StudentAssignment(
-#             student_id=student,
-#             assignment_id=description,
-#             document_url=uploaded_file_url,
-#             document_name=name
-#         )
-#         return HttpResponse("Upload successful.")
-#     else:
-#         return HttpResponse("not found")
+@login_required
+def upload_assignment(request, course_code):
+    extrainfo = ExtraInfo.objects.get(user=request.user)
+    if extrainfo.designation.name == "student":
+        student = Student.objects.get(id=extrainfo)
+        roll = student.id.id[:4]
+        course = Course.objects.filter(course_id=course_code, sem=semester(roll))
+        description = request.POST.get('description')
+        doc = request.FILES.get('img')
+        print(doc)
+        assi_name=request.POST.get('assign_topic')
+        assign=Assignment.object.get(assignment_name=assi_name  )
+        filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
+        name=request.POST.get('name')
+        full_path = settings.MEDIA_ROOT+"/online_cms/"+course_code+"/assi/"+assi_name+"/"+student.id.id+"/"
+        url = settings.MEDIA_URL+filename
+        if not os.path.isdir(full_path):
+            cmd = "mkdir "+full_path
+            subprocess.call(cmd, shell=True)
+        fs = FileSystemStorage(full_path, url)
+        fs.save(doc.name, doc)
+        uploaded_file_url = "/media/online_cms/"+course_code+"/assi/"+assi_name+"/"+student.id.id+"/"
+        index = uploaded_file_url.rfind('/')
+        
+        sa=StudentAssignment(
+         student_id=student,
+         assignment_id=description,
+         document_url=uploaded_file_url,
+         document_name=name
+        )
+        return HttpResponse("Upload successful.")
+    else:
+        return HttpResponse("not found")
 
 @login_required
 def add_document(request, course_code):
@@ -356,24 +359,26 @@ def add_assignment(request, course_code):
                 course = ins.course_id
         description = request.POST.get('description')
         assi = request.FILES.get('img')
+        name = request.POST.get('name')
         print(assi)
         filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
-        full_path = settings.MEDIA_ROOT+"/online_cms/"+course_code+"/assi/"
+        full_path = settings.MEDIA_ROOT+"/online_cms/"+course_code+"/assi/"+name+"/"
         url = settings.MEDIA_URL+filename
         if not os.path.isdir(full_path):
             cmd = "mkdir "+full_path
             subprocess.call(cmd, shell=True)
         fs = FileSystemStorage(full_path, url)
         fs.save(assi.name, assi)
-        uploaded_file_url = "/media/online_cms/"+course_code+"/assi/"+assi.name
+        uploaded_file_url = "/media/online_cms/"+course_code+"/assi/"+name+"/"+name+".pdf"
         index = uploaded_file_url.rfind('/')
-        name = uploaded_file_url[index+1:]
-        CourseDocuments.objects.create(
+        name = request.POST.get('name')
+        assign=Assignment(
             course_id=course,
-            upload_time=datetime.now(),
+            submit_date=request.POST.get('myDate'),
             assignment_url=uploaded_file_url,
             assignment_name=name
         )
+        assign.save()
         return HttpResponse("Upload successful.")
     else:
         return HttpResponse("not found")

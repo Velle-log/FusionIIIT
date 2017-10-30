@@ -389,6 +389,10 @@
 <script type="text/javascript" src="{% static 'fusion/js/semantic.min.js' %}"></script>
 <script>
     $(document).ready(function() {
+        $('#submitdate').calendar();
+    });
+
+    $(document).ready(function() {
         $('table').tablesort();
     });
 
@@ -447,7 +451,7 @@
         });
     });
 
-    $('#submit_assignment').click(function() {
+    $('#add_assignment').click(function() {
         var data = new FormData();
         var img = $('#assignment')[0].files;
         for (var i = 0; i < img.length; i++) {
@@ -473,33 +477,33 @@
         });
     });
 
-    // $('#submit_assign').click(function(){
-    //   var data = new FormData();
-    //   var img = $('#assign')[0].files;
-    //   alert(img.length)
-    //   for(var i = 0;i<img.length;i++){
-    //         data.append("img", img[i]);
-    //         alert("a");
-    //     }
-    //   data.append('img', img);
-    //   var other_data = $('#form3').serializeArray();
-    //     $.each(other_data,function(key,input){
-    //         data.append(input.name,input.value);
-    //       });
-    //   $.ajax({
-    //     url : "/ocms/{{course.course_id}}/upload_assignment",
-    //     processData : false,
-    //     contentType : false,
-    //     type : 'POST',
-    //     data : data,
-    //     success : function(data){
-    //       alert(data);
-    //     },
-    //     error: function(data,err){
-    //       alert(err.message);
-    //     }
-    // });
-    // });
+    $('#submit_assign').click(function() {
+        var data = new FormData();
+        var img = $('#assign')[0].files;
+        alert(img.length)
+        for (var i = 0; i < img.length; i++) {
+            data.append("img", img[i]);
+            alert("a");
+        }
+        data.append('img', img);
+        var other_data = $('#form3').serializeArray();
+        $.each(other_data, function(key, input) {
+            data.append(input.name, input.value);
+        });
+        $.ajax({
+            url: "/ocms/{{course.course_id}}/upload_assignment",
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            data: data,
+            success: function(data) {
+                alert(data);
+            },
+            error: function(data, err) {
+                alert(err.message);
+            }
+        });
+    });
 
 </script>
 
