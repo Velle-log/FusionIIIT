@@ -19,7 +19,7 @@ from applications.globals.models import ExtraInfo
 
 from .forms import AddDocuments, AddVideos
 from .helpers import semester
-from .models import CourseDocuments, CourseVideo, Forum, ForumReply, Quiz, QuizResult, StudentAssignment, Assignment
+from .models import CourseDocuments, CourseVideo, Forum, ForumReply, Quiz, QuizResult, StudentAssignment, Assignment, QuizQuestion
 
 def create_thumbnail(course,row,name,ext, attach_str, thumb_time, thumb_size):
     # filepath = settings.MEDIA_ROOT + 'online_cms/' + course.course_id + 'vid/' + str(row.name) + '/' + str(row.tutorial_detail_id) + '/'
@@ -85,7 +85,7 @@ def course(request, course_code):
                 marks.append(qs[0])
                 # print(qs.quiz_id.quiz_name)
         # print(len(marks),"DADASDA")
-        lec=0   
+        lec=0
         comments = Forum.objects.filter(course_id=course).order_by('comment_time')
         answers = collections.OrderedDict()
         for comment in comments:
@@ -396,3 +396,22 @@ def add_assignment(request, course_code):
         return HttpResponse("Upload successful.")
     else:
         return HttpResponse("not found")
+
+@login_required
+def quiz(request, quiz_id):
+    quiz=Quiz.objects.get(pk=quiz_id)
+    quizQuestion=QuizQuestion.objects.filter(quiz_id=quiz)
+    length=quiz.number_of_question
+    ques_pk=QuizQuestion.objects.filter(contest_id=contest.pk).values_list('pk',flat=True)
+    random_ques_pk=random.sample(ques_pk,length)
+    shuffed_questions=[]
+    for x in random_ques_pk:
+        shuffed_questions.append(Questions.objects.get(pk=x))
+    end=quiz.end_time
+    now=timezone.now()
+    diff=end-now
+    days, seconds = diff.days, diff.seconds
+    hours = days * 24 + seconds // 3600
+    minutes = (seconds % 3600) // 60
+    seconds = seconds % 60
+    return render (request,'coursemanagement/live_contest.html',{'contest':contest,'ques':shuffed_questions,'profile':profile,'days':days,'hours':hours,'minutes':minutes,'seconds':seconds})

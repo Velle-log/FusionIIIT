@@ -274,12 +274,12 @@
                           <div class="fields">
                             <div class="one wide field">
                               <label><br></label>
-                              <a href="#" >
+                              <!-- <a href="/ocms/quiz/{{quiz.pk}}" > -->
                                 <div class="ui primary button disabled quiz_btn" data-start="{{quiz.start_time|date:'Y-m-d'}}" data-pk="{{quiz.pk}}"id="quiz{{quiz.pk}}">
                                  Enter
                                  <i class="arrow right icon"></i>
                                </div>
-                             </a>
+                             <!-- </a> -->
                            </div>
                          </div>
                         </td>
@@ -434,8 +434,13 @@
             }
           }
           }
-    });
-        function toggleContent() {
+      });
+      $('.quiz_btn').click(function(){
+          var pk=$(this).attr('data-pk');
+          alert('Do not close');
+          window.open('/ocms/quiz/'+pk,'myWindow', "width=1500, height=1000");
+        });
+              function toggleContent() {
             $('.modulesContent').toggle();
             if($('.modulesContent').is(':visible')){
                 $('#toggleIcon').removeClass("chevron down");

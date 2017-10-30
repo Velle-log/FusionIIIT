@@ -12,6 +12,7 @@ urlpatterns = [
     # lecturer
     url(r'^(?P<course_code>[A-z]+[0-9]+)/add_documents$', views.add_document,
         name='add_document'),
+    url(r'^quiz/(?P<quiz_id>[0-9]+)/$', views.quiz,name='quiz'),
     url(r'^(?P<course_code>[A-z]+[0-9]+)/add_assignment$', views.add_assignment,
         name='add_assignment'),
     url(r'^(?P<course_code>[A-z]+[0-9]+)/upload_assignment$', views.upload_assignment,
@@ -26,4 +27,5 @@ urlpatterns = [
         name='ajax_new'),
     url(r'^(?P<course_code>[A-z]+[0-9]+)/ajax_remove$', views.ajax_remove,
         name='ajax_remove'),
+
 ]
