@@ -79,13 +79,13 @@ def course(request, course_code):
         print(QuizResult._meta.get_fields(),"adasd")
         for q in quiz:
             qs=QuizResult.objects.filter(quiz_id=q,student_id=student)
-            # if q.end_time > timezone.now():
-
+            if q.end_time > timezone.now():
+                quizs.append(q)
             if len(qs) is not 0:
                 marks.append(qs[0])
                 # print(qs.quiz_id.quiz_name)
         # print(len(marks),"DADASDA")
-        lec=0
+        lec=0   
         comments = Forum.objects.filter(course_id=course).order_by('comment_time')
         answers = collections.OrderedDict()
         for comment in comments:
@@ -99,6 +99,7 @@ def course(request, course_code):
         return render(request, 'coursemanagement/viewcourse.html',
                       {'course': course[0],
                        'quizs':marks,
+                       'fut_quiz':quizs,
                        'videos':videos,
                        'instructor': instructor,
                        'slides':slides,

@@ -239,30 +239,56 @@
                     </div>
                 </div> -->
                 <div class="ui tab segment" id="1" data-tab="quiz" style="display:block">
-                  <h4 class="ui dividing header">Rules and Regulations of the quiz</h4>
-                    <div class="ui bulleted list">
-                      <div class="item">Gaining Access</div>
-                      <div class="item">Inviting Friends</div>
-                      <div class="item">
-                        <div>Benefits</div>
-                        <div class="list">
-                          <div class="item">Rebates</div>
-                          <div class="item">Discounts</div>
-                        </div>
-                      </div>
-                      <div class="item">Warranty</div>
-                    </div>
-                   <div class="fields">
-                     <div class="one wide field">
-                       <label><br></label>
-                       <a href="#" >
-                         <div class="ui primary button disabled">
-                          Enter
-                          <i class="arrow right icon"></i>
-                        </div>
-                      </a>
-                    </div>
-                  </div>
+                  <h4 class="ui dividing header">Quiz's</h4>
+
+                  <table class="ui very basic collapsing celled table">
+                    <thead>
+                      <tr>
+                        <th>Quiz-Name</th>
+                        <th>Start-Time</th>
+                        <th>End-Time</th>
+                        <th>Duration</th>
+                        <th>Penalty</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for quiz in fut_quiz %}
+                      <tr>
+                        <td>
+                          {{quiz.quiz_name}}
+                        </td>
+                        <td>
+                          {{quiz.start_time}}
+                        </td>
+                        <td>
+                          {{quiz.end_time}}
+                        </td>
+                        <td>
+                        {% if quiz.d_day != '0' %}  {{quiz.d_day}} days {% endif %}{{quiz.d_hour}} hours {% if quiz.d_minute != '0' %}{{quiz.d_minute}} minutes{% endif %}
+                        </td>
+                        <td>
+                          {{quiz.negative_marks}}
+                        </td>
+                        <td>
+                          <div class="fields">
+                            <div class="one wide field">
+                              <label><br></label>
+                              <a href="#" >
+                                <div class="ui primary button disabled quiz_btn" data-start="{{quiz.start_time|date:'Y-m-d'}}" data-pk="{{quiz.pk}}"id="quiz{{quiz.pk}}">
+                                 Enter
+                                 <i class="arrow right icon"></i>
+                               </div>
+                             </a>
+                           </div>
+                         </div>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                    </table>
+
+
                 </div>
 
                 <div class="ui tab" id="2" data-tab="assignment" style="display:none">
@@ -392,7 +418,22 @@
 
     <script>
     $(document).ready(function(){
-      
+      var quiz_btn=document.getElementsByClassName('quiz_btn');
+      for (i = 0; i < quiz_btn.length; i++) {
+          var re = window.setInterval(fun,1000);
+          var pk = quiz_btn[i].getAttribute('data-pk');
+          // alert(pk+"pk");
+          var start = new Date(quiz_btn[i].getAttribute('data-start'));
+
+          function fun()
+          {
+            var now=new Date();
+            if (start < now)
+            {
+              $('#quiz'+pk).removeClass('disabled');
+            }
+          }
+          }
     });
         function toggleContent() {
             $('.modulesContent').toggle();
