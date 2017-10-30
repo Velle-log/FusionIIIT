@@ -291,9 +291,190 @@
 
                 </div>
 
-                <div class="ui tab" id="2" data-tab="assignment" style="display:none">
+                            <div class="ui tab" id="2" data-tab="assignment" style="display:none">
+                <div class="ui pointing secondary menu">
+                    <a class="active item assitabs" data-number="21" data-tab="practice">
+                     Practice
+                 </a>
+
+                    <a class="item assitabs" data-number="22" data-tab="submitassignment">
+                     Submit
+                 </a>
+                </div>
+
+                <div class="ui active tab segment box" id="21" data-tab="practice">
+
+                    <h4 class="ui dividing header">Practice</h4>
+                    <form class="ui form" id="form3" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="field">
+                            <label> Topic</label>
+                            <select class="ui selection dropdown" id="assign_topic">
+              {% for assign in assignment %}
+              <option class="item" name="assign_topic" value="{{assign.pk}}">{{assign.assignment_name}}</option>
+              {% endfor %}
+            </select>
+
+                        </div>
+                        <div class="field">
+                            <div class="One field">
+                                <div class="field">
+                                    <label> Name</label>
+                                    <input placeholder="Name" name="name" type="text">
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="fields">
+                                <div class="twelve wide field">
+                                    <label>Assignment File</label>
+                                    <input placeholder="Assignment File" id="assign" accept=".zip" type="file">
+                                </div>
+                            </div>
+
+                            <div class="fields">
+
+                                <div class="two wide field">
+                                    <div class="ui labeled button" id="submit_assign" tabindex="0">
+                                        <div class="ui blue button">
+                                            <i class="save icon"></i>
+                                        </div>
+                                        <a class="ui basic blue left pointing label">Save</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                    <br>
+                    <h4 class="ui dividing header">Submitted Assignments </h4>
+
+                    <table class="ui fixed single line sortable celled table">
+                        <thead>
+                            <tr>
+                                <th class="sorted ascending" style="width: 20%;">Sr.</th>
+                                <th class="" style="width: 30%;">Name</th>
+                                <th class="" style="width: 25%;">Assignment File</th>
+                                <th class="" style="width:25%">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>1.</td>
+                                <td>Assignment's Name</td>
+                                <td>File URL</td>
+                                <td><i class="edit icon" style="font-size:1.3vw;color:blue"></i><br>
+                                    <i class="trash outline icon" style="font-size:1.3vw;color:red;"></i></td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>Assignment's Name</td>
+                                <td>File URL</td>
+                                <td><i class="edit icon" style="font-size:1.3vw;color:blue"></i><br>
+                                    <i class="trash outline icon" style="font-size:1.3vw;color:red;"></i></td>
+                            </tr>
+                            <tr>
+                                <td>3.</td>
+                                <td>Assignment's Name</td>
+                                <td>File URL</td>
+                                <td><i class="edit icon" style="font-size:1.3vw;color:blue"></i><br>
+                                    <i class="trash outline icon" style="font-size:1.3vw;color:red;"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
 
                 </div>
+
+                <div class="ui tab segment box" id="22" data-tab="submitassignment">
+
+                    <h4 class="ui dividing header">Submit</h4>
+                    <form class="ui form" id="form3" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="field">
+                            <label> Topic</label>
+                            <select class="ui selection dropdown" id="assign_topic">
+              {% for assign in assignment %}
+              <option class="item" name="assign_topic" value="{{assign.pk}}">{{assign.assignment_name}}</option>
+              {% endfor %}
+            </select>
+
+                        </div>
+                        <div class="field">
+                            <div class="One field">
+                                <div class="field">
+                                    <label> Name</label>
+                                    <input placeholder="Name" name="name" type="text">
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="fields">
+                                <div class="twelve wide field">
+                                    <label>Assignment File</label>
+                                    <input placeholder="Assignment File" id="assign" accept=".zip" type="file">
+                                </div>
+                            </div>
+
+                            <div class="fields">
+
+                                <div class="two wide field">
+                                    <div class="ui labeled button" id="submit_assign" tabindex="0">
+                                        <div class="ui blue button">
+                                            <i class="save icon"></i>
+                                        </div>
+                                        <a class="ui basic blue left pointing label">Save</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                    <br>
+                    <h4 class="ui dividing header">Submitted Assignments </h4>
+
+                    <table class="ui fixed single line sortable celled table">
+                        <thead>
+                            <tr>
+                                <th class="sorted ascending" style="width: 20%;">Sr.</th>
+                                <th class="" style="width: 30%;">Name</th>
+                                <th class="" style="width: 25%;">Assignment File</th>
+                                <th class="" style="width:25%">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>1.</td>
+                                <td>Assignment's Name</td>
+                                <td>File URL</td>
+                                <td><i class="edit icon" style="font-size:1.3vw;color:blue"></i><br>
+                                    <i class="trash outline icon" style="font-size:1.3vw;color:red;"></i></td>
+                            </tr>
+                            <tr>
+                                <td>2.</td>
+                                <td>Assignment's Name</td>
+                                <td>File URL</td>
+                                <td><i class="edit icon" style="font-size:1.3vw;color:blue"></i><br>
+                                    <i class="trash outline icon" style="font-size:1.3vw;color:red;"></i></td>
+                            </tr>
+                            <tr>
+                                <td>3.</td>
+                                <td>Assignment's Name</td>
+                                <td>File URL</td>
+                                <td><i class="edit icon" style="font-size:1.3vw;color:blue"></i><br>
+                                    <i class="trash outline icon" style="font-size:1.3vw;color:red;"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
                 <div class="ui tab segment" id="3" data-tab="videos" style="display:none">
                     <div class="ui four column grid">
                         <div class="row">
@@ -464,6 +645,19 @@
         ini = num;
     });
 
+        var assini = 21;
+    $('.assitabs').click(function() {
+        event.preventDefault();
+        var x = document.getElementById(assini);
+        num = $(this).attr('data-number');
+        var y = document.getElementById(num);
+        x.style.display = "none";
+        y.style.display = "block";
+        y.addClass = "active";
+        x.removeClass = "active";
+        assini = num;
+    });
+        
     var sideini = 11;
     $('.sidetab').click(function() {
         event.preventDefault();
