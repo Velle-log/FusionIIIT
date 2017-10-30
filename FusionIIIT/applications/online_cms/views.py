@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+from django.utils import timezone
 
 from applications.academic_information.models import (Course, Instructor,
                                                       Student)
@@ -73,10 +74,13 @@ def course(request, course_code):
         slides=CourseDocuments.objects.filter(course_id=course[0])
         quiz=Quiz.objects.filter(course_id=course)
         marks=[]
+        quizs=[]
         assignment=Assignment.objects.filter(course_id=course[0])
         print(QuizResult._meta.get_fields(),"adasd")
         for q in quiz:
             qs=QuizResult.objects.filter(quiz_id=q,student_id=student)
+            # if q.end_time > timezone.now():
+
             if len(qs) is not 0:
                 marks.append(qs[0])
                 # print(qs.quiz_id.quiz_name)

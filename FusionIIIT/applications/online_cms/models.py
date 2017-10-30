@@ -92,7 +92,7 @@ class StudentAssignment(models.Model):
     assignment_id = models.ForeignKey(Assignment, on_delete=models.CASCADE)
     upload_time = models.DateTimeField(auto_now=True)
     upload_url = models.TextField(max_length=200)
-    score = models.IntegerField()
+    score = models.IntegerField(null=True)
     feedback = models.CharField(max_length=100)
     assign_name=models.CharField(max_length=100)
     def __str__(self):
