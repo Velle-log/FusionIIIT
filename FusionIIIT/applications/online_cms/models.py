@@ -94,7 +94,7 @@ class StudentAssignment(models.Model):
     upload_url = models.TextField(max_length=200)
     score = models.IntegerField()
     feedback = models.CharField(max_length=100)
-
+    assign_name=models.CharField(max_length=100)
     def __str__(self):
         return '{} - {} - {} - {} - {}'.format(
                 self.pk, self.student_id,

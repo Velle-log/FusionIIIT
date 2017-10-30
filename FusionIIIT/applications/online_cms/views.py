@@ -20,12 +20,12 @@ from .forms import AddDocuments, AddVideos
 from .helpers import semester
 from .models import CourseDocuments, CourseVideo, Forum, ForumReply, Quiz, QuizResult, StudentAssignment, Assignment
 
-def create_thumbnail(course,row, attach_str, thumb_time, thumb_size):
+def create_thumbnail(course,row,name,ext, attach_str, thumb_time, thumb_size):
     # filepath = settings.MEDIA_ROOT + 'online_cms/' + course.course_id + 'vid/' + str(row.name) + '/' + str(row.tutorial_detail_id) + '/'
-    filepath = settings.MEDIA_ROOT + '/online_cms/' + course.course_id + '/vid/' + str(row.video_name)
+    filepath = settings.MEDIA_ROOT + '/online_cms/' + course.course_id + '/vid/' + name+ ext
     print(filepath)
     video_name=row.video_name[:-4]
-    filename =settings.MEDIA_ROOT + '/online_cms/' + course.course_id + '/vid/' + video_name.replace(' ', '-') + '-' + attach_str + '.png'
+    filename =settings.MEDIA_ROOT + '/online_cms/' + course.course_id + '/vid/' + name.replace(' ', '-') + '-' + attach_str + '.png'
     print (filename)
     # try:
         #process = subprocess.Popen(['/usr/bin/ffmpeg', '-i ' + filepath + row.video + ' -r ' + str(30) + ' -ss ' + str(thumb_time) + ' -s ' + thumb_size + ' -vframes ' + str(1) + ' -f ' + 'image2 ' + filepath + filename], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -148,29 +148,32 @@ def upload_assignment(request, course_code):
         student = Student.objects.get(id=extrainfo)
         roll = student.id.id[:4]
         course = Course.objects.filter(course_id=course_code, sem=semester(roll))
-        description = request.POST.get('description')
         doc = request.FILES.get('img')
-        print(doc)
-        assi_name=request.POST.get('assign_topic')
-        assign=Assignment.object.get(assignment_name=assi_name  )
-        filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
+
+        assi_name=request.POST.get('assignment_topic')
+        print(type(assi_name),"asdada")
         name=request.POST.get('name')
-        full_path = settings.MEDIA_ROOT+"/online_cms/"+course_code+"/assi/"+assi_name+"/"+student.id.id+"/"
+        print(assi_name,"ADasd")
+        assign=Assignment.objects.get(pk=assi_name)
+        filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
+        filename=name
+        full_path = settings.MEDIA_ROOT+"/online_cms/"+course_code+"/assi/"+assign.assignment_name+"/"+student.id.id+"/"
         url = settings.MEDIA_URL+filename
         if not os.path.isdir(full_path):
             cmd = "mkdir "+full_path
             subprocess.call(cmd, shell=True)
         fs = FileSystemStorage(full_path, url)
         fs.save(doc.name, doc)
-        uploaded_file_url = "/media/online_cms/"+course_code+"/assi/"+assi_name+"/"+student.id.id+"/"
+        uploaded_file_url = "/media/online_cms/"+course_code+"/assi/"+assign.assignment_name+"/"+student.id.id+"/"+name+file_extenstion
         index = uploaded_file_url.rfind('/')
-        
+
         sa=StudentAssignment(
          student_id=student,
-         assignment_id=description,
-         document_url=uploaded_file_url,
-         document_name=name
+         assignment_id=assign,
+         upload_url=uploaded_file_url[:-4],
+         assign_name=name+file_extenstion
         )
+        sa.save()
         return HttpResponse("Upload successful.")
     else:
         return HttpResponse("not found")
@@ -187,23 +190,25 @@ def add_document(request, course_code):
         description = request.POST.get('description')
         doc = request.FILES.get('img')
         print(doc)
+        name = request.POST.get('name')
         filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
+        filename=name
         full_path = settings.MEDIA_ROOT+"/online_cms/"+course_code+"/doc/"
-        url = settings.MEDIA_URL+filename
+        url = settings.MEDIA_URL+filename+file_extenstion
         if not os.path.isdir(full_path):
             cmd = "mkdir "+full_path
             subprocess.call(cmd, shell=True)
         fs = FileSystemStorage(full_path, url)
-        fs.save(doc.name, doc)
-        uploaded_file_url = "/media/online_cms/"+course_code+"/doc/"+doc.name
+        fs.save(filename+file_extenstion, doc)
+        uploaded_file_url = "/media/online_cms/"+course_code+"/doc/"+filename+file_extenstion
         index = uploaded_file_url.rfind('/')
-        name = uploaded_file_url[index+1:]
+
         CourseDocuments.objects.create(
             course_id=course,
             upload_time=datetime.now(),
             description=description,
-            document_url=uploaded_file_url,
-            document_name=name
+            document_url=uploaded_file_url[:-4],
+            document_name=name+file_extenstion
         )
         return HttpResponse("Upload successful.")
     else:
@@ -225,26 +230,29 @@ def add_videos(request, course_code):
         vid = request.FILES.get('img')
         # name =request.POST.get('name')
         print (vid)
+        name=request.POST.get('name')
         filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
+        filename=name
+        print(filename)
         full_path = settings.MEDIA_ROOT+"/online_cms/"+course_code+"/vid/"
-        url = settings.MEDIA_URL+filename
+        url = settings.MEDIA_URL+filename+file_extenstion
         if not os.path.isdir(full_path):
             cmd = "mkdir "+full_path
             subprocess.call(cmd, shell=True)
         fs = FileSystemStorage(full_path, url)
-        fs.save(vid.name, vid)
-        uploaded_file_url = "/media/online_cms/"+course_code+"/vid/"+vid.name
+        fs.save(filename+file_extenstion, vid)
+        uploaded_file_url = "/media/online_cms/"+course_code+"/vid/"+filename+file_extenstion
         index = uploaded_file_url.rfind('/')
-        name=uploaded_file_url[index+1:]
+
         video=CourseVideo.objects.create(
             course_id=course,
             upload_time=datetime.now(),
             description=description,
-            video_url=uploaded_file_url[:-4],
+            video_url=uploaded_file_url,
             video_name=name
         )
-        create_thumbnail(course,video, 'Big',1, '700:500')
-        create_thumbnail(course,video, 'Small',1, '170:127')
+        create_thumbnail(course,video,name, file_extenstion,'Big',1, '700:500')
+        create_thumbnail(course,video,name,file_extenstion, 'Small',1, '170:127')
         print (request.POST.get('name'))
         return HttpResponse("Upload successful.")
         # elif form.errors:
@@ -362,6 +370,7 @@ def add_assignment(request, course_code):
         name = request.POST.get('name')
         print(assi)
         filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
+        filename=name
         full_path = settings.MEDIA_ROOT+"/online_cms/"+course_code+"/assi/"+name+"/"
         url = settings.MEDIA_URL+filename
         if not os.path.isdir(full_path):
@@ -369,7 +378,7 @@ def add_assignment(request, course_code):
             subprocess.call(cmd, shell=True)
         fs = FileSystemStorage(full_path, url)
         fs.save(assi.name, assi)
-        uploaded_file_url = "/media/online_cms/"+course_code+"/assi/"+name+"/"+name+".pdf"
+        uploaded_file_url = "/media/online_cms/"+course_code+"/assi/"+name+"/"+name+file_extenstion
         index = uploaded_file_url.rfind('/')
         name = request.POST.get('name')
         assign=Assignment(

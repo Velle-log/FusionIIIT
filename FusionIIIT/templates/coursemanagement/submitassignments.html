@@ -21,18 +21,15 @@
 
     <h4 class="ui dividing header">Submit Assignment</h4>
     <form class="ui form" id="form3" enctype="multipart/form-data">
+      {% csrf_token %}
         <div class="field">
             <label> Topic</label>
-            <div class="ui selection dropdown">
-                <input type="hidden" name="topic">
-                <i class="dropdown icon"></i>
-                <div class="default text"></div>
-                <div class="menu">
-                    {% for assign in assignment %}
-                    <div class="item" name="assign_topic" data-value="{{assign.pk}}">{{assign.assignment_name}}</div>
-                    {% endfor %}
-                </div>
-            </div>
+            <select class="ui selection dropdown"  id="assign_topic">
+              {% for assign in assignment %}
+              <option class="item" name="assign_topic" value="{{assign.pk}}">{{assign.assignment_name}}</option>
+              {% endfor %}
+            </select>
+
         </div>
         <div class="field">
             <div class="One field">

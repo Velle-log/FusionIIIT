@@ -480,7 +480,8 @@
     $('#submit_assign').click(function() {
         var data = new FormData();
         var img = $('#assign')[0].files;
-        alert(img.length)
+        var selectedValue = $('#assign_topic').val();
+        alert(selectedValue)
         for (var i = 0; i < img.length; i++) {
             data.append("img", img[i]);
             alert("a");
@@ -490,6 +491,7 @@
         $.each(other_data, function(key, input) {
             data.append(input.name, input.value);
         });
+        data.append('assignment_topic',selectedValue);
         $.ajax({
             url: "/ocms/{{course.course_id}}/upload_assignment",
             processData: false,
