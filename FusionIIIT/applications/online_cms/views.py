@@ -3,6 +3,7 @@ import json
 import os
 import subprocess
 import collections
+import random
 from datetime import datetime
 
 from django.conf import settings
@@ -402,8 +403,9 @@ def quiz(request, quiz_id):
     quiz=Quiz.objects.get(pk=quiz_id)
     quizQuestion=QuizQuestion.objects.filter(quiz_id=quiz)
     length=quiz.number_of_question
-    ques_pk=QuizQuestion.objects.filter(contest_id=contest.pk).values_list('pk',flat=True)
-    random_ques_pk=random.sample(ques_pk,length)
+    ques_pk=QuizQuestion.objects.filter(quiz_id=quiz).values_list('pk',flat=True)
+    print(type(ques_pk))
+    random_ques_pk=random.sample(list(ques_pk),length)
     shuffed_questions=[]
     for x in random_ques_pk:
         shuffed_questions.append(Questions.objects.get(pk=x))
@@ -414,4 +416,5 @@ def quiz(request, quiz_id):
     hours = days * 24 + seconds // 3600
     minutes = (seconds % 3600) // 60
     seconds = seconds % 60
-    return render (request,'coursemanagement/live_contest.html',{'contest':contest,'ques':shuffed_questions,'profile':profile,'days':days,'hours':hours,'minutes':minutes,'seconds':seconds})
+    print(days,hours,minutes,seconds)
+    return render (request,'coursemanagement/quiz.html',{'contest':quiz,'ques':shuffed_questions,'days':days,'hours':hours,'minutes':minutes,'seconds':seconds})
