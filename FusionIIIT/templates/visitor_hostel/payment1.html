@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>checkout</title>
+</head>
+<body>
+<form  method="post">
+    {% for context1 in context %}
+    <div class="context">
+        
+            <h1>{{br_id}}</h1>
+            <h2>{{mess_bill}}</h2>
+            <h2>{{room_bill}}</h2>
+     </div>
+	{% endfor %}
+    <br>
+    <input type="submit" value="Submit" />
+</form>
+</body>
+</html>

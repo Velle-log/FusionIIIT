@@ -160,13 +160,59 @@ def check_in(request):
             return HttpResponseRedirect('/visitorhostel/vh_homepage/')
         return render(request, "visitor_hostel/checkin1.html" , { 'context' : context})
 
+
+
+
+
 def check_out(request):
     if request.method =='POST' :
-        br_id=request.POST.getlist('checkedin')[0]
+        br_id=request.POST.getlist('checkout')[0]
         book_room=Book_room.objects.all().filter(br_id=br_id)
-        Book_room.objects.all().filter(br_id=br_id).update(check_out=datetime.datetime.today())
-        Room_Status.objects.filter(br_id=br_id).update(status="Available",date='',br_id='')
-        print("checkout")
+        book_room=book_room[0]
+        #Book_room.objects.all().filter(br_id=br_id).update(check_out=datetime.datetime.today())
+        #Room_Status.objects.filter(br_id=br_id).update(status="Available",date='',br_id='')
+        print(book_room)
+        days=(datetime.date.today() - book_room.check_in).days
+        v_id=book_room.visitor_id
+        category=book_room.visitor_category
+        person=book_room.person_count
+        room_bill=0
+        if category ==' A':
+            room_bill=0
+        elif category== 'B':
+            room_bill=days*400*(person/2) + days*500*(person%2)
+        elif category=='C':
+            room_bill=days*800*(person/2) + days*1000*(person%2)
+        else:
+            room_bill=days*1400*(person/2) + days*1600*(person%2)
+
+
+        mess_bill=0
+        meal=Meal.objects.all().filter(visitor_id=v_id).distinct()
+        print(meal)
+        for m in meal:
+            mess_bill1=0
+            if m.morning_tea==True:
+                mess_bill1=mess_bill1+ m.persons*10
+                print(mess_bill1)
+            if m.eve_tea==True:
+                mess_bill1=mess_bill1+m.persons*10
+            if m.breakfast==True:
+                mess_bill1=mess_bill1+m.persons*50
+            if m.lunch==True:
+                m_bill1=mess_bill1+m.persons*100
+            if m.dinner==True:
+                m_bill1=mess_bill1+m.persons*100
+
+            if mess_bill1==m.persons*270:
+                mess_bill=mess_bill+225*m.persons
+            else:
+                    mess_bill=mess_bill + mess_bill1
+
+        context = {'br_id':'br_id','mess_bill':'mess_bill','room_bill':'room_bill'}
+        print(context)
+        return render(request, "visitor_hostel/payment1.html" , { 'context' : context})
+        
 
     else :
         room_status=Room_Status.objects.filter(status = "CheckedIn")
@@ -186,6 +232,15 @@ def check_out(request):
             messages.success(request, 'No guest checked in currently')
             return HttpResponseRedirect('/visitorhostel/vh_homepage/')
         return render(request, "visitor_hostel/checkout1.html" , { 'context' : context})
+
+
+
+
+
+
+
+
+
 
 
 def meal_book(request):
