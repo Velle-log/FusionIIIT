@@ -4,7 +4,7 @@ import os
 import subprocess
 import collections
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -410,7 +410,8 @@ def quiz(request, quiz_id):
     for x in random_ques_pk:
         shuffed_questions.append(Questions.objects.get(pk=x))
     end=quiz.end_time
-    now=timezone.now()
+    now=timezone.now()+timedelta(hours=5.5)
+    print(end,now)
     diff=end-now
     days, seconds = diff.days, diff.seconds
     hours = days * 24 + seconds // 3600
