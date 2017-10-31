@@ -4,8 +4,8 @@ import os
 import subprocess
 import collections
 import random
-from datetime import datetime, timedelta
-
+from datetime import datetime, timedelta, date ,time
+from django.shortcuts import redirect
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.files.storage import FileSystemStorage
@@ -17,10 +17,9 @@ from applications.academic_information.models import (Course, Instructor,
                                                       Student)
 from applications.academic_procedures.models import Register
 from applications.globals.models import ExtraInfo
-
-from .forms import AddDocuments, AddVideos
+from .forms import QuizForm, QuestionFormObjective
 from .helpers import semester
-from .models import CourseDocuments, CourseVideo, Forum, ForumReply, Quiz, QuizResult, StudentAssignment, Assignment, QuizQuestion
+from .models import CourseDocuments, CourseVideo, Forum, ForumReply, Quiz, QuizResult, StudentAssignment, Assignment, QuizQuestion, StudentAnswer
 
 def create_thumbnail(course,row,name,ext, attach_str, thumb_time, thumb_size):
     # filepath = settings.MEDIA_ROOT + 'online_cms/' + course.course_id + 'vid/' + str(row.name) + '/' + str(row.tutorial_detail_id) + '/'
@@ -76,16 +75,19 @@ def course(request, course_code):
         quiz=Quiz.objects.filter(course_id=course)
         marks=[]
         quizs=[]
+        marks_pk=[]
         assignment=Assignment.objects.filter(course_id=course[0])
-        print(QuizResult._meta.get_fields(),"adasd")
+        # print(QuizResult._meta.get_fields(),"adasd")
         for q in quiz:
             qs=QuizResult.objects.filter(quiz_id=q,student_id=student)
+            qs_pk=QuizResult.objects.filter(quiz_id=q,student_id=student).values_list('quiz_id',flat=True)
             if q.end_time > timezone.now():
                 quizs.append(q)
             if len(qs) is not 0:
                 marks.append(qs[0])
+                marks_pk.append(qs_pk[0])
                 # print(qs.quiz_id.quiz_name)
-        # print(len(marks),"DADASDA")
+        print(len(marks),"DADASDA")
         lec=0
         comments = Forum.objects.filter(course_id=course).order_by('comment_time')
         answers = collections.OrderedDict()
@@ -97,9 +99,11 @@ def course(request, course_code):
                 # answers['{}'.format(comment.pk)]=fr1
                 print(comment.comment)
                 answers[comment]=fr1
+        print(quizs,marks_pk)
         return render(request, 'coursemanagement/viewcourse.html',
                       {'course': course[0],
                        'quizs':marks,
+                       'quizs_pk':marks_pk,
                        'fut_quiz':quizs,
                        'videos':videos,
                        'instructor': instructor,
@@ -121,11 +125,19 @@ def course(request, course_code):
         lec=1
         videos=CourseVideo.objects.filter(course_id=course)
         slides=CourseDocuments.objects.filter(course_id=course)
-        quizs=Quiz.objects.filter(course_id=course)
+        quiz=Quiz.objects.filter(course_id=course)
         marks=[]
-        for quiz in quizs:
-            qs=QuizResult.objects.filter(quiz_id=quiz)
-            marks.append(qs)
+        quizs=[]
+        assignment=Assignment.objects.filter(course_id=course)
+        # print(QuizResult._meta.get_fields(),"adasd")
+        for q in quiz:
+            qs=QuizResult.objects.filter(quiz_id=q)
+            if q.end_time > timezone.now():
+                quizs.append(q)
+            if len(qs) is not 0:
+                marks.append(qs)
+                # print(qs.quiz_id.quiz_name)
+        print(len(qs))
         comments = Forum.objects.filter(course_id=course).order_by('comment_time')
         answers = collections.OrderedDict()
         for comment in comments:
@@ -139,6 +151,7 @@ def course(request, course_code):
         return render(request, 'coursemanagement/viewcourse.html',
                       {'instructor': instructor,
                        'extrainfo': extrainfo,
+                       'fut_quiz':quizs,
                        'quizs':marks,
                        'videos':videos,
                        'slides':slides,
@@ -254,7 +267,7 @@ def add_videos(request, course_code):
             course_id=course,
             upload_time=datetime.now(),
             description=description,
-            video_url=uploaded_file_url,
+            video_url=uploaded_file_url[:-4],
             video_name=name
         )
         create_thumbnail(course,video,name, file_extenstion,'Big',1, '700:500')
@@ -270,7 +283,16 @@ def add_videos(request, course_code):
 @login_required
 def forum(request, course_code):
     #take care od sem
-    course=Course.objects.get(course_id=course_code, sem=5)
+    extrainfo = ExtraInfo.objects.get(user=request.user)
+    if extrainfo.designation.name == "student":
+        student = Student.objects.get(id=extrainfo)
+        roll = student.id.id[:4]
+        course=Course.objects.get(course_id=course_code, sem=semester(roll))
+    else:
+        instructor = Instructor.objects.filter(instructor_id=extrainfo)
+        for ins in instructor:
+            if ins.course_id.course_id == course_code:
+                course = ins.course_id
     comments = Forum.objects.filter(course_id=course).order_by('comment_time')
     instructor = Instructor.objects.get(course_id=course)
     if instructor.instructor_id.user.pk == request.user.pk:
@@ -295,7 +317,16 @@ def forum(request, course_code):
 
 @login_required
 def ajax_reply(request, course_code):
-    course = Course.objects.get(course_id=course_code, sem=5)
+    extrainfo = ExtraInfo.objects.get(user=request.user)
+    if extrainfo.designation.name == "student":
+        student = Student.objects.get(id=extrainfo)
+        roll = student.id.id[:4]
+        course=Course.objects.get(course_id=course_code, sem=semester(roll))
+    else:
+        instructor = Instructor.objects.filter(instructor_id=extrainfo)
+        for ins in instructor:
+            if ins.course_id.course_id == course_code:
+                course = ins.course_id
     ex = ExtraInfo.objects.get(user=request.user)
     f = Forum(
         course_id=course,
@@ -321,7 +352,16 @@ def ajax_reply(request, course_code):
 
 @login_required
 def ajax_new(request, course_code):
-    course = Course.objects.get(course_id=course_code, sem=5)
+    extrainfo = ExtraInfo.objects.get(user=request.user)
+    if extrainfo.designation.name == "student":
+        student = Student.objects.get(id=extrainfo)
+        roll = student.id.id[:4]
+        course=Course.objects.get(course_id=course_code, sem=semester(roll))
+    else:
+        instructor = Instructor.objects.filter(instructor_id=extrainfo)
+        for ins in instructor:
+            if ins.course_id.course_id == course_code:
+                course = ins.course_id
     ex = ExtraInfo.objects.get(user=request.user)
     f = Forum(
         course_id=course,
@@ -338,7 +378,16 @@ def ajax_new(request, course_code):
 
 @login_required
 def ajax_remove(request, course_code):
-    course = Course.objects.get(course_id=course_code, sem=5)
+    extrainfo = ExtraInfo.objects.get(user=request.user)
+    if extrainfo.designation.name == "student":
+        student = Student.objects.get(id=extrainfo)
+        roll = student.id.id[:4]
+        course=Course.objects.get(course_id=course_code, sem=semester(roll))
+    else:
+        instructor = Instructor.objects.filter(instructor_id=extrainfo)
+        for ins in instructor:
+            if ins.course_id.course_id == course_code:
+                course = ins.course_id
     ex = ExtraInfo.objects.get(user=request.user)
     f = Forum.objects.get(
         pk=request.POST.get('question')
@@ -400,22 +449,191 @@ def add_assignment(request, course_code):
 
 @login_required
 def quiz(request, quiz_id):
-    quiz=Quiz.objects.get(pk=quiz_id)
-    quizQuestion=QuizQuestion.objects.filter(quiz_id=quiz)
-    length=quiz.number_of_question
-    ques_pk=QuizQuestion.objects.filter(quiz_id=quiz).values_list('pk',flat=True)
-    print(type(ques_pk))
-    random_ques_pk=random.sample(list(ques_pk),length)
-    shuffed_questions=[]
-    for x in random_ques_pk:
-        shuffed_questions.append(Questions.objects.get(pk=x))
-    end=quiz.end_time
-    now=timezone.now()+timedelta(hours=5.5)
-    print(end,now)
-    diff=end-now
-    days, seconds = diff.days, diff.seconds
-    hours = days * 24 + seconds // 3600
-    minutes = (seconds % 3600) // 60
-    seconds = seconds % 60
-    print(days,hours,minutes,seconds)
-    return render (request,'coursemanagement/quiz.html',{'contest':quiz,'ques':shuffed_questions,'days':days,'hours':hours,'minutes':minutes,'seconds':seconds})
+    user=request.user
+    extrainfo = ExtraInfo.objects.get(user=user)
+    if extrainfo.user_type == 'student':
+        student = Student.objects.get(id=extrainfo)
+        roll = student.id.id[:4]
+        quiz=Quiz.objects.get(pk=quiz_id)
+        quizQuestion=QuizQuestion.objects.filter(quiz_id=quiz)
+        length=quiz.number_of_question
+        ques_pk=QuizQuestion.objects.filter(quiz_id=quiz).values_list('pk',flat=True)
+        print(len(ques_pk),length)
+        random_ques_pk=random.sample(list(ques_pk),length)
+        shuffed_questions=[]
+        for x in random_ques_pk:
+            shuffed_questions.append(QuizQuestion.objects.get(pk=x))
+        end=quiz.end_time
+        now=timezone.now()+timedelta(hours=5.5)
+        print(end,now)
+        diff=end-now
+        days, seconds = diff.days, diff.seconds
+        hours = days * 24 + seconds // 3600
+        minutes = (seconds % 3600) // 60
+        seconds = seconds % 60
+        print(days,hours,minutes,seconds)
+        return render (request,'coursemanagement/quiz.html',{'contest':quiz,'ques':shuffed_questions,'days':days,'hours':hours,'minutes':minutes,'seconds':seconds})
+    else:
+        return HttpResponse("unautherized Access!!It will be reported!!")
+
+@login_required
+def ajax_q(request,quiz_code):
+    user=request.user
+    extrainfo = ExtraInfo.objects.get(user=user)
+    student = Student.objects.get(id=extrainfo)
+    q = request.POST.get('question');
+    ques=QuizQuestion.objects.get(pk=q)
+    quiz_id=Quiz.objects.get(pk=ques.quiz_id.pk)
+    ans=int(request.POST.get('answer'))
+    lead = StudentAnswer.objects.filter(quiz_id=quiz_id,question_id=ques,student_id=student)
+    if lead:
+        lead = lead[0]
+        lead.choice=ans
+        lead.save()
+    else:
+        lead=StudentAnswer(quiz_id=quiz_id,question_id=ques,student_id=student,choice=ans)
+        lead.save()
+    data = { 'status': "1" }
+    return HttpResponse(json.dumps(data), content_type='application/json')
+
+@login_required
+def submit(request,quiz_code):
+    ei=ExtraInfo.objects.get(user=request.user)
+    student=Student.objects.get(id=ei)
+    quiz=Quiz.objects.get(pk=quiz_code)
+    stu_ans=StudentAnswer.objects.filter(student_id=student,quiz_id=quiz)
+    score=0
+    for s_ans in stu_ans:
+        if s_ans.question_id.answer == s_ans.choice:
+            score+=s_ans.question_id.marks
+        else:
+            score-=(s_ans.quiz_id.negative_marks*s_ans.question_id.marks)
+    # quiz_res=QuizResult.objects.filter(quiz_id=quiz,student_id=request.user)
+    quiz_res=QuizResult(
+        quiz_id=quiz,
+        student_id=student,
+        score=score,
+        finished=True
+    )
+    quiz_res.save()
+    print ("!!!")
+    print(score)
+    data={'message':'you have submitted, cant enter again now','score':quiz_res.score}
+    return HttpResponse(json.dumps(data),content_type="application/json")
+
+@login_required
+def create_quiz(request, course_code):
+    extrainfo = ExtraInfo.objects.get(user=request.user)
+
+    if extrainfo.user_type == 'faculty':
+        instructor = Instructor.objects.filter(instructor_id=extrainfo)
+        for ins in instructor:
+            if ins.course_id.course_id == course_code:
+                course = ins.course_id
+        form = QuizForm(request.POST or None)
+        errors=None
+        if form.is_valid():
+            # print "yes"
+            st_time=form.cleaned_data['starttime']
+            k1=st_time.hour
+            k2=st_time.minute
+            k3=st_time.second
+            start_date_time=datetime.combine(form.cleaned_data['startdate'],time(k1,k2,k3))
+            st_time=form.cleaned_data['endtime']
+            k1=st_time.hour
+            k2=st_time.minute
+            k3=st_time.second
+            end_date_time=datetime.combine(form.cleaned_data['enddate'],time(k1,k2,k3))
+            duration=end_date_time - start_date_time
+            days, seconds = duration.days, duration.seconds
+            hours = days * 24 + seconds // 3600
+            minutes = (seconds % 3600) // 60
+            # prizes=form.cleaned_data['prizes'].replace('\r\n','/')
+            description=form.cleaned_data['description'].replace('\r\n','/')
+            rules=form.cleaned_data['rules'].replace('\r\n','/')
+            obj=Quiz.objects.create(
+                course_id=course,
+                quiz_name=form.cleaned_data['name'],
+                description=description,
+                rules=rules,
+                negative_marks=form.cleaned_data['negative_marks'],
+                start_time=start_date_time,
+                end_time=end_date_time,
+                d_day=days,
+                d_hour=hours,
+                d_minute=minutes,
+                            )
+            # print "Done"
+            return redirect('/ocms/'+course_code+'/edit_quiz/'+str(obj.pk))
+            '''except:
+                return HttpResponse('Unexpected Error')'''
+        if form.errors:
+            errors=form.errors
+        return render(request, 'coursemanagement/createcontest.html', {'form': form,'errors':errors})
+
+    else:
+        return HttpResponse("unautherized Access!!It will be reported!!")
+
+@login_required
+def edit_quiz(request,course_code,quiz_code):
+    extrainfo = ExtraInfo.objects.get(user=request.user)
+    if extrainfo.user_type == 'faculty':
+        instructor = Instructor.objects.filter(instructor_id=extrainfo)
+        for ins in instructor:
+            if ins.course_id.course_id == course_code:
+                course = ins.course_id
+        errors=None
+        quiz=Quiz.objects.get(pk=quiz_code)
+        if request.method == 'POST':
+            form = QuestionFormObjective(request.POST,request.FILES)
+            if(form.is_valid()):
+                image=request.FILES['image']
+                filename, file_extenstion=os.path.splitext(request.FILES['image'].name)
+                full_path=settings.MEDIA_ROOT+"/online_cms/"+course_code+"/quiz/"+quiz_code+"/"
+                url=settings.MEDIA_URL+filename
+                if not os.path.isdir(full_path):
+                    cmd="mkdir "+full_path
+                    subprocess.call(cmd,shell=True)
+                fs = FileSystemStorage(full_path,url)
+                file_name = fs.save(image.name, image)
+                uploaded_file_url = "/media/online_cms/"+course_code+"/quiz/"+quiz_code+"/"+image.name
+                # print uploaded_file_url
+                options1=form.cleaned_data['option1']
+                options2=form.cleaned_data['option2']
+                options3=form.cleaned_data['option3']
+                options4=form.cleaned_data['option4']
+                options5=form.cleaned_data['option5']
+                obj=QuizQuestion.objects.create(
+                quiz_id=quiz,
+                image=uploaded_file_url,
+                question=form.cleaned_data['problem_statement'],
+                marks=form.cleaned_data['score'],
+                answer=form.cleaned_data['answer'],
+                options1=options1,options2=options2,options3=options3,options4=options4,options5=options5,
+                )
+                # print "HOGAYA"
+                quiz.total_score+=form.cleaned_data['score'];
+                quiz.number_of_question+=1
+                quiz.save();
+                obj3=QuizQuestion.objects.filter(quiz_id=quiz)
+                # print obj3
+                # return render(request,'/quiz/'+'edit_contest/'+str(obj.pk), {'form1': form1 ,'form2':form2,'obj':obj3})
+                return redirect('/ocms/'+course_code+'/edit_quiz/'+str(quiz.pk))
+            elif(form.errors):
+                errors=form.errors
+        else:
+            form = QuestionFormObjective()
+            questions=QuizQuestion.objects.filter(quiz_id=quiz)
+            st=quiz.start_time
+            end_time=quiz.end_time
+            # prizes=obj.prizes
+            # prizes=[z.encode('ascii','ignore') for z in prizes.split('/')]
+            # print prizes
+            description=quiz.description
+            description=[z.encode('ascii','ignore') for z in description.split('/')]
+            rules=quiz.rules
+            rules=[z.encode('ascii','ignore') for z in rules.split('/')]
+            # details={'cname':obj.contest_name,'description':obj.description,'c_type':obj.c_type,'rules':obj.rules,'starttime':st,'endtime':end_time}
+            return render(request, 'coursemanagement/editcontest.html',{'form':form,'details':quiz,'course':course,'questions':questions,'description':description,'rules':rules})
+    else:
+        return HttpResponse("unautherized Access!!It will be reported!!")

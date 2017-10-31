@@ -36,6 +36,9 @@ class Quiz(models.Model):
     d_minute = models.CharField(max_length=2)
     negative_marks = models.FloatField(default=0)
     number_of_question=models.IntegerField(default=0)
+    description=models.TextField(max_length=1000)
+    rules=models.TextField(max_length=2000)
+    total_score=models.IntegerField(default=0)
     def __str__(self):
         return '{} - {} - {} - {} - {}'.format(
                 self.pk, self.course_id,
@@ -106,8 +109,7 @@ class QuizResult(models.Model):
     quiz_id = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
     score = models.IntegerField()
-    feedback = models.CharField(max_length=100)
-
+    finished = models.BooleanField(default=False)
     def __str__(self):
         return '{} - {} - {} - {} - {}'.format(
                 self.pk, self.student_id,

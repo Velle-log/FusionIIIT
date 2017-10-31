@@ -1,6 +1,16 @@
-{% extends 'globals/general/base.html' %} {% load static %} {% block title %} Edit Contest {% endblock %} {% block css %}
-<link href="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.css" rel="stylesheet" type="text/css" /> {% endblock %} {% block body %} {% block navBar %} {% include 'globals/general/../dashboard/navbar.html' %} {% endblock %}
-
+{% extends 'globals/base.html' %}
+{% load static %}
+{% block title %}
+Edit Contest
+{% endblock %}
+{% block css %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block body %}
+{% block navBar %}
+    {% include 'dashboard/navbar.html' %}
+{% endblock %}
 <div>
 
     <div class="ui grid">
@@ -22,10 +32,7 @@
                         <p>{{forloop.counter}}){{x}}</p>
                         {% endfor %}
                     </div>
-                    <div class="item">
-                        <div class="header">Prizes</div>
-                        {{prizes.0}}<br>{{prizes.1}}<br>{{prizes.2}}
-                    </div>
+
                     <div class="item">
                         <div class="header">Start Time</div>
                         {{details.start_time}}
@@ -36,7 +43,7 @@
                     </div>
                     <div class="item">
                         <div class="header">Number of Questions</div>
-                        {{details.question_count}}
+                        {{details.number_of_question}}
                     </div>
                     <div class="item">
                         <div class="header">Total Score</div>
@@ -50,16 +57,16 @@
                 <div class="ui segment">
                     <div class="ui big list">
                         <div class="item">
-                            <div class="header">Q>{{question.problem_statement}}</div>
+                            <div class="header">Q>{{question.question}}</div>
                             {% if question.options1 %}<span>(1){{question.options1}}</span>{% endif %}<br> {% if question.options2 %}<span>(2){{question.options2}}</span>{% endif %}<br> {% if question.options3 %}<span>(3){{question.options3}}</span>{% endif %}<br> {% if question.options4 %}<span>(4){{question.options4}}</span>{% endif %}<br> {% if question.options5 %}<span>(5){{question.options5}}</span>{% endif %}<br>
                         </div>
                         <div class="item">
                             <div class="header">Score</div>
-                            {{question.score}}
+                            {{question.marks}}
                         </div>
                         <div class="item">
                             <div class="header">Answer:</div>
-                            {{question.option}}
+                            {{question.answer}}
                         </div>
                         {% if question.image %}
                         <div class="item">
@@ -131,12 +138,54 @@
                             </div>
                         </div>
                         <input type="submit" class="ui primary button" value="Submit" />
+
                     </form>
+
                 </div>
+                <a class="ui blue button" href="/ocms/{{course.course_id}}/">
+                 Done!
+                </a>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+ $(document).ready(function() {
+       window.history.pushState(null, "", window.location.href);
+       window.onpopstate = function() {
+           window.history.pushState(null, "", window.location.href);
+       };
+   });
+
+ function showbox() {
+        var x = document.getElementById("ques_div");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+       }
+
+       $('#showbox').click(function(){
+        console.log("madar");
+        showbox();
+       });
+
+
+  $(document).ready(function(){
+    $('.ui.accordion').accordion('refresh');
+
+    });
+  $('.ui.sidebar')
+      .sidebar('attach events', '#navbar #sidebartrigger')
+      // .sidebar('setting', 'transition', 'overlay')
+      // .sidebar('toggle')
+  ;
+  $('.special.cards .image').dimmer({
+    on: 'hover'
+  });
+
+  </script>
 
 
 
@@ -146,47 +195,6 @@
 <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.js"></script>
 <script type="text/javascript" src="{% static 'globals/js/jquery.min.js' %}"></script>
 
-<!--  {% if user.is_authenticated %}
-
-    <script type="text/javascript">
-     $(document).ready(function() {
-           window.history.pushState(null, "", window.location.href);
-           window.onpopstate = function() {
-               window.history.pushState(null, "", window.location.href);
-           };
-       });
-
-     function showbox() {
-       	   alert('hi');
-            var x = document.getElementById("ques_div");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-            }
-           }
-
-           $('#showbox').click(function(){
-           	console.log("madar");
-           	showbox();
-           });
-
-
-      $(document).ready(function(){
-        $('.ui.accordion').accordion('refresh');
-
-        });
-      $('.ui.sidebar')
-          .sidebar('attach events', '#navbar #sidebartrigger')
-          // .sidebar('setting', 'transition', 'overlay')
-          // .sidebar('toggle')
-      ;
-      $('.special.cards .image').dimmer({
-        on: 'hover'
-      });
-
-      </script>
-      {% endif %} -->
 
 
 <script type="text/javascript">

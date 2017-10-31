@@ -56,7 +56,7 @@
   <body oncontextmenu="return false;">
 
 		<div>
-      <h1 class="ui massive center aligned header"> {{contest.contest_name}}</h1>
+      <h1 class="ui massive center aligned header"> {{contest.quiz_name}}</h1>
       <div class="ui two column grid" style="padding-top:5em;padding-bottom:15em;padding-left:5em;padding-right:5em">
         <div class="twelve wide column" style="height:fit-content">
           <div class="ui piled segment" >
@@ -73,7 +73,7 @@
                     <img src="{{question.image}}" style="width:100%;heightL100%">
                   </div>
                   <div class="question_image centered fourteen wide column ui segment" style="margin-top:1em;padding:2em;">
-                    <p>{{ question.problem_statement }}</p>
+                    <p>{{ question.question }}</p>
                   <!-- </div>
                   <div class="answer centered fourteen wide column ui segment" style="margin:1em;padding:2em"> -->
                   <div class="ui divider">
@@ -251,7 +251,7 @@
       });
       //for timer
       var duration= {{days}}*86400+{{hours}}*3600+{{minutes}}*60+{{seconds}};
-      alert(duration);
+      // alert(duration);
       // var duration= {{contest.d_day}}*86400+{{contest.d_hour}}*3600+{{contest.d_minute}}*60;
     </script>
     {% include "coursemanagement/timer.html" %}
@@ -267,7 +267,7 @@
         // alert("pk="+pk+"/nans"+ans);
         $.ajax({
           type: 'POST',
-          url:'/quiz/{{contest.pk}}/ajax',
+          url:'/ocms/{{contest.pk}}/ajax',
           data:{ 'question':pk, 'answer': ans, 'csrfmiddlewaretoken':csrf, },
           success: function(data){
             console.log(data);
@@ -275,7 +275,7 @@
             $('#ann'+id).css({'display':'none'});
             $('#qt'+id).css({'background':'white'});
             id++;
-            if(id>{{contest.question_count}})
+            if(id>{{contest.number_of_question}})
             {
               id=1;
             }
@@ -292,10 +292,10 @@
         event.preventDefault();
         $.ajax({
           type:'POST',
-          url:'/quiz/{{contest.pk}}/submit',
+          url:'/ocms/{{contest.pk}}/submit',
           data:{csrfmiddlewaretoken: '{{ csrf_token }}'},
           success: function(data){
-            alert(data.message+"\n"+data.score);
+            alert(data.message+"\nYour Score="+data.score);
             localStorage.setItem("finished", "1");
             window.close();
 

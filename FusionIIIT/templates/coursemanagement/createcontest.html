@@ -1,11 +1,18 @@
-{% extends 'globals/general/base.html' %} {% load static %} {% block title %} Create Contest {% endblock %} {% block css %}
+{% extends 'globals/base.html' %}
+{% load static %}
+{% block title %}
+Create Contest
+{% endblock %}
+{% block css %}
 <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.css" rel="stylesheet" type="text/css" />
-<link href="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.css" rel="stylesheet" type="text/css" /> {% endblock %} {% block body %}
+<link href="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block body %}
+{% block navBar %}
+    {% include 'dashboard/navbar.html' %}
+{% endblock %}
 
-
-
-
-<div class="ui " style="margin-top:10em;margin-left:10em;margin-right:10em;padding:10em">
+<div class="ui " style="margin-left:10em;margin-right:10em;padding:10em">
 
     <form class="ui large form" method="post">
         {% csrf_token %} {% if errors %} {{errors}} {% endif %}
@@ -20,13 +27,6 @@
             </div>
 
         </div>
-        <div class="field">
-            <label>Type of Contest</label>
-            <div class="ui input left icon">
-                {{ form.ctype }}
-            </div>
-        </div>
-
 
         <label>Start Date</label> {{ form.startdate }}
 
@@ -55,16 +55,10 @@
                 {{ form.rules }}
             </div>
         </div>
-        <div class="ui calendar field">
-            <label>Prizes</label>
-            <div class="ui input left icon">
-                {{ form.prizes }}
+        <div class="ui field">
 
-            </div>
-        </div>
-        <div class="ui checkbox">
-            {{form.enable_negative}}
             <label>Enable Penalty</label>
+            {{form.negative_marks}}
         </div>
         <br>
         <br>
