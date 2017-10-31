@@ -1,4 +1,3 @@
-
 {% extends 'globals/base.html' %}
 {% load static %}
 
@@ -9,7 +8,8 @@
 
 {% block css %}
 
-  <link href="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.css"
+          rel="stylesheet" type="text/css"/>
 
 {% endblock %}
 
@@ -43,27 +43,27 @@
                  style="max-width: 320px;">
 
                 <a class="active item" data-tab="first">
-                      Academic/Examination Time Tables
+                    Academic/Examination Time Tables
                     <i class="right floated chevron right icon"></i>
                 </a>
 
                 <a class="item" data-tab="second">
-                     Manage Student Profile
+                    Manage Student Profile
                     <i class="right floated chevron right icon"></i>
                 </a>
 
                 <a class="item" data-tab="third">
-                        Academics
+                    Academics
                     <i class="right floated chevron right icon"></i>
                 </a>
 
                 <a class="item" data-tab="fourth">
-                       Academic Calendar
+                    Academic Calendar
                     <i class="right floated chevron right icon"></i>
                 </a>
 
                 <a class="item" data-tab="fifth">
-                     Senate Meeting
+                    Senate Meeting
                     <i class="right floated chevron right icon"></i>
                 </a>
 
@@ -71,7 +71,7 @@
                     Attendance
                     <i class="right floated chevron right icon"></i>
                 </a>
-               
+
 
             </div>
             {% comment %}The Tab-Menu ends here!{% endcomment %}
@@ -80,7 +80,6 @@
         {% comment %}
             The left-rail segment ends here!
         {% endcomment %}
-
 
 
         {% comment %}
@@ -144,17 +143,15 @@
                 {% block attendance %}
                     {% include 'ais/attendance.html' %}
                 {% endblock %}
-            </div> 
-           
+            </div>
 
-           
 
         </div>
         {% comment %}The central-rail segment ends here!{% endcomment %}
 
         {% comment %}The right-rail segment starts here!{% endcomment %}
         <div class="three wide column">
-      
+
 
         </div>
         {% comment %}The right-rail segment ends here!{% endcomment %}
@@ -170,16 +167,59 @@
 {% endblock %}
 
 
-{% block javascript%}
-   
-      <script type="text/javascript" src="{% static 'fusion/js/tablesort.js' %}"></script>
+{% block javascript %}
+
+    <script type="text/javascript" src="{% static 'fusion/js/tablesort.js' %}"></script>
     <script type="text/javascript" src="{% static 'fusion/js/jquery.min.js' %}"></script>
 
     <!-- <script src="https://code.jquery.com/jquery-2.1.4.js"></script> -->
-   <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
-   <script type="text/javascript">
-       
-       $('#example1').calendar();
-   </script>
+    <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
+    <script type="text/javascript">
+
+        {#       alert($('button #CS204').length);#}
+        $('#CS204').on('click', 'button', function () {
+            {#           alert('you clicked cs203');#}
+            var element = $('#cse_table tbody tr').last();
+            $.ajax({
+                url: 'get_attendance',
+                type: 'GET',
+                data: {'course_id': $('#CS204').data('course')},
+                success: function (response) {
+                    for(i in response.tuples){
+                        element.after('<tr>' +
+                        '<td>' + response.tuples[i][0] + '</td>' +
+                        '<td>' + response.tuples[i][1] + '</td>' +
+                        '<td>' + response.tuples[i][2] + '</td>' +
+                        '<td>' + response.tuples[i][3] + '</td>' +
+
+                        '</tr>');
+
+
+                    }
+                    console.log(response.stud_data);
+                    console.log(response.tuples);
+
+
+                    for(var i=0;i<response.stud_data.name.length;i++){
+
+                        element.after('<tr>' +
+                        '<td>' + response.stud_data.name[i] + '</td>' +
+                        '<td>' + response.stud_data.programme[i] + '</td>' +
+                        '<td>' + response.stud_data.name.length + '</td>' +
+                        '<td>' + response.stud_data.programme.length + '</td>' +
+                        '<td>' + i + '</td>' +
+                        '</tr>');
+
+
+                    }
+                    alert(response.tuples[0][1]);
+                },
+                error: function (response) {
+                    
+                }
+            });
+        });
+
+    </script>
 
 {% endblock %}

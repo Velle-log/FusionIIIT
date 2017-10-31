@@ -1,4 +1,5 @@
- {% load static %}
+
+{% load static %}
 {% block attendance%}
 
  <div class="ui pointing secondary menu">
@@ -59,13 +60,13 @@
                           <div class="six wide field">
                               <div class="field">
                                   <label>Presents</label>
-                                  <input placeholder="" type="number" name="present_attend">
+                                  <input placeholder="" type="number" name="present_attend" required>
                               </div>
                           </div>
                            <div class="six wide field">
                               <div class="field">
                                   <label>Total</label>
-                                  <input placeholder="" type="number" name="total_attend">
+                                  <input placeholder="" type="number" name="total_attend" required>
                               </div>
                           </div>
 
@@ -86,59 +87,59 @@
                   
                     <div class="ui grid">
 
-                     <div class="two wide column">
+                     <div class="two wide column" id="CS204" data-course="CS204">
                            <button class="ui primary button">
                              <a id='visualize' style="color:white;">CS204</a>
                          </button>
                       </div>
 
-                       <div class="two wide column">
+                       <div class="two wide column" id="CS205" data-course="CS205">
                            <button class="ui primary button">
                              <a id='visualize' style="color:white;">CS205</a>
                          </button>
                       </div>
 
-                       <div class="two wide column">
+                       <div class="two wide column" id="#CS206" data-course="CS206">
                            <button class="ui primary button">
                              <a id='visualize' style="color:white;">CS206</a>
                          </button>
                       </div>
 
-                       <div class="two wide column">
+                       <div class="two wide column" id="CS207" data-course="CS207">
                            <button class="ui primary button">
                              <a id='visualize' style="color:white;">CS207</a>
                          </button>
                       </div>
-                      <div class="two wide column">
+                      <div class="two wide column" id="CS208" data-course="CS208">
                            <button class="ui primary button">
                              <a id='visualize' style="color:white;">CS208</a>
                          </button>
                       </div>
-                      <div class="two wide column">
+                      <div class="two wide column" id="CS301" data-course="CS301">
                            <button class="ui primary button">
                              <a id='visualize' style="color:white;">CS301</a>
                          </button>
                       </div>
-                      <div class="two wide column">
+                      <div class="two wide column" id="CS304" data-course="CS304">
                            <button class="ui primary button">
                              <a id='visualize' style="color:white;">CS304</a>
                          </button>
                       </div>
-                      <div class="two wide column">
+                      <div class="two wide column" id="CS302" data-course="CS302">
                            <button class="ui primary button">
                              <a id='visualize' style="color:white;">CS302</a>
                          </button>
                       </div>
 
               </div>
+{#           <div id="numberone"> </div>#}
 
-
-               <table class="ui fixed  sortable celled table">
+               <table class="ui fixed  sortable celled table" id="cse_table">
             <thead>
             <tr>
                  <th class="sorted ascending">Sr.</th>
                 <th >Name</th>
-                <th class="" >Roll No.</th>
+                <th id="#roll" >Roll No.</th>
                 <th class="" >Batch </th>
                  <th class="" >Programme </th>
                  <th class="" >Course Code </th>
@@ -231,13 +232,13 @@
                           <div class="six wide field">
                               <div class="field">
                                   <label>Presents</label>
-                                  <input placeholder="" type="number" name="present_attend">
+                                  <input placeholder="" type="number" name="present_attend" required>
                               </div>
                           </div>
                            <div class="six wide field">
                               <div class="field">
                                   <label>Total</label>
-                                  <input placeholder="" type="number" name="total_attend">
+                                  <input placeholder="" type="number" name="total_attend" required>
                               </div>
                           </div>
 
@@ -402,13 +403,13 @@
                           <div class="six wide field">
                               <div class="field">
                                   <label>Presents</label>
-                                  <input placeholder="" type="number" name="present_attend">
+                                  <input placeholder="" type="number" name="present_attend" required>
                               </div>
                           </div>
                            <div class="six wide field">
                               <div class="field">
                                   <label>Total</label>
-                                  <input placeholder="" type="number" name="total_attend">
+                                  <input placeholder="" type="number" name="total_attend" required>
                               </div>
                           </div>
 
@@ -576,15 +577,14 @@
                   <div class="fields">
                           <div class="six wide field">
                               <div class="field">
-
                                   <label>Presents</label>
-                                  <input placeholder="" type="number" name="present_attend">
+                                  <input placeholder="" type="number" name="present_attend" required>
                               </div>
                           </div>
                            <div class="six wide field">
                               <div class="field">
                                   <label>Total</label>
-                                  <input placeholder="" type="number" name="total_attend">
+                                  <input placeholder="" type="number" name="total_attend" required>
                               </div>
                           </div>
 
@@ -708,4 +708,5 @@
             </tr></tfoot>
         </table>
   </div>
- {% endblock %}   
+ {% endblock %}
+
