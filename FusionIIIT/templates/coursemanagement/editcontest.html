@@ -34,21 +34,63 @@ Edit Contest
                     </div>
 
                     <div class="item">
-                        <div class="header">Start Time</div>
+                        <div class="header">Start Time <a class="edit_contest" data-id="edit1"> <i class="edit icon"></i></a></div>
                         {{details.start_time}}
                     </div>
+                    <form class="ui form"  id='edit1' style="display:none">
+                      <div class="ui calendar field" >
+                          <label>Start Time</label><br>
+                          {{ form1.startdate }}<br>
+                          <div class="ui input left icon">
+                              <i class="hourglass empty icon"></i>  {{ form1.starttime}}
+                          </div>
+                      </div>
+                      <a class="ui primary button form_submit"data-id="edit1" id="submit_edit1">Submit</a>
+                    </form>
+
                     <div class="item">
-                        <div class="header">End Time</div>
+                        <div class="header">End Time <a class="edit_contest" data-id="edit2"> <i class="edit icon"></i></a></div>
                         {{details.end_time}}
                     </div>
+                    <form class="ui form"  id='edit2' style="display:none">
+                    <div class="ui calendar field" >
+                        <label>End Time</label><br>
+                         {{ form1.enddate }}<br>
+                        <div class="ui input left icon">
+                            <i class="hourglass full icon"></i> {{ form1.endtime}}
+                        </div>
+                    </div>
+                    <a class="ui primary button form_submit" data-id="edit2" id="submit_edit2">Submit</a>
+                  </form>
+
                     <div class="item">
-                        <div class="header">Number of Questions</div>
+                        <div class="header">Number of Questions <a class="edit_contest" data-id="edit3"> <i class="edit icon"></i></a></div>
                         {{details.number_of_question}}
                     </div>
+                  <form class="ui form"  id='edit3' style="display:none">
+                    <div class="ui field" >
+                        <label>Number Of Questions</label>
+                        <div class="ui input" onkeydown="submit_on_enter()">
+                            {{ form1.number_of_questions }}
+                        </div>
+                    </div>
+                    <a class="ui primary button form_submit" data-id="edit3" id="submit_edit3">Submit</a>
+                  </form>
+
                     <div class="item">
-                        <div class="header">Total Score</div>
+                        <div class="header">Total Score <a class="edit_contest" data-id="edit4"> <i class="edit icon"></i></a></div>
                         {{details.total_score}}
                     </div>
+                    <form class="ui form"  id='edit4' style="display:none">
+                    <div class="ui field">
+                        <label>Marks per Question</label>
+                        <div class="ui input"  onkeydown="submit_on_enter()~">
+                            {{ form1.per_question_score }}
+                        </div>
+                    </div>
+                    <a class=" ui primary button form_submit"data-id="edit4" id="submit_edit4">Submit</a>
+                  </form>
+
                 </div>
 
 
@@ -156,7 +198,18 @@ Edit Contest
            window.history.pushState(null, "", window.location.href);
        };
    });
-
+   $('.edit_contest').click(function(){
+     id=$(this).attr('data-id');
+     $('#'+id).toggle();
+   })
+   function submit_on_enter()
+   {
+    //  alert(event.keycode);
+     if (event.keyCode == 13)
+       event.returnValue = false;
+       event.keyCode = 0;
+       return false;
+   }
  function showbox() {
         var x = document.getElementById("ques_div");
         if (x.style.display === "none") {
@@ -171,7 +224,32 @@ Edit Contest
         showbox();
        });
 
-
+  $('.form_submit').click(function(){
+    event.preventDefault();
+      var data = new FormData();
+    var pk=$(this).attr('data-id');
+    var other_data = $('#'+pk).serializeArray();
+    $.each(other_data, function(key, input) {
+        // alert(input.name);
+        data.append(input.name, input.value);
+    });
+    data.append('number',pk);
+    data.append('csrfmiddlewaretoken','{{csrf_token}}');
+    $.ajax({
+        url: "/ocms/{{course.course_id}}/edit_quiz_details/{{details.pk}}/",
+        processData: false,
+        contentType: false,
+        type: 'POST',
+        data: data,
+        success: function(data) {
+            alert(data);
+            location.reload();
+        },
+        error: function(data, err) {
+            alert(err.message);
+        }
+    });
+  });
   $(document).ready(function(){
     $('.ui.accordion').accordion('refresh');
 
@@ -198,8 +276,9 @@ Edit Contest
 
 
 <script type="text/javascript">
+  $(.edit_contest).click(function(){
 
-
+  });
 </script>
 
 

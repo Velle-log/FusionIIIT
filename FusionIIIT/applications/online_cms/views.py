@@ -77,6 +77,7 @@ def course(request, course_code):
         quizs=[]
         marks_pk=[]
         assignment=Assignment.objects.filter(course_id=course[0])
+
         # print(QuizResult._meta.get_fields(),"adasd")
         for q in quiz:
             qs=QuizResult.objects.filter(quiz_id=q,student_id=student)
@@ -129,6 +130,12 @@ def course(request, course_code):
         marks=[]
         quizs=[]
         assignment=Assignment.objects.filter(course_id=course)
+        student_assignment=[]
+        for assi in assignment:
+            sa=StudentAssignment.objects.filter(assignment_id=assi)
+            print(sa[0].student_id.id.user.first_name,"1234")
+            student_assignment.append(sa)
+        print(student_assignment,"SAD")
         # print(QuizResult._meta.get_fields(),"adasd")
         for q in quiz:
             qs=QuizResult.objects.filter(quiz_id=q)
@@ -137,7 +144,7 @@ def course(request, course_code):
             if len(qs) is not 0:
                 marks.append(qs)
                 # print(qs.quiz_id.quiz_name)
-        print(len(qs))
+        # print(len(qs))
         comments = Forum.objects.filter(course_id=course).order_by('comment_time')
         answers = collections.OrderedDict()
         for comment in comments:
@@ -157,8 +164,11 @@ def course(request, course_code):
                        'slides':slides,
                        'course':course,
                        'answers': answers,
+                       'assignment' : assignment,
+                       'student_assignment':student_assignment,
                        'Lecturer':lec
                        })
+
 
 @login_required
 def upload_assignment(request, course_code):
@@ -182,14 +192,14 @@ def upload_assignment(request, course_code):
             cmd = "mkdir "+full_path
             subprocess.call(cmd, shell=True)
         fs = FileSystemStorage(full_path, url)
-        fs.save(doc.name, doc)
+        fs.save(name+file_extenstion, doc)
         uploaded_file_url = "/media/online_cms/"+course_code+"/assi/"+assign.assignment_name+"/"+student.id.id+"/"+name+file_extenstion
         index = uploaded_file_url.rfind('/')
 
         sa=StudentAssignment(
          student_id=student,
          assignment_id=assign,
-         upload_url=uploaded_file_url[:-4],
+         upload_url=uploaded_file_url,
          assign_name=name+file_extenstion
         )
         sa.save()
@@ -481,7 +491,7 @@ def ajax_q(request,quiz_code):
     user=request.user
     extrainfo = ExtraInfo.objects.get(user=user)
     student = Student.objects.get(id=extrainfo)
-    q = request.POST.get('question');
+    q = request.POST.get('question')
     ques=QuizQuestion.objects.get(pk=q)
     quiz_id=Quiz.objects.get(pk=ques.quiz_id.pk)
     ans=int(request.POST.get('answer'))
@@ -548,6 +558,7 @@ def create_quiz(request, course_code):
             days, seconds = duration.days, duration.seconds
             hours = days * 24 + seconds // 3600
             minutes = (seconds % 3600) // 60
+            total_score=form.cleaned_data['number_of_questions']*form.cleaned_data['per_question_score']
             # prizes=form.cleaned_data['prizes'].replace('\r\n','/')
             description=form.cleaned_data['description'].replace('\r\n','/')
             rules=form.cleaned_data['rules'].replace('\r\n','/')
@@ -556,12 +567,14 @@ def create_quiz(request, course_code):
                 quiz_name=form.cleaned_data['name'],
                 description=description,
                 rules=rules,
+                number_of_question=form.cleaned_data['number_of_questions'],
                 negative_marks=form.cleaned_data['negative_marks'],
                 start_time=start_date_time,
                 end_time=end_date_time,
                 d_day=days,
                 d_hour=hours,
                 d_minute=minutes,
+                total_score=total_score
                             )
             # print "Done"
             return redirect('/ocms/'+course_code+'/edit_quiz/'+str(obj.pk))
@@ -573,7 +586,51 @@ def create_quiz(request, course_code):
 
     else:
         return HttpResponse("unautherized Access!!It will be reported!!")
+@login_required
+def edit_quiz_details(request,course_code,quiz_code):
+    extrainfo = ExtraInfo.objects.get(user=request.user)
+    if extrainfo.user_type == 'faculty':
+        instructor = Instructor.objects.filter(instructor_id=extrainfo)
+        for ins in instructor:
+            if ins.course_id.course_id == course_code:
+                course = ins.course_id
+        x=request.POST.get('number')
+        print(x,"adsd")
+        quiz=Quiz.objects.get(pk=quiz_code)
+        if x == 'edit1':
+            print (x)
+            st_time=request.POST.get('starttime')
+            st_date=request.POST.get('startdate_month')+" "+request.POST.get('startdate_day')+" "+request.POST.get('startdate_year')
+            string=str(st_date)+" "+str(st_time)
+            print(string,"ASDASD")
+            datetime_object = datetime.strptime(string, '%m %d %Y %H:%M')
+            quiz.start_time=datetime_object
+            quiz.save()
+        elif x == 'edit2':
+            print (x)
+            st_time=request.POST.get('endtime')
+            st_date=request.POST.get('enddate_month')+" "+request.POST.get('enddate_day')+" "+request.POST.get('enddate_year')
+            string=str(st_date)+" "+str(st_time)
+            print(string,"ASDASD")
+            datetime_object = datetime.strptime(string, '%m %d %Y %H:%M')
+            quiz.end_time=datetime_object
+            quiz.save()
+        elif x == 'edit3':
+            number=request.POST.get('number_of_questions')
+            print (x)
+            score=int(quiz.total_score/quiz.number_of_question)
+            quiz.number_of_question=number
+            quiz.total_score=int(number)*score
+            quiz.save()
+        elif x == 'edit4':
+            print (x)
+            score=request.POST.get('per_question_score')
+            quiz.total_score=int(score)*quiz.number_of_question
+            quiz.save()
+        return HttpResponse("Done")
 
+    else:
+        return HttpResponse("unautherized Access!!It will be reported!!")
 @login_required
 def edit_quiz(request,course_code,quiz_code):
     extrainfo = ExtraInfo.objects.get(user=request.user)
@@ -613,7 +670,6 @@ def edit_quiz(request,course_code,quiz_code):
                 )
                 # print "HOGAYA"
                 quiz.total_score+=form.cleaned_data['score'];
-                quiz.number_of_question+=1
                 quiz.save();
                 obj3=QuizQuestion.objects.filter(quiz_id=quiz)
                 # print obj3
@@ -622,6 +678,7 @@ def edit_quiz(request,course_code,quiz_code):
             elif(form.errors):
                 errors=form.errors
         else:
+            form1=QuizForm()
             form = QuestionFormObjective()
             questions=QuizQuestion.objects.filter(quiz_id=quiz)
             st=quiz.start_time
@@ -634,6 +691,31 @@ def edit_quiz(request,course_code,quiz_code):
             rules=quiz.rules
             rules=[z.encode('ascii','ignore') for z in rules.split('/')]
             # details={'cname':obj.contest_name,'description':obj.description,'c_type':obj.c_type,'rules':obj.rules,'starttime':st,'endtime':end_time}
-            return render(request, 'coursemanagement/editcontest.html',{'form':form,'details':quiz,'course':course,'questions':questions,'description':description,'rules':rules})
+            return render(request, 'coursemanagement/editcontest.html',{'form1':form1,'form':form,'details':quiz,'course':course,'questions':questions,'description':description,'rules':rules})
     else:
         return HttpResponse("unautherized Access!!It will be reported!!")
+@login_required
+def remove_quiz(request, course_code):
+    quiz=Quiz.objects.get(pk=request.POST.get('pk'))
+    quizQuestion=QuizQuestion.objects.filter(quiz_id=quiz)
+    for q in quizQuestion:
+        q.delete()
+    quiz.delete()
+    return HttpResponse("Done")
+@login_required
+def ajax_assess(request,course_code):
+    sa = StudentAssignment.objects.get(pk=request.POST.get('pk'))
+    print(sa,"qwerty")
+    sa.score = request.POST.get('marks')
+    sa.save()
+    print(sa,"qwerty")
+    return HttpResponse("Marks uploaded")
+
+@login_required
+def ajax_feedback(request,course_code):
+    sa = StudentAssignment.objects.get(pk=request.POST.get('pk'))
+    print(sa,"qwerty")
+    sa.feedback = request.POST.get('feedback')
+    sa.save()
+    print(sa,"qwerty")
+    return HttpResponse("Marks uploaded")

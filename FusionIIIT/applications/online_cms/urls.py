@@ -1,5 +1,4 @@
 from django.conf.urls import url
-
 from . import views
 
 urlpatterns = [
@@ -15,6 +14,7 @@ urlpatterns = [
     url(r'^quiz/(?P<quiz_id>[0-9]+)/$', views.quiz,name='quiz'),
     url(r'^(?P<course_code>[A-z]+[0-9]+)/create_quiz/$', views.create_quiz,name='create_quiz'),
     url(r'^(?P<course_code>[A-z]+[0-9]+)/edit_quiz/(?P<quiz_code>[0-9]+)/$', views.edit_quiz,name='edit_quiz'),
+    url(r'^(?P<course_code>[A-z]+[0-9]+)/edit_quiz_details/(?P<quiz_code>[0-9]+)/$', views.edit_quiz_details,name='edit_quiz_details'),
     url(r'^(?P<quiz_code>[0-9]+)/ajax$', views.ajax_q,name='ajax_q'),
     url(r'^(?P<quiz_code>[0-9]+)/submit$', views.submit,name='submit'),
     url(r'^(?P<course_code>[A-z]+[0-9]+)/add_assignment$', views.add_assignment,
@@ -31,5 +31,12 @@ urlpatterns = [
         name='ajax_new'),
     url(r'^(?P<course_code>[A-z]+[0-9]+)/ajax_remove$', views.ajax_remove,
         name='ajax_remove'),
+    url(r'^(?P<course_code>[A-z]+[0-9]+)/ajax_assess$', views.ajax_assess,
+        name='ajax_assess'),
+    url(r'^(?P<course_code>[A-z]+[0-9]+)/ajax_feedback$', views.ajax_feedback,
+        name='ajax_feedback'),
+    url(r'^(?P<course_code>[A-z]+[0-9]+)/remove_quiz$', views.remove_quiz,
+        name='remove_quiz')
+
 
 ]

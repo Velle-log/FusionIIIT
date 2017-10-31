@@ -9,13 +9,12 @@
 
 </div>
 {% for quiz in quizs %}
-<div class="ui {% if forloop.counter is 1 %}active {% endif %} bottom attached tab segment performance" id="{{forloop.counter}}" data-tab="{{forloop.counter}}">
+<div class="ui {% if forloop.counter is 1 %}active {% endif %} bottom attached tab segment performance" id="result{{forloop.counter}}" data-tab="{{forloop.counter}}">
     <table class="ui very basic collapsing celled table">
         <thead>
             <tr>
                 <th>Student</th>
                 <th>Total Marks</th>
-                <th>Feedback</th>
             </tr>
         </thead>
         <tbody>
@@ -34,10 +33,6 @@
                 <td>
                   {{quiz.score}}
                 </td>
-                <td>
-                  {{quiz.feedback}}
-                </td>
-
             </tr>
 
         </tbody>
@@ -58,13 +53,12 @@
 
 </div>
 {% for quiz in quizs %}
-<div class="ui {% if forloop.counter is 1 %}active {% endif %} bottom attached tab segment performance" id="{{forloop.counter}}" data-tab="{{forloop.counter}}">
+<div class="ui {% if forloop.counter is 1 %}active {% endif %} bottom attached tab segment performance" id="result{{forloop.counter}}" data-tab="{{forloop.counter}}">
     <table class="ui very basic collapsing celled table">
         <thead>
             <tr>
                 <th>Student</th>
                 <th>Total Marks</th>
-                <th>Feedback</th>
             </tr>
         </thead>
         <tbody>
@@ -83,10 +77,6 @@
                 <td>
                   {{stu.score}}
                 </td>
-                <td>
-                  {{stu.feedback}}
-                </td>
-
             </tr>
             {% endfor %}
         </tbody>
@@ -98,21 +88,5 @@
   </div>
 {% endif %}
 {% endif %}
-<script type="text/javascript">
-// $(document).ready(function(){
-//   var x=document.getElementsByClassName('item per')[0];
-//   ini=x.getAttribute('data-tab');
-//   var y=document.getElementsByClassName('performance')[0];
-//   // alert(y.getAttribute('data-tab'));
-//   y.style.display="block";
-// });
-$('.per').click(function(){
-  event.preventDefault();
-  var x = document.getElementById(ini);
-  num = $(this).attr('data-tab');
-  var y = document.getElementById(num);
-  x.style.display = "none";
-  y.style.display = "block";
-});
-</script>
+
 {% endblock %}

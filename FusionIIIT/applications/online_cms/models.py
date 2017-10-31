@@ -57,7 +57,7 @@ class QuizQuestion(models.Model):
     answer = models.IntegerField()
     announcement = models.TextField(max_length=2000, null=True, blank=True)
     image = models.TextField(max_length=1000, null=True)
-    marks = models.IntegerField()
+    # marks = models.IntegerField()
 
     def __str__(self):
         return '{} - {} - {} - {} - {} - {} - {} - {} - {}'.format(
@@ -96,7 +96,7 @@ class StudentAssignment(models.Model):
     upload_time = models.DateTimeField(auto_now=True)
     upload_url = models.TextField(max_length=200)
     score = models.IntegerField(null=True)
-    feedback = models.CharField(max_length=100)
+    feedback = models.CharField(max_length=100,null=True)
     assign_name=models.CharField(max_length=100)
     def __str__(self):
         return '{} - {} - {} - {} - {}'.format(
