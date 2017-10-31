@@ -22,13 +22,13 @@
 
        <div class="ui active tab segment" data-tab="cse">
 
-            <form class="ui form" method="post" action="attendance">
+            <form class="ui form" id="cse_attend_form">
                 {% csrf_token %}
                   <div class="field">
                        <div class="three fields">
                           <div class="field">
                               <label>Student Roll no</label>
-                              <input placeholder="" type="text" name="student_id">
+                              <input placeholder="" type="text" id="student_id">
                                  
                           </div>
 
@@ -50,7 +50,7 @@
 
                        <div class="field">
                               <label>Course Code</label>
-                              <input placeholder="" type="text" name="course_id">
+                              <input placeholder="" type="text" id="course_id">
                           </div>
                           
                       </div>
@@ -60,13 +60,13 @@
                           <div class="six wide field">
                               <div class="field">
                                   <label>Presents</label>
-                                  <input placeholder="" type="number" name="present_attend" required>
+                                  <input placeholder="" type="number" id="present_attend" required>
                               </div>
                           </div>
                            <div class="six wide field">
                               <div class="field">
                                   <label>Total</label>
-                                  <input placeholder="" type="number" name="total_attend" required>
+                                  <input placeholder="" type="number" id="total_attend" required>
                               </div>
                           </div>
 

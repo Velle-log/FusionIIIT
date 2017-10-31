@@ -26,14 +26,12 @@ def add_attendance(request):
         except:
             error_mess = "Student Data Not Found"
             messages.error(request, error_mess)
-            return redirect('/academic-information-system/')
 
         try:
             student_attend.course_id = Course.objects.get(course_id=c_id)
         except:
             error_mess = "Course Data Not Found"
             messages.error(request, error_mess)
-            return redirect('/academic-information-system/')
 
     # print('student_id ',student_attend.student_id)
 
@@ -42,7 +40,7 @@ def add_attendance(request):
         success_mess = "Your Data has been successfully added"
         messages.success(request, success_mess)
         student_attend.save()
-        return redirect('/academic-information-system/')
+        return HttpResponse('Data Successfully added')
 
 
 def get_attendance(request):

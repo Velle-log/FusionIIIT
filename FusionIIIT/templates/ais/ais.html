@@ -176,8 +176,35 @@
     <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI/6e6d051d47b598ebab05857545f242caf2b4b48c/dist/semantic.min.js"></script>
     <script type="text/javascript">
 
+
+        $(document).on('submit','#cse_attend_form',function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: 'attendance',
+                type: 'POST',
+                data: {
+                    student_id: $('#student_id').val(),
+                    course_id: $('#course_id').val(),
+                    present_attend: $('#present_attend').val(),
+                    total_attend: $('#total_attend').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function () {
+
+                }
+            });
+        });
+
+
+
+
+
+
+
         {#       alert($('button #CS204').length);#}
-        $('#CS204').on('click', 'button', function () {
+        $('#CS204').on('click', 'button', function (event) {
+            event.preventDefault();
             {#           alert('you clicked cs203');#}
             var element = $('#cse_table tbody tr').last();
             $.ajax({
