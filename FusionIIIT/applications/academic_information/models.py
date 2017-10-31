@@ -32,6 +32,7 @@ class Constants:
 
 class Student(models.Model):
     id = models.OneToOneField(ExtraInfo, on_delete=models.CASCADE, primary_key=True)
+    name = models.CharField(max_length=50, default='')
     programme = models.CharField(max_length=10, choices=Constants.PROGRAMME)
     cpi = models.FloatField(default=0)
     category = models.CharField(max_length=10, choices=Constants.CATEGORY, null=False)
@@ -55,7 +56,7 @@ class Course(models.Model):
         unique_together = ('course_id', 'course_name', 'sem')
 
     def __str__(self):
-        return self.course_name
+        return str(self.id)
 
 
 class Meeting(models.Model):
@@ -119,7 +120,7 @@ class Student_attendance(models.Model):
         db_table = 'Student_attendance'
 
     def __self__(self):
-        return self.date
+        return self.course_id
 
 
 class Instructor(models.Model):
