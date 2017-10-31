@@ -9,61 +9,78 @@
     <div class="ui active tab" data-tab="achievements">
         <div class="ui vertical segment">
             {% comment %}Form Tag starts here!{% endcomment %}
-            <form>
-                {% comment %}The add a new skill Accordian starts here!{% endcomment %}
+            <form method="post" class="ui form" role="form">
+                {% comment %}Then add a new achievement Accordian starts here!{% endcomment %}
                 <div class="ui active accordion field">
                     <div class="title">
                         <i class="icon dropdown"></i>
                         Add a new Achievement!
                     </div>
-
+                    {{ form4.non_field_errors }}
                     <div class="active content">
                         <div class="ui form" style="padding: 8px; padding-left: 24px; padding-right: 24px;">
-
+                          {% csrf_token %}
                             <div class="two fields">
                                 <div class="twelve wide field">
-                                    <label>Achievement Name:</label>
+                                  {{ form4.achievement.errors }}
+                                  <label for="{{ form4.achievement.id_for_label }}">
+                                      Achievement Name:
+                                    </label>
                                     <div class="ui fluid large input">
-                                        {% comment %}The Institute Name input!{% endcomment %}
-                                        <input>
+                                        {% comment %}The Achievement Name input!{% endcomment %}
+                                        {{ form4.achievement }}
                                     </div>
                                 </div>
 
                                 <div class="four wide field">
-                                    <label>Type:</label>
-                                    <select class="ui search fluid large dropdown">
-                                        <option value="">Select</option>
-                                        <option value="educational">Educational</option>
-                                        <option value="cultural">Cultural</option>
-                                        <option value="sports">Sports</option>
-                                        <option value="other">Other</option>
-                                    </select>
+                                  {{ form4.achievement_type.errors }}
+                                  <label for="{{ form4.achievement_type.id_for_label }}">
+                                    Type:
+                                  </label>
+                                    <div class="ui fluid large input">
+                                      {{ form4.achievement_type }}
+                                    </div>
                                 </div>
                             </div>
 
-                            {% comment %}The start and end date input{% endcomment %}
-                            <div class="field">
-                                <label>Date:</label>
+                            {% comment %}The from date input{% endcomment %}
+                            <div class="two fields">
+                              <div class="four wide field">
+                                {{ form4.date_earned.errors }}
+                                <label for="{{ form4.date_earned.id_for_label }}">
+                                  Date:
+                                </label>
                                 <div class="ui calendar" id="rangestart2">
                                     <div class="ui input left icon">
                                         <i class="calendar icon"></i>
-                                        <input type="text" placeholder="From">
+                                        {{ form4.date_earned }}
+                                    </div>
+                                </div>
+                              </div>
+                                <div class="twelve wide field">
+                                  {{ form4.issuer.errors }}
+                                  <label for="{{ form4.issuer.id_for_label }}">
+                                        Issuer
+                                    </label>
+                                    <div class="ui fluid large input">
+                                        {{ form4.issuer }}
                                     </div>
                                 </div>
                             </div>
 
                             <div class="two fields">
                                 <div class="twelve wide field">
-                                    <label>
+                                  {{ form4.description.errors }}
+                                  <label for="{{ form4.description.id_for_label }}">
                                         Description
                                     </label>
 
-                                    <textarea rows="2"></textarea>
+                                    {{ form4.description }}
                                 </div>
 
                                 <div class="four wide field">
                                     <label><br></label>
-                                    <button class="ui fluid large primary button" type="submit">
+                                    <button name="achievementsubmit" value="achievementsubmit" class="ui fluid large primary button" type="submit">
                                         Submit
                                     </button>
                                 </div>
@@ -76,87 +93,46 @@
             </form>
             {% comment %}Form Tag ends here!{% endcomment %}
 
-
+            {% if achievements %}
             <div class="ui divider"></div>
 
             <table class="ui fixed sortable celled table">
                 <thead>
                 <tr>
-                    <th class="six wide">Institute Name</th>
-                    <th>Degree</th>
-                    <th>Stream</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
+                    <th class="four wide">Achievement Name</th>
+                    <th>Type</th>
+                    <th>Issuer</th>
+                    <th>Date</th>
+                    <th class="four wide">Description</th>
                 </tr>
                 </thead>
                 <tbody>
+                {% for achievement in achievements %}
                 <tr>
                     <td>
-                        PDPM IIITDM Jabalpur
+                        {{ achievement.achievement }}
                     </td>
 
                     <td>
-                        B.Tech.
+                        {{ achievement.achievement_type }}
                     </td>
 
                     <td>
-                        CSE
+                        {{ achievement.issuer }}
                     </td>
 
                     <td>
-                        01.01.1970
+                        {{ achievement.date_earned }}
                     </td>
 
                     <td>
-                        01.01.1970
+                        {{ achievement.description }}
                     </td>
                 </tr>
-
-                <tr>
-                    <td>
-                        PDPM IIITDM Jabalpur
-                    </td>
-
-                    <td>
-                        B.Tech.
-                    </td>
-
-                    <td>
-                        CSE
-                    </td>
-
-                    <td>
-                        01.01.1971
-                    </td>
-
-                    <td>
-                        01.01.1971
-                    </td>
-                </tr>
-
-                <tr>
-                    <td>
-                        PDPM IIITDM Jabalpur
-                    </td>
-
-                    <td>
-                        B.Tech.
-                    </td>
-
-                    <td>
-                        CSE
-                    </td>
-
-                    <td>
-                        01.01.1972
-                    </td>
-
-                    <td>
-                        01.01.1972
-                    </td>
-                </tr>
+                {% endfor %}
                 </tbody>
             </table>
+            {% endif %}
 
         </div>
     </div>
