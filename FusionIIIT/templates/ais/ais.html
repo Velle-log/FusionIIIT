@@ -177,8 +177,33 @@
     <script type="text/javascript">
 
 
-        $(document).on('submit','#cse_attend_form',function (e) {
-            e.preventDefault();
+    $(document).ready(function () {
+
+
+
+        $(document).on('submit','#cse_attend_form',function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: 'attendance',
+                type: 'POST',
+                data: {
+                    student_id: $('#student_id').val(),
+                    course_id: $('#course_id').val(),
+                    present_attend: $('#present_attend').val(),
+                    total_attend: $('#total_attend').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function (response) {
+                    $( '#cse_attend_form' ).each(function(){
+                        this.reset();
+                    });
+                }
+            });
+        });
+
+        $(document).on('submit','#ece_attend_form',function (event) {
+            event.preventDefault();
 
             $.ajax({
                 url: 'attendance',
@@ -191,7 +216,52 @@
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function () {
+                    $( '#ece_attend_form' ).each(function(){
+                        this.reset();
+                    });
+                }
+            });
+        });
 
+        $(document).on('submit','#mech_attend_form',function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: 'attendance',
+                type: 'POST',
+                data: {
+                    student_id: $('#student_id').val(),
+                    course_id: $('#course_id').val(),
+                    present_attend: $('#present_attend').val(),
+                    total_attend: $('#total_attend').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function () {
+                    $( '#mech_attend_form' ).each(function(){
+                        this.reset();
+                    });
+                }
+            });
+        });
+
+
+        $(document).on('submit','#design_attend_form',function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: 'attendance',
+                type: 'POST',
+                data: {
+                    student_id: $('#student_id').val(),
+                    course_id: $('#course_id').val(),
+                    present_attend: $('#present_attend').val(),
+                    total_attend: $('#total_attend').val(),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success: function () {
+                    $( '#design_attend_form' ).each(function(){
+                        this.reset();
+                    });
                 }
             });
         });
@@ -212,34 +282,38 @@
                 type: 'GET',
                 data: {'course_id': $('#CS204').data('course')},
                 success: function (response) {
-                    for(i in response.tuples){
-                        element.after('<tr>' +
-                        '<td>' + response.tuples[i][0] + '</td>' +
-                        '<td>' + response.tuples[i][1] + '</td>' +
-                        '<td>' + response.tuples[i][2] + '</td>' +
-                        '<td>' + response.tuples[i][3] + '</td>' +
-
-                        '</tr>');
 
 
+                    for(var j=0;j<response.tuples.length;j++){
+                        var name=response.stud_data.name[j];
+                        var programme=response.stud_data.programme[j];
+                        var roll=response.tuples[j][1];
+                        var course=$('#CS204').data('course');
+                        var present_attend=response.tuples[j][2];
+                        var total_attend=response.tuples[j][3];
+                        var attend_percent=((present_attend/total_attend)*100).toFixed(2);
+                        txt="<tr>";
+                        txt +='<td>  </td>'+
+                        '<td>' + name + '</td>' +
+                        '<td>' + roll + '</td>' +
+                        '<td>  </td>'+
+                        '<td>' + programme + '</td>' +
+                        '<td>' + course + '</td>' +
+                        '<td>' + attend_percent + '</td>'+
+                        '<td>  <i class="refresh icon" style="font-size:1.3vw"></i>' +
+                        '<i class="trash outline icon" style="font-size:1.3vw"></i></td>' ;
+
+                        txt +='</tr>';
+                        element.after(txt);
                     }
-                    console.log(response.stud_data);
-                    console.log(response.tuples);
+
+                    console.log(response.stud_data.name.length);
+                    console.log(response.tuples.length);
 
 
-                    for(var i=0;i<response.stud_data.name.length;i++){
-
-                        element.after('<tr>' +
-                        '<td>' + response.stud_data.name[i] + '</td>' +
-                        '<td>' + response.stud_data.programme[i] + '</td>' +
-                        '<td>' + response.stud_data.name.length + '</td>' +
-                        '<td>' + response.stud_data.programme.length + '</td>' +
-                        '<td>' + i + '</td>' +
-                        '</tr>');
 
 
-                    }
-                    alert(response.tuples[0][1]);
+{#                    alert(response.tuples[0][1]);#}
                 },
                 error: function (response) {
                     
@@ -247,6 +321,7 @@
             });
         });
 
+    });
     </script>
 
 {% endblock %}
