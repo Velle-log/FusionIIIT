@@ -5,16 +5,20 @@
 </head>
 <body>
 <form  method="post">
-    {% for context1 in context %}
+   <center>
     <div class="context">
         
-            <h1>{{br_id}}</h1>
-            <h2>{{mess_bill}}</h2>
-            <h2>{{room_bill}}</h2>
+            <h1>Name : {{context.visitor}}</h1>
+            <h2>Total meal Bill:{{context.mess_bill}}₹</h2>
+            <h2>Total Room Bill:{{context.room_bill}}₹</h2>
+            <h2>Total bill:{{context.t_bill}}₹</h2>
+        
      </div>
-	{% endfor %}
+
     <br>
-    <input type="submit" value="Submit" />
+    <input type="hidden" name="visitor" value={{context.v_id}}>
+    <input type="submit" value="submit"/>
+    </center>
 </form>
 </body>
 </html>

@@ -208,8 +208,9 @@ def check_out(request):
                 mess_bill=mess_bill+225*m.persons
             else:
                     mess_bill=mess_bill + mess_bill1
-
-        context = {'br_id':'br_id','mess_bill':'mess_bill','room_bill':'room_bill'}
+        print(v_id)
+        total_bill=mess_bill + room_bill
+        context = {'v_id':v_id,'visitor':v_id.visitor_name,'mess_bill':mess_bill,'room_bill':room_bill, 't_bill':total_bill}
         print(context)
         return render(request, "visitor_hostel/payment1.html" , { 'context' : context})
         
