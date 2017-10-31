@@ -283,7 +283,16 @@ def add_videos(request, course_code):
 @login_required
 def forum(request, course_code):
     #take care od sem
-    course=Course.objects.get(course_id=course_code, sem=5)
+    extrainfo = ExtraInfo.objects.get(user=request.user)
+    if extrainfo.designation.name == "student":
+        student = Student.objects.get(id=extrainfo)
+        roll = student.id.id[:4]
+        course=Course.objects.get(course_id=course_code, sem=semester(roll))
+    else:
+        instructor = Instructor.objects.filter(instructor_id=extrainfo)
+        for ins in instructor:
+            if ins.course_id.course_id == course_code:
+                course = ins.course_id
     comments = Forum.objects.filter(course_id=course).order_by('comment_time')
     instructor = Instructor.objects.get(course_id=course)
     if instructor.instructor_id.user.pk == request.user.pk:
@@ -308,7 +317,16 @@ def forum(request, course_code):
 
 @login_required
 def ajax_reply(request, course_code):
-    course = Course.objects.get(course_id=course_code, sem=5)
+    extrainfo = ExtraInfo.objects.get(user=request.user)
+    if extrainfo.designation.name == "student":
+        student = Student.objects.get(id=extrainfo)
+        roll = student.id.id[:4]
+        course=Course.objects.get(course_id=course_code, sem=semester(roll))
+    else:
+        instructor = Instructor.objects.filter(instructor_id=extrainfo)
+        for ins in instructor:
+            if ins.course_id.course_id == course_code:
+                course = ins.course_id
     ex = ExtraInfo.objects.get(user=request.user)
     f = Forum(
         course_id=course,
@@ -334,7 +352,16 @@ def ajax_reply(request, course_code):
 
 @login_required
 def ajax_new(request, course_code):
-    course = Course.objects.get(course_id=course_code, sem=5)
+    extrainfo = ExtraInfo.objects.get(user=request.user)
+    if extrainfo.designation.name == "student":
+        student = Student.objects.get(id=extrainfo)
+        roll = student.id.id[:4]
+        course=Course.objects.get(course_id=course_code, sem=semester(roll))
+    else:
+        instructor = Instructor.objects.filter(instructor_id=extrainfo)
+        for ins in instructor:
+            if ins.course_id.course_id == course_code:
+                course = ins.course_id
     ex = ExtraInfo.objects.get(user=request.user)
     f = Forum(
         course_id=course,
@@ -351,7 +378,16 @@ def ajax_new(request, course_code):
 
 @login_required
 def ajax_remove(request, course_code):
-    course = Course.objects.get(course_id=course_code, sem=5)
+    extrainfo = ExtraInfo.objects.get(user=request.user)
+    if extrainfo.designation.name == "student":
+        student = Student.objects.get(id=extrainfo)
+        roll = student.id.id[:4]
+        course=Course.objects.get(course_id=course_code, sem=semester(roll))
+    else:
+        instructor = Instructor.objects.filter(instructor_id=extrainfo)
+        for ins in instructor:
+            if ins.course_id.course_id == course_code:
+                course = ins.course_id
     ex = ExtraInfo.objects.get(user=request.user)
     f = Forum.objects.get(
         pk=request.POST.get('question')
@@ -553,14 +589,14 @@ def edit_quiz(request,course_code,quiz_code):
             if(form.is_valid()):
                 image=request.FILES['image']
                 filename, file_extenstion=os.path.splitext(request.FILES['image'].name)
-                full_path=settings.MEDIA_ROOT+"/"+course_code+"/quiz/"+quiz_code+"/"
+                full_path=settings.MEDIA_ROOT+"/online_cms/"+course_code+"/quiz/"+quiz_code+"/"
                 url=settings.MEDIA_URL+filename
                 if not os.path.isdir(full_path):
                     cmd="mkdir "+full_path
                     subprocess.call(cmd,shell=True)
                 fs = FileSystemStorage(full_path,url)
                 file_name = fs.save(image.name, image)
-                uploaded_file_url = "/media/"+course_code+"/quiz/"+quiz_code+"/"+image.name
+                uploaded_file_url = "/media/online_cms/"+course_code+"/quiz/"+quiz_code+"/"+image.name
                 # print uploaded_file_url
                 options1=form.cleaned_data['option1']
                 options2=form.cleaned_data['option2']
