@@ -75,14 +75,17 @@ def course(request, course_code):
         quiz=Quiz.objects.filter(course_id=course)
         marks=[]
         quizs=[]
+        marks_pk=[]
         assignment=Assignment.objects.filter(course_id=course[0])
         # print(QuizResult._meta.get_fields(),"adasd")
         for q in quiz:
             qs=QuizResult.objects.filter(quiz_id=q,student_id=student)
+            qs_pk=QuizResult.objects.filter(quiz_id=q,student_id=student).values_list('quiz_id',flat=True)
             if q.end_time > timezone.now():
                 quizs.append(q)
             if len(qs) is not 0:
                 marks.append(qs[0])
+                marks_pk.append(qs_pk[0])
                 # print(qs.quiz_id.quiz_name)
         print(len(marks),"DADASDA")
         lec=0
@@ -96,9 +99,11 @@ def course(request, course_code):
                 # answers['{}'.format(comment.pk)]=fr1
                 print(comment.comment)
                 answers[comment]=fr1
+        print(quizs,marks_pk)
         return render(request, 'coursemanagement/viewcourse.html',
                       {'course': course[0],
                        'quizs':marks,
+                       'quizs_pk':marks_pk,
                        'fut_quiz':quizs,
                        'videos':videos,
                        'instructor': instructor,
@@ -262,7 +267,7 @@ def add_videos(request, course_code):
             course_id=course,
             upload_time=datetime.now(),
             description=description,
-            video_url=uploaded_file_url,
+            video_url=uploaded_file_url[:-4],
             video_name=name
         )
         create_thumbnail(course,video,name, file_extenstion,'Big',1, '700:500')
@@ -444,16 +449,6 @@ def ajax_q(request,quiz_code):
     ques=QuizQuestion.objects.get(pk=q)
     quiz_id=Quiz.objects.get(pk=ques.quiz_id.pk)
     ans=int(request.POST.get('answer'))
-    # if( int(request.POST.get('answer')) == 1):
-    #     ans=1
-    # elif( int(request.POST.get('answer')) == 2):
-    #     ans=2
-    # elif( int(request.POST.get('answer')) == 3):
-    #     ans=3
-    # elif( int(request.POST.get('answer')) == 4):
-    #     ans=3
-    # elif( int(request.POST.get('answer')) == 5):
-    #     ans=ques.options5
     lead = StudentAnswer.objects.filter(quiz_id=quiz_id,question_id=ques,student_id=student)
     if lead:
         lead = lead[0]
@@ -465,6 +460,30 @@ def ajax_q(request,quiz_code):
     data = { 'status': "1" }
     return HttpResponse(json.dumps(data), content_type='application/json')
 
+@login_required
+def submit(request,quiz_code):
+    ei=ExtraInfo.objects.get(user=request.user)
+    student=Student.objects.get(id=ei)
+    quiz=Quiz.objects.get(pk=quiz_code)
+    stu_ans=StudentAnswer.objects.filter(student_id=student,quiz_id=quiz)
+    score=0
+    for s_ans in stu_ans:
+        if s_ans.question_id.answer == s_ans.choice:
+            score+=s_ans.question_id.marks
+        else:
+            score-=(s_ans.quiz_id.negative_marks*s_ans.question_id.marks)
+    # quiz_res=QuizResult.objects.filter(quiz_id=quiz,student_id=request.user)
+    quiz_res=QuizResult(
+        quiz_id=quiz,
+        student_id=student,
+        score=score,
+        finished=True
+    )
+    quiz_res.save()
+    print ("!!!")
+    print(score)
+    data={'message':'you have submitted, cant enter again now','score':quiz_res.score}
+    return HttpResponse(json.dumps(data),content_type="application/json")
 
 @login_required
 def create_quiz(request, course_code):

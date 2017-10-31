@@ -292,10 +292,10 @@
         event.preventDefault();
         $.ajax({
           type:'POST',
-          url:'/quiz/{{contest.pk}}/submit',
+          url:'/ocms/{{contest.pk}}/submit',
           data:{csrfmiddlewaretoken: '{{ csrf_token }}'},
           success: function(data){
-            alert(data.message+"\n"+data.score);
+            alert(data.message+"\nYour Score="+data.score);
             localStorage.setItem("finished", "1");
             window.close();
 

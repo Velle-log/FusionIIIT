@@ -109,8 +109,7 @@ class QuizResult(models.Model):
     quiz_id = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
     score = models.IntegerField()
-    feedback = models.CharField(max_length=100)
-
+    finished = models.BooleanField(default=False)
     def __str__(self):
         return '{} - {} - {} - {} - {}'.format(
                 self.pk, self.student_id,

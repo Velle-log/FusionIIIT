@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^(?P<course_code>[A-z]+[0-9]+)/create_quiz/$', views.create_quiz,name='create_quiz'),
     url(r'^(?P<course_code>[A-z]+[0-9]+)/edit_quiz/(?P<quiz_code>[0-9]+)/$', views.edit_quiz,name='edit_quiz'),
     url(r'^(?P<quiz_code>[0-9]+)/ajax$', views.ajax_q,name='ajax_q'),
+    url(r'^(?P<quiz_code>[0-9]+)/submit$', views.submit,name='submit'),
     url(r'^(?P<course_code>[A-z]+[0-9]+)/add_assignment$', views.add_assignment,
         name='add_assignment'),
     url(r'^(?P<course_code>[A-z]+[0-9]+)/upload_assignment$', views.upload_assignment,
