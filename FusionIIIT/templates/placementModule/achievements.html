@@ -9,7 +9,9 @@
     <div class="ui active tab" data-tab="achievements">
         <div class="ui vertical segment">
             {% comment %}Form Tag starts here!{% endcomment %}
+
             <form method="post" class="ui form" role="form">
+
                 {% comment %}Then add a new achievement Accordian starts here!{% endcomment %}
                 <div class="ui active accordion field">
                     <div class="title">
@@ -28,11 +30,14 @@
                                     </label>
                                     <div class="ui fluid large input">
                                         {% comment %}The Achievement Name input!{% endcomment %}
+
                                         {{ form4.achievement }}
+
                                     </div>
                                 </div>
 
                                 <div class="four wide field">
+
                                   {{ form4.achievement_type.errors }}
                                   <label for="{{ form4.achievement_type.id_for_label }}">
                                     Type:
@@ -50,6 +55,7 @@
                                 <label for="{{ form4.date_earned.id_for_label }}">
                                   Date:
                                 </label>
+
                                 <div class="ui calendar" id="rangestart2">
                                     <div class="ui input left icon">
                                         <i class="calendar icon"></i>
@@ -64,6 +70,15 @@
                                     </label>
                                     <div class="ui fluid large input">
                                         {{ form4.issuer }}
+                                    </div>
+                                </div>
+                              </div>
+                                <div class="twelve wide field">
+                                    <label>
+                                        Issuer
+                                    </label>
+                                    <div class="ui fluid large input">
+                                        <input>
                                     </div>
                                 </div>
                             </div>
@@ -99,7 +114,9 @@
             <table class="ui fixed sortable celled table">
                 <thead>
                 <tr>
+
                     <th class="four wide">Achievement Name</th>
+
                     <th>Type</th>
                     <th>Issuer</th>
                     <th>Date</th>

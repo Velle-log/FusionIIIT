@@ -14,7 +14,9 @@
 
         <div class="ui vertical segment">
             {% comment %}Form Tag starts here!{% endcomment %}
+
             <form method="post" class="ui form" role="form">
+
                 {% comment %}The add a new internship Accordian starts here!{% endcomment %}
                 <div class="ui active accordion field">
                     <div class="title">
@@ -40,6 +42,7 @@
                                   {{ form8.location.errors }}
                                 <label for="{{ form8.location.id_for_label }}">
                                   Location:</label>
+
                                 <div class="ui fluid large input">
                                     {% comment %}The Institute Name input!{% endcomment %}
                                     {{ form8.location }}
@@ -77,12 +80,14 @@
 
                         <div class="two fields">
                             <div class="sixteen wide field">
+
                               {{ form8.description.errors }}
                                 <label for="{{ form8.description.id_for_label }}">
                                   Description:</label>
                                 <div class="ui fluid large input">
                                     {% comment %}The Institute description input!{% endcomment %}
                                     {{ form8.description }}
+
                                 </div>
                             </div>
                         </div>
