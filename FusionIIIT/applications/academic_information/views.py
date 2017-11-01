@@ -17,15 +17,12 @@ def homepage(request):
 #     return render(request,'ais/attendance.html',{})
 
 def add_attendance(request):
-    print('enshiro maria')
     if request.method == 'POST':
         student_attend = Student_attendance()
         s_id = request.POST.get('student_id')
         c_id = request.POST.get('course_id')
-        print('kagitoki')
         print(s_id)
         print(c_id)
-        print('karia')
         try:
            student_attend.student_id = Student.objects.get(id_id=s_id)
         except:
