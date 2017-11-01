@@ -351,16 +351,6 @@ def ajax_new(request, course_code):
 
 @login_required
 def ajax_remove(request, course_code):
-    extrainfo = ExtraInfo.objects.get(user=request.user)
-    # if extrainfo.designation.name == "student":
-    #     student = Student.objects.get(id=extrainfo)
-    #     roll = student.id.id[:4]
-    #     course = Course.objects.get(course_id=course_code, sem=semester(roll))
-    # else:
-        # instructor = Instructor.objects.filter(instructor_id=extrainfo)
-        # for ins in instructor:
-        #     if ins.course_id.course_id == course_code:
-        #         course = ins.course_id
     f = Forum.objects.get(
         pk=request.POST.get('question')
     )
@@ -381,6 +371,16 @@ def ajax_remove(request, course_code):
         f.delete()
     data = {'message': 'deleted'}
     return HttpResponse(json.dumps(data), content_type='application/json')
+#    extrainfo = ExtraInfo.objects.get(user=request.user)
+#    if extrainfo.designation.name == "student":
+#        student = Student.objects.get(id=extrainfo)
+#        roll = student.id.id[:4]
+#        course = Course.objects.get(course_id=course_code, sem=semester(roll))
+#    else:
+#        instructor = Instructor.objects.filter(instructor_id=extrainfo)
+#        for ins in instructor:
+#            if ins.course_id.course_id == course_code:
+#                course = ins.course_id
 
 
 @login_required
