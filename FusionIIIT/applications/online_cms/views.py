@@ -48,12 +48,12 @@ def viewcourses(request):
         for reg in register:
             instructor = Instructor.objects.get(course_id=reg.course_id)
             courses[reg] = instructor
-        return render(request, 'coursemanagement/coursemanagement.html',
+        return render(request, 'coursemanagement/coursemanagement1.html',
                       {'courses': courses,
                        'extrainfo': extrainfo})
     else:
         instructor = Instructor.objects.filter(instructor_id=extrainfo)
-        return render(request, 'coursemanagement/coursemanagement.html',
+        return render(request, 'coursemanagement/coursemanagement1.html',
                       {'instructor': instructor,
                        'extrainfo': extrainfo})
 
