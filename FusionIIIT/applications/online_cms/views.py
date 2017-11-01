@@ -352,16 +352,15 @@ def ajax_new(request, course_code):
 @login_required
 def ajax_remove(request, course_code):
     extrainfo = ExtraInfo.objects.get(user=request.user)
-    if extrainfo.designation.name == "student":
-        student = Student.objects.get(id=extrainfo)
-        roll = student.id.id[:4]
-        course = Course.objects.get(course_id=course_code, sem=semester(roll))
-    else:
-        instructor = Instructor.objects.filter(instructor_id=extrainfo)
-        for ins in instructor:
-            if ins.course_id.course_id == course_code:
-                course = ins.course_id
-    ex = ExtraInfo.objects.get(user=request.user)
+    # if extrainfo.designation.name == "student":
+    #     student = Student.objects.get(id=extrainfo)
+    #     roll = student.id.id[:4]
+    #     course = Course.objects.get(course_id=course_code, sem=semester(roll))
+    # else:
+        # instructor = Instructor.objects.filter(instructor_id=extrainfo)
+        # for ins in instructor:
+        #     if ins.course_id.course_id == course_code:
+        #         course = ins.course_id
     f = Forum.objects.get(
         pk=request.POST.get('question')
     )
@@ -408,7 +407,6 @@ def add_assignment(request, course_code):
         fs.save(assi.name, assi)
         uploaded_file_url = "/media/online_cms/" + course_code + "/assi/"
         uploaded_file_url = uploaded_file_url + name + "/" + name + file_extenstion
-        index = uploaded_file_url.rfind('/')
         name = request.POST.get('name')
         assign = Assignment(
             course_id=course,
@@ -421,16 +419,14 @@ def add_assignment(request, course_code):
     else:
         return HttpResponse("not found")
 
-    
+
 @login_required
 def quiz(request, quiz_id):
     user = request.user
     extrainfo = ExtraInfo.objects.get(user=user)
     if extrainfo.user_type == 'student':
-        student = Student.objects.get(id=extrainfo)
-        roll = student.id.id[:4]
+        # student = Student.objects.get(id=extrainfo)
         quiz = Quiz.objects.get(pk=quiz_id)
-        quizQuestion = QuizQuestion.objects.filter(quiz_id=quiz)
         length = quiz.number_of_question
         ques_pk = QuizQuestion.objects.filter(quiz_id=quiz).values_list('pk', flat=True)
         random_ques_pk = random.sample(list(ques_pk), length)
@@ -522,8 +518,9 @@ def create_quiz(request, course_code):
             days, seconds = duration.days, duration.seconds
             hours = days * 24 + seconds // 3600
             minutes = (seconds % 3600) // 60
-            total_score = form.cleaned_data['number_of_questions'] * form.cleaned_data['per_question_score']
-            # prizes=form.cleaned_data['prizes'].replace('\r\n','/')
+            total_score = form.cleaned_data[
+                'number_of_questions'] * form.cleaned_data[
+                'per_question_score']
             description = form.cleaned_data['description'].replace('\r\n', '/')
             rules = form.cleaned_data['rules'].replace('\r\n', '/')
             obj = Quiz.objects.create(
@@ -557,10 +554,10 @@ def create_quiz(request, course_code):
 def edit_quiz_details(request, course_code, quiz_code):
     extrainfo = ExtraInfo.objects.get(user=request.user)
     if extrainfo.user_type == 'faculty':
-        instructor = Instructor.objects.filter(instructor_id=extrainfo)
-        for ins in instructor:
-            if ins.course_id.course_id == course_code:
-                course = ins.course_id
+        # instructor = Instructor.objects.filter(instructor_id=extrainfo)
+        # for ins in instructor:
+        #     if ins.course_id.course_id == course_code:
+        #         course = ins.course_id
         x = request.POST.get('number')
         print(x, "adsd")
         quiz = Quiz.objects.get(pk=quiz_code)
@@ -610,7 +607,7 @@ def edit_quiz(request, course_code, quiz_code):
         for ins in instructor:
             if ins.course_id.course_id == course_code:
                 course = ins.course_id
-        errors = None
+        # errors = None
         quiz = Quiz.objects.get(pk=quiz_code)
         if request.method == 'POST':
             form = QuestionFormObjective(request.POST, request.FILES)
@@ -624,7 +621,7 @@ def edit_quiz(request, course_code, quiz_code):
                     cmd = "mkdir " + full_path
                     subprocess.call(cmd, shell=True)
                 fs = FileSystemStorage(full_path, url)
-#                file_name = fs.save(image.name, image)
+                fs.save(image.name, image)
                 uploaded_file_url = "/media/online_cms/" + course_code
                 uploaded_file_url = uploaded_file_url + "/quiz/" + quiz_code + "/" + image.name
                 # print uploaded_file_url
@@ -633,39 +630,31 @@ def edit_quiz(request, course_code, quiz_code):
                 options3 = form.cleaned_data['option3']
                 options4 = form.cleaned_data['option4']
                 options5 = form.cleaned_data['option5']
-                obj = QuizQuestion.objects.create(quiz_id=quiz, image=uploaded_file_url,
-                                                  question=form.cleaned_data['problem_statement'],
-                                                  marks=form.cleaned_data['score'],
-                                                  answer=form.cleaned_data['answer'],
-                                                  options1=options1, options2=options2,
-                                                  options3=options3, options4=options4,
-                                                  options5=options5)
+                QuizQuestion.objects.create(quiz_id=quiz, image=uploaded_file_url,
+                                            question=form.cleaned_data['problem_statement'],
+                                            marks=form.cleaned_data['score'],
+                                            answer=form.cleaned_data['answer'],
+                                            options1=options1, options2=options2,
+                                            options3=options3, options4=options4,
+                                            options5=options5)
                 # print "HOGAYA"
                 quiz.total_score += form.cleaned_data['score']
                 quiz.save()
-                obj3 = QuizQuestion.objects.filter(quiz_id=quiz)
+                QuizQuestion.objects.filter(quiz_id=quiz)
                 # print obj3
                 # return render(request,'/quiz/'+'edit_contest/'+str(obj.pk),
 #                {'form1': form1 ,'form2':form2,'obj':obj3})
                 return redirect('/ocms/' + course_code + '/edit_quiz/' + str(quiz.pk))
             elif(form.errors):
-                errors = form.errors
+                form.errors
         else:
             form1 = QuizForm()
             form = QuestionFormObjective()
             questions = QuizQuestion.objects.filter(quiz_id=quiz)
-            st = quiz.start_time
-            end_time = quiz.end_time
-            # prizes=obj.prizes
-            # prizes=[z.encode('ascii','ignore') for z in prizes.split('/')]
-            # print prizes
             description = quiz.description
             description = [z.encode('ascii', 'ignore') for z in description.split('/')]
             rules = quiz.rules
             rules = [z.encode('ascii', 'ignore') for z in rules.split('/')]
-#            details={'cname':obj.contest_name,'description':obj.description,
-#                     'c_type':obj.c_type,'rules':obj.rules,
-#                     'starttime':st,'endtime':end_time}
             return render(request, 'coursemanagement/editcontest.html',
                           {'form1': form1, 'form': form, 'details': quiz,
                            'course': course, 'questions': questions,
