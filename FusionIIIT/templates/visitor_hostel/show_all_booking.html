@@ -1,0 +1,44 @@
+<<!DOCTYPE html>
+<html>
+<head>
+	<title>Date Input</title>
+</head>
+<body>
+<form action="/visitorhostel/vh_homepage/" method="post">
+    {% csrf_token %}
+<table>
+<tr>
+    	<th>Visitor Name</th>
+    	<th>Intender Name</th>
+    	<th>Category</th>
+    	<th>Number of person</th>
+    	<th>Number of room</th>
+    	<th>Booking From</th>
+    	<th>Booking to</th>
+    	<th>Status</th>
+ </tr>
+{% for context1 in booking %}
+    <div class="context">
+        <tr>
+            <td>{{context1.visitor_id.visitor_name}}</td> 
+            <td>{{context1.visitor_id.intender_id}}</td> 
+            <td>{{context1.visitor_category}}</td>
+            <td>{{context1.person_count}}</td>
+            <td>{{context1.room_count}}</td>
+            <td>{{context1.booking_from}}</td>
+            <td>{{context1.Booking_to}}</td>
+            <td>{% if context1.status == "Confirm" %}
+            		Confirm
+            	{% elif context1.status == "Pending" %}
+            		pending</td>
+            	{% else %}
+            		Cancelled
+            	{% endif %}
+        </tr>
+     </div>
+{% endfor %}
+</table>
+    <input type="submit" value="home" name ="home" />
+</form>
+</body>
+</html>
