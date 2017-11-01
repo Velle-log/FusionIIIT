@@ -104,6 +104,7 @@ class Prescribed_medicine(models.Model):
     prescription_id = models.ForeignKey(Prescription)
     medicine_id = models.ForeignKey(Stock)
     quantity = models.IntegerField(default=0)
+
     def __str__(self):
         return self.medicine_id.medicine_name
 
@@ -114,7 +115,7 @@ class Appointment(models.Model):
     description = models.CharField(max_length=50)
     approval = models.NullBooleanField()
     appointment_date = models.DateField()
-    appointment_time = models.CharField(max_length=10,choices=Constants.TIME)
+    appointment_time = models.CharField(max_length=10, choices=Constants.TIME)
 
     def __str__(self):
         return self.description
