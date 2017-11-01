@@ -1,4 +1,5 @@
 from django.conf.urls import url
+
 from . import views
 
 urlpatterns = [
@@ -11,16 +12,18 @@ urlpatterns = [
     # lecturer
     url(r'^(?P<course_code>[A-z]+[0-9]+)/add_documents$', views.add_document,
         name='add_document'),
-    url(r'^quiz/(?P<quiz_id>[0-9]+)/$', views.quiz,name='quiz'),
-    url(r'^(?P<course_code>[A-z]+[0-9]+)/create_quiz/$', views.create_quiz,name='create_quiz'),
-    url(r'^(?P<course_code>[A-z]+[0-9]+)/edit_quiz/(?P<quiz_code>[0-9]+)/$', views.edit_quiz,name='edit_quiz'),
-    url(r'^(?P<course_code>[A-z]+[0-9]+)/edit_quiz_details/(?P<quiz_code>[0-9]+)/$', views.edit_quiz_details,name='edit_quiz_details'),
-    url(r'^(?P<quiz_code>[0-9]+)/ajax$', views.ajax_q,name='ajax_q'),
-    url(r'^(?P<quiz_code>[0-9]+)/submit$', views.submit,name='submit'),
-    url(r'^(?P<course_code>[A-z]+[0-9]+)/add_assignment$', views.add_assignment,
-        name='add_assignment'),
+    url(r'^quiz/(?P<quiz_id>[0-9]+)/$', views.quiz, name='quiz'),
+    url(r'^(?P<course_code>[A-z]+[0-9]+)/create_quiz/$', views.create_quiz, name='create_quiz'),
+    url(r'^(?P<course_code>[A-z]+[0-9]+)/edit_quiz/(?P<quiz_code>[0-9]+)/$',
+        views.edit_quiz, name='edit_quiz'),
+    url(r'^(?P<course_code>[A-z]+[0-9]+)/edit_quiz_details/(?P<quiz_code>[0-9]+)/$',
+        views.edit_quiz_details, name='edit_quiz_details'),
+    url(r'^(?P<quiz_code>[0-9]+)/ajax$', views.ajax_q, name='ajax_q'),
+    url(r'^(?P<quiz_code>[0-9]+)/submit$', views.submit, name='submit'),
+    url(r'^(?P<course_code>[A-z]+[0-9]+)/add_assignment$',
+        views.add_assignment, name='add_assignment'),
     url(r'^(?P<course_code>[A-z]+[0-9]+)/upload_assignment$', views.upload_assignment,
-         name='upload_assignment'),
+        name='upload_assignment'),
     url(r'^(?P<course_code>[A-z]+[0-9]+)/add_video$', views.add_videos,
         name='add_videos'),
     url(r'^(?P<course_code>[A-z]+[0-9]+)/forum$', views.forum,
