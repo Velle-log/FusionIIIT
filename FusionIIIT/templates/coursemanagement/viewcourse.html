@@ -348,13 +348,10 @@
 
                             {% for slide in slides %}
                             <div class="column">
-                                <div id='pdf_modal' class="ui sixteen wide column fullscreen modal">
-                                    <!-- <iframe src="http://jasonczaja.com/blog/wp-content/uploads/2009/01/jason_czaja_resume-791x1024.png"></iframe> -->
-                                </div>
-
                                 <button class="ui primary button" style="mae">
-                           <a id='visualize' style="color:white;">{{slide.document_name}}</a>
-                         </button>
+                                 <a id='visualize' href="{{slide.document_url}}"style="color:white;">{{slide.document_name}}</a>
+                               </button>
+
                             </div>
                             {% endfor %}
 
