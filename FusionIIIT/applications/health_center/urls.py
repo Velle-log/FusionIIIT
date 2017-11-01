@@ -1,11 +1,9 @@
 from django.conf.urls import url
 
-from . import views
-
+from .views import healthcenter
 app_name = 'healthcenter'
 
 urlpatterns = [
 
-    url(r'^', views.healthcenter, name='healthcenter'),
-
+    url(r'^$', healthcenter, name='healthcenter'),
 ]

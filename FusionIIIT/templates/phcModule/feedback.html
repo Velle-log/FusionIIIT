@@ -2,61 +2,35 @@
 {% block feedback %}
     {% comment %}The tab menu starts here!{% endcomment %}
     <div class="ui pointing secondary menu">
-        <a class="active item" data-tab="feedback">
-            Feedback
+        <a class="active item" data-tab="lodgecomplaint">
+            Lodge Complaint
         </a>
-
-        <a class="item" data-tab="viewfeedback">
-            Status
+        <a class="item" data-tab="feedback">
+            Give Feedback
         </a>
     </div>
 
-    <div class="ui active tab" data-tab="feedback">
+    <div class="ui active tab" data-tab="lodgecomplaint">
         <div class="ui vertical segment">
 
             {% comment %}Form Tag starts here!{% endcomment %}
-            <form>
+            <form method='POST'>{% csrf_token %}
                 {% comment %}The add a new skill Accordian starts here!{% endcomment %}
                 <div class="ui form" style="padding: 8px; padding-left: 24px; padding-right: 24px;">
 
                     <div class="ui header">
-                        The Feedback form for PHC:
+                        The Complaint form
                     </div>
 
                     <br>
-
-                    <div class="two fields">
-                        <div class="field">
-                            <label>Location</label>
-                            <input value="Primary Health Center" class="ui large input" readonly>
-                        </div>
-
-                        <div class="field">
-                            <label>Type:</label>
-                            <select class="ui search fluid dropdown">
-                                {% comment %}
-                                        TODO: A backend code to stop sending of empty values to database (SELECT OPTION)
-                                    {% endcomment %}
-                                <option value="">Select</option>
-                                <option value="Cleanliness">Cleanliness</option>
-                                <option value="Doctors">Doctors</option>
-                                <option value="Medicines">Medicines</option>
-                                <option value="Staff">Staff</option>
-                                <option value="Others">Others</option>
-                            </select>
-                        </div>
-                    </div>
-
                     <div class="field">
-                        <label>Description:</label>
-                        <textarea rows="3"></textarea>
+                        <label>Complaint:</label>
+                        <textarea rows="3" name='Complaint' ></textarea>
                     </div>
 
                     <div class="field">
                         <label><br></label>
-                        <button class="ui primary right floated button" type="submit">
-                            Submit
-                        </button>
+                            <input type='submit' name='complaint' value="Submit" class="ui primary right floated button" >
                     </div>
                 </div>
             </form>
@@ -69,59 +43,57 @@
         </div>
     </div>
 
-    <div class="ui tab" data-tab="viewfeedback">
-        <div class="ui very relaxed fluid selection list" style="padding-left: 24px; padding-top: 16px; padding-bottom: 16px; max-height: 70vh; overflow-y: auto;">
+    <div class="ui tab" data-tab="feedback">
+      <div class="ui vertical segment" >
+          <table class="ui very basic collapsing celled large fluid sortable table"
+                 style="padding-left: 2.5%;padding-right: 2.5%;padding-top: 1%;padding-bottom: 1.5%;margin: auto;">
+              <thead>
+              <tr>
 
-            <div class="item">
-                <img class="ui mini circular image" src="{% static 'globals/img/zlatan.jpg' %}">
-                <div class="content">
-                    <a class="header">Zlatan Ibrahimovic</a>
-                    <span class="meta">Medicines</span>
+                  <th class="two wide" >
+                      Complaint By
+                  </th>
 
-                    <div class="description">
-                        Forgive and Forget mess food? I am neither Jesus nor do I have Alzheimer.
-                    </div>
-                </div>
+                  <th class="wide">
+                        Complaint
+                  </th>
 
-                <div class="right floated content">
-                    <span class="meta">August 10 '18</span>
-                </div>
-            </div>
+                  <th class="two wide">
+                      Feedback
+                  </th>
 
-            <div class="item">
-                <img class="ui mini circular image" src="{% static 'globals/img/zlatan.jpg' %}">
-                <div class="content">
-                    <a class="header">Zlatan Ibrahimovic</a>
-                    <span class="meta">Medicines</span>
+              </tr>
+              </thead>
 
-                    <div class="description">
-                        Diarrhea: The original detox.
-                    </div>
-                </div>
+              <tbody>
+              {% for complaint in all_complaints %}
+              <tr>
 
-                <div class="right floated content">
-                    <span class="meta">August 09 '18</span>
-                </div>
-            </div>
+                  <td>
+                      <h4 class="ui image header">
+                          <img src="{% static 'globals/img/zlatan.jpg' %}" class="ui mini circular image">
+                            {{complaint.user_id}}
+                      </h4>
+                  </td>
 
-            <div class="item">
-                <img class="ui mini circular image" src="{% static 'globals/img/zlatan.jpg' %}">
-                <div class="content">
-                    <a class="header">Zlatan Ibrahimovic</a>
-                    <span class="meta">Cleanliness</span>
+                  <td>
+                      {{complaint.complaint}}
+                  </td>
 
-                    <div class="description">
-                        Before you leave, take a minute to clean from the next time!
-                    </div>
-                </div>
-
-                <div class="right floated content">
-                    <span class="meta">August 08 '18</span>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="ui divider"></div>
+                    {% if complaint.feedback == None %}
+                    <form method='POST'>{% csrf_token %}
+                    <td>  <textarea class="ui textarea" rows="2" name="feedback" required="true"></textarea><br>
+                    <input type="hidden" name="id" value={{complaint.id}} />
+                    <input type="submit" name="feed_com" class="ui small right floated primary button" value="Submit"/>
+                    </td>
+                    </form>
+                    {%else%}
+                    <td>{{complaint.feedback}}</td>
+                    {% endif %}
+                  {% endfor %}
+              </tr>
+              </tbody>
+          </table>
+      </div>
     </div>
 {% endblock %}

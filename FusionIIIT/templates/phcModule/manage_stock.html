@@ -1,0 +1,171 @@
+{% load static %}
+{% block stock %}
+    {% comment %}the main tab starts here {% endcomment %}
+    <div class="ui pointing secondary menu">
+        <a class="active item" data-tab="addstock">
+          Add Stock
+        </a>
+
+        <a class="item" data-tab="addmedicine">
+          Add New Medicine
+        </a>
+
+        <a class="item" data-tab="viewstock">
+          View Stock
+        </a>
+
+        <a class="item" data-tab="viewinventory">
+          View Inventory
+        </a>
+    </div>
+
+    {% comment %}the add stock tab starts here {% endcomment %}
+    <div class="ui active tab" data-tab="addstock">
+        <div class="ui vertical segment">
+            <form class="ui form" method="POST" style="padding: 8px; padding-left: 24px; padding-right: 24px;">{% csrf_token %}
+                  <div class="field">
+                        <label>Medicine</label>
+                        <select class="ui search fluid dropdown" name="medicine_id" required="true">
+                          <option selected hidden>--SELECT--</option>
+                          {% for stock in stocks %}
+                          <option value="{{stock.id}}">{{stock.medicine_name}}</option>
+                          {% endfor %}
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Quantity</label>
+                        <div class="ui fluid large input">
+                            <input placeholder="Quantitys" name="quantity" type="number">
+                        </div>
+                    </div>
+                    <div class="field">
+                    <label><br></label>
+
+                    <div >
+                      <input type="submit" name="add_stock" value="Submit"class="ui large right floated primary button" />
+                    </div>
+
+                   </div>
+            </form>
+            <br>
+            <br>
+        </div>
+        <br>
+        <div class="extra segment"></div>
+    </div>
+    {% comment %}the add stock tab ends here {% endcomment %}
+
+    {% comment %}the add medicine tab starts here {% endcomment %}
+    <div class="ui tab" data-tab="addmedicine">
+        <div class="ui vertical segment">
+            <form class="ui form" method="POST" style="padding: 8px; padding-left: 24px; padding-right: 24px;">{% csrf_token %}
+              <div class="field">
+                <label>Quantity</label>
+                <div class="ui fluid large input">
+                    <input placeholder="Medicine Name" name="new_medicine" type="text">
+                </div>
+                </div>
+                <div class="field">
+                    <label>Quantity</label>
+                    <div class="ui fluid large input">
+                        <input placeholder="Quantity" name="new_quantity" type="number">
+                    </div>
+                </div>
+                <div class="field">
+                <label><br></label>
+
+                <div >
+                  <input type="submit" name="add_medicine" value="Submit"class="ui large right floated primary button" />
+                </div>
+
+               </div>
+            </form>
+            <br>
+            <br>
+        </div>
+        <br>
+        <div class="extra segment"></div>
+    </div>
+    {% comment %}the add medicine tab ends here {% endcomment %}
+
+
+    {% comment %}the view stock tab starts here {% endcomment %}
+    <div class="ui tab" data-tab="viewstock">
+        <div class="ui vertical segment" >
+            <table class="ui very basic collapsing celled large fluid sortable table"
+                   style="padding-left: 2.5%;padding-right: 2.5%;padding-top: 1%;padding-bottom: 1.5%;margin: auto;">
+                <thead>
+                <tr>
+                    <th class="two wide">
+                        Medicine
+                    </th>
+
+                    <th class="two wide" >
+                        Quantity
+                    </th>
+
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for view in stocks %}
+                <tr>
+
+                    <td>
+                       {{view.medicine_name}}
+                    </td>
+
+                    <td>
+                        {{view.quantity}}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% comment %}the view stock tab ends here {% endcomment %}
+
+    {% comment %}the view inventory tab starts here {% endcomment %}
+    <div class="ui tab" data-tab="viewinventory">
+        <div class="ui vertical segment" >
+            <table class="ui very basic collapsing celled large fluid sortable table"
+                   style="padding-left: 2.5%;padding-right: 2.5%;padding-top: 1%;padding-bottom: 1.5%;margin: auto;">
+                <thead>
+                <tr>
+                    <th class="three wide">
+                        Medicine
+                    </th>
+
+                    <th class="three wide" >
+                        Quantity
+                    </th>
+                    <th class="three wide" >
+                        Date
+                    </th>
+
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for inventory in inventories %}
+                <tr>
+
+                    <td>
+                       {{inventory.medicine_id}}
+                    </td>
+
+                    <td>
+                        {{inventory.quantity}}
+                    </td>
+                    <td>
+                        {{inventory.date}}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% comment %}the view inventory tab ends here {% endcomment %}
+{% endblock %}

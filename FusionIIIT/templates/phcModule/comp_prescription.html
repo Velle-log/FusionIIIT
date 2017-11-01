@@ -6,55 +6,100 @@
         <a class="active item" data-tab="prescribe">
             Prescribe
         </a>
+        <a class="item" data-tab="hospitaladmit">
+            Hospital Admission
+        </a>
     </div>
-    {% comment %}the ambulance schedule tab starts here {% endcomment %}
+    {% comment %}the prescribe tab starts here {% endcomment %}
     <div class="ui active tab" data-tab="prescribe">
         <div class="ui vertical stripe team segment"
              style="padding-left: 3.5%;
                 padding-right: 3.5%;">
 
-            <form class="ui form">
-                <div class="three fields">
-                    <div class="field">
-                        <label>Patient's Name</label>
-                        <div class="ui fluid large input">
-                            <input placeholder="Patient's Name" type="text">
-                        </div>
-                    </div>
+            <form class="ui form" method="POST">{% csrf_token %}
+                <div class="two fields">
+                  <div class="field">
+                      <label>Patient</label>
+                      <select class="ui search fluid dropdown" name="user" required="true">
+                        <option selected hidden>--SELECT--</option>
+                        {% for user in users %}
+                        <option value="{{user.id}}">{{user.id}}-{{user.user}}</option>
+                        {% endfor %}
+                      </select>
+                   </div>
 
-                    <div class="field">
-                        <label>Roll No.</label>
-                        <div class="ui fluid large input">
-                            <input placeholder="Roll No.">
-                        </div>
-                    </div>
-
-                    <div class="field">
-                        <label>Email</label>
-                        <div class="ui fluid large input">
-                            <input placeholder="Email" type="email">
-                        </div>
+                   <div class="field">
+                       <label>Doctor</label>
+                       <select class="ui search fluid dropdown" name="doctor" required="true">
+                         <option selected hidden>--SELECT--</option>
+                         {% for doctor in doctors %}
+                         <option value="{{doctor.id}}">{{doctor.doctor_name}}</option>
+                         {% endfor %}
+                       </select>
                     </div>
                 </div>
 
                 <div class="field">
-                    <label>Symptoms</label>
-                    <textarea rows="2"></textarea>
+                    <label>Detail of Disease</label>
+                    <textarea name="details" rows="2"></textarea>
                 </div>
 
+                <div class="two fields">
+                  <div class="field">
+                      <label>Medicine</label>
+                        <option selected hidden>--SELECT--</option>
+                        <select class="ui search fluid dropdown" id="medicine_id" name="medicine_id" required="true">
+                        {% for medicine in stocks %}
+                        <option value="{{medicine.id}}">{{medicine.medicine_name}}</option>
+                        {% endfor %}
+                      </select>
+                  </div>
+
+                   <div class="field">
+                     <label>Quantity</label>
+                     <div class="ui fluid large input">
+                         <input placeholder="Quantitys" id="quantity" name="quantity" type="number">
+                     </div>
+                    </div>
+                     <div class="field">
+                         <label><br></label>
+                         <input type="submit" id="medicine" name="medicine" value="Add"class="ui small left floated primary button" />
+
+                     </div>
+                </div>
                 <div class="field">
-                    <label>Medicines Prescribed</label>
-                    <textarea rows="2"></textarea>
+                    <label>Extra Medicines</label>
+                    <textarea rows="2" name="extra_meds"></textarea>
                 </div>
-
                 <div class="field">
                     <label><br></label>
-                    <div class="ui large right floated primary button">
-                        Submit
-                    </div>
+                    <input type="submit" name="prescribe" value="Submit"class="ui large right floated primary button" />
                 </div>
 
             </form>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+            <script type="text/javascript">
+                  $('#medicine').on('click',function(e)
+                                                      {
+                                                        e.preventDefault();
+                                                        $.ajax({
+                                                          type:'post',
+                                                          url:'/healthcenter/request_app/',
+                                                          data: {
+                                                          csrfmiddlewaretoken: '{{ csrf_token }}',
+                                                          quantity:$("#quantity").val(),
+                                                          medicine_name:$("#medicine_id").val()
+                                                        },
+                                                          success: function(data){
+                                                            if (data.status == 1){
+                                                              alert("anjali");
+                                                              document.getElementById("quantity").value=""
+                                                              document.getElementById("medicine_id").value=""
+                                                            }
+                                                        }
+                                                      });
+                                                      });
+              </script>
 
             <br>
             <br>
@@ -66,3 +111,73 @@
     </div>
     {% comment %}the compounder prescription tab ends here {% endcomment %}
 {% endblock %}
+
+
+
+<div class="ui tab" data-tab="hospitaladmit">
+  <div class="ui vertical segment">
+      <form class="ui form" method="POST" style="padding: 8px; padding-left: 24px; padding-right: 24px;">{% csrf_token %}
+          <div class="field">
+            <div class="two fields">
+              <div class="field">
+                  <label>Doctor</label>
+                  <select class="ui search fluid dropdown" name="doctor_id" required="true">
+                    <option selected hidden>--SELECT--</option>
+                    {% for doctor in doctors %}
+                    <option value="{{doctor.id}}">{{doctor.doctor_name}}</option>
+                    {% endfor %}
+                  </select>
+              </div>
+
+              <div class="field">
+                  <label>User</label>
+                  <select class="ui search fluid dropdown" name="user_id" required="true">
+                    <option selected hidden>--SELECT--</option>
+                    {% for user in users %}
+                    <option value="{{user.id}}">{{user.id}}-{{user.user}}</option>
+                    {% endfor %}
+                  </select>
+              </div>
+            </div>
+              <div class="two fields">
+                  <div class="field">
+                      <label>Admission Date</label>
+
+                          <div class="ui input left icon">
+                              <i class="calendar icon"></i>
+                              <input type="date" placeholder="Date" name="admission_date"  required="true">
+                          </div>
+                      
+
+                  </div>
+
+                  <div class="field">
+                      <label>Hospital</label>
+                      <input type='text' required=true placeholder="Hospital Name" name='hospital_name' />
+                  </div>
+              </div>
+          </div>
+
+
+          <div class="field">
+              <label>Description of Disease</label>
+              <div class="ui fluid input">
+                  <textarea class="ui textarea" rows="2" name="description" required="true"></textarea>
+              </div>
+          </div>
+
+          <div class="field">
+              <label><br></label>
+
+              <div >
+                <input type="submit" name="admission" value="Submit"class="ui large right floated primary button" />
+              </div>
+
+          </div>
+      </form>
+      <br>
+      <br>
+  </div>
+  <br>
+  <div class="extra segment"></div>
+</div>
