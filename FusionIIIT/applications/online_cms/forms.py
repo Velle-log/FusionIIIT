@@ -14,10 +14,13 @@ class QuizForm(forms.Form):
     negative_marks=forms.FloatField(label='Penalty',required=False)
     description=forms.CharField(label='description',max_length=1500,widget=forms.Textarea(attrs={'placeholder':'Description'}))
     rules=forms.CharField(label='rules',max_length=1000,widget=forms.Textarea(attrs={'placeholder':'Description'}))
+    number_of_questions=forms.IntegerField(label='Number Of Questions')
+    per_question_score=forms.IntegerField()
     # prizes=forms.CharField(label='prizes',max_length=1000,widget=forms.Textarea(attrs={'placeholder':'1st Prize \n2nd Prize \n3rd Prize\neg:\nRs10000/-\nRs7000/-\nRs5000/-\n'}))
     def clean(self):
         sdate=self.cleaned_data.get("startdate")
         stime=self.cleaned_data.get("starttime")
+        print(stime,"stime")
         today=datetime.datetime.now()
         k1=stime.hour
         k2=stime.minute
