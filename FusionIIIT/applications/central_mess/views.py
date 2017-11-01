@@ -7,16 +7,17 @@ from __future__ import unicode_literals
 from django.db import transaction
 from django.http import HttpResponse
 from django.shortcuts import render
-from .models import Rebate
+from .models import Rebate,Menu,Mess_meeting
 from applications.globals.models import ExtraInfo
 from applications.academic_information.models import Student
 
 
 def mess(request):
-    extrainfo = ExtraInfo.objects.get(id='2015268')
-    student = Student.objects.get(id=extrainfo)
-    rebates = Rebate.objects.filter(student_id=student)
-    return render(request, 'messModule/mess.html', {'rebates': rebates})
+    # extrainfo = ExtraInfo.objects.get(id='2015268')
+    # student = Student.objects.get(id=extrainfo)
+    # rebates = Rebate.objects.filter(student_id=student)
+    # return render(request, 'messModule/mess.html', {'rebates': rebates})
+    return render(request, 'messModule/mess2.html', { })
 
 
 # @login_required
@@ -34,3 +35,33 @@ def leaverequest(request):
                         end_date=end_date, purpose=purpose)
     rebate_obj.save()
     return HttpResponse("Leave Request made!")
+
+@transaction.atomic
+def minutes(request):
+    date = request.POST.get('date')
+    venue = request.POST.get('venue')
+    agenda = request.POST.get('agenda')
+    minutes = request.POST.get('minutes')
+    description = request.POST.get('description')
+    minutes = Mess_meeting.objects.all()
+
+    for item in minutes:
+        if item.meeting_date is date:
+            item.mess_minutes = minutes
+            return HttpResponse("Minutes published!")
+        else:
+            return HttpResponse("Meeting on given date was not held")
+
+
+@transaction.atomic
+def invitation(request):
+    date = request.POST.get('date')
+    venue = request.POST.get('venue')
+    agenda = request.POST.get('agenda')
+    time = request.POST.get('time')
+    minutes = ' '
+    description = request.POST.get('description')
+    invitation_obj = Mess_meeting(meeting_date=date, agenda=agenda, venue=venue, meeting_time=time, mess_minutes=minutes)
+
+    invitation_obj.save()
+    return HttpResponse("Meeting invitation sent!")
