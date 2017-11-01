@@ -17,10 +17,15 @@ def homepage(request):
 #     return render(request,'ais/attendance.html',{})
 
 def add_attendance(request):
+    print('enshiro maria')
     if request.method == 'POST':
         student_attend = Student_attendance()
         s_id = request.POST.get('student_id')
         c_id = request.POST.get('course_id')
+        print('kagitoki')
+        print(s_id)
+        print(c_id)
+        print('karia')
         try:
            student_attend.student_id = Student.objects.get(id_id=s_id)
         except:
@@ -45,6 +50,7 @@ def add_attendance(request):
 
 def get_attendance(request):
     course_id=request.GET.get('course_id')
+    print(course_id)
     c_id=Course.objects.get(course_id=course_id)
     # data=Student_attendance.objects.filter(course_id_id=c_id).values_list('student_id_id','course_id_id')
     data = Student_attendance.objects.filter(course_id_id=c_id).values_list('course_id_id','student_id_id','present_attend','total_attend')
