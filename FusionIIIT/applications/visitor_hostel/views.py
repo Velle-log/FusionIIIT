@@ -177,7 +177,7 @@ def check_out(request):
         category=book_room.visitor_category
         person=book_room.person_count
         room_bill=0
-        if category ==' A':
+        if category =='A':
             room_bill=0
         elif category== 'B':
             room_bill=days*400*(person/2) + days*500*(person%2)
@@ -307,3 +307,34 @@ def meal_book(request):
     else:
         form=MealBooking
         return render(request, "visitor_hostel/bookingmea1.html",{'form':form})
+
+
+
+def bill_generation(request):
+    if request.method == 'POST':
+        v_id=request.POST.getlist('visitor')[0]
+        v_id=Visitor.objects.filter(visitor_id=v_id)[0]
+        meal_bill=request.POST.getlist('mess_bill')[0]
+        room_bill=request.POST.getlist('room_bill')[0]
+        status=request.POST.getlist('status')[0]
+        if status=="True":
+            st=True
+        else:
+            st=False
+        visitor_bill=Visitor_bill.objects.create(visitor_id=v_id,meal_bill=meal_bill, room_bill=room_bill,status=st)
+        messages.success(request, 'guest check out successfully')
+
+    else:
+        messages.success(request, 'No user selected')
+        return HttpResponseRedirect('/visitorhostel/vh_homepage/')
+
+def Room_availabity(request):
+    if request.method == 'POST':
+        print("room availability")
+    else:
+        context =[]
+        room_status=Room_Status.objects.filter(status="Available")
+        for i in room_status:
+            b=Room.objects.filter(room_id=i.room_id.room_id)
+            context.append(b)
+        return render(request,"visitor_hostel/checkavailabilty11.html",{'context':context})

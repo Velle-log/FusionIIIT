@@ -4,7 +4,8 @@
 	<title>checkout</title>
 </head>
 <body>
-<form  method="post">
+<form  action="/visitorhostel/bill/" method="post">
+{% csrf_token %}
    <center>
     <div class="context">
         
@@ -16,7 +17,14 @@
      </div>
 
     <br>
+    <input type="hidden" name="room_bill" value={{context.room_bill}}>
+    <input type="hidden" name="mess_bill" value={{context.mess_bill}}>
     <input type="hidden" name="visitor" value={{context.v_id}}>
+  <select name="status" required>
+  	<option value="">None</option>
+  	<option value="True">paid</option>
+    <option value="False">unpaid</option>
+  </select>
     <input type="submit" value="submit"/>
     </center>
 </form>
