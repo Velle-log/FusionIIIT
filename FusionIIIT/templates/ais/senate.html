@@ -20,6 +20,7 @@
 
        <h4 class="ui dividing header">Edit Members</h4>
 
+
        <form class="ui form" method="POST" id="senate-member">
             {% csrf_token %}
             <div class="field">
@@ -56,37 +57,28 @@
                   </thead>
                   <tbody>
                       {% if senates %}
-                      {% for senate in senates%}
-                      
+                      {% for senate in senates%}                      
                     <tr>
                        <td>{{senate.user.username}} </td>                       
                       <td>{{s.programme}} </td>                      
                       <td>{{senate.id}}</td>
-                      <td><i class="refresh icon" style="font-size:1.3vw"></i><i class="trash outline icon" style="font-size:1.3vw"></i></td>
-                     
+                      <td><i class="refresh icon" style="font-size:1.3vw"></i><i class="trash outline icon" style="font-size:1.3vw"></i></td>    
                     </tr>
-                    
                     {% endfor %}
                     {% endif %}
                     <tr>
-                     
-
                     </tr>
                     <tr>
-                     
-
                     </tr>
                   </tbody>
                  
-                </table>
-               
+                </table>               
       </div>   
       {% block javascript %}
       
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
         <script src="{% static 'academic_information/scripts/senate_members.js' %}" type="text/javascript"></script>
     {% endblock %}
-
       <div class="ui  tab segment" data-tab="office">
 
         <h4 class="ui dividing header">Edit Faculty Members</h4>
@@ -336,5 +328,4 @@
 
     
  </div>
- 
 {% endblock %}

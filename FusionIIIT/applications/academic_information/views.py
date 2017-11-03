@@ -24,9 +24,14 @@ def homepage(request):
     context = {
          'senates':senates,
          'students':students,
-    }
-    
+    }    
     return render(request, "ais/ais.html", context)
+
+def delete(request):
+   s = Designation.objects.get(name = "senate")
+   student = ExtraInfo.objects.get(id = request.POST["delete"])
+   student.designation.remove(s)
+   return HttpResponse("Deleted")
 
 @csrf_exempt
 def senate(request):    
@@ -47,5 +52,3 @@ def senate(request):
     else:        
         data = {}
         return JsonResponse(data)
-
-
