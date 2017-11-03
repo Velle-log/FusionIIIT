@@ -95,7 +95,7 @@ def cancel_booked_booking(request):
         br_id = request.POST.getlist('cancel')
         br_id = br_id[0]
         Book_room.objects.filter(br_id = br_id).update (status = "Cancel" )
-        Room_Status.objects.filter(br_id=br_id).update(status = "Available")
+        Room_Status.objects.filter(br_id=br_id).update(status = "Available",br_id='')
         messages.success(request, 'cancelled successfully ')
         context = Book_room.objects.filter(status ="Confirm")
         return render(request, "visitor_hostel/cancel_booked_room.html" , { 'context' : context})
@@ -256,7 +256,6 @@ def meal_book(request):
             br_id=visitor[0]
             date_1=request.POST.getlist('date')
             if not date_1:
-                form=MealBooking
                 messages.success(request, 'No guest checked in currently')
                 return HttpResponseRedirect('/visitorhostel/bookingmea1.html/')
             else:
@@ -330,11 +329,32 @@ def bill_generation(request):
 
 def Room_availabity(request):
     if request.method == 'POST':
-        print("room availability")
+        form=RoomAvailability(request.POST)
+        if form.is_valid:
+            date_1=request.POST.getlist('date_from')[0]
+            date_2=request.POST.getlist('date_to')[0]
+            context =[]
+            room_status=Room_Status.objects.filter(status="Available")
+            for i in room_status:
+                b=Room.objects.filter(room_id=i.room_id.room_id)
+                context.append(b)
+
+            br_id=Book_room.objects.all().filter(booking_from__gte=date_2)
+            for i in br_id:
+                room_status=Room_Status.objects.all().filter(br_id=i.br_id)
+                for i in room_status:
+                    b=Room.objects.filter(room_id=i.room_id.room_id)
+                    context.append(b)
+
+            br_id=Book_room.objects.all().filter(Booking_to__lte=date_1)
+            for i in br_id:
+                room_status=Room_Status.objects.all().filter(br_id=i.br_id)
+                for i in room_status:
+                    b=Room.objects.filter(room_id=i.room_id.room_id)
+                    context.append(b)
+            print("hii")
+            return render(request,"visitor_hostel/checkavailabilty11.html",{'context':context})
+
     else:
-        context =[]
-        room_status=Room_Status.objects.filter(status="Available")
-        for i in room_status:
-            b=Room.objects.filter(room_id=i.room_id.room_id)
-            context.append(b)
-        return render(request,"visitor_hostel/checkavailabilty11.html",{'context':context})
+        form=RoomAvailability()
+        return render(request,"visitor_hostel/checkavailability1.html",{'form':form})

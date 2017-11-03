@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^checkout/', views.check_out, name = 'guest check out'),
     url(r'^bookmeal/', views.meal_book, name = 'meal booking'),
     url(r'^bill/', views.bill_generation, name = 'bill_generation'),
+    url(r'^check_availability/', views.Room_availabity, name = 'Room_availabity'),
 ]
