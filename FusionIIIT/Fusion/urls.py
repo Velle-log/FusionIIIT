@@ -38,7 +38,7 @@ urlpatterns = [
     url(r'^logout/', auth_views.logout, name='logout'),
     url(r'^academic-procedures/', include('applications.academic_procedures.urls',
                                           namespace='procedures')),
-    url(r'^academic-information-system/', include('applications.academic_information.urls')),
+    url(r'^aims/', include('applications.academic_information.urls')),
 
 ]
 if settings.DEBUG:
