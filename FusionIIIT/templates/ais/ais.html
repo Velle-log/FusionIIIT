@@ -195,9 +195,15 @@
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
                 success: function (response) {
-                    $( '#cse_attend_form' ).each(function(){
-                        this.reset();
-                    });
+                    if(response.result==='Success'){
+                        $( '#cse_attend_form' ).each(function(){
+                            this.reset();
+                        });
+                    }
+                    else{
+                        alert(response.message);
+                    }
+
                 }
             });
         });
@@ -215,10 +221,16 @@
                     total_attend: $('#total_attend_ece').val(),
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
-                success: function () {
-                    $( '#ece_attend_form' ).each(function(){
-                        this.reset();
-                    });
+                success: function (response) {
+                    if(response.result==='Success'){
+                        $( '#ece_attend_form' ).each(function(){
+                            this.reset();
+                        });
+                    }
+                    else{
+                        alert(response.message);
+                    }
+
                 }
             });
         });
@@ -236,10 +248,16 @@
                     total_attend: $('#total_attend_mech').val(),
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
-                success: function () {
-                    $( '#mech_attend_form' ).each(function(){
-                        this.reset();
-                    });
+                success: function (response) {
+                    if(response.result==='Success'){
+                        $( '#mech_attend_form' ).each(function(){
+                            this.reset();
+                        });
+                    }
+                    else{
+                        alert(response.message);
+                    }
+
                 }
             });
         });
@@ -258,10 +276,16 @@
                     total_attend: $('#total_attend_design').val(),
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
                 },
-                success: function () {
-                    $( '#design_attend_form' ).each(function(){
-                        this.reset();
-                    });
+                success: function (response) {
+                    if(response.result==='Success'){
+                        $( '#design_attend_form' ).each(function(){
+                            this.reset();
+                        });
+                    }
+                    else{
+                        alert(response.message);
+                    }
+
                 }
             });
         });

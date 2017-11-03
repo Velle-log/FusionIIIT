@@ -23,26 +23,46 @@ def add_attendance(request):
         c_id = request.POST.get('course_id')
         print(s_id)
         print(c_id)
+        context={}
         try:
            student_attend.student_id = Student.objects.get(id_id=s_id)
         except:
             error_mess = "Student Data Not Found"
+            context['result']='Failure'
+            context['message']=error_mess
             messages.error(request, error_mess)
+            return HttpResponse(json.dumps(context), content_type='add_attendance/json')
+
 
         try:
             student_attend.course_id = Course.objects.get(course_id=c_id)
         except:
             error_mess = "Course Data Not Found"
+            context['result'] = 'Failure'
+            context['message'] = error_mess
             messages.error(request, error_mess)
+            return HttpResponse(json.dumps(context), content_type='add_attendance/json')
 
     # print('student_id ',student_attend.student_id)
 
+
         student_attend.present_attend = request.POST.get('present_attend')
         student_attend.total_attend = request.POST.get('total_attend')
+
+        if student_attend.present_attend > student_attend.total_attend :
+            error_mess = "Present attendance should not be greater than Total attendance"
+            context['result'] = 'Failure'
+            context['message'] = error_mess
+            return HttpResponse(json.dumps(context), content_type='add_attendance/json')
+
+
         success_mess = "Your Data has been successfully added"
         messages.success(request, success_mess)
         student_attend.save()
-        return HttpResponse('Data Successfully added')
+        context['result'] = 'Success'
+        context['message'] = success_mess
+        messages.error(request, success_mess)
+        return HttpResponse(json.dumps(context), content_type='add_attendance/json')
 
 
 def get_attendance(request):
