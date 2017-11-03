@@ -33,6 +33,7 @@ class Constants:
 class Student(models.Model):
     id = models.OneToOneField(ExtraInfo, on_delete=models.CASCADE, primary_key=True)
     name = models.CharField(max_length=50, default='')
+    batch=models.CharField(max_length=10,default='2015')
     programme = models.CharField(max_length=10, choices=Constants.PROGRAMME)
     cpi = models.FloatField(default=0)
     category = models.CharField(max_length=10, choices=Constants.CATEGORY, null=False)

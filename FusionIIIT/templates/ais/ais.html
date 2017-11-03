@@ -290,6 +290,7 @@
                     for(var j=0;j<response.tuples.length;j++){
                         var name=response.stud_data.name[j];
                         var programme=response.stud_data.programme[j];
+                        var batch=response.stud_data.batch[j];
                         var roll=response.tuples[j][1];
                         var course=course_code;
                         var present_attend=response.tuples[j][2];
@@ -299,7 +300,7 @@
                         txt +='<td>  </td>'+
                         '<td>' + name + '</td>' +
                         '<td>' + roll + '</td>' +
-                        '<td>  </td>'+
+                        '<td>' + batch + '</td>' +
                         '<td>' + programme + '</td>' +
                         '<td>' + course + '</td>' +
                         '<td>' + attend_percent + '</td>'+
@@ -341,6 +342,7 @@
                     for(var j=0;j<response.tuples.length;j++){
                         var name=response.stud_data.name[j];
                         var programme=response.stud_data.programme[j];
+                        var batch=response.stud_data.batch[j];
                         var roll=response.tuples[j][1];
                         var course=course_code;
                         var present_attend=response.tuples[j][2];
@@ -350,7 +352,7 @@
                         txt +='<td>  </td>'+
                         '<td>' + name + '</td>' +
                         '<td>' + roll + '</td>' +
-                        '<td>  </td>'+
+                        '<td>' + batch + '</td>' +
                         '<td>' + programme + '</td>' +
                         '<td>' + course + '</td>' +
                         '<td>' + attend_percent + '</td>'+
@@ -392,6 +394,7 @@
                     for(var j=0;j<response.tuples.length;j++){
                         var name=response.stud_data.name[j];
                         var programme=response.stud_data.programme[j];
+                        var batch=response.stud_data.batch[j];
                         var roll=response.tuples[j][1];
                         var course=course_code;
                         var present_attend=response.tuples[j][2];
@@ -401,7 +404,7 @@
                         txt +='<td>  </td>'+
                         '<td>' + name + '</td>' +
                         '<td>' + roll + '</td>' +
-                        '<td>  </td>'+
+                        '<td>' + batch + '</td>' +
                         '<td>' + programme + '</td>' +
                         '<td>' + course + '</td>' +
                         '<td>' + attend_percent + '</td>'+
@@ -443,6 +446,7 @@
                     for(var j=0;j<response.tuples.length;j++){
                         var name=response.stud_data.name[j];
                         var programme=response.stud_data.programme[j];
+                        var batch=response.stud_data.batch[j];
                         var roll=response.tuples[j][1];
                         var course=course_code;
                         var present_attend=response.tuples[j][2];
@@ -452,7 +456,7 @@
                         txt +='<td>  </td>'+
                         '<td>' + name + '</td>' +
                         '<td>' + roll + '</td>' +
-                        '<td>  </td>'+
+                        '<td>' + batch + '</td>' +
                         '<td>' + programme + '</td>' +
                         '<td>' + course + '</td>' +
                         '<td>' + attend_percent + '</td>'+

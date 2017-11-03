@@ -54,6 +54,7 @@ def get_attendance(request):
     stud_data={}
     stud_data['name']=[]
     stud_data['programme']=[]
+    stud_data['batch']=[]
     for obj in data:
         roll = data[0][1]
         extra_info = ExtraInfo.objects.get(id=roll)
@@ -61,10 +62,12 @@ def get_attendance(request):
 
         s_name=s_id.name
         s_programme=s_id.programme
+        s_batch=s_id.batch
         print(s_name)
         print(s_programme)
         stud_data['name'].append(s_name)
         stud_data['programme'].append(s_programme)
+        stud_data['batch'].append(s_batch)
 
     print(stud_data)
     context={}
