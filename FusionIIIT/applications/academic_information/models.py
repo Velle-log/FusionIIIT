@@ -46,7 +46,6 @@ class Student(models.Model):
     mother_name = models.CharField(max_length=40, default='')
     hall_no = models.IntegerField(default=1)
     room_no = models.CharField(max_length=10, blank=True, null=True)
-    category = models.CharField(max_length=10, choices=Constants.CATEGORY),
 
     def __str__(self):
         return str(self.id)
@@ -67,11 +66,11 @@ class Course(models.Model):
 
 
 class Meeting(models.Model):
-    venue = models.CharField(max_length=50)
     date = models.DateField()
     time = models.CharField(max_length=20)
     agenda = models.FileField()
     minutes_file = models.FileField(max_length=40)
+
 
     class Meta:
         db_table = 'Meeting'

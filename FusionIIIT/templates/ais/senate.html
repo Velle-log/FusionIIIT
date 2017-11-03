@@ -1,20 +1,13 @@
 {% load static %}
 {% block senate %}
+
+
     
      <div class="ui pointing secondary menu">
         <a class="active item" data-tab="cse">
-          CSE
-        </a>
-        <a class=" item" data-tab="ece">
-            ECE
-        </a>
-         <a class=" item" data-tab="mech">
-            MECH
-        </a>
-          <a class=" item" data-tab="design">
-            DESIGN
-        </a>
-          <a class=" item" data-tab="office">
+          Senators
+        </a>        
+        <a class=" item" data-tab="office">
             OFFICE BEARERS
         </a>
            <a class=" item" data-tab="minutes">
@@ -27,36 +20,14 @@
 
        <h4 class="ui dividing header">Edit Members</h4>
 
-       <form class="ui form" method="POST" action="{% url 'input' %}">
+
+       <form class="ui form" method="POST" id="senate-member">
             {% csrf_token %}
             <div class="field">
-                 <div class="three fields">
-                    <div class="field">
-                        <label>Name</label>
-                         <input placeholder="Name" type="text">
-                    </div>
-
-                    <div class="field">
-                        <label>Programme</label>
-                            <div class="ui fluid search selection dropdown">
-                                    <input type="hidden">
-                                    <i class="dropdown icon"></i>
-                                    <div class="default text">Programme</div>
-                                    <div class="menu">
-                                        <div class="item" data-value="B.Tech">B.Tech</div>
-                                        <div class="item" data-value="M.Tech">M.Tech</div>
-                                        <div class="item" data-value="Phd.">Phd.</div>
-                                       
-                                        
-                                      
-                                        
-                                    </div>
-                                </div>
-                    </div>
-                
+                 <div class="three fields">                                    
                  <div class="field">
                         <label>Roll Number</label>
-                        <input placeholder="Roll Number" type="text" name="Roll Number">
+                        <input placeholder="Roll Number" type="text" name="Roll Number" id = "rollno">
                     </div>
                     
                 </div>
@@ -86,300 +57,28 @@
                   </thead>
                   <tbody>
                       {% if senates %}
-                      {% for senate in senates%}
-                      {% if senate.department.name == "CSE" %}
+                      {% for senate in senates%}                      
                     <tr>
-                       <td>{{senate.user.username}} </td>
-                      <td>B. Tech </td>
+                       <td>{{senate.user.username}} </td>                       
+                      <td>{{s.programme}} </td>                      
                       <td>{{senate.id}}</td>
-                      <td><form method="POST" action="{% url 'delete' %}">{% csrf_token %}<i class="refresh icon" style="font-size:1.3vw"></i> <button type="submit" name= "delete" value="{{senate.id}}"> Delete </button></form></td>
-                     
+                      <td><i class="refresh icon" style="font-size:1.3vw"></i><i class="trash outline icon" style="font-size:1.3vw"></i></td>    
                     </tr>
-                    {% endif %}
                     {% endfor %}
                     {% endif %}
                     <tr>
-                     
-
                     </tr>
                     <tr>
-                     
-
                     </tr>
                   </tbody>
-                </table>
-
-    </div>
-
-
-    <div class="ui  tab segment" data-tab="ece">
-
-        <h4 class="ui dividing header">Edit Members</h4>
-        <form class="ui form" method="POST" action="{% url 'input' %}">
-                {% csrf_token %}
-
-            <div class="field">
-                 <div class="three fields">
-                    <div class="field">
-                        <label>Name</label>
-                         <input placeholder="Name" type="text">
-                    </div>
-
-                    <div class="field">
-                        <label>Programme</label>
-                            <div class="ui fluid search selection dropdown">
-                                    <input type="hidden">
-                                    <i class="dropdown icon"></i>
-                                    <div class="default text">Programme</div>
-                                    <div class="menu">
-                                        <div class="item" data-value="B.Tech">B.Tech</div>
-                                        <div class="item" data-value="M.Tech">M.Tech</div>
-                                        <div class="item" data-value="Phd.">Phd.</div>
-                                       
-                                        
-                                      
-                                        
-                                    </div>
-                                </div>
-                    </div>
-                
-                 <div class="field">
-                        <label>Roll Number</label>
-                        <input placeholder="Roll Number" type="text">
-                    </div>
-                    
-                </div>
-            </div>
-             <div class="fields">
-                   
-
-                    <div class="one wide field">
-                        <label><br></label>
-                        <div class="ui primary button">
-                                <input type="submit" value="Save" /> 
-                            <i class="ui save icon right floated"></i>
-                        </div>
-                    </div> 
-                </div>
-        </form>  
-                
-          <table class="ui single line table">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Programme</th>
-                      <th>Roll Number</th>
-                      <th>Action</th>
-                      
-                    </tr>
-                  </thead>
-                  <tbody>
-                        {% if senates %}
-                        {% for senate in senates%}
-                        {% if senate.department.name == "ECE" %}
-                    <tr>
-                       <td>{{senate.user.username}} </td>
-                      <td>B.Tech </td>
-                      <td>{{senate.id}}</td>
-                     <td><form method="POST" action="{% url 'delete' %}">{% csrf_token %}<i class="refresh icon" style="font-size:1.3vw"></i> <button type="submit" name= "delete" value="{{senate.id}}"> Delete </button></form></td>
-                    </tr>
-                    {% endif %}
-                    {% endfor %}
-                    {% endif %}
-                    <tr>
-                     
-
-                    </tr>
-                    <tr>
-                     
-
-                    </tr>
-                  </tbody>
-                </table>
-
-
-    </div>
-
-
-    <div class="ui  tab segment" data-tab="mech">
-
-        <h4 class="ui dividing header">Edit Members</h4>
-        <form class="ui form" method="POST" action="{% url 'input' %}">
-                {% csrf_token %}
-
-            <div class="field">
-                 <div class="three fields">
-                    <div class="field">
-                        <label>Name</label>
-                         <input placeholder="Name" type="text">
-                    </div>
-
-                    <div class="field">
-                        <label>Programme</label>
-                            <div class="ui fluid search selection dropdown">
-                                    <input type="hidden">
-                                    <i class="dropdown icon"></i>
-                                    <div class="default text">Programme</div>
-                                    <div class="menu">
-                                        <div class="item" data-value="B.Tech">B.Tech</div>
-                                        <div class="item" data-value="M.Tech">M.Tech</div>
-                                        <div class="item" data-value="Phd.">Phd.</div>
-                                       
-                                        
-                                      
-                                        
-                                    </div>
-                                </div>
-                    </div>
-                
-                 <div class="field">
-                        <label>Roll Number</label>
-                        <input placeholder="Roll Number" type="text">
-                    </div>
-                    
-                </div>
-            </div>
-             <div class="fields">
-                   
-
-                    <div class="one wide field">
-                        <label><br></label>
-                        <div class="ui primary button">
-                                <input type="submit" value="Save" /> 
-                            <i class="ui save icon right floated"></i>
-                        </div>
-                    </div> 
-                </div>
-        </form>  
-
-          <table class="ui single line table">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Programme</th>
-                      <th>Roll Number</th>
-                      <th>Action </th>
-                      
-                    </tr>
-                  </thead>
-                  <tbody>
-                        {% if senates %}
-                        {% for senate in senates%}
-                        {% if senate.department.name == "MECH" %}
-                    <tr>
-                       <td>{{senate.user.username}} </td>
-                      <td>B.Tech </td>
-                      <td>{{senate.id}}</td>
-                     <td><form method="POST" action="{% url 'delete' %}">{% csrf_token %}<i class="refresh icon" style="font-size:1.3vw"></i> <button type="submit" name= "delete" value="{{senate.id}}"> Delete </button></form></td>
-                     
-                    </tr>
-                    {% endif %}
-                    {% endfor %}
-                    {% endif %}
-                    <tr>
-                     
-
-                    </tr>
-                    <tr>
-                     
-
-                    </tr>
-                  </tbody>
-                </table>
-
-
-    </div>
-
-
-    <div class="ui  tab segment" data-tab="design">
-
-        <h4 class="ui dividing header">Edit Members</h4>
-        <form class="ui form" method="POST" action="{% url 'input' %}">
-                {% csrf_token %}
-
-            <div class="field">
-                 <div class="three fields">
-                    <div class="field">
-                        <label>Name</label>
-                         <input placeholder="Name" type="text">
-                    </div>
-
-                    <div class="field">
-                        <label>Programme</label>
-                            <div class="ui fluid search selection dropdown">
-                                    <input type="hidden">
-                                    <i class="dropdown icon"></i>
-                                    <div class="default text">Programme</div>
-                                    <div class="menu">
-                                        <div class="item" data-value="B.Tech">B.Des</div>
-                                        <div class="item" data-value="M.Tech">M.Des</div>
-                                        <div class="item" data-value="Phd.">Phd.</div>
-                                       
-                                        
-                                      
-                                        
-                                    </div>
-                                </div>
-                    </div>
-                
-                 <div class="field">
-                        <label>Roll Number</label>
-                        <input placeholder="Roll Number" type="text">
-                    </div>
-                    
-                </div>
-            </div>
-             <div class="fields">
-                   
-
-                    <div class="one wide field">
-                        <label><br></label>
-                        <div class="ui primary button">
-                                <input type="submit" value="Save" />
-                            <i class="ui save icon right floated"></i>
-                        </div>
-                    </div> 
-                </div>
-        </form>  
-
-          <table class="ui single line table">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Programme</th>
-                      <th>Roll Number</th>
-                      <th>Action</th>
-                      
-                    </tr>
-                  </thead>
-                  <tbody>
-                        {% if senates %}
-                        {% for senate in senates%}
-                        {% if senate.department.name == "DESIGN" %} 
-                    <tr>
-                       <td>{{senate.user.username}}</td>
-                      <td>B.Des </td>
-                      <td>{{senate.id}}</td>
-                     <td><form method="POST" action="{% url 'delete' %}">{% csrf_token %}<i class="refresh icon" style="font-size:1.3vw"></i> <button type="submit" name= "delete" value="{{senate.id}}"> Delete </button></form></td>
-                    </tr>
-                    {% endif %}
-                    {% endfor %}
-                    {% endif %}
-                    <tr>
-                     
-
-                    </tr>
-                    <tr>
-                     
-
-                    </tr>
-                  </tbody>
-                </table>
-
-
-    </div>
-
-
+                 
+                </table>               
+      </div>   
+      {% block javascript %}
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+        <script src="{% static 'academic_information/scripts/senate_members.js' %}" type="text/javascript"></script>
+    {% endblock %}
       <div class="ui  tab segment" data-tab="office">
 
         <h4 class="ui dividing header">Edit Faculty Members</h4>
@@ -401,10 +100,8 @@
                                     <div class="menu">
                                         <div class="item" data-value="B.Tech">B.Des</div>
                                         <div class="item" data-value="M.Tech">M.Des</div>
-                                        <div class="item" data-value="Phd.">Phd.</div>
-                                       
-                                        
-                                      
+                                        <div class="item" data-value="Phd.">Phd.</div>                                
+                                                                         
                                         
                                     </div>
                                 </div>
@@ -631,9 +328,4 @@
 
     
  </div>
-
-
-   
-
-
 {% endblock %}
