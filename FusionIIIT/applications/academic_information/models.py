@@ -70,8 +70,8 @@ class Meeting(models.Model):
     venue = models.CharField(max_length=50)
     date = models.DateField()
     time = models.CharField(max_length=20)
-    agenda = models.TextField()
-    minutes_file = models.CharField(max_length=40)
+    agenda = models.FileField()
+    minutes_file = models.FileField(max_length=40)
 
     class Meta:
         db_table = 'Meeting'
