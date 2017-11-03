@@ -116,3 +116,16 @@ def vacasubmit(request):
 #     foodforvaca = Vacation_food.objects.filter(student_id=student)
 #     monthly_bill = Monthly_bill.objects.filter(student_id=student)
 #     amount = monthly_bill.amount + nonveg_total_bill
+
+# @transaction.atomic
+# def menusubmit(request):
+#     # user = request.user
+#     # extrainfo = ExtraInfo.objects.get(user=user)
+#     # if extrainfo.designation == 'mess convener':
+#     dish = Menu.objects.get(dish=request.POST.get("dish"))
+#     request = request.POST.get("request")
+#     # app_date = datetime.datetime.now().date() first update changes in models
+#     app_obj = Menu_change_request(dish=dish,request=request)
+#     app_obj.save()
+
+#     return HttpResponse("data added to menu change request")

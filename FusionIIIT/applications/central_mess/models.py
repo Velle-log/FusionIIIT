@@ -94,7 +94,7 @@ class Mess(models.Model):
     current_bill = models.IntegerField(default='0')
 
     def __str__(self):
-        return self.student.id
+        return str(self.student)
 
 
 class Monthly_bill(models.Model):
@@ -201,6 +201,7 @@ class Menu_change_request(models.Model):
     dish = models.ForeignKey(Menu, on_delete=models.CASCADE)
     request = models.TextField()
     status = models.IntegerField(choices=STATUS, default='1')
+    app_date = models.DateField(default=datetime.date.today)
 
     def __str__(self):
         return self.id

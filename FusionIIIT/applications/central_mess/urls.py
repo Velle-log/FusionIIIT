@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^placeorder/', views.placeorder, name='placeorder'),
     url(r'^submit/', views.submit, name='submit'),
     url(r'^vacasubmit/', views.vacasubmit, name='vacasubmit'),
+
 ]
