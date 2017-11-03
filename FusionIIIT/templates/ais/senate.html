@@ -92,7 +92,7 @@
                        <td>{{senate.user.username}} </td>
                       <td>B. Tech </td>
                       <td>{{senate.id}}</td>
-                      <td><i class="refresh icon" style="font-size:1.3vw"></i><i class="trash outline icon" style="font-size:1.3vw"></i></td>
+                      <td><form method="POST" action="{% url 'delete' %}">{% csrf_token %}<i class="refresh icon" style="font-size:1.3vw"></i> <button type="submit" name= "delete" value="{{senate.id}}"> Delete </button></form></td>
                      
                     </tr>
                     {% endif %}
@@ -181,7 +181,7 @@
                        <td>{{senate.user.username}} </td>
                       <td>B.Tech </td>
                       <td>{{senate.id}}</td>
-                      <td><i class="refresh icon" style="font-size:1.3vw"></i><i class="trash outline icon" style="font-size:1.3vw"></i></td>
+                     <td><form method="POST" action="{% url 'delete' %}">{% csrf_token %}<i class="refresh icon" style="font-size:1.3vw"></i> <button type="submit" name= "delete" value="{{senate.id}}"> Delete </button></form></td>
                     </tr>
                     {% endif %}
                     {% endfor %}
@@ -270,7 +270,7 @@
                        <td>{{senate.user.username}} </td>
                       <td>B.Tech </td>
                       <td>{{senate.id}}</td>
-                      <td><i class="refresh icon" style="font-size:1.3vw"></i><i class="trash outline icon" style="font-size:1.3vw"></i></td>
+                     <td><form method="POST" action="{% url 'delete' %}">{% csrf_token %}<i class="refresh icon" style="font-size:1.3vw"></i> <button type="submit" name= "delete" value="{{senate.id}}"> Delete </button></form></td>
                      
                     </tr>
                     {% endif %}
@@ -360,7 +360,7 @@
                        <td>{{senate.user.username}}</td>
                       <td>B.Des </td>
                       <td>{{senate.id}}</td>
-                      <td><i class="refresh icon" style="font-size:1.3vw"></i><i class="trash outline icon" style="font-size:1.3vw"></i></td>
+                     <td><form method="POST" action="{% url 'delete' %}">{% csrf_token %}<i class="refresh icon" style="font-size:1.3vw"></i> <button type="submit" name= "delete" value="{{senate.id}}"> Delete </button></form></td>
                     </tr>
                     {% endif %}
                     {% endfor %}
