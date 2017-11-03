@@ -31,3 +31,10 @@ def test(request):
     return HttpResponse("Data Inputed")
 
 
+def delete(request):
+   s = Designation.objects.get(name = "senate")
+   student = ExtraInfo.objects.get(id = request.POST["delete"])
+   student.designation.remove(s)
+   return HttpResponse("Deleted")
+
+
