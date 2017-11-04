@@ -426,6 +426,77 @@
             $('table').tablesort();
         });
     </script> -->
+    <script type="text/javascript">
+      $(document).ready(function(){
+        alert("paras");
+      });
+       $('.edit_contest').click(function(){
+         id=$(this).attr('data-id');
+         $('#'+id).toggle();
+       })
+       function submit_on_enter()
+       {
+        //  alert(event.keycode);
+         if (event.keyCode == 13)
+           event.returnValue = false;
+           event.keyCode = 0;
+           return false;
+       }
+     function showbox() {
+            var x = document.getElementById("ques_div");
+            if (x.style.display == "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+           }
+
+           $('#showbox').click(function(){
+            console.log("madar");
+            showbox();
+           });
+
+      $('.form_submit').click(function(){
+        event.preventDefault();
+          var data = new FormData();
+        var pk=$(this).attr('data-id');
+        var other_data = $('#'+pk).serializeArray();
+        $.each(other_data, function(key, input) {
+            // alert(input.name);
+            data.append(input.name, input.value);
+        });
+        data.append('number',pk);
+        data.append('csrfmiddlewaretoken','{{csrf_token}}');
+        $.ajax({
+            url: "/ocms/{{course.course_id}}/edit_quiz_details/{{details.pk}}/",
+            processData: false,
+            contentType: false,
+            type: 'POST',
+            data: data,
+            success: function(data) {
+                alert(data);
+                location.reload();
+            },
+            error: function(data, err) {
+                alert(err.message);
+            }
+        });
+      });
+      $(document).ready(function(){
+        $('.ui.accordion').accordion('refresh');
+
+        });
+      $('.ui.sidebar')
+          .sidebar('attach events', '#navbar #sidebartrigger')
+          // .sidebar('setting', 'transition', 'overlay')
+          // .sidebar('toggle')
+      ;
+      $('.special.cards .image').dimmer({
+        on: 'hover'
+      });
+
+      </script>
+
 
     <script>
     function assess_student(element){

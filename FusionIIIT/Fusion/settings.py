@@ -25,7 +25,7 @@ SECRET_KEY = '=&w9due426k@l^ju1=s1)fj1rnpf0ok8xvjwx+62_nc-f12-8('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['172.27.73.52']
+ALLOWED_HOSTS = []
 
 # Google authentication
 SOCIALACCOUNT_PROVIDERS = {

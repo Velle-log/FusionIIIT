@@ -636,7 +636,6 @@ def edit_quiz(request, course_code, quiz_code):
 
                 QuizQuestion.objects.create(quiz_id=quiz, image=uploaded_file_url,
                                             question=question,
-                                            marks=marks,
                                             answer=answer,
                                             options1=options1, options2=options2,
                                             options3=options3, options4=options4,
