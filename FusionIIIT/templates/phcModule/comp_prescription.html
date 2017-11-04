@@ -84,7 +84,7 @@
                                                         e.preventDefault();
                                                         $.ajax({
                                                           type:'post',
-                                                          url:'/healthcenter/request_app/',
+                                                          url:'/healthcenter/compounder/',
                                                           data: {
                                                           csrfmiddlewaretoken: '{{ csrf_token }}',
                                                           quantity:$("#quantity").val(),
@@ -147,7 +147,7 @@
                               <i class="calendar icon"></i>
                               <input type="date" placeholder="Date" name="admission_date"  required="true">
                           </div>
-                      
+
 
                   </div>
 

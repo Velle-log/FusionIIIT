@@ -2,48 +2,11 @@
 {% block feedback %}
     {% comment %}The tab menu starts here!{% endcomment %}
     <div class="ui pointing secondary menu">
-        <a class="active item" data-tab="lodgecomplaint">
-            Lodge Complaint
-        </a>
-        <a class="item" data-tab="feedback">
+        <a class="active item" data-tab="feedback">
             Give Feedback
         </a>
     </div>
-
-    <div class="ui active tab" data-tab="lodgecomplaint">
-        <div class="ui vertical segment">
-
-            {% comment %}Form Tag starts here!{% endcomment %}
-            <form method='POST'>{% csrf_token %}
-                {% comment %}The add a new skill Accordian starts here!{% endcomment %}
-                <div class="ui form" style="padding: 8px; padding-left: 24px; padding-right: 24px;">
-
-                    <div class="ui header">
-                        The Complaint form
-                    </div>
-
-                    <br>
-                    <div class="field">
-                        <label>Complaint:</label>
-                        <textarea rows="3" name='Complaint' ></textarea>
-                    </div>
-
-                    <div class="field">
-                        <label><br></label>
-                            <input type='submit' name='complaint' value="Submit" class="ui primary right floated button" >
-                    </div>
-                </div>
-            </form>
-            {% comment %}Form Tag ends here!{% endcomment %}
-
-            <br>
-            <br>
-            <div class="ui divider"></div>
-
-        </div>
-    </div>
-
-    <div class="ui tab" data-tab="feedback">
+    <div class="ui active tab" data-tab="feedback">
       <div class="ui vertical segment" >
           <table class="ui very basic collapsing celled large fluid sortable table"
                  style="padding-left: 2.5%;padding-right: 2.5%;padding-top: 1%;padding-bottom: 1.5%;margin: auto;">
