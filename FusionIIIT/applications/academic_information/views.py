@@ -29,7 +29,7 @@ def homepage(request):
          'meetings' : meetings,
          'form': form,
     } 
-    if request.method == 'POST':
+    if request.method == 'POST' and request.FILES :
         form = MinuteForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
