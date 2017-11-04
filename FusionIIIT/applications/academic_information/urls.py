@@ -5,7 +5,7 @@ app_name = 'academic_information'
 
 urlpatterns = [
     url(r'^$', views.homepage, name='homepage'),
-    url(r'^senate/$', views.senate, name='senate'),
-    url(r'^input/$', views.test, name='input'),
+    url(r'^senator/$', views.senator, name='senator'),
+    url(r'^minutes/$', views.minutes, name='minutes'),
     url(r'^delete/$', views.delete, name='delete'),
 ]

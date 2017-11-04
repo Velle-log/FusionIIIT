@@ -67,16 +67,10 @@ class Course(models.Model):
 
 class Meeting(models.Model):
     date = models.DateField()
-    time = models.CharField(max_length=20)
-    agenda = models.FileField()
-    minutes_file = models.FileField(max_length=40)
-
+    minutes_file = models.FileField(upload_to='documents/')
 
     class Meta:
         db_table = 'Meeting'
-
-    def __str__(self):
-        return self.date
 
 
 class Calendar(models.Model):
