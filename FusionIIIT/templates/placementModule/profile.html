@@ -1,0 +1,194 @@
+{% load static %}
+
+{% block profile %}
+    <!--About Me card starts here!-->
+    <div class="ui fluid card">
+        <div class="content">
+            <div class="ui header">
+                About Me
+                <input type="button"
+                       id="editButton"
+                       class="ui red mini button right floated" onclick="editStudent()"
+                       value = "Edit">
+                </input>
+            </div>
+
+            <div class="ui divider"></div>
+
+            <span id="aboutSpan">
+                {{ profile.about_me }}
+            </span>
+
+            <div class="textarea">
+                <textarea rows=5
+                          type="text"
+                          style="width: 100%;"
+                          id="aboutTextarea" hidden></textarea>
+            </div>
+        </div>
+    </div>
+    <!--About Me card ends here!-->
+
+
+    <!--The start of details card!-->
+    <div class="ui fluid card">
+        <div class="content">
+            <div class="ui header">Details</div>
+            <div class="ui divider"></div>
+
+            <span>
+                <table class="ui definition table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                Age
+                            </td>
+
+                            <td>
+                                <span id="dobSpan">
+                                    {{ profile.age }}
+                                </span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Desired Future Option:
+                            </td>
+
+                            <td>
+                              {% if student.future_aspect == "Higher Studies" %}
+                                <label>Higher Studies</label> &ensp;
+                                <div class="ui toggle checkbox"
+                                     style="margin-top: 8px;">
+                                    <label>Placement</label>
+                                    <input tabindex="0" type="checkbox">
+                                </div>
+                              {% else %}
+                                <label>Higher Studies</label> &ensp;
+                                <div class="ui toggle checked checkbox"
+                                    style="margin-top: 8px;">
+                                    <label>Placement</label>
+                                    <input tabindex="1" type="checkbox" checked="">
+                                </div>
+                              {% endif %}
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Address
+                            </td>
+
+                            <td>
+                                <span id="interestSpan">
+                                    {{ profile.address }}
+                                </span>
+
+                                <div class="textarea">
+                                    <textarea rows=3
+                                              type="text"
+                                              style="width: 100%;"
+                                              id="interestTextarea" hidden></textarea>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </span>
+        </div>
+    </div>
+    <!--End of details card!-->
+
+    <!--The contact details card starts here!-->
+    <div class="ui fluid card">
+        <div class="content">
+            <div class="ui header">Contact Details</div>
+            <div class="ui divider"></div>
+
+            <span>
+                <table class="ui definition table">
+                    <tbody>
+                        <tr>
+                            <td>
+                                Contact
+                            </td>
+
+                            <td>
+                                <a>
+                                    <i class="phone icon" id="contactIcon"></i>
+                                        <span id="contactSpan">
+                                            {{ profile.phone_no }}
+                                        </span>
+                                </a>
+
+                                <div class="ui fluid input">
+                                    <input type="text" id="contactInput" hidden>
+                                </div>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Mail
+                            </td>
+
+                            <td>
+                                <a href="" target="_blank">
+                                    <i class="mail icon" id="mailIcon"></i>
+
+                                    <span id="mailSpan">
+                                        {{ user.email }}
+                                    </span>
+                                </a>
+
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Facebook
+                            </td>
+
+                            <td>
+                                <a href="https://www.facebook.com/" target="_blank">
+                                    <i class="blue facebook icon"></i>
+                                    {{ user.first_name }} {{ user.last_name }}
+                                </a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                LinkedIn
+                            </td>
+
+                            <td>
+                                <a href="https://www.linkedin.com/" target="_blank">
+                                    <i class="blue linkedin icon"></i>
+                                    {{ user.first_name }} {{ user.last_name }}
+                                </a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                Github
+                            </td>
+
+                            <td>
+                                <a href="https://www.github.com/" target="_blank">
+                                    <i class="teal github icon"></i>
+                                    {{ user.first_name }} {{ user.last_name }}
+                                </a>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </span>
+        </div>
+    </div><!--The contact details card ends here!-->
+{% endblock %}

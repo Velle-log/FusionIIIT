@@ -1,0 +1,230 @@
+{% block publications %}
+    {% comment %}The tab menu starts here!{% endcomment %}
+    <div class="ui pointing secondary menu">
+        <a class="active item" data-tab="publications">
+            Publications
+        </a>
+
+        <a class="item" data-tab="patents">
+            Patents
+        </a>
+    </div>
+
+    <div class="ui active tab" data-tab="publications">
+
+        <div class="ui vertical segment">
+            {% comment %}Form Tag starts here!{% endcomment %}
+            <form>
+                {% comment %}The add a new Publication Accordian starts here!{% endcomment %}
+                <div class="ui active accordion field">
+                    <div class="title">
+                        <i class="icon dropdown"></i>
+                        Add a new Publication!
+                    </div>
+
+                    <div class="active content">
+                        <div class="ui form" style="padding: 8px; padding-left: 24px; padding-right: 24px;">
+
+                            <div class="two fields">
+                                <div class="eleven wide field">
+                                    <label>Publication Title:</label>
+                                    <div class="ui fluid large input">
+                                        {% comment %}The Institute Name input!{% endcomment %}
+                                        <input>
+                                    </div>
+                                </div>
+
+                            <div class="field">
+                                <label>Date Published:</label>
+                                <div class="ui calendar" id="rangeend2">
+                                    <div class="ui input left icon">
+                                        <i class="calendar icon"></i>
+                                        <input type="text" placeholder="To">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="fields">
+                            <div class="eight wide field">
+                                <label>
+                                    Description:
+                                </label>
+
+                                <div class="ui large input">
+                                    <input>
+                                </div>
+                            </div>
+
+                                <div class="field">
+                                    <label>
+                                        Publisher:
+                                    </label>
+
+                                    <div class="ui large input">
+                                        <input>
+                                    </div>
+                                </div>
+
+                            <div class="field">
+                                <label><br></label>
+                                <button class="ui fluid large primary button" type="submit">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+        </div>
+        {% comment %}The add a new Publication Accordian ends here!{% endcomment %}
+        </form>
+        {% comment %}Form Tag ends here!{% endcomment %}
+
+        {% if publications %}
+        <div class="ui divider"></div>
+
+        <table class="ui fixed sortable celled table">
+            <thead>
+            <tr>
+                <th class="six wide">Publication Title</th>
+                <th>Publisher</th>
+                <th>Description</th>
+                <th class="five wide">Date Published</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for publication in publications %}
+            <tr>
+                <td>
+                    {{ publication.publication_title }}
+                </td>
+
+                <td>
+                    {{ publication.publisher }}
+                </td>
+
+                <td>
+                    {{ publication.description }}
+                </td>
+
+                <td>
+                    {{ publication.publication_date }}
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+    </div>
+    </div>
+    <div class="ui tab" data-tab="patents">
+        <div class="ui vertical segment">
+            {% comment %}Form Tag starts here!{% endcomment %}
+            <form>
+                {% comment %}The add a new Publication Accordian starts here!{% endcomment %}
+                <div class="ui active accordion field">
+                    <div class="title">
+                        <i class="icon dropdown"></i>
+                        Add a new Patent!
+                    </div>
+
+                    <div class="active content">
+                        <div class="ui form" style="padding: 8px; padding-left: 24px; padding-right: 24px;">
+
+                            <div class="two fields">
+                                <div class="eleven wide field">
+                                    <label>Patent Name:</label>
+                                    <div class="ui fluid large input">
+                                        {% comment %}The Patent Name input!{% endcomment %}
+                                        <input>
+                                    </div>
+                                </div>
+
+                            <div class="field">
+                                <label>Patent Date:</label>
+                                <div class="ui calendar" id="rangeend2">
+                                    <div class="ui input left icon">
+                                        <i class="calendar icon"></i>
+                                        <input type="text" placeholder="To">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="fields">
+                            <div class="eight wide field">
+                                <label>
+                                    Description:
+                                </label>
+
+                                <div class="ui large input">
+                                    <input>
+                                </div>
+                            </div>
+
+                                <div class="field">
+                                    <label>
+                                        Patent Office:
+                                    </label>
+
+                                    <div class="ui large input">
+                                        <input>
+                                    </div>
+                                </div>
+
+                            <div class="field">
+                                <label><br></label>
+                                <button class="ui fluid large primary button" type="submit">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+        </div>
+        {% comment %}The add a new Publication Accordian ends here!{% endcomment %}
+        </form>
+            {% comment %}Form Tag ends here!{% endcomment %}
+
+
+            {% if patents %}
+            <div class="ui divider"></div>
+
+            <table class="ui fixed sortable celled table">
+                <thead>
+                <tr>
+                    <th class="five wide">Patent Name</th>
+                    <th class="five wide">Patent Office</th>
+                    <th>Description</th>
+                    <th class="five wide">Date Published</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for patent in patents %}
+                <tr>
+                    <td>
+                        {{ patent.patent_name }}
+                    </td>
+
+                    <td>
+                        {{ patent.patent_office }}
+                    </td>
+
+                    <td>
+                        {{ patent.description }}
+                    </td>
+
+                    <td>
+                        {{ patent.patent_date }}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
