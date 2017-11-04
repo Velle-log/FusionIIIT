@@ -30,9 +30,7 @@
         <div class="fields">
         <div class="one wide field">
             <label><br></label>
-            <div class="ui primary button">
                 <input type="submit" value="Save" />
-            </div>
         </div> 
         </div>
     </form>  
@@ -58,7 +56,7 @@
         {% endif %}
         {% endfor %}
         <!-- for deleting -->
-        <td><form method="POST" action="{% url 'academic_information:delete' %}">{% csrf_token %}<button type="submit" name= "delete" value="{{senate.id}}"> Delete </button></form></td>                                                
+        <td><form method="POST" action="{% url 'academic_information:deleteSenator' %}">{% csrf_token %}<button type="submit" name= "delete" value="{{senate.id}}"> Delete </button></form></td>                                                
         </tr>
         {% endfor %}
         {% endif %}
@@ -81,14 +79,13 @@
         <th>Name</th>
         <th>Designation</th>
         <th>Discipline</th>
-        <th>Action</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-        <td>Prashant Kumar Jain</td>
-        <td>Dean Students</td>
-        <td>Mechanical</td>
+        <td>{{Dean.user.username}}</td>
+        <td>DEAN</td>
+        <td>{{Dean.department}}</td>
         </tr>
     </tbody>
     </table>
@@ -121,9 +118,7 @@
             <div class="fields">
                     <div class="one wide field">
                     <label><br></label>
-                    <div class="ui primary button">
                         <input type="submit" value="update" />
-                    </div>
                     </div> 
             </div>
 
@@ -165,7 +160,7 @@
         </tr>
     </tbody>
     </table>
-    </div>
+</div>
 
 <!-- Minutes -->
 
@@ -177,13 +172,10 @@
                             {{ form.as_p }} 
                          <div class="field">
                            <label><br></label>
-                              <div class="ui primary button">
                                 <input type="submit" value="Save" />
-                            <i class="ui save icon right floated"></i>
                         </div>
                          </div>
                     </div>
-                   </div> 
              </form>
 
        <br> <br>
@@ -212,7 +204,7 @@
                         </div>
                     </a>
                     </td>
-                    <td><i class="refresh icon" style="font-size:1.3vw"></i><i class="trash outline icon" style="font-size:1.3vw"></i></td>
+                    <td><form method="POST" action="{% url 'academic_information:deleteMinute' %}">{% csrf_token %}<button type="submit" name= "delete" value="{{meeting.id}}"> Delete </button></form></td>
                    </tr>
                    {% endfor %}
                    {% endif %}
@@ -242,4 +234,5 @@
 
     
  </div>
+
 {% endblock %}

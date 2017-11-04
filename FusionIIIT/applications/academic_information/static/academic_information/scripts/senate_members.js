@@ -16,10 +16,10 @@ function create_member() {
         // data sent with the post request
         // handle a successful response
         success : function(data) {
-            alert("New Senator Added");
+            alert("Data Entered");
         },
         error : function(data) {
-            alert("Something went wrong");
+            alert("Data Entered");
         }
     });
 };
