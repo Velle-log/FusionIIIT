@@ -51,12 +51,16 @@
 
             <div class="fields">
 
-                <div class="two wide field">
-                    <div class="ui labeled button" id="submit_assign" tabindex="0">
+                <div class="two wide field ">
+                    <div class="ui labeled button " id="submit_assign" tabindex="0">
                         <div class="ui blue button">
                             <i class="save icon"></i>
                         </div>
                         <a class="ui basic blue left pointing label">Save</a>
+                    </div>
+                    <div class="load" id="load_submit_assign" style="display:none">
+                      <img src="{% static 'globals/img/loading.gif'%}" alt="#loading">
+                      <span >Your file is being uploaded!</span>
                     </div>
                 </div>
             </div>
@@ -119,7 +123,7 @@
             <div class="One field">
                 <div class="field">
                     <label> Name</label>
-                    <input placeholder="Name" name="name" type="text">
+                    <input placeholder="Name" name="name" type="text" required>
                 </div>
             </div>
 
@@ -128,7 +132,7 @@
             <div class="fields">
                 <div class="twelve wide field">
                     <label>Assignment File</label>
-                    <input placeholder="Slide File" id="assignment" name="doc" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/pdf" type="file">
+                    <input placeholder="Slide File" id="assignment" name="doc" accept="application/msword, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/pdf" type="file" required>
                 </div>
             </div>
             <div class="fields">
@@ -142,7 +146,7 @@
                         </div>
                     </div>
 -->
-                    <input type="date" id="myDate" name="myDate">
+                    <input type="date" id="myDate" name="myDate" required>
                     <br/>
                 </div>
             </div>
@@ -153,6 +157,10 @@
                             <i class="save icon"></i>
                         </div>
                         <a class="ui basic blue left pointing label">Save</a>
+                    </div>
+                    <div class="load" id="load_add_assignment" style="display:none">
+                      <img src="{% static 'globals/img/loading.gif'%}" alt="#loading">
+                      <span >Your file is being uploaded!</span>
                     </div>
                 </div>
             </div>

@@ -643,7 +643,6 @@
 
           var pk=input_r.getAttribute('data-pk');
           if(event.keyCode == 13){
-              // alert(pk);
               $("#button_r"+pk).click();
           }
       }
@@ -832,16 +831,15 @@
     $('#submit_vid').click(function() {
         var data = new FormData();
         var img = $('#vid')[0].files;
-        // alert(img.length)
         for (var i = 0; i < img.length; i++) {
             data.append("img", img[i]);
-            // alert("a");
         }
         data.append('img', img);
         var other_data = $('#form1').serializeArray();
         $.each(other_data, function(key, input) {
             data.append(input.name, input.value);
         });
+        $('#load_submit_vid').show();
         $.ajax({
             url: "/ocms/{{course.course_id}}/add_video",
             processData: false,
@@ -849,6 +847,7 @@
             type: 'POST',
             data: data,
             success: function(data) {
+                $('#load_submit_vid').hide();
                 alert(data);
             },
             error: function(data, err) {
@@ -859,16 +858,15 @@
     $('#submit_doc').click(function() {
         var data = new FormData();
         var img = $('#doc')[0].files;
-        // alert(img.length)
         for (var i = 0; i < img.length; i++) {
             data.append("img", img[i]);
-            // alert("a");
         }
         data.append('img', img);
         var other_data = $('#form2').serializeArray();
         $.each(other_data, function(key, input) {
             data.append(input.name, input.value);
         });
+        $('#load_submit_doc').show();
         $.ajax({
             url: "/ocms/{{course.course_id}}/add_documents",
             processData: false,
@@ -876,6 +874,7 @@
             type: 'POST',
             data: data,
             success: function(data) {
+                $('#load_submit_doc').hide();
                 alert(data);
             },
             error: function(data, err) {
@@ -895,6 +894,7 @@
         $.each(other_data, function(key, input) {
             data.append(input.name, input.value);
         });
+        $('#load_add_assignment').show();
         $.ajax({
             url: "/ocms/{{course.course_id}}/add_assignment",
             processData: false,
@@ -902,6 +902,7 @@
             type: 'POST',
             data: data,
             success: function(data) {
+                $('#load_add_assignment').hide();
                 alert(data);
             },
             error: function(data, err) {
@@ -912,19 +913,16 @@
 
     $('#submit_assign').click(function() {
         var data = new FormData();
-        var img = $('#assign')[0].files;
-        alert(img.length+"ADASD")
+        var img = $('#assign')[0].files
         var selectedValue = $('#assign_topic').val();
-        // alert(selectedValue)
         for (var i = 0; i < img.length; i++) {
             data.append("img", img[i]);
-            // alert("a");
         }
-        // data.append('img', img);
         var other_data = $('#form3').serializeArray();
         $.each(other_data, function(key, input) {
             data.append(input.name, input.value);
         });
+        $('#load_submit_assign').show();
         data.append('assignment_topic',selectedValue);
         $.ajax({
             url: "/ocms/{{course.course_id}}/upload_assignment",
@@ -933,6 +931,7 @@
             type: 'POST',
             data: data,
             success: function(data) {
+                $('#load_submit_assign').hide();
                 alert(data);
             },
             error: function(data, err) {

@@ -155,11 +155,14 @@ def upload_assignment(request, course_code):
         student = Student.objects.get(id=extrainfo)
 #        roll = student.id.id[:4]
 #        course = Course.objects.filter(course_id=course_code, sem=semester(roll))
-        doc = request.FILES.get('img')
-        assi_name = request.POST.get('assignment_topic')
-        name = request.POST.get('name')
-        assign = Assignment.objects.get(pk=assi_name)
-        filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
+        try:
+            doc = request.FILES.get('img')
+            assi_name = request.POST.get('assignment_topic')
+            name = request.POST.get('name')
+            assign = Assignment.objects.get(pk=assi_name)
+            filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
+        except:
+            return HttpResponse("Please fill each and every field correctly!")
         filename = name
         full_path = settings.MEDIA_ROOT + "/online_cms/" + course_code + "/assi/"
         full_path = full_path + assign.assignment_name + "/" + student.id.id + "/"
@@ -193,10 +196,13 @@ def add_document(request, course_code):
         for ins in instructor:
             if ins.course_id.course_id == course_code:
                 course = ins.course_id
-        description = request.POST.get('description')
-        doc = request.FILES.get('img')
-        name = request.POST.get('name')
-        filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
+        try:
+            description = request.POST.get('description')
+            doc = request.FILES.get('img')
+            name = request.POST.get('name')
+            filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
+        except:
+            return HttpResponse("Please fill each and every field correctly!")
         filename = name
         full_path = settings.MEDIA_ROOT + "/online_cms/" + course_code + "/doc/"
         url = settings.MEDIA_URL + filename + file_extenstion
@@ -232,10 +238,13 @@ def add_videos(request, course_code):
         for ins in instructor:
             if ins.course_id.course_id == course_code:
                 course = ins.course_id
-        description = request.POST.get('description')
-        vid = request.FILES.get('img')
-        name = request.POST.get('name')
-        filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
+        try:
+            description = request.POST.get('description')
+            vid = request.FILES.get('img')
+            name = request.POST.get('name')
+            filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
+        except:
+            return HttpResponse("Please fill each and every field correctly!")
         filename = name
         full_path = settings.MEDIA_ROOT + "/online_cms/" + course_code + "/vid/"
         url = settings.MEDIA_URL+filename + file_extenstion
@@ -393,10 +402,12 @@ def add_assignment(request, course_code):
             if ins.course_id.course_id == course_code:
                 course = ins.course_id
 #        description = request.POST.get('description')
-        assi = request.FILES.get('img')
-        name = request.POST.get('name')
-        print(assi)
-        filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
+        try:
+            assi = request.FILES.get('img')
+            name = request.POST.get('name')
+            filename, file_extenstion = os.path.splitext(request.FILES.get('img').name)
+        except:
+            return HttpResponse("Please Enter The Form Properly")
         filename = name
         full_path = settings.MEDIA_ROOT + "/online_cms/" + course_code + "/assi/" + name + "/"
         url = settings.MEDIA_URL + filename
@@ -554,42 +565,31 @@ def create_quiz(request, course_code):
 def edit_quiz_details(request, course_code, quiz_code):
     extrainfo = ExtraInfo.objects.get(user=request.user)
     if extrainfo.user_type == 'faculty':
-        # instructor = Instructor.objects.filter(instructor_id=extrainfo)
-        # for ins in instructor:
-        #     if ins.course_id.course_id == course_code:
-        #         course = ins.course_id
         x = request.POST.get('number')
-        print(x, "adsd")
         quiz = Quiz.objects.get(pk=quiz_code)
         if x == 'edit1':
-            print(x)
             st_time = request.POST.get('starttime')
             st_date = request.POST.get('startdate_month') + " " + request.POST.get('startdate_day')
             st_date = st_date + " " + request.POST.get('startdate_year')
             string = str(st_date) + " " + str(st_time)
-            print(string, "ASDASD")
             datetime_object = datetime.strptime(string, '%m %d %Y %H:%M')
             quiz.start_time = datetime_object
             quiz.save()
         elif x == 'edit2':
-            print(x)
             st_time = request.POST.get('endtime')
             st_date = request.POST.get('enddate_month') + " " + request.POST.get('enddate_day')
             st_date = st_date + " " + request.POST.get('enddate_year')
             string = str(st_date) + " " + str(st_time)
-            print(string, "ASDASD")
             datetime_object = datetime.strptime(string, '%m %d %Y %H:%M')
             quiz.end_time = datetime_object
             quiz.save()
         elif x == 'edit3':
             number = request.POST.get('number_of_questions')
-            print(x)
             score = int(quiz.total_score / quiz.number_of_question)
             quiz.number_of_question = number
             quiz.total_score = int(number) * score
             quiz.save()
         elif x == 'edit4':
-            print(x)
             score = request.POST.get('per_question_score')
             quiz.total_score = int(score) * quiz.number_of_question
             quiz.save()
@@ -614,6 +614,14 @@ def edit_quiz(request, course_code, quiz_code):
             if(form.is_valid()):
                 image = request.FILES['image']
                 filename, file_extenstion = os.path.splitext(request.FILES['image'].name)
+                options1 = form.cleaned_data['option1']
+                options2 = form.cleaned_data['option2']
+                options3 = form.cleaned_data['option3']
+                options4 = form.cleaned_data['option4']
+                options5 = form.cleaned_data['option5']
+                question = form.cleaned_data['problem_statement']
+                marks = form.cleaned_data['score']
+                answer = form.cleaned_data['answer']
                 full_path = settings.MEDIA_ROOT + "/online_cms/" + course_code
                 full_path = full_path + "/quiz/" + quiz_code + "/"
                 url = settings.MEDIA_URL + filename
@@ -625,15 +633,11 @@ def edit_quiz(request, course_code, quiz_code):
                 uploaded_file_url = "/media/online_cms/" + course_code
                 uploaded_file_url = uploaded_file_url + "/quiz/" + quiz_code + "/" + image.name
                 # print uploaded_file_url
-                options1 = form.cleaned_data['option1']
-                options2 = form.cleaned_data['option2']
-                options3 = form.cleaned_data['option3']
-                options4 = form.cleaned_data['option4']
-                options5 = form.cleaned_data['option5']
+
                 QuizQuestion.objects.create(quiz_id=quiz, image=uploaded_file_url,
-                                            question=form.cleaned_data['problem_statement'],
-                                            marks=form.cleaned_data['score'],
-                                            answer=form.cleaned_data['answer'],
+                                            question=question,
+                                            marks=marks,
+                                            answer=answer,
                                             options1=options1, options2=options2,
                                             options3=options3, options4=options4,
                                             options5=options5)
