@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 
 from applications.globals.models import ExtraInfo
@@ -11,18 +11,17 @@ from .models import (Ambulance_request, Appointment, Complaint, Constants,
                      Prescription, Stock, Stockinventory)
 
 
-
-
 @login_required
 def healthcenter(request):
-    usertype=ExtraInfo.objects.get(user=request.user).user_type
-    if(usertype=='student'):
+    usertype = ExtraInfo.objects.get(user=request.user).user_type
+    if(usertype == 'student'):
         return HttpResponseRedirect("/healthcenter/student")
-    elif (usertype=='compounder'):
+    elif (usertype == 'compounder'):
         return HttpResponseRedirect("/healthcenter/compounder")
 
+
 def compounder_view(request):
-    if request.method=='POST':
+    if request.method == 'POST':
         if 'feed_com' in request.POST:
             pk = request.POST.get('id')
             feedback = request.POST.get('feedback')
@@ -144,11 +143,15 @@ def compounder_view(request):
         doctors = Doctor.objects.all()
         inventories = Stockinventory.objects.all().order_by('-date')
         stocks = Stock.objects.all()
-        return render(request,'phcModule/phc_compounder.html',{'inventories':inventories,'users':users,'doctors':doctors,'stocks':stocks,'appointments_approve':appointments_approve,'all_hospitals':all_hospitals,'appointments_today':appointments_today,'all_ambulances':all_ambulances,'all_complaints': all_complaints})
+        return render(request, 'phcModule/phc_compounder.html',
+                      {'inventories': inventories, 'users': users, 'doctors': doctors,
+                       'stocks': stocks, 'appointments_approve': appointments_approve,
+                       'all_hospitals': all_hospitals, 'appointments_today': appointments_today,
+                       'all_ambulances': all_ambulances, 'all_complaints': all_complaints})
 
 
 def student_view(request):
-    if request.method=='POST':
+    if request.method == 'POST':
         if 'Submit' in request.POST:
             user_id = ExtraInfo.objects.get(user=request.user)
             doctor = request.POST.get('doctor_id')
@@ -169,8 +172,8 @@ def student_view(request):
             reason = request.POST.get('reason')
             start_date = request.POST.get('start_date')
             end_date = request.POST.get('end_date')
-            if end_date=='':
-                end_date=None
+            if end_date == '':
+                end_date = None
             print("anjali")
             print(end_date)
             print("anjali")
@@ -207,7 +210,10 @@ def student_view(request):
         complaints = Complaint.objects.filter(user_id=user_id).order_by('-date')
         doctors = Doctor.objects.all()
         ch = Constants.TIME
-        return render(request,'phcModule/phc_student.html',{'complaints':complaints,'medicines':medicines,'ambulances':ambulances,'hospitals':hospitals,'appointments':appointments,'prescription':prescription,'users':users,'doctors':doctors,'ch':ch})
+        return render(request, 'phcModule/phc_student.html',
+                      {'complaints': complaints, 'medicines': medicines, 'ambulances': ambulances,
+                       'hospitals': hospitals, 'appointments': appointments, 'ch': ch,
+                       'prescription': prescription, 'users': users, 'doctors': doctors})
 
 
 def student_appointment_view(request):
