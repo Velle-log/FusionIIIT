@@ -21,6 +21,13 @@ class Constants:
         ('M.Des', 'M.Des'),
         ('PhD', 'PhD')
     )
+    
+    CATEGORY = (
+        ('ST', 'ST'),
+        ('SC', 'SC'),
+        ('OBC', 'OBC'),
+        ('GEN', 'GEN')
+    )
 
     CATEGORY = (
         ('GEN', 'General'),
@@ -61,17 +68,11 @@ class Course(models.Model):
 
 
 class Meeting(models.Model):
-    venue = models.CharField(max_length=50)
     date = models.DateField()
-    time = models.CharField(max_length=20)
-    agenda = models.TextField()
-    minutes_file = models.CharField(max_length=40)
+    minutes_file = models.FileField(upload_to='documents/')
 
     class Meta:
         db_table = 'Meeting'
-
-    def __str__(self):
-        return self.date
 
 
 class Calendar(models.Model):
