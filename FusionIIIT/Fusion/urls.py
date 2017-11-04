@@ -23,7 +23,6 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     url(r'^', include('applications.globals.urls')),
     url(r'^eis/', include('applications.eis.urls')),
-    url(r'^gymkhana/', include('applications.gymkhana.urls')),
     url(r'^mess/', include('applications.central_mess.urls')),
     url(r'^complaint/', include('applications.complaint_system.urls')),
     url(r'^healthcenter/', include('applications.health_center.urls')),
@@ -37,10 +36,9 @@ urlpatterns = [
     url(r'^ocms/', include('applications.online_cms.urls')),
     url(r'^login/', auth_views.login, name='login'),
     url(r'^logout/', auth_views.logout, name='logout'),
+    url(r'^gymkhana/', include('applications.gymkhana.urls')),
     url(r'^academic-procedures/', include('applications.academic_procedures.urls',
                                           namespace='procedures')),
-    
-
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

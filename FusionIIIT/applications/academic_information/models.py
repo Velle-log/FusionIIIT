@@ -21,7 +21,7 @@ class Constants:
         ('M.Des', 'M.Des'),
         ('PhD', 'PhD')
     )
-    
+
     CATEGORY = (
         ('ST', 'ST'),
         ('SC', 'SC'),
