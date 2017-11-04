@@ -14,18 +14,27 @@ def homepage(request):
     form = MinuteForm()
     try:
         s = Designation.objects.get(name = 'senate')
+        v = Designation.objects.get(name = 'Convenor')
+        t = Designation.objects.get(name = 'Co Convenor')   
         senates = ExtraInfo.objects.filter(designation = s)
+        Convenor = ExtraInfo.objects.filter(designation = v)
+        CoConvenor = ExtraInfo.objects.filter(designation = t)
         students = Student.objects.filter(id__in = senates)
         meetings = Meeting.objects.all()
     except:
         senates = ""
         students = ""
+        Convenor = ""
+        CoConvenor = ""
         meetings = ""
         pass
         
     context = {
          'senates':senates,
          'students':students,
+         'Convenor':Convenor,
+         'CoConvenor':CoConvenor,
+    }    
          'meetings' : meetings,
          'form': form,
     } 
@@ -63,6 +72,32 @@ def senator(request):
     else:        
         data = {}
         return JsonResponse(data)
+
+def edit_convenor(request):
+    s = Designation.objects.get(name = 'Convenor')
+    p = Designation.objects.get(name = 'Co Convenor')
+    if request.method == 'POST':
+        extraInfo = ExtraInfo.objects.get(id = request.POST["Roll Number"])
+        result = request.POST["Designation"]
+        if result == "Convenor":
+           extraInfo.designation.add(s)
+           extraInfo.save()
+        else:
+           extraInfo.designation.add(p)
+           extraInfo.save()
+    return HttpResponse("Data Inputed")
+
+def delete1(request):
+   s = Designation.objects.get(name = "Convenor")
+   student = ExtraInfo.objects.get(id = request.POST["delete"])
+   student.designation.remove(s)
+   return HttpResponse("Deleted")
+
+def delete2(request):
+   s = Designation.objects.get(name = "CoConvenor")
+   student = ExtraInfo.objects.get(id = request.POST["delete"])
+   student.designation.remove(s)
+   return HttpResponse("Deleted")
 
 def add_attendance(request):
     if request.method == 'POST':
