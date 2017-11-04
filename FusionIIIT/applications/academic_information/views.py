@@ -24,22 +24,17 @@ def homepage(request):
     except:
         senates = ""
         students = ""
-<<<<<<< HEAD
         Convenor = ""
         CoConvenor = ""
-=======
         meetings = ""
->>>>>>> 912a11178daaef08de17299f53b8a62bbc63b12b
         pass
         
     context = {
          'senates':senates,
          'students':students,
-<<<<<<< HEAD
          'Convenor':Convenor,
          'CoConvenor':CoConvenor,
     }    
-=======
          'meetings' : meetings,
          'form': form,
     } 
@@ -50,7 +45,6 @@ def homepage(request):
             return HttpResponse('sucess')            
         else:
             return HttpResponse('not uploaded')   
->>>>>>> 912a11178daaef08de17299f53b8a62bbc63b12b
     return render(request, "ais/ais.html", context)
 
 def delete(request):
@@ -79,7 +73,6 @@ def senator(request):
         data = {}
         return JsonResponse(data)
 
-<<<<<<< HEAD
 def edit_convenor(request):
     s = Designation.objects.get(name = 'Convenor')
     p = Designation.objects.get(name = 'Co Convenor')
@@ -106,7 +99,6 @@ def delete2(request):
    student.designation.remove(s)
    return HttpResponse("Deleted")
 
-=======
 def add_attendance(request):
     if request.method == 'POST':
         student_attend = Student_attendance()
@@ -195,4 +187,3 @@ def get_attendance(request):
     print(stud_data['name'][0])
     print(context)
     return HttpResponse(json.dumps(context),content_type='get_attendance/json')
->>>>>>> 912a11178daaef08de17299f53b8a62bbc63b12b
