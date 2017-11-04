@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,29 +6,23 @@
     <title>CV
     </title>
 
-    {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static 'globals/semantic-ui/components/reset.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'globals/semantic-ui/components/icon.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'globals/css/semantic.min.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'globals/css/mediaquery.css' %}">
-
-</head>
+  </head>
 <body>
 
   <div class="ui grid">
   <div class="two wide column"></div>
-    <div class="twelve wide column" id=maingrid>
+    <div class="twelve wide column">
 
-      <div class="ui text container">
-          <center><h1 class="ui dividing header">{{ user.first_name }} {{ user.last_name }}</h1></center><hr>
-          <h6><p>Age: <b>{{ profile.age }}</b></p>
-          <p><b>{{ profile.phone_no }}, {{ user.email }}</b></p>
-          <p>{{ profile.about_me }}</p></h6>
-      </div>
+          <b style="font-size: 25px;">{{ user.first_name }} {{ user.last_name }}</b><br>
+          <b>Age: </b>{{ profile.age }}<br>
+          <b>Phone: </b>{{ profile.phone_no }} <br>
+          <b>Email: </b>{{ user.email }}<br>
+          <hr>
+          <p>{{ profile.about_me }}</p>
 
           {% if educations %}
           <div class="ui text container">
-              <h3 class="ui dividing header">Education</h3>
+              <b><h5 class="ui dividing header" style="background-color:#b0e2ff">Education</h5></b><br>
 
           <table class="table">
               <thead>
@@ -75,278 +70,106 @@
           {% endif %}
 
       {% if courses %}
-      <div class="ui text container">
-          <h3 class="ui dividing header">Courses</h3>
-      </div>
+          <h5 style="background-color:#b0e2ff">Courses</h5>
 
-      <table class="table">
-          <thead>
-          <tr>
-              <th class="six wide">Institute Name</th>
-              <th>License No</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th>Description</th>
-          </tr>
-          </thead>
-          <tbody>
           {% for course in courses %}
-          <tr>
-              <td>
-                  {{ course.course_name }}
-              </td>
-
-              <td>
-                  {{ course.license_no }}
-              </td>
-
-              <td>
-                  {{ course.sdate }}
-              </td>
-
-              <td>
-                  {{ course.edate }}
-              </td>
-
-              <td>
-                  {{ course.description }}
-              </td>
-          </tr>
+              <li style="font-size: 15px;"><b>{{ course.course_name }}</b></li>
+              {% if course.license_no %}
+              <b>License Number: </b>{{ course.license_no }}<br>
+              {% endif %}
+              <b>{{ course.sdate }}
+              {% if course.edate %}
+              - {{ course.edate }}</b>
+              {% endif %}<br>
+              {{ course.description }}<br><br>
           {% endfor %}
-          </tbody>
-      </table><br><br>
+
       {% endif %}
 
       {% if skills %}
-      <div class="ui text container">
-          <h3 class="ui dividing header">Skills and Technologies</h3>
-      </div><hr width=50%>
-      <div class="ui middle aligned divided list">
+          <br><b><h5 style="background-color:#b0e2ff">Skills and Technologies</h5></b><br>
+
              {% for skill in skills %}
-                    <div class="item"><h6>
+                    <li style="font-size: 15px;"><b>{{ skill.skill_id.skill }}</b>, {{ skill.skill_rating }}% &nbsp</li>
 
-                    <li>{{ skill.skill_id.skill }}, {{ skill.skill_rating }}% &nbsp</li>
-
-                  </h6></div>
-
-            {% endfor %}
-      </div><br><br>
+            {% endfor %}<br>
       {% endif %}
 
-      <div class="ui text container">
-          <h3 class="ui dividing header">Work Experience</h3>
-      </div><hr width=50%>
+          <b><h5 class="ui dividing header" style="background-color:#b0e2ff">Work Experience</h5></b><br>
 
       {% if experiences %}
-      <p><b><h6>Internships</h6></b></p>
-      <table class="table">
-          <thead>
-          <tr>
-              <th class="four wide">Organisation Name</th>
-              <th>Title</th>
-              <th>Status</th>
-              <th class="two wide">Start Date</th>
-              <th class="two wide">End Date</th>
-              <th class="two wide">Location</th>
-              <th class="three wide">Description</th>
-          </tr>
-          </thead>
-          <tbody>
+      <b><center><u>Internships</u></center></b><br>
+
           {% for experience in experiences %}
-          <tr>
-              <td>
-                  {{ experience.company }}
-              </td>
 
-              <td>
-                  {{ experience.title }}
-              </td>
+          <li style="font-size: 15px;"><b>{{ experience.title }}</b></li>
+          <b>Organisation: </b>{{ experience.company }}<br>
+          <b>Location: </b>{{ experience.location }}<br>
+          <b>{{ experience.sdate }}
+          {% if experience.edate %}
+          - {{ experience.edate }}</b>
+          {% endif %}<br>
+          {{ experience.description }}<br><br>
 
-              <td>
-                  {{ experience.status }}
-              </td>
-
-              <td>
-                  {{ experience.sdate }}
-              </td>
-
-              <td>
-                  {{ experience.edate }}
-              </td>
-
-              <td>
-                  {{ experience.location }}
-              </td>
-
-              <td>
-                  {{ experience.description }}
-              </td>
-          </tr>
           {% endfor %}
-          </tbody>
-      </table><br><br>
+          <br>
       {% endif %}
 
       {% if projects %}
-      <p><b><h6>Projects</h6></b></p>
+      <b><center><u>Projects</u></center></b><br>
 
-      <table class="table">
-          <thead>
-          <tr>
-              <th class="two wide">Project Name</th>
-              <th>Status</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th class="three wide">Description</th>
-          </tr>
-          </thead>
-          <tbody>
           {% for project in projects %}
-          <tr>
-              <td>
-                  {{ project.project_name }}
-              </td>
 
-              <td>
-                  {{ project.project_status }}
-              </td>
+          <li style="font-size: 15px;"><b>{{ project.project_name }}</b></li>
+          <b>Status: </b>{{ project.project_status }}<br>
+          <b>{{ project.sdate }}
+          {% if experience.edate %}
+          - {{ project.edate }}</b>
+          {% endif %}<br>
+          {{ project.summary }}<br><br>
 
-              <td>
-                  {{ project.sdate }}
-              </td>
-
-              <td>
-                  {{ project.edate }}
-              </td>
-
-              <td>
-                  {{ project.summary }}
-              </td>
-
-          </tr>
-          {% endfor %}
-          </tbody>
-      </table><br><br>
+          {% endfor %}<br>
       {% endif %}
 
       {% if achievements %}
-      <div class="ui text container">
-          <h3 class="ui dividing header">Achievements</h3>
-      </div>
+          <b><h5 style="background-color:#b0e2ff">Achievements</h5></b><br>
 
-      <table class="table">
-          <thead>
-          <tr>
-              <th class="six wide">Achievement Name</th>
-              <th>Type</th>
-              <th>Issuer</th>
-              <th>Date</th>
-              <th class="four wide">Description</th>
-          </tr>
-          </thead>
-          <tbody>
           {% for achievement in achievements %}
-          <tr>
-              <td>
-                  {{ achievement.achievement }}
-              </td>
 
-              <td>
-                  {{ achievement.achievement_type }}
-              </td>
+          <li style="font-size: 15px;"><b>{{ achievement.achievement }}</b></li>
+          <b>Issuer: </b>{{ achievement.issuer }}<br>
+          <b>Type: </b>{{ achievement.achievement_type }}<br>
+          <b>{{ achievement.date_earned }}</b><br>
+          {{ achievement.description }}<br><br>
 
-              <td>
-                  {{ achievement.issuer }}
-              </td>
-
-              <td>
-                  {{ achievement.date_earned }}
-              </td>
-
-              <td>
-                  {{ achievement.description }}
-              </td>
-          </tr>
-          {% endfor %}
-          </tbody>
-      </table><br><br>
+          {% endfor %}<br>
       {% endif %}
 
       {% if publications %}
-      <div class="ui text container">
-          <h3 class="ui dividing header">Publication</h3>
-      </div>
+          <b><h5 style="background-color:#b0e2ff">Publication</h5></b><br>
 
-      <table class="table">
-          <thead>
-          <tr>
-              <th class="six wide">Publication Title</th>
-              <th>Publisher</th>
-              <th>Description</th>
-              <th class="five wide">Date Published</th>
-          </tr>
-          </thead>
-          <tbody>
           {% for publication in publications %}
-          <tr>
-              <td>
-                  {{ publication.publication_title }}
-              </td>
 
-              <td>
-                  {{ publication.publisher }}
-              </td>
+          <li style="font-size: 15px;"><b>{{ publication.publication_title }}</b></li>
+          <b>Publisher: </b>{{ publication.publisher }}<br>
+          <b>{{ publication.publication_date }}</b><br>
+          {{ publication.description }}<br><br>
 
-              <td>
-                  {{ publication.description }}
-              </td>
-
-              <td>
-                  {{ publication.publication_date }}
-              </td>
-          </tr>
-          {% endfor %}
-          </tbody>
-      </table><br><br>
+          {% endfor %}<br>
       {% endif %}
 
 
       {% if patents %}
-      <div class="ui text container">
-          <h3 class="ui dividing header">Patents</h3>
-      </div>
+          <b><h5 style="background-color:#b0e2ff">Patents</h5>/<b><br>
 
-      <table class="table">
-          <thead>
-          <tr>
-              <th class="five wide">Patent Name</th>
-              <th class="five wide">Patent Office</th>
-              <th>Description</th>
-              <th class="five wide">Date Published</th>
-          </tr>
-          </thead>
-          <tbody>
           {% for patent in patents %}
-          <tr>
-              <td>
-                  {{ patent.patent_name }}
-              </td>
 
-              <td>
-                  {{ patent.patent_office }}
-              </td>
+          <li style="font-size: 15px;"><b>{{ patent.patent_name }}</b></li>
+          <b>Patent Office: </b>{{ patent.patent_office }}<br>
+          <b>{{ patent.patent_date }}</b><br>
+          {{ patent.description }}<br><br>
 
-              <td>
-                  {{ patent.description }}
-              </td>
-
-              <td>
-                  {{ patent.patent_date }}
-              </td>
-          </tr>
-          {% endfor %}
-          </tbody>
-      </table><br><br>
+          {% endfor %}<br>
       {% endif %}
 
     </div>
@@ -390,15 +213,12 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: 300;
-  margin-bottom: 3.0rem;
-  margin-top: 3.0rem;
+  font-weight: 200;
 }
 
 hr {
   border: 0;
   border-top: 0.1rem solid #f4f5f6;
-  margin: 3.0rem 0;
 }
 
 h1 {
@@ -412,27 +232,21 @@ h2 {
 }
 
 h3 {
-  text-align: center;
   font-size: 2.2em;
-  line-height: 1.3;
 }
 
 h4 {
   font-size: 1.8em;
-  letter-spacing: -.08em;
-  line-height: 1.35;
+
 }
 
 h5 {
+  margin-top: 0.1em;
   font-size: 1.6em;
-  letter-spacing: -.05em;
-  line-height: 1.5;
 }
 
 h6 {
   font-size: 1.4em;
-  letter-spacing: 0;
-  line-height: 1.4;
 }
 
 table{
@@ -449,23 +263,24 @@ table{
   border: 10px solid #3d3d3d;
 }
 th{
-  padding: 5px 5px;
+  padding: 3px 2px;
   text-align: center;
-  font-weight: 500;
-  font-size: 15px;
-  color: #fff;
-  background-color: #3d3d3d;
-  text-transform: uppercase;
-  border: solid 2.5px #3d3d3d;
-}
-td{
-  padding: 5px;
-  text-align: left;
-  vertical-align:middle;
-  font-weight: 300;
+  font-weight: 200;
   font-size: 12px;
   color: #3d3d3d;
-  border: solid 2.5px #3d3d3d;
+  background-color: #d3d3d3;
+  text-transform: uppercase;
+  border-bottom: solid 1.5px #d2d2d2;
+  border-top: solid 1.5px #3d3d3d;
+}
+td{
+  padding: 2px;
+  text-align: center;
+  vertical-align:middle;
+  font-weight: 200;
+  font-size: 10px;
+  color: #3d3d3d;
+  border: solid 0px #3d3d3d;
 }
 
 body {
