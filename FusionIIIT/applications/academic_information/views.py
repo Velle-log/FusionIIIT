@@ -72,7 +72,7 @@ def senator(request):
         data = {}
         return JsonResponse(data)
 
-def edit_convenor(request):
+def add_convenor(request):
     s = Designation.objects.get(name = 'Convenor')
     p = Designation.objects.get(name = 'Co Convenor')
     if request.method == 'POST':
