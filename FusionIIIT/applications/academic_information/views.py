@@ -1,11 +1,10 @@
-# from django.shortcuts import render
-
 from django.shortcuts import render
-from .models import Student, Meeting
+from .models import Student, Meeting, Student_attendance,Course,Student
 from applications.globals.models import ExtraInfo, Designation, DepartmentInfo
 from django.http import HttpResponse
 from django.db.models.query import QuerySet
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 from django.http import JsonResponse
 from .forms import MinuteForm
 import json
@@ -64,3 +63,92 @@ def senator(request):
     else:        
         data = {}
         return JsonResponse(data)
+
+def add_attendance(request):
+    if request.method == 'POST':
+        student_attend = Student_attendance()
+        s_id = request.POST.get('student_id')
+        c_id = request.POST.get('course_id')
+        print(s_id)
+        print(c_id)
+        context={}
+        try:
+           student_attend.student_id = Student.objects.get(id_id=s_id)
+        except:
+            error_mess = "Student Data Not Found"
+            context['result']='Failure'
+            context['message']=error_mess
+            messages.error(request, error_mess)
+            return HttpResponse(json.dumps(context), content_type='add_attendance/json')
+
+
+        try:
+            student_attend.course_id = Course.objects.get(course_id=c_id)
+        except:
+            error_mess = "Course Data Not Found"
+            context['result'] = 'Failure'
+            context['message'] = error_mess
+            messages.error(request, error_mess)
+            return HttpResponse(json.dumps(context), content_type='add_attendance/json')
+
+    # print('student_id ',student_attend.student_id)
+
+
+        student_attend.present_attend = request.POST.get('present_attend')
+        student_attend.total_attend = request.POST.get('total_attend')
+
+        if student_attend.present_attend > student_attend.total_attend :
+            error_mess = "Present attendance should not be greater than Total attendance"
+            context['result'] = 'Failure'
+            context['message'] = error_mess
+            return HttpResponse(json.dumps(context), content_type='add_attendance/json')
+
+
+        success_mess = "Your Data has been successfully added"
+        messages.success(request, success_mess)
+        student_attend.save()
+        context['result'] = 'Success'
+        context['message'] = success_mess
+        messages.error(request, success_mess)
+        return HttpResponse(json.dumps(context), content_type='add_attendance/json')
+
+
+def get_attendance(request):
+    course_id=request.GET.get('course_id')
+    print(course_id)
+    c_id=Course.objects.get(course_id=course_id)
+    # data=Student_attendance.objects.filter(course_id_id=c_id).values_list('student_id_id','course_id_id')
+    data = Student_attendance.objects.filter(course_id_id=c_id).values_list('course_id_id','student_id_id','present_attend','total_attend')
+    stud_data={}
+    stud_data['name']=[]
+    stud_data['programme']=[]
+    stud_data['batch']=[]
+    for obj in data:
+        roll = data[0][1]
+        extra_info = ExtraInfo.objects.get(id=roll)
+        s_id = Student.objects.get(id=extra_info)
+
+        s_name=s_id.name
+        s_programme=s_id.programme
+        s_batch=s_id.batch
+        print(s_name)
+        print(s_programme)
+        stud_data['name'].append(s_name)
+        stud_data['programme'].append(s_programme)
+        stud_data['batch'].append(s_batch)
+
+    print(stud_data)
+    context={}
+    try:
+        context['result'] = 'Success'
+        context['tuples'] = list(data)
+        context['stud_data']=stud_data
+
+    except:
+        context['result'] = 'Failure'
+
+
+    print(data[0][1])
+    print(stud_data['name'][0])
+    print(context)
+    return HttpResponse(json.dumps(context),content_type='get_attendance/json')
