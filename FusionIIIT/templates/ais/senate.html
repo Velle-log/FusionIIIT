@@ -59,10 +59,18 @@
                       {% if senates %}
                       {% for senate in senates%}                      
                     <tr>
-                       <td>{{senate.user.username}} </td>                       
+                       <td>{{senate.user.username}} </td>
+                       {% for s in students %}
+                       {% if s.id == senate %}                       
                       <td>{{s.programme}} </td>                      
                       <td>{{senate.id}}</td>
+<<<<<<< HEAD
+                      <td><form method="POST" action="{% url 'delete' %}">{% csrf_token %}<i class="refresh icon" style="font-size:1.3vw"></i> <button type="submit" name= "delete" value="{{senate.id}}"> Delete </button></form></td>
+=======
+                      {% endif %}
+                      {% endfor %}
                       <td><i class="refresh icon" style="font-size:1.3vw"></i><i class="trash outline icon" style="font-size:1.3vw"></i></td>    
+>>>>>>> 912a11178daaef08de17299f53b8a62bbc63b12b
                     </tr>
                     {% endfor %}
                     {% endif %}
@@ -130,7 +138,7 @@
 
           <h4 class="ui dividing header">Edit Students</h4>
 
-       <form class="ui form">
+          <form class="ui form" method="POST" action="{% url 'edit_convenor' %}">
             <div class="field">
                  <div class="three fields">
                     <div class="field">
@@ -141,13 +149,12 @@
                     <div class="field">
                         <label>Designation</label>
                             <div class="ui fluid search selection dropdown">
-                                    <input type="hidden">
+                                    <input type="hidden" name="Designation">
                                     <i class="dropdown icon"></i>
                                     <div class="default text">Designation</div>
                                     <div class="menu">
-                                        <div class="item" data-value="B.Tech">B.Des</div>
-                                        <div class="item" data-value="M.Tech">M.Des</div>
-                                        <div class="item" data-value="Phd.">Phd.</div>
+                                        <div class="item" data-value="Convenor" name="Convenor">Convenor</div>
+                                        <div class="item" data-value="Co_Convenor" name="Co Convenor">Co_Convenor</div>   
                                        
                                         
                                       
@@ -158,7 +165,7 @@
                 
                  <div class="field">
                         <label>Roll Number</label>
-                        <input placeholder="Roll Number" type="text">
+                        <input placeholder="Roll Number" type="text" name="Roll Number">
                     </div>
                     
                 </div>
@@ -169,7 +176,7 @@
                     <div class="one wide field">
                         <label><br></label>
                         <div class="ui primary button">
-                            Save
+                            <input type="submit" value="update" />
                             <i class="ui save icon right floated"></i>
                         </div>
                     </div> 
@@ -220,12 +227,22 @@
                   </thead>
                   <tbody>
                     <tr>
-                       <td>Arun Kumar</td>
+                            {% if Convenor %}
+                            {% for Convenor in Convenor %}
+                       <td>{{Convenor.user.username}}</td>
                        <td>Convener</td>
-                       <td>2014034</td>
-                      <td><i class="refresh icon" style="font-size:1.3vw"></i><i class="trash outline icon" style="font-size:1.3vw"></i></td>
+                       <td>{{Convenor.id}}</td>
+                       <td><form method="POST" action="{% url 'delete1' %}">{% csrf_token %}<i class="refresh icon" style="font-size:1.3vw"></i> <button type="submit" name= "delete" value="{{Convenor.id}}"> Delete </button></form></td>
                     </tr>
+                           {% endfor %}
+                           {% endif %}
                     <tr>
+                            {% if CoConvenor %}
+                            {% for CoConvenor in CoConvenor %}
+                        <td>{{CoConvenor.user.username}}</td>
+                        <td>Convener</td>
+                        <td>{{CoConvenor.id}}</td>
+                        <td><form method="POST" action="{% url 'delete2' %}">{% csrf_token %}<i class="refresh icon" style="font-size:1.3vw"></i> <button type="submit" name= "delete" value="{{CoConvenor.id}}"> Delete </button></form></td>
                      
 
                     </tr>
@@ -242,32 +259,15 @@
   
     <div class="ui  tab segment" data-tab="minutes">
              
-             <form class="ui form">
+             <form class="ui form" method="POST" enctype="multipart/form-data" id="minutes">
+                    {% csrf_token %}
                   <div class="field">
-                    <div class="three fields">
-                       
-
-                         <div class="field">
-
-                                <label>Date </label>
-                                <!-- <input placeholder="Date of Submission" type="text"> -->
-                                <!-- Code change starts -->
-                                 <div class="ui calendar" id="example1">
-                                    <div class="ui input left icon">
-                                      <i class="calendar icon"></i>
-                                      <input type="text" placeholder="Date/Time">
-                                    </div>
-                                  </div>
-                         </div>
-                          <div class="field">
-                             <label> Minutes</label>
-                             <input placeholder="Journal" type="file">
-                        </div>
-
+                    <div class="three fields">                       
+                            {{ form.as_p }} 
                          <div class="field">
                            <label><br></label>
                               <div class="ui primary button">
-                               Save
+                                <input type="submit" value="Save" />
                             <i class="ui save icon right floated"></i>
                         </div>
                          </div>
@@ -280,7 +280,7 @@
             <table class="ui single line table">
                   <thead>
                     <tr>
-                      <th>Sr no.</th>
+                      <th>File Name</th>
                       <th>Date</th>
                       <th>Minutes</th>
                       <th>Action</th>
@@ -288,13 +288,13 @@
                     </tr>
                   </thead>
                   
-
-
                 <tbody>
+                    {% if meetings %}
+                    {% for meeting in meetings %}
                   <tr>
-                    <td>1.</td>
-                    <td>October 5, 2017 2:00 AM</td>
-                    <td><a href="#">
+                    <td>{{ meeting.minutes_file.name }}</td>
+                    <td>{{meeting.date}}</td>
+                    <td><a href="{{ meeting.minutes_file.url }}">
                       <div class="ui primary button">
                                Open PDF
                            
@@ -303,8 +303,11 @@
                     </td>
                     <td><i class="refresh icon" style="font-size:1.3vw"></i><i class="trash outline icon" style="font-size:1.3vw"></i></td>
                    </tr>
-                 </tbody>
-
+                   {% endfor %}
+                   {% endif %}
+                 </tbody>            
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+<script src="{% static 'academic_information/scripts/minutes.js' %}" type="text/javascript"></script> -->
 
                    <tfoot>
                           <tr>

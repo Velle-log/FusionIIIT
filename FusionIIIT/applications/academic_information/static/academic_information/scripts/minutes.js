@@ -1,6 +1,6 @@
 // Submit post on submit
 $(document).ready(function() {
-    $('#senate-member').on('submit', function(event){
+    $('#minutes').on('submit', function(event){
         create_member();
     });
 });
@@ -8,18 +8,19 @@ $(document).ready(function() {
 function create_member() {
     $.ajax({
         type : "POST", // http method
-        url : "senator/", // the endpoint
+        url : "minutes/", // the endpoint
         dataType: 'json',
         data : {
-            'rollno' : $('#rollno').val()
+            'date' : $('#date').val(),
+            'minute' : $('#minute').val(),
         },
         // data sent with the post request
         // handle a successful response
         success : function(data) {
-            alert("New Senator Added");
+            alert("Your file is uploaded");
         },
         error : function(data) {
-            alert("Something went wrong");
+            alert("Cannot be uploaded");
         }
     });
 };
