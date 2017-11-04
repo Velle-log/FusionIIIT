@@ -16,14 +16,13 @@
 
        <h4 class="ui dividing header">Edit Time Table</h4>
 
-       <form class="ui form" action="{% url 'add_timetable' %}" method="post" id="form1">
-            {% csrf_token %}
+       <form class="ui form">
             <div class="field">
                  <div class="three fields">
                     <div class="field">
                         <label>Day</label>
                            <div class="ui fluid search selection dropdown">
-                                    <input type="hidden" name="year">
+                                    <input type="hidden">
                                     <i class="dropdown icon"></i>
                                     <div class="default text">Year</div>
                                     <div class="menu">
@@ -44,20 +43,20 @@
                                   <div class="field">
                                     <label>Programme</label>
                                         <div class="ui fluid search selection dropdown">
-                                    <input type="hidden" name="programme">
+                                    <input type="hidden">
                                     <i class="dropdown icon"></i>
                                     <div class="default text">Programme</div>
                                     <div class="menu">
                                         <div class="item" data-value="B.Tech">B.Tech</div>
                                         <div class="item" data-value="B.Des ">B.Des </div>
                                         <div class="item" data-value="M.Tech">M.Tech</div>
-                                        <div class="item" data-value="M.Des">M.Des </div>
+                                        <div class="item" data-value="M.Des">M.Des </div>  
                                     </div>
                                 </div>
                                </div>
                                  <div class="field">
                                   <label>Upload Time Table</label>
-                                  <input placeholder="Upload Time Table" type="file" name="file">
+                                  <input placeholder="Upload Time Table" type="file">
                                 </div>
 
                         </div>
@@ -73,11 +72,10 @@
 
                     <div class="one wide field">
                         <label><br></label>
-                       <a href="#" onclick="document.getElementById('form1').submit();">
-                        <div class="ui primary button">Save
+                        <div class="ui primary button">
+                            Save
                             <i class="ui save icon right floated"></i>
                         </div>
-                             </a>
                     </div> 
                 </div>
         </form>  
@@ -94,19 +92,14 @@
                     </tr>
                   </thead>
                   <tbody>
-                  <form action="{% url 'delete_timetable' %}">
-                   {% csrf_token %}
-                  {% for c in timetable %}
                     <tr>
-                      <td></td>
-                      <td></td>
-                      <td>{{ c.upload_date }}</td>
-                        <td>{{ c.time_table }}</td>
-                      <td><button type="submit" value="{{ c.time_table }}" name="delete"><i class="trash outline icon" style="font-size:1.3vw;color:red;"></i></button></td>
+                      <td>Monday</td>
+                      <td>September</td>
+                      <td>jhlilk22</td>
+                      <td>No</td>
+                      <td><i class="edit icon" style="font-size:1.3vw;color:blue"></i><br><i class="trash outline icon" style="font-size:1.3vw;color:red;"></i></td>
                       
                     </tr>
-                  {% endfor %}
-                  </form>
                     <tr>
                      
 
@@ -127,14 +120,13 @@
 
        <h4 class="ui dividing header">Edit Time Table</h4>
 
-         <form class="ui form" method = "post" action="{% url 'add_exam_timetable' %}" id="form2">
-             {% csrf_token %}
+         <form class="ui form">
             <div class="field">
                  <div class="three fields">
                     <div class="field">
                         <label>Day</label>
                            <div class="ui fluid search selection dropdown">
-                                    <input type="hidden" name="year">
+                                    <input type="hidden">
                                     <i class="dropdown icon"></i>
                                     <div class="default text">Year</div>
                                     <div class="menu">
@@ -155,7 +147,7 @@
                                   <div class="field">
                                     <label>Programme</label>
                                         <div class="ui fluid search selection dropdown">
-                                    <input type="hidden" name="programme">
+                                    <input type="hidden">
                                     <i class="dropdown icon"></i>
                                     <div class="default text">Programme</div>
                                     <div class="menu">
@@ -168,7 +160,7 @@
                                </div>
                                  <div class="field">
                                   <label>Upload Time Table</label>
-                                  <input placeholder="Upload Time Table" type="file" name="file">
+                                  <input placeholder="Upload Time Table" type="file">
                                 </div>
 
                         </div>
@@ -184,11 +176,10 @@
 
                     <div class="one wide field">
                         <label><br></label>
-                        <a href="#" onclick="document.getElementById('form2').submit();">
-                        <div class="ui primary button">Save
+                        <div class="ui primary button">
+                            Save
                             <i class="ui save icon right floated"></i>
                         </div>
-                             </a>
                     </div> 
                 </div>
         </form>  
@@ -205,16 +196,14 @@
                     </tr>
                   </thead>
                   <tbody>
-                  {% for c in exam %}
                     <tr>
+                      <td>Monday</td>
+                      <td>September</td>
+                      <td>jhlilk22</td>
                       <td></td>
-                      <td>{{ c.exam_timetable }}</td>
-                      <td></td>
-                      <td>{{ c.upload_date }}</td>
                       <td><i class="edit icon" style="font-size:1.3vw;color:blue"></i><br><i class="trash outline icon" style="font-size:1.3vw;color:red;"></i></td>
                       
                     </tr>
-                  {% endfor %}
                     <tr>
                      
 
