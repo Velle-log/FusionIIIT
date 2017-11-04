@@ -34,7 +34,6 @@ def homepage(request):
          'students':students,
          'Convenor':Convenor,
          'CoConvenor':CoConvenor,
-    }    
          'meetings' : meetings,
          'form': form,
     } 

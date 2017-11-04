@@ -64,13 +64,9 @@
                        {% if s.id == senate %}                       
                       <td>{{s.programme}} </td>                      
                       <td>{{senate.id}}</td>
-<<<<<<< HEAD
-                      <td><form method="POST" action="{% url 'delete' %}">{% csrf_token %}<i class="refresh icon" style="font-size:1.3vw"></i> <button type="submit" name= "delete" value="{{senate.id}}"> Delete </button></form></td>
-=======
                       {% endif %}
                       {% endfor %}
-                      <td><i class="refresh icon" style="font-size:1.3vw"></i><i class="trash outline icon" style="font-size:1.3vw"></i></td>    
->>>>>>> 912a11178daaef08de17299f53b8a62bbc63b12b
+                      <td><form method="POST" action="{% url 'delete' %}">{% csrf_token %}<i class="refresh icon" style="font-size:1.3vw"></i> <button type="submit" name= "delete" value="{{senate.id}}"> Delete </button></form></td>                                                
                     </tr>
                     {% endfor %}
                     {% endif %}
