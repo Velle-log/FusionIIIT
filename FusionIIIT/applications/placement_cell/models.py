@@ -33,7 +33,6 @@ class Constants:
         ('ON CAMPUS', 'On Campus'),
         ('PPO', 'PPO'),
         ('OFF CAMPUS', 'Off Campus'),
-        ('NOT PLACED', 'Not Placed')
     )
     DEBAR_TYPE = (
         ('DEBAR', 'Debar'),
@@ -183,7 +182,7 @@ class Achievement(models.Model):
     achievement = models.CharField(max_length=100, default='')
     achievement_type = models.CharField(max_length=20, choices=Constants.ACHIEVEMENT_TYPE,
                                         default='OTHER')
-    description = models.CharField(max_length=1000, default='', null=True, blank=True)
+    description = models.CharField(max_length=250, default='', null=True, blank=True)
     issuer = models.CharField(max_length=200, default='')
     date_earned = models.DateField(_("Date"), default=datetime.date.today)
 
@@ -291,11 +290,11 @@ class StudentPlacement(models.Model):
     future_aspect = models.CharField(max_length=20, choices=Constants.PLACEMENT_TYPE,
                                      default='PLACEMENT')
     placed_type = models.CharField(max_length=20, choices=Constants.PLACED_TYPE,
-                                   default='NOT PLACED')
+                                   default='', null=True, blank=True)
     placement_date = models.DateField(_("Date"), default=datetime.date.today, null=True,
                                       blank=True)
     package = models.DecimalField(default='', decimal_places=2, max_digits=5, null=True,
                                   blank=True)
 
     def __str__(self):
-        return self.unique_id.id.id
+        return self.unique_id.id

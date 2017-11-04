@@ -15,7 +15,7 @@
         <div class="ui vertical segment">
             {% comment %}Form Tag starts here!{% endcomment %}
             <form>
-                {% comment %}The add a new Publication Accordian starts here!{% endcomment %}
+                {% comment %}The add a new skill Accordian starts here!{% endcomment %}
                 <div class="ui active accordion field">
                     <div class="title">
                         <i class="icon dropdown"></i>
@@ -27,15 +27,37 @@
 
                             <div class="two fields">
                                 <div class="eleven wide field">
-                                    <label>Publication Title:</label>
+                                    <label>Organisation Name:</label>
                                     <div class="ui fluid large input">
                                         {% comment %}The Institute Name input!{% endcomment %}
                                         <input>
                                     </div>
                                 </div>
 
+                                <div class="five wide field">
+                                <label>Contact Details:</label>
+                                <div class="ui fluid large input">
+                                    {% comment %}The Institute Name input!{% endcomment %}
+                                    <input>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        {% comment %}The start and end date input{% endcomment %}
+                        <div class="two fields">
                             <div class="field">
-                                <label>Date Published:</label>
+                                <label>Start Date:</label>
+                                <div class="ui calendar" id="rangestart2">
+                                    <div class="ui input left icon">
+                                        <i class="calendar icon"></i>
+                                        <input type="text" placeholder="From">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label>End Date:</label>
                                 <div class="ui calendar" id="rangeend2">
                                     <div class="ui input left icon">
                                         <i class="calendar icon"></i>
@@ -48,7 +70,7 @@
                         <div class="fields">
                             <div class="eight wide field">
                                 <label>
-                                    Description:
+                                    Internship Title
                                 </label>
 
                                 <div class="ui large input">
@@ -56,17 +78,19 @@
                                 </div>
                             </div>
 
-                                <div class="field">
-                                    <label>
-                                        Publisher:
-                                    </label>
+                            <div class="five wide field">
+                                <label>
+                                    Status
+                                </label>
 
-                                    <div class="ui large input">
-                                        <input>
-                                    </div>
-                                </div>
+                                <select class="ui search fluid large dropdown">
+                                    <option value="">Status</option>
+                                    <option value="complete">Complete</option>
+                                    <option value="ongoing">Ongoing</option>
+                                </select>
+                            </div>
 
-                            <div class="field">
+                            <div class="three wide field">
                                 <label><br></label>
                                 <button class="ui fluid large primary button" type="submit">
                                     Submit
@@ -77,45 +101,91 @@
                     </div>
                 </div>
         </div>
-        {% comment %}The add a new Publication Accordian ends here!{% endcomment %}
+        {% comment %}The add a new skill Accordian ends here!{% endcomment %}
         </form>
         {% comment %}Form Tag ends here!{% endcomment %}
 
-        {% if publications %}
+
         <div class="ui divider"></div>
 
         <table class="ui fixed sortable celled table">
             <thead>
             <tr>
-                <th class="six wide">Publication Title</th>
-                <th>Publisher</th>
-                <th>Description</th>
-                <th class="five wide">Date Published</th>
+                <th class="six wide">Institute Name</th>
+                <th>Degree</th>
+                <th>Stream</th>
+                <th>Start Date</th>
+                <th>End Date</th>
             </tr>
             </thead>
             <tbody>
-            {% for publication in publications %}
             <tr>
                 <td>
-                    {{ publication.publication_title }}
+                    PDPM IIITDM Jabalpur
                 </td>
 
                 <td>
-                    {{ publication.publisher }}
+                    B.Tech.
                 </td>
 
                 <td>
-                    {{ publication.description }}
+                    CSE
                 </td>
 
                 <td>
-                    {{ publication.publication_date }}
+                    01.01.1970
+                </td>
+
+                <td>
+                    01.01.1970
                 </td>
             </tr>
-            {% endfor %}
+
+            <tr>
+                <td>
+                    PDPM IIITDM Jabalpur
+                </td>
+
+                <td>
+                    B.Tech.
+                </td>
+
+                <td>
+                    CSE
+                </td>
+
+                <td>
+                    01.01.1971
+                </td>
+
+                <td>
+                    01.01.1971
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    PDPM IIITDM Jabalpur
+                </td>
+
+                <td>
+                    B.Tech.
+                </td>
+
+                <td>
+                    CSE
+                </td>
+
+                <td>
+                    01.01.1972
+                </td>
+
+                <td>
+                    01.01.1972
+                </td>
+            </tr>
             </tbody>
         </table>
-        {% endif %}
 
     </div>
     </div>
@@ -123,7 +193,7 @@
         <div class="ui vertical segment">
             {% comment %}Form Tag starts here!{% endcomment %}
             <form>
-                {% comment %}The add a new Publication Accordian starts here!{% endcomment %}
+                {% comment %}The add a new skill Accordian starts here!{% endcomment %}
                 <div class="ui active accordion field">
                     <div class="title">
                         <i class="icon dropdown"></i>
@@ -132,41 +202,10 @@
 
                     <div class="active content">
                         <div class="ui form" style="padding: 8px; padding-left: 24px; padding-right: 24px;">
-
                             <div class="two fields">
-                                <div class="eleven wide field">
-                                    <label>Patent Name:</label>
-                                    <div class="ui fluid large input">
-                                        {% comment %}The Patent Name input!{% endcomment %}
-                                        <input>
-                                    </div>
-                                </div>
-
-                            <div class="field">
-                                <label>Patent Date:</label>
-                                <div class="ui calendar" id="rangeend2">
-                                    <div class="ui input left icon">
-                                        <i class="calendar icon"></i>
-                                        <input type="text" placeholder="To">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="fields">
-                            <div class="eight wide field">
-                                <label>
-                                    Description:
-                                </label>
-
-                                <div class="ui large input">
-                                    <input>
-                                </div>
-                            </div>
-
                                 <div class="field">
                                     <label>
-                                        Patent Office:
+                                        Project Name:
                                     </label>
 
                                     <div class="ui large input">
@@ -174,57 +213,152 @@
                                     </div>
                                 </div>
 
-                            <div class="field">
-                                <label><br></label>
-                                <button class="ui fluid large primary button" type="submit">
-                                    Submit
-                                </button>
-                            </div>
-                        </div>
+                                <div class="field">
+                                    <label>
+                                        Status
+                                    </label>
 
+                                    <div class="ui large input">
+                                        <input>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="field">
+                                <label>Project Link:</label>
+                                <div class="ui large input fluid">
+                                    <input>
+                                </div>
+                            </div>
+
+                            {% comment %}The start and end date input{% endcomment %}
+                            <div class="two fields">
+                                <div class="field">
+                                    <label>Start Date:</label>
+                                    <div class="ui calendar" id="rangestart3">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon"></i>
+                                            <input type="text" placeholder="From">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label>End Date:</label>
+                                    <div class="ui calendar" id="rangeend3">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon"></i>
+                                            <input type="text" placeholder="To">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="two fields">
+                                <div class="twelve wide field">
+                                    <label>Description:</label>
+                                    <textarea rows="2">
+                                        {% comment %}The Institute Name input!{% endcomment %}
+                                    </textarea>
+                                </div>
+
+                                <div class="four wide field">
+                                    <label><br></label>
+                                    <button class="ui fluid large primary button" type="submit">
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
-        </div>
-        {% comment %}The add a new Publication Accordian ends here!{% endcomment %}
-        </form>
+                {% comment %}The add a new skill Accordian ends here!{% endcomment %}
+            </form>
             {% comment %}Form Tag ends here!{% endcomment %}
 
 
-            {% if patents %}
             <div class="ui divider"></div>
 
             <table class="ui fixed sortable celled table">
                 <thead>
                 <tr>
-                    <th class="five wide">Patent Name</th>
-                    <th class="five wide">Patent Office</th>
-                    <th>Description</th>
-                    <th class="five wide">Date Published</th>
+                    <th class="six wide">Institute Name</th>
+                    <th>Degree</th>
+                    <th>Stream</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for patent in patents %}
                 <tr>
                     <td>
-                        {{ patent.patent_name }}
+                        PDPM IIITDM Jabalpur
                     </td>
 
                     <td>
-                        {{ patent.patent_office }}
+                        B.Tech.
                     </td>
 
                     <td>
-                        {{ patent.description }}
+                        CSE
                     </td>
 
                     <td>
-                        {{ patent.patent_date }}
+                        01.01.1970
+                    </td>
+
+                    <td>
+                        01.01.1970
                     </td>
                 </tr>
-                {% endfor %}
+
+                <tr>
+                    <td>
+                        PDPM IIITDM Jabalpur
+                    </td>
+
+                    <td>
+                        B.Tech.
+                    </td>
+
+                    <td>
+                        CSE
+                    </td>
+
+                    <td>
+                        01.01.1971
+                    </td>
+
+                    <td>
+                        01.01.1971
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        PDPM IIITDM Jabalpur
+                    </td>
+
+                    <td>
+                        B.Tech.
+                    </td>
+
+                    <td>
+                        CSE
+                    </td>
+
+                    <td>
+                        01.01.1972
+                    </td>
+
+                    <td>
+                        01.01.1972
+                    </td>
+                </tr>
                 </tbody>
             </table>
-            {% endif %}
+
         </div>
     </div>
 {% endblock %}

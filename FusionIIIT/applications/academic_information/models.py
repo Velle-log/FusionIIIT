@@ -21,13 +21,6 @@ class Constants:
         ('M.Des', 'M.Des'),
         ('PhD', 'PhD')
     )
-    
-    CATEGORY = (
-        ('ST', 'ST'),
-        ('SC', 'SC'),
-        ('OBC', 'OBC'),
-        ('GEN', 'GEN')
-    )
 
     CATEGORY = (
         ('GEN', 'General'),
@@ -35,24 +28,6 @@ class Constants:
         ('ST', 'Scheduled Tribes'),
         ('OBC', 'Other Backward Classes')
     )
-
-
-class Student(models.Model):
-    id = models.OneToOneField(ExtraInfo, on_delete=models.CASCADE, primary_key=True)
-    name = models.CharField(max_length=50, default='')
-    batch=models.CharField(max_length=10,default='2015')
-    programme = models.CharField(max_length=10, choices=Constants.PROGRAMME)
-    cpi = models.FloatField(default=0)
-    category = models.CharField(max_length=10, choices=Constants.CATEGORY, null=False)
-    father_name = models.CharField(max_length=40, default='')
-    mother_name = models.CharField(max_length=40, default='')
-    hall_no = models.IntegerField(default=1)
-    room_no = models.CharField(max_length=10, blank=True, null=True)
-
-    def __str__(self):
-        return str(self.id)
-
-
 class Course(models.Model):
     course_id = models.CharField(max_length=100, unique=True)
     course_name = models.CharField(max_length=100)
@@ -64,15 +39,38 @@ class Course(models.Model):
         unique_together = ('course_id', 'course_name', 'sem')
 
     def __str__(self):
+        return self.course_id
+
+
+class Student(models.Model):
+    id = models.OneToOneField(ExtraInfo, on_delete=models.CASCADE, primary_key=True)
+    name=models.CharField(max_length=50, default="")
+    programme = models.CharField(max_length=10, choices=Constants.PROGRAMME)
+    batch = models.CharField(max_length=10, default="")
+    cpi = models.FloatField(default=0)
+    category = models.CharField(max_length=10, choices=Constants.CATEGORY, null=False)
+    father_name = models.CharField(max_length=40, default='')
+    mother_name = models.CharField(max_length=40, default='')
+    hall_no = models.IntegerField(default=1)
+    room_no = models.CharField(max_length=10, blank=True, null=True)
+    courses = models.ManyToManyField(Course)
+
+    def __str__(self):
         return str(self.id)
 
 
 class Meeting(models.Model):
+    venue = models.CharField(max_length=50)
     date = models.DateField()
-    minutes_file = models.FileField(upload_to='documents/')
+    time = models.CharField(max_length=20)
+    agenda = models.TextField()
+    minutes_file = models.CharField(max_length=40)
 
     class Meta:
         db_table = 'Meeting'
+
+    def __str__(self):
+        return self.date
 
 
 class Calendar(models.Model):
@@ -112,17 +110,14 @@ class Grades(models.Model):
 class Student_attendance(models.Model):
     student_id = models.ForeignKey(Student)
     course_id = models.ForeignKey(Course)
-#    attend = models.CharField(max_length=6, choices=Constants.ATTEND_CHOICES)
-    date = models.DateField(auto_now=True)
-    present_attend=models.IntegerField(default=0)
-    total_attend=models.IntegerField(default=0)
-
+    attend = models.CharField(max_length=6, choices=Constants.ATTEND_CHOICES)
+    date = models.DateField()
 
     class Meta:
         db_table = 'Student_attendance'
 
     def __self__(self):
-        return self.course_id
+        return self.date
 
 
 class Instructor(models.Model):
@@ -152,7 +147,7 @@ class Spi(models.Model):
 
 class Timetable(models.Model):
     upload_date = models.DateTimeField(auto_now_add=True)
-    time_table = models.CharField(max_length=20)
+    time_table = models.FileField(upload_to='documents/%Y/%m/%d')
 
     class Meta:
         db_table = 'Timetable'
@@ -160,7 +155,7 @@ class Timetable(models.Model):
 
 class Exam_timetable(models.Model):
     upload_date = models.DateField(auto_now_add=True)
-    exam_time_table = models.CharField(max_length=20)
+    exam_time_table = models.FileField(upload_to='documents/%Y/%m/%d')
 
     class Meta:
         db_table = 'Exam_Timetable'

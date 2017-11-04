@@ -10,7 +10,7 @@
         <div class="ui vertical segment">
             {% comment %}Form Tag starts here!{% endcomment %}
             <form>
-                {% comment %}Then add a new achievement Accordian starts here!{% endcomment %}
+                {% comment %}The add a new skill Accordian starts here!{% endcomment %}
                 <div class="ui active accordion field">
                     <div class="title">
                         <i class="icon dropdown"></i>
@@ -24,7 +24,7 @@
                                 <div class="twelve wide field">
                                     <label>Achievement Name:</label>
                                     <div class="ui fluid large input">
-                                        {% comment %}The Achievement Name input!{% endcomment %}
+                                        {% comment %}The Institute Name input!{% endcomment %}
                                         <input>
                                     </div>
                                 </div>
@@ -34,28 +34,20 @@
                                     <select class="ui search fluid large dropdown">
                                         <option value="">Select</option>
                                         <option value="educational">Educational</option>
+                                        <option value="cultural">Cultural</option>
+                                        <option value="sports">Sports</option>
                                         <option value="other">Other</option>
                                     </select>
                                 </div>
                             </div>
 
                             {% comment %}The start and end date input{% endcomment %}
-                            <div class="two fields">
-                              <div class="four wide field">
+                            <div class="field">
                                 <label>Date:</label>
                                 <div class="ui calendar" id="rangestart2">
                                     <div class="ui input left icon">
                                         <i class="calendar icon"></i>
                                         <input type="text" placeholder="From">
-                                    </div>
-                                </div>
-                              </div>
-                                <div class="twelve wide field">
-                                    <label>
-                                        Issuer
-                                    </label>
-                                    <div class="ui fluid large input">
-                                        <input>
                                     </div>
                                 </div>
                             </div>
@@ -84,46 +76,87 @@
             </form>
             {% comment %}Form Tag ends here!{% endcomment %}
 
-            {% if achievements %}
+
             <div class="ui divider"></div>
 
             <table class="ui fixed sortable celled table">
                 <thead>
                 <tr>
-                    <th class="six wide">Achievement Name</th>
-                    <th>Type</th>
-                    <th>Issuer</th>
-                    <th>Date</th>
-                    <th class="four wide">Description</th>
+                    <th class="six wide">Institute Name</th>
+                    <th>Degree</th>
+                    <th>Stream</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
                 </tr>
                 </thead>
                 <tbody>
-                {% for achievement in achievements %}
                 <tr>
                     <td>
-                        {{ achievement.achievement }}
+                        PDPM IIITDM Jabalpur
                     </td>
 
                     <td>
-                        {{ achievement.achievement_type }}
+                        B.Tech.
                     </td>
 
                     <td>
-                        {{ achievement.issuer }}
+                        CSE
                     </td>
 
                     <td>
-                        {{ achievement.date_earned }}
+                        01.01.1970
                     </td>
 
                     <td>
-                        {{ achievement.description }}
+                        01.01.1970
                     </td>
                 </tr>
-                {% endfor %}
+
+                <tr>
+                    <td>
+                        PDPM IIITDM Jabalpur
+                    </td>
+
+                    <td>
+                        B.Tech.
+                    </td>
+
+                    <td>
+                        CSE
+                    </td>
+
+                    <td>
+                        01.01.1971
+                    </td>
+
+                    <td>
+                        01.01.1971
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        PDPM IIITDM Jabalpur
+                    </td>
+
+                    <td>
+                        B.Tech.
+                    </td>
+
+                    <td>
+                        CSE
+                    </td>
+
+                    <td>
+                        01.01.1972
+                    </td>
+
+                    <td>
+                        01.01.1972
+                    </td>
+                </tr>
                 </tbody>
             </table>
-            {% endif %}
 
         </div>
     </div>

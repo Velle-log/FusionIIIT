@@ -1,5 +1,4 @@
-
-{% load static %}
+ {% load static %}
 {% block attendance%}
 
  <div class="ui pointing secondary menu">
@@ -22,13 +21,12 @@
 
        <div class="ui active tab segment" data-tab="cse">
 
-            <form class="ui form" id="cse_attend_form">
-                {% csrf_token %}
+            <form class="ui form">
                   <div class="field">
                        <div class="three fields">
                           <div class="field">
-                              <label>Student Roll no</label>
-                              <input placeholder="" type="text" id="student_id">
+                              <label>Name</label>
+                              <input placeholder="Name" type="text">
                                  
                           </div>
 
@@ -47,10 +45,10 @@
                                           </div>
                                       </div>
                           </div>
-
+                      
                        <div class="field">
-                              <label>Course Code</label>
-                              <input placeholder="" type="text" id="course_id">
+                              <label>Roll No.</label>
+                              <input placeholder="Roll No." type="text">
                           </div>
                           
                       </div>
@@ -59,23 +57,23 @@
                   <div class="fields">
                           <div class="six wide field">
                               <div class="field">
-                                  <label>Presents</label>
-                                  <input placeholder="" type="number" id="present_attend" required>
+                                  <label>Course Code</label>
+                                  <input placeholder="Course Code" type="text">
                               </div>
                           </div>
                            <div class="six wide field">
                               <div class="field">
-                                  <label>Total</label>
-                                  <input placeholder="" type="number" id="total_attend" required>
+                                  <label>Attendance Percentage</label>
+                                  <input placeholder="Attendance Percentage" type="text">
                               </div>
                           </div>
 
                           <div class="four wide field">
                               <label><br></label>
-                              <button class="ui primary button" type="submit">
+                              <div class="ui primary button">
                                   Save
                                   <i class="ui save icon right floated"></i>
-                              </button>
+                              </div>
                           </div> 
                       </div>
       
@@ -85,61 +83,61 @@
 
               
                   
-                <div class="ui grid" id="cse_courses">
+                    <div class="ui grid">
 
-                     <div class="two wide column " id="CS204" >
-                           <button class="ui primary button" data-course="CS204">
+                     <div class="two wide column">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">CS204</a>
                          </button>
                       </div>
 
-                       <div class="two wide column" id="CS205" >
-                           <button class="ui primary button" data-course="CS205">
+                       <div class="two wide column">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">CS205</a>
                          </button>
                       </div>
 
-                       <div class="two wide column" id="#CS206" >
-                           <button class="ui primary button" data-course="CS206">
+                       <div class="two wide column">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">CS206</a>
                          </button>
                       </div>
 
-                       <div class="two wide column" id="CS207" >
-                           <button class="ui primary button" data-course="CS207">
+                       <div class="two wide column">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">CS207</a>
                          </button>
                       </div>
-                      <div class="two wide column" id="CS208" >
-                           <button class="ui primary button" data-course="CS208">
+                      <div class="two wide column">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">CS208</a>
                          </button>
                       </div>
-                      <div class="two wide column" id="CS301" >
-                           <button class="ui primary button" data-course="CS301">
+                      <div class="two wide column">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">CS301</a>
                          </button>
                       </div>
-                      <div class="two wide column" id="CS304" >
-                           <button class="ui primary button" data-course="CS304">
+                      <div class="two wide column">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">CS304</a>
                          </button>
                       </div>
-                      <div class="two wide column" id="CS302" >
-                           <button class="ui primary button" data-course="CS302">
+                      <div class="two wide column">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">CS302</a>
                          </button>
                       </div>
 
-                </div>
-{#           <div id="numberone"> </div>#}
+              </div>
 
-               <table class="ui fixed  sortable celled table" id="cse_table">
+
+               <table class="ui fixed  sortable celled table">
             <thead>
             <tr>
                  <th class="sorted ascending">Sr.</th>
                 <th >Name</th>
-                <th id="#roll" >Roll No.</th>
+                <th class="" >Roll No.</th>
                 <th class="" >Batch </th>
                  <th class="" >Programme </th>
                  <th class="" >Course Code </th>
@@ -151,7 +149,6 @@
             </thead>
 
             <tbody>
-            <tr></tr>
             <tr>
              <td>1.</td>
              <td>Mayank Saurabh</td>
@@ -195,14 +192,13 @@
 
    <div class="ui tab segment" data-tab="ece">
 
-            <form class="ui form" id="ece_attend_form">
-                {% csrf_token %}
+            <form class="ui form">
                   <div class="field">
                        <div class="three fields">
                           <div class="field">
-                              <label>Student Roll no</label>
-                              <input placeholder="" type="text" id="student_id_ece">
-
+                              <label>Name</label>
+                              <input placeholder="Name" type="text">
+                                 
                           </div>
 
                           <div class="field">
@@ -216,98 +212,98 @@
                                               <div class="item" data-value="2015">2015</div>
                                               <div class="item" data-value="2016">2016</div>
                                               <div class="item" data-value="2017">2017</div>
-
+                     
                                           </div>
                                       </div>
                           </div>
-
+                      
                        <div class="field">
-                              <label>Course Code</label>
-                              <input placeholder="" type="text" id="course_id_ece">
+                              <label>Roll No.</label>
+                              <input placeholder="Roll No." type="text">
                           </div>
-
+                          
                       </div>
                   </div>
 
                   <div class="fields">
                           <div class="six wide field">
                               <div class="field">
-                                  <label>Presents</label>
-                                  <input placeholder="" type="number" id="present_attend_ece" required>
+                                  <label>Course Code</label>
+                                  <input placeholder="Course Code" type="text">
                               </div>
                           </div>
                            <div class="six wide field">
                               <div class="field">
-                                  <label>Total</label>
-                                  <input placeholder="" type="number" id="total_attend_ece" required>
+                                  <label>Attendance Percentage</label>
+                                  <input placeholder="Attendance Percentage" type="text">
                               </div>
                           </div>
 
                           <div class="four wide field">
                               <label><br></label>
-                              <button class="ui primary button" type="submit">
+                              <div class="ui primary button">
                                   Save
                                   <i class="ui save icon right floated"></i>
-                              </button>
-                          </div>
+                              </div>
+                          </div> 
                       </div>
-
-        </form>
+      
+        </form> 
 
              <h4 class="ui dividing header">Courses</h4> 
 
               
                   
-                    <div class="ui grid" id="ece_courses">
+                    <div class="ui grid">
 
                      <div class="two wide column">
-                           <button class="ui primary button" data-course="EC204">
-                             <a id='visualize' style="color:white;">EC204</a>
+                           <button class="ui primary button">
+                             <a id='visualize' style="color:white;">ECE204</a>
                          </button>
                       </div>
 
                        <div class="two wide column">
-                           <button class="ui primary button" data-course="EC205">
-                             <a id='visualize' style="color:white;">EC205</a>
+                           <button class="ui primary button">
+                             <a id='visualize' style="color:white;">ECE205</a>
                          </button>
                       </div>
 
                        <div class="two wide column">
-                           <button class="ui primary button" data-course="EC206">
-                             <a id='visualize' style="color:white;">EC206</a>
+                           <button class="ui primary button">
+                             <a id='visualize' style="color:white;">ECE206</a>
                          </button>
                       </div>
 
                        <div class="two wide column">
-                           <button class="ui primary button" data-course="EC207">
-                             <a id='visualize' style="color:white;">EC207</a>
+                           <button class="ui primary button">
+                             <a id='visualize' style="color:white;">ECE207</a>
                          </button>
                       </div>
                       <div class="two wide column">
-                           <button class="ui primary button" data-course="EC208">
-                             <a id='visualize' style="color:white;">EC208</a>
+                           <button class="ui primary button">
+                             <a id='visualize' style="color:white;">ECE208</a>
                          </button>
                       </div>
                       <div class="two wide column">
-                           <button class="ui primary button" data-course="EC301">
-                             <a id='visualize' style="color:white;">EC301</a>
+                           <button class="ui primary button">
+                             <a id='visualize' style="color:white;">ECE301</a>
                          </button>
                       </div>
                       <div class="two wide column">
-                           <button class="ui primary button" data-course="EC304">
-                             <a id='visualize' style="color:white;">EC304</a>
+                           <button class="ui primary button">
+                             <a id='visualize' style="color:white;">ECE304</a>
                          </button>
                       </div>
                       <div class="two wide column">
-                           <button class="ui primary button" data-course="EC302">
-                             <a id='visualize' style="color:white;">EC302</a>
+                           <button class="ui primary button">
+                             <a id='visualize' style="color:white;">ECE302</a>
                          </button>
                       </div>
 
               </div>
 
 
-               <table class="ui fixed  sortable celled table" id="ece_table">
+               <table class="ui fixed  sortable celled table">
             <thead>
             <tr>
                  <th class="sorted ascending">Sr.</th>
@@ -324,7 +320,6 @@
             </thead>
 
             <tbody>
-            <tr> </tr>
             <tr>
              <td>1.</td>
              <td>Mayank Saurabh</td>
@@ -367,14 +362,13 @@
 
    <div class="ui  tab segment" data-tab="mech">
 
-            <form class="ui form" id="mech_attend_form">
-                {% csrf_token %}
+            <form class="ui form">
                   <div class="field">
                        <div class="three fields">
                           <div class="field">
-                              <label>Student Roll no</label>
-                              <input placeholder="" type="text" id="student_id_mech">
-
+                              <label>Name</label>
+                              <input placeholder="Name" type="text">
+                                 
                           </div>
 
                           <div class="field">
@@ -388,39 +382,39 @@
                                               <div class="item" data-value="2015">2015</div>
                                               <div class="item" data-value="2016">2016</div>
                                               <div class="item" data-value="2017">2017</div>
-
+                     
                                           </div>
                                       </div>
                           </div>
-
+                      
                        <div class="field">
-                              <label>Course Code</label>
-                              <input placeholder="" type="text" id="course_id_mech">
+                              <label>Roll No.</label>
+                              <input placeholder="Roll No." type="text">
                           </div>
-
+                          
                       </div>
                   </div>
 
                   <div class="fields">
                           <div class="six wide field">
                               <div class="field">
-                                  <label>Presents</label>
-                                  <input placeholder="" type="number" id="present_attend_mech" required>
+                                  <label>Course Code</label>
+                                  <input placeholder="Course Code" type="text">
                               </div>
                           </div>
                            <div class="six wide field">
                               <div class="field">
-                                  <label>Total</label>
-                                  <input placeholder="" type="number" id="total_attend_mech" required>
+                                  <label>Attendance Percentage</label>
+                                  <input placeholder="Attendance Percentage" type="text">
                               </div>
                           </div>
 
                           <div class="four wide field">
                               <label><br></label>
-                              <button class="ui primary button" type="submit">
+                              <div class="ui primary button">
                                   Save
                                   <i class="ui save icon right floated"></i>
-                              </button>
+                              </div>
                           </div> 
                       </div>
       
@@ -430,49 +424,49 @@
 
               
                   
-                    <div class="ui grid" id="mech_courses">
+                    <div class="ui grid">
 
                      <div class="two wide column">
-                           <button class="ui primary button" data-course="ME204">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">ME204</a>
                          </button>
                       </div>
 
                        <div class="two wide column">
-                           <button class="ui primary button" data-course="ME205">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">ME205</a>
                          </button>
                       </div>
 
                        <div class="two wide column">
-                           <button class="ui primary button" data-course="ME206">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">ME206</a>
                          </button>
                       </div>
 
                        <div class="two wide column">
-                           <button class="ui primary button" data-course="ME207">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">ME207</a>
                          </button>
                       </div>
                       <div class="two wide column">
-                           <button class="ui primary button" data-course="ME208">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">ME208</a>
                          </button>
                         </div> 
                          <div class="two wide column">
-                           <button class="ui primary button" data-course="ME301">
-                             <a id='visualize' style="color:white;">ME301</a>
+                           <button class="ui primary button">
+                             <a id='visualize' style="color:white;">ME208</a>
                          </button>
                          </div>
                          <div class="two wide column">
-                           <button class="ui primary button" data-course="ME302">
-                             <a id='visualize' style="color:white;">ME302</a>
+                           <button class="ui primary button">
+                             <a id='visualize' style="color:white;">ME208</a>
                          </button>
                          </div>
                          <div class="two wide column">
-                           <button class="ui primary button" data-course="ME304">
-                             <a id='visualize' style="color:white;">ME304</a>
+                           <button class="ui primary button">
+                             <a id='visualize' style="color:white;">ME208</a>
                          </button>
                       </div>
                    
@@ -482,7 +476,7 @@
               
 
 
-               <table class="ui fixed  sortable celled table" id="mech_table">
+               <table class="ui fixed  sortable celled table">
             <thead>
             <tr>
                  <th class="sorted ascending">Sr.</th>
@@ -499,7 +493,6 @@
             </thead>
 
             <tbody>
-            <tr> </tr>
             <tr>
              <td>1.</td>
              <td>Mayank Saurabh</td>
@@ -543,14 +536,13 @@
 
    <div class="ui tab segment" data-tab="design">
 
-            <form class="ui form" id="design_attend_form">
-                {% csrf_token %}
+            <form class="ui form">
                   <div class="field">
                        <div class="three fields">
                           <div class="field">
-                              <label>Student Roll no</label>
-                              <input placeholder="" type="text" id="student_id_design">
-
+                              <label>Name</label>
+                              <input placeholder="Name" type="text">
+                                 
                           </div>
 
                           <div class="field">
@@ -564,39 +556,39 @@
                                               <div class="item" data-value="2015">2015</div>
                                               <div class="item" data-value="2016">2016</div>
                                               <div class="item" data-value="2017">2017</div>
-
+                     
                                           </div>
                                       </div>
                           </div>
-
+                      
                        <div class="field">
-                              <label>Course Code</label>
-                              <input placeholder="" type="text" id="course_id_design">
+                              <label>Roll No.</label>
+                              <input placeholder="Roll No." type="text">
                           </div>
-
+                          
                       </div>
                   </div>
 
                   <div class="fields">
                           <div class="six wide field">
                               <div class="field">
-                                  <label>Presents</label>
-                                  <input placeholder="" type="number" id="present_attend_design" required>
+                                  <label>Course Code</label>
+                                  <input placeholder="Course Code" type="text">
                               </div>
                           </div>
                            <div class="six wide field">
                               <div class="field">
-                                  <label>Total</label>
-                                  <input placeholder="" type="number" id="total_attend_design" required>
+                                  <label>Attendance Percentage</label>
+                                  <input placeholder="Attendance Percentage" type="text">
                               </div>
                           </div>
 
                           <div class="four wide field">
                               <label><br></label>
-                              <button class="ui primary button" type="submit">
+                              <div class="ui primary button">
                                   Save
                                   <i class="ui save icon right floated"></i>
-                              </button>
+                              </div>
                           </div> 
                       </div>
       
@@ -606,48 +598,48 @@
 
               
                   
-                    <div class="ui grid" id="design_courses">
+                    <div class="ui grid">
 
                      <div class="two wide column">
-                           <button class="ui primary button" data-course="DS204">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">DS204</a>
                          </button>
                       </div>
 
                        <div class="two wide column">
-                           <button class="ui primary button" data-course="DS205">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">DS205</a>
                          </button>
                       </div>
 
                        <div class="two wide column">
-                           <button class="ui primary button" data-course="DS206">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">DS206</a>
                          </button>
                       </div>
 
                        <div class="two wide column">
-                           <button class="ui primary button" data-course="DS207">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">DS207</a>
                          </button>
                       </div>
                       <div class="two wide column">
-                           <button class="ui primary button" data-course="DS208">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">DS208</a>
                          </button>
                       </div>
                       <div class="two wide column">
-                           <button class="ui primary button" data-course="DS301">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">DS301</a>
                          </button>
                       </div>
                       <div class="two wide column">
-                           <button class="ui primary button" data-course="DS304">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">DS304</a>
                          </button>
                       </div>
                       <div class="two wide column">
-                           <button class="ui primary button" data-course="DS302">
+                           <button class="ui primary button">
                              <a id='visualize' style="color:white;">DS302</a>
                          </button>
                       </div>
@@ -655,7 +647,7 @@
               </div>
 
 
-               <table class="ui fixed  sortable celled table" id="design_table">
+               <table class="ui fixed  sortable celled table">
             <thead>
             <tr>
                  <th class="sorted ascending">Sr.</th>
@@ -672,7 +664,6 @@
             </thead>
 
             <tbody>
-            <tr></tr>
             <tr>
              <td>1.</td>
              <td>Mayank Saurabh</td>
@@ -712,5 +703,4 @@
             </tr></tfoot>
         </table>
   </div>
- {% endblock %}
-
+ {% endblock %}   
