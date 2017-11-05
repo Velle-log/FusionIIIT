@@ -6,6 +6,7 @@ import datetime
 from django.contrib import messages
 from applications.visitor_hostel.forms import *
 from applications.globals.models import *
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
@@ -96,7 +97,7 @@ def all_booking(request):
             if form.is_valid:
                 date_1=request.POST.getlist('date_from')[0]
                 date_2=request.POST.getlist('date_to')[0]
-                booking = Book_room.objects.filter(booking_from__gte=date_1 , Booking_to__lte = date_2 )
+                booking = Book_room.objects.exclude(Q(Booking_to__lte=date_1)|Q( booking_from__gte=date_2) )
                 print(booking)
                 if not booking:
                     messages.success(request, 'No booking available in that date')
