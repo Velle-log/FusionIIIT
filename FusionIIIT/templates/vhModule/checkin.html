@@ -37,42 +37,12 @@
                         <div class="two fields">
                             <div class="field">
                                 <label>Phone</label>
-                                <input placeholder="Phone" type="number">
+                                <input placeholder="Phone" type="tel">
                             </div>
 
                             <div class="field">
-                                <label>No. Of People</label>
-                                <div class="ui fluid search selection dropdown">
-                                    <input name="noOfPeople" type="hidden">
-                                    <i class="dropdown icon"></i>
-
-                                    <div class="default text">Select</div>
-
-                                    <div class="menu">
-                                        <div class="item" data-value="1">
-                                            1
-                                        </div>
-
-                                        <div class="item" data-value="B">
-                                            2
-                                        </div>
-
-                                        <div class="item" data-value="C">
-                                            3
-                                        </div>
-
-                                        {% comment %}
-                                    Do it using a for loop in Python -->
-                                    {% for i in range(10) %}-->
-
-                                    <div class="item" data-value="C">
-                                        {{i}}
-                                    </div>
-
-                                    {% endfor %}
-                                    {% endcomment %}
-
-                                    </div>
+                                <label>Number Of People</label>
+                                    <input name="noOfPeople" type="number">
                                 </div>
                             </div>
                         </div>

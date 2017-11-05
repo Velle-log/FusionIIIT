@@ -8,10 +8,10 @@ from applications.visitor_hostel.forms import *
 
 def visitorhostel(request):
     context = {}
-        return render(request, "vhModule/visitorhostel.html", context)
+    return render(request, "vhModule/visitorhostel.html", context)
+
 def vh_homepage(request):
     context = {}
-
     return render(request, "vhModule/vh_homepage.html", context)
 
 def booking_request(request):
@@ -22,8 +22,9 @@ def booking_request(request):
                 messages.success(request, 'no room available')
                 return HttpResponseRedirect('/visitorhostel/vh_homepage/')
             br_id = request.POST.getlist('confirm')
+            print(br_id)
             br_id = br_id[0]
-            book = Book_room.objects.all().filter(br_id=br_id).first()
+            book = Book_room.objects.filter(br_id=br_id).first()
             br_id = book.br_id
             print('book room', br_id)
             Book_room.objects.filter(br_id = br_id).update (status = "Confirm" )
@@ -35,7 +36,7 @@ def booking_request(request):
                 room_id=Room.objects.filter(room_number=room).first()
                 print('room', room_id)
                 book_from = book_room.booking_from
-                book_to = book_room.Booking_to
+                book_to = book_room.booking_to
                 delta = (book_to - book_from).days
                 print(delta)
                 for i in range(delta):
@@ -46,7 +47,7 @@ def booking_request(request):
                     p.status = 'Booked'
                     p.br_id = book
                     p.save()
-                    #return HttpResponse('okay')
+
             messages.success(request, 'you allot room succesfully')
             return HttpResponseRedirect('/visitorhostel/vh_homepage/')
 
@@ -65,13 +66,13 @@ def booking_request(request):
         return render(request, "vhModule/vh_view_booking_request.html" ,{ 'context' : context , 'room' : room })
 
 
-def all_booking(request):
+def view_booking(request):
     if request.method == 'POST':
         form = ViewBooking(request.POST)
-        if form.is_valid:
+        if form.is_valid():
             date_1=request.POST.getlist('date_from')[0]
-            date_2=request.POST.getlist('date_to')[0]
-            booking = Book_room.objects.filter(booking_from__gte=date_1 , Booking_to__lte = date_2 )
+            #print(date_1)
+            booking = Book_room.objects.filter(booking_from__gte=date_1)
             print(booking)
             if not booking:
                 messages.success(request, 'No booking available in that date')
@@ -85,11 +86,10 @@ def all_booking(request):
 
 
 def cancel_booked_booking(request):
-    if request.method == 'POST' :
+    if request.method == 'POST':
         print("yes")
-        br_id = request.POST.getlist('cancel')
-        br_id = br_id[0]
-        Book_room.objects.filter(br_id = br_id).update (status = "Cancel" )
+        br_id = request.POST.getlist('cancel')[0]
+        Book_room.objects.filter(br_id=br_id).update (status = "Cancel" )
         Room_Status.objects.filter(br_id=br_id).update(status = "Available")
         messages.success(request, 'cancelled successfully ')
         context = Book_room.objects.filter(status ="Confirm")
@@ -111,7 +111,7 @@ def check_in(request):
         Book_room.objects.filter(br_id=br_id).update(check_in=datetime.datetime.today())
         print(datetime.datetime.today())
         Room_Status.objects.filter(br_id=br_id).update(status="CheckedIn")
-        # code
+
         book_room = Book_room.objects.filter(booking_from__lte=datetime.datetime.today())
         room_status = Room_Status.objects.filter(status='Booked')
         context1 = []
@@ -211,7 +211,7 @@ def check_out(request):
 
     else :
         room_status=Room_Status.objects.filter(status = "CheckedIn")
-        book_room = Book_room.objects.filter(Booking_to__lte=datetime.datetime.today())
+        book_room = Book_room.objects.filter(booking_to__lte=datetime.datetime.today())
         context1 = []
         for i in room_status:
             if i.br_id.booking_from<=datetime.date.today():
@@ -278,7 +278,6 @@ def meal_book(request):
                 dinner=True
             else:
                 dinner=False
-
 
             person=request.POST.getlist('persons')[0]
 
