@@ -113,7 +113,11 @@ class Room_Status(models.Model):
     date = models.DateField(default=utils.timezone.now, null=False)
     room = models.OneToOneField(Room, on_delete=models.CASCADE)
     status = models.CharField(max_length=12, choices=ROOM_STATUS, default="Available")
-    br_id = models.ForeignKey(Book_room, on_delete=models.CASCADE, unique=False, null=True, blank=True)
+    br_id = models.ForeignKey(Book_room,
+                              on_delete=models.CASCADE,
+                              unique=False,
+                              null=True,
+                              blank=True)
 
     def __str__(self):
         return str(self.room.room_number)

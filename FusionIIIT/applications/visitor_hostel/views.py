@@ -68,7 +68,8 @@ def booking_request(request):
         if not context:
             messages.success(request, 'No new request')
             return HttpResponseRedirect('/visitorhostel/vh_homepage/')
-        return render(request, "vhModule/vh_view_booking_request.html", {'context': context, 'room': room})
+        return render(request, "vhModule/vh_view_booking_request.html",
+                      {'context': context, 'room': room})
 
 
 def view_booking(request):
@@ -156,7 +157,8 @@ def check_in(request):
         print(context)
 
         # return HttpResponse('okay')
-        # context = Book_room.objects.filter(br_id__in=Room_Status.objects.filter(status = "Booked"), booking_from__gte=datetime.datetime.today())
+        # context = Book_room.objects.filter(br_id__in=Room_Status.objects.filter(status = "Booked")
+        # , booking_from__gte=datetime.datetime.today())
         # print(context)
         if not context:
             messages.success(request, 'No booking available')
@@ -210,7 +212,11 @@ def check_out(request):
 
         print(v_id)
         total_bill = mess_bill + room_bill
-        context = {'v_id': v_id, 'visitor': v_id.visitor_name, 'mess_bill': mess_bill, 'room_bill': room_bill, 't_bill': total_bill}
+        context = {'v_id': v_id,
+                   'visitor': v_id.visitor_name,
+                   'mess_bill': mess_bill,
+                   'room_bill': room_bill,
+                   't_bill': total_bill}
         print(context)
         return render(request, "vhModule/payment1.html", {'context': context})
 
@@ -232,6 +238,7 @@ def check_out(request):
             messages.success(request, 'No guest checked in currently')
             return HttpResponseRedirect('/visitorhostel/vh_homepage/')
         return render(request, "vhModule/checkout1.html", {'context': context})
+
 
 def meal_book(request):
     if request.method == "POST":
@@ -282,7 +289,13 @@ def meal_book(request):
                 dinner = False
 
             # person = request.POST.getlist('persons')[0]
-            Meal.objects.create(visitor_id=br_id, morning_tea=m_tea, eve_tea=e_tea, meal_date=date_1, breakfast=breakfast, lunch=lunch, dinner=dinner)
+            Meal.objects.create(visitor_id=br_id,
+                                morning_tea=m_tea,
+                                eve_tea=e_tea,
+                                meal_date=date_1,
+                                breakfast=breakfast,
+                                lunch=lunch,
+                                dinner=dinner)
             print("ok")
 
         messages.success(request, 'No guest checked in currently')
@@ -299,12 +312,15 @@ def bill_generation(request):
         v_id = Visitor.objects.filter(visitor_id=v_id)[0]
         # meal_bill = request.POST.getlist('mess_bill')[0]
         # room_bill = request.POST.getlist('room_bill')[0]
-        status = request.POST.getlist('status')[0]
-        if status:
-            st = True
-        else:
-            st = False
-        # visitor_bill = Visitor_bill.objects.create(visitor_id=v_id, meal_bill=meal_bill, room_bill=room_bill, status=st)
+        # status = request.POST.getlist('status')[0]
+        # if status:
+        #     st = True
+        # else:
+        #     st = False
+        # visitor_bill = Visitor_bill.objects.create(visitor_id=v_id,
+        #                                              meal_bill=meal_bill,
+        #                                              room_bill=room_bill,
+        #                                              status=st)
         messages.success(request, 'guest check out successfully')
     else:
         messages.success(request, 'No user selected')
