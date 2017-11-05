@@ -8,11 +8,9 @@
 
   </head>
 <body>
-
   <div class="ui grid">
   <div class="two wide column"></div>
     <div class="twelve wide column">
-
           <b style="font-size: 25px;">{{ user.first_name }} {{ user.last_name }}</b><br>
           <b>Age: </b>{{ profile.age }}<br>
           <b>Phone: </b>{{ profile.phone_no }} <br>
@@ -20,9 +18,9 @@
           <hr>
           <p>{{ profile.about_me }}</p>
 
-          {% if educations %}
+          {% if educations and educationcheck == '1' %}
           <div class="ui text container">
-              <b><h5 class="ui dividing header" style="background-color:#b0e2ff">Education</h5></b><br>
+            <table><b><th style="background-color:#b0e2ff; border-top: solid 0px #3d3d3d; text-align: left;"><h6>Education</h6></th></b></table>
 
           <table class="table">
               <thead>
@@ -36,9 +34,10 @@
               </tr>
               </thead>
               <tbody>
+              <tr></tr>
               {% for education in educations %}
               <tr>
-                  <td>
+                  <td style="text-align:left; padding-left:10px;">
                       {{ education.institute }}
                   </td>
 
@@ -69,8 +68,8 @@
           </div>
           {% endif %}
 
-      {% if courses %}
-          <h5 style="background-color:#b0e2ff">Courses</h5>
+      {% if courses and coursecheck == '1' %}
+          <table><b><th style="background-color:#b0e2ff; border-top: solid 0px #3d3d3d; text-align: left;"><h6>Courses</h6></th></b></table><br>
 
           {% for course in courses %}
               <li style="font-size: 15px;"><b>{{ course.course_name }}</b></li>
@@ -86,19 +85,12 @@
 
       {% endif %}
 
-      {% if skills %}
-          <br><b><h5 style="background-color:#b0e2ff">Skills and Technologies</h5></b><br>
+      {% if experiences or projects %}
+      {% if internshipcheck == '1' or projectcheck == '1' %}
+      <table><b><th style="background-color:#b0e2ff; border-top: solid 0px #3d3d3d; text-align: left;"><h6>Work Experience</h6></th></b></table>
 
-             {% for skill in skills %}
-                    <li style="font-size: 15px;"><b>{{ skill.skill_id.skill }}</b>, {{ skill.skill_rating }}% &nbsp</li>
-
-            {% endfor %}<br>
-      {% endif %}
-
-          <b><h5 class="ui dividing header" style="background-color:#b0e2ff">Work Experience</h5></b><br>
-
-      {% if experiences %}
-      <b><center><u>Internships</u></center></b><br>
+      {% if experiences and internshipcheck == '1' %}
+      <table><b><th style="background-color:#d3d3d3; border-top: solid 1.5px #3d3d3d; text-align: left;">Internships</th></b></table><br>
 
           {% for experience in experiences %}
 
@@ -112,12 +104,10 @@
           {{ experience.description }}<br><br>
 
           {% endfor %}
-          <br>
       {% endif %}
 
-      {% if projects %}
-      <b><center><u>Projects</u></center></b><br>
-
+      {% if projects and projectcheck == '1' %}
+      <table><b><th style="background-color:#d3d3d3; border-top: solid 1.5px #3d3d3d; text-align: left;">Projects</th></b></table><br>
           {% for project in projects %}
 
           <li style="font-size: 15px;"><b>{{ project.project_name }}</b></li>
@@ -128,11 +118,14 @@
           {% endif %}<br>
           {{ project.summary }}<br><br>
 
-          {% endfor %}<br>
+          {% endfor %}
       {% endif %}
 
-      {% if achievements %}
-          <b><h5 style="background-color:#b0e2ff">Achievements</h5></b><br>
+      {% endif %}
+      {% endif %}
+
+      {% if achievements and achievementcheck == '1' %}
+          <table><b><th style="background-color:#b0e2ff; border-top: solid 0px #3d3d3d; text-align: left;"><h6>Achievements</h6></th></b></table><br>
 
           {% for achievement in achievements %}
 
@@ -145,8 +138,51 @@
           {% endfor %}<br>
       {% endif %}
 
-      {% if publications %}
-          <b><h5 style="background-color:#b0e2ff">Publication</h5></b><br>
+
+            {% if skills and skillcheck == '1' %}
+                <table><b><th style="background-color:#b0e2ff; border-top: solid 0px #3d3d3d; text-align: left;"><h6>Skills and Technologies</h6></th></b></table>
+
+                <table>
+                  <b style="background-color:#b0e2ff; border-top: solid 0px #3d3d3d; text-align: left;"><th>Novice</th><th>Intermediate</th><th>Advanced</th></b>
+                  <tr>
+
+                    <td style="vertical-align:top;"><br>
+
+                      {% for skill in skills %}
+                        {% if skill.skill_rating <= 40 %}
+                             <li style="font-size: 10px;"><b>{{ skill.skill_id.skill }}</b></li>
+                        {% endif %}
+                     {% endfor %}<br>
+
+                    </td>
+
+                    <td style="vertical-align:top;"><br>
+
+                      {% for skill in skills %}
+                        {% if skill.skill_rating > 40 and skill.skill_rating < 80 %}
+                             <li style="font-size: 10px;"><b>{{ skill.skill_id.skill }}</b></li>
+                        {% endif %}
+                     {% endfor %}<br>
+
+                    </td>
+
+                    <td style="vertical-align:top;"><br>
+
+                      {% for skill in skills %}
+                        {% if skill.skill_rating >= 80 %}
+                             <li style="font-size: 10px;"><b>{{ skill.skill_id.skill }}</b></li>
+                        {% endif %}
+                     {% endfor %}<br>
+
+                    </td>
+
+                  </tr>
+                </table>
+
+            {% endif %}
+
+      {% if publications and publicationcheck == '1' %}
+          <table><b><th style="background-color:#b0e2ff; border-top: solid 0px #3d3d3d; text-align: left;"><h6>Publications</h6></th></b></table><br>
 
           {% for publication in publications %}
 
@@ -159,8 +195,8 @@
       {% endif %}
 
 
-      {% if patents %}
-          <b><h5 style="background-color:#b0e2ff">Patents</h5>/<b><br>
+      {% if patents and patentcheck == '1'%}
+            <table><b><th style="background-color:#b0e2ff; border-top: solid 0px #3d3d3d; text-align: left;"><h6>Patents</h6></th></b></table><br>
 
           {% for patent in patents %}
 
@@ -240,7 +276,7 @@ h4 {
 
 }
 
-h5 {
+h6 {
   margin-top: 0.1em;
   font-size: 1.6em;
 }
@@ -257,14 +293,15 @@ table{
   background-color: #3d3d3d;
  }
 .tbl-content{
-  height:150px;
   overflow-x:auto;
   margin-top: 0px;
   border: 10px solid #3d3d3d;
 }
 th{
-  padding: 3px 2px;
+  padding: 2px 2px;
+  padding-bottom: 0px;
   text-align: center;
+  vertical-align:middle;
   font-weight: 200;
   font-size: 12px;
   color: #3d3d3d;
