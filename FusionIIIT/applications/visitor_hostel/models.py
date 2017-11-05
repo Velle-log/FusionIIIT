@@ -45,7 +45,7 @@ class Visitor(models.Model):
     intender_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.visitor_name
+        return self.visitor_phone
 
 
 class Book_room(models.Model):
@@ -66,7 +66,7 @@ class Book_room(models.Model):
 
 class Visitor_bill(models.Model):
     visitor_id = models.ForeignKey(Visitor, on_delete=models.CASCADE)
-    caretaker_id = models.OneToOneField(User, on_delete=models.CASCADE)
+    caretaker_id = models.ForeignKey(User, on_delete=models.CASCADE)
     meal_bill = models.IntegerField(default=0)
     room_bill = models.IntegerField(default=0)
     payment_status = models.BooleanField(default=False)
