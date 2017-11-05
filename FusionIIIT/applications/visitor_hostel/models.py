@@ -1,8 +1,6 @@
+from django import utils
 from django.contrib.auth.models import User
 from django.db import models
-from datetime import date
-from django import utils
-
 
 VISITOR_CATEGORY = (
     ('A', 'A'),
@@ -31,9 +29,9 @@ ROOM_STATUS = (
     )
 
 BOOK_ROOM = (
-    ('Confirm' , 'Confirm'),
-    ('Pending' , 'Pending'),
-    ('Cancel' , 'Cancel'),
+    ('Confirm', 'Confirm'),
+    ('Pending', 'Pending'),
+    ('Cancelled', 'Cancelled'),
     )
 
 
@@ -57,8 +55,8 @@ class Book_room(models.Model):
     purpose = models.TextField()
     booking_from = models.DateField()
     booking_to = models.DateField()
-    status = models.CharField(max_length=10, choices=BOOK_ROOM , default ="Pending")
-    remark = models.CharField(max_length=40,blank=True)
+    status = models.CharField(max_length=10, choices=BOOK_ROOM, default="Pending")
+    remark = models.CharField(max_length=40, blank=True)
     check_in = models.DateField(null=True, blank=True)
     check_out = models.DateField(null=True, blank=True)
 
@@ -75,7 +73,7 @@ class Visitor_bill(models.Model):
 
 
 class Room(models.Model):
-    room_number  = models.CharField(max_length=4, unique=True)
+    room_number = models.CharField(max_length=4, unique=True)
     room_type = models.CharField(max_length=12, choices=ROOM_TYPE)
     room_floor = models.CharField(max_length=12, choices=ROOM_FLOOR)
 
@@ -96,7 +94,7 @@ class Meal(models.Model):
     breakfast = models.BooleanField(default=False)
     lunch = models.BooleanField(default=False)
     dinner = models.BooleanField(default=False)
-    persons=models.IntegerField(default=0)
+    persons = models.IntegerField(default=0)
 
 
 class Inventory(models.Model):
@@ -114,8 +112,8 @@ class Inventory(models.Model):
 class Room_Status(models.Model):
     date = models.DateField(default=utils.timezone.now, null=False)
     room = models.OneToOneField(Room, on_delete=models.CASCADE)
-    status = models.CharField(max_length=12, choices=ROOM_STATUS, default = "Available")
-    br_id = models.ForeignKey(Book_room , on_delete =models.CASCADE,unique=False, null=True, blank=True)
+    status = models.CharField(max_length=12, choices=ROOM_STATUS, default="Available")
+    br_id = models.ForeignKey(Book_room, on_delete=models.CASCADE, unique=False, null=True, blank=True)
 
     def __str__(self):
         return str(self.room.room_number)

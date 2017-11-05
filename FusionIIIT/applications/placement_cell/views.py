@@ -11,11 +11,11 @@ from xhtml2pdf import pisa
 
 from applications.academic_information.models import Student
 
-#from xhtml2pdf import pisa
-
 from .forms import AddEducation
 from .models import (Achievement, Course, Education, Experience, Has, Project,
                      Publication, StudentPlacement)
+
+# from xhtml2pdf import pisa
 
 
 @login_required
@@ -30,7 +30,7 @@ def profile(request, username):
     if request.method == 'POST':
         form = AddEducation(request.POST)
         user = get_object_or_404(User, Q(username=username))
-        profile = get_object_or_404(ExtraInfo, Q(user=user))
+        # profile = get_object_or_404(ExtraInfo, Q(user=user))
         student = get_object_or_404(Student, Q(id=profile.id))
         if form.is_valid():
             institute = form.cleaned_data['institute']
@@ -47,7 +47,7 @@ def profile(request, username):
     else:
         form = AddEducation(initial={})
         user = get_object_or_404(User, Q(username=username))
-        profile = get_object_or_404(ExtraInfo, Q(user=user))
+        # profile = get_object_or_404(ExtraInfo, Q(user=user))
         student = get_object_or_404(Student, Q(id=profile.id))
         studentplacement = get_object_or_404(StudentPlacement, Q(unique_id=student))
         skills = Has.objects.filter(Q(unique_id=student))
@@ -77,7 +77,7 @@ def render_to_pdf(template_src, context_dict):
 def cv(request, username):
     # Retrieve data or whatever you need
     user = get_object_or_404(User, Q(username=username))
-    profile = get_object_or_404(ExtraInfo, Q(user=user))
+    # profile = get_object_or_404(ExtraInfo, Q(user=user))
     student = get_object_or_404(Student, Q(id=profile.id))
     studentplacement = get_object_or_404(StudentPlacement, Q(unique_id=student))
     skills = Has.objects.filter(Q(unique_id=student))
