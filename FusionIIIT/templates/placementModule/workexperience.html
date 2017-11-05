@@ -14,31 +14,38 @@
 
         <div class="ui vertical segment">
             {% comment %}Form Tag starts here!{% endcomment %}
-            <form>
+
+            <form method="post" class="ui form" role="form">
+
                 {% comment %}The add a new internship Accordian starts here!{% endcomment %}
                 <div class="ui active accordion field">
                     <div class="title">
                         <i class="icon dropdown"></i>
                         Add a new Internship!
                     </div>
-
+                    {{ form8.non_field_errors }}
                     <div class="active content">
                         <div class="ui form" style="padding: 8px; padding-left: 24px; padding-right: 24px;">
-
+                          {% csrf_token %}
                             <div class="two fields">
                                 <div class="eleven wide field">
-                                    <label>Organisation Name:</label>
+                                  {{ form8.company.errors }}
+                                    <label for="{{ form8.company.id_for_label }}">
+                                      Organisation Name:</label>
                                     <div class="ui fluid large input">
                                         {% comment %}The Institute Name input!{% endcomment %}
-                                        <input>
+                                        {{ form8.company }}
                                     </div>
                                 </div>
 
                                 <div class="five wide field">
-                                <label>Location:</label>
+                                  {{ form8.location.errors }}
+                                <label for="{{ form8.location.id_for_label }}">
+                                  Location:</label>
+
                                 <div class="ui fluid large input">
                                     {% comment %}The Institute Name input!{% endcomment %}
-                                    <input>
+                                    {{ form8.location }}
                                 </div>
                             </div>
 
@@ -47,21 +54,25 @@
                         {% comment %}The start and end date input{% endcomment %}
                         <div class="two fields">
                             <div class="field">
-                                <label>Start Date:</label>
+                              {{ form8.sdate.errors }}
+                                <label for="{{ form8.sdate.id_for_label }}">
+                                  Start Date:</label>
                                 <div class="ui calendar" id="rangestart2">
                                     <div class="ui input left icon">
                                         <i class="calendar icon"></i>
-                                        <input type="text" placeholder="From">
+                                        {{ form8.sdate }}
                                     </div>
                                 </div>
                             </div>
 
                             <div class="field">
-                                <label>End Date:</label>
+                              {{ form8.edate.errors }}
+                                <label for="{{ form8.edate.id_for_label }}">
+                                  End Date:</label>
                                 <div class="ui calendar" id="rangeend2">
                                     <div class="ui input left icon">
                                         <i class="calendar icon"></i>
-                                        <input type="text" placeholder="To">
+                                        {{ form8.edate }}
                                     </div>
                                 </div>
                             </div>
@@ -69,39 +80,45 @@
 
                         <div class="two fields">
                             <div class="sixteen wide field">
-                                <label>Description:</label>
+
+                              {{ form8.description.errors }}
+                                <label for="{{ form8.description.id_for_label }}">
+                                  Description:</label>
                                 <div class="ui fluid large input">
                                     {% comment %}The Institute description input!{% endcomment %}
-                                    <input>
+                                    {{ form8.description }}
+
                                 </div>
                             </div>
                         </div>
                         <div class="fields">
                             <div class="eight wide field">
-                                <label>
+                              {{ form8.title.errors }}
+                                <label for="{{ form3.title.id_for_label }}">
                                     Internship Title
                                 </label>
 
                                 <div class="ui large input">
-                                    <input>
+                                    {{ form8.title }}
                                 </div>
                             </div>
 
                             <div class="five wide field">
-                                <label>
+                              {{ form8.status.errors }}
+                                <label for="{{ form3.status.id_for_label }}">
                                     Status
                                 </label>
-
-                                <select class="ui search fluid large dropdown">
+                                {{ form8.status }}
+                                <!--select class="ui search fluid large dropdown">
                                     <option value="">Status</option>
                                     <option value="complete">Completed</option>
                                     <option value="ongoing">Ongoing</option>
-                                </select>
+                                </select-->
                             </div>
 
                             <div class="three wide field">
                                 <label><br></label>
-                                <button class="ui fluid large primary button" type="submit">
+                                <button name="experiencesubmit" value="experiencesubmit" class="ui fluid large primary button" type="submit">
                                     Submit
                                 </button>
                             </div>
@@ -170,63 +187,69 @@
     <div class="ui tab" data-tab="projects">
         <div class="ui vertical segment">
             {% comment %}Form Tag starts here!{% endcomment %}
-            <form>
+            <form method="post" class="ui form" role="form">
                 {% comment %}The add a new skill Accordian starts here!{% endcomment %}
                 <div class="ui active accordion field">
                     <div class="title">
                         <i class="icon dropdown"></i>
                         Add a new Project!
                     </div>
-
+                    {{ form6.non_field_errors }}
                     <div class="active content">
                         <div class="ui form" style="padding: 8px; padding-left: 24px; padding-right: 24px;">
+                          {% csrf_token %}
                             <div class="two fields">
                                 <div class="field">
+                                  {{ form6.project_name.errors }}
                                     <label>
                                         Project Name:
                                     </label>
 
                                     <div class="ui large input">
-                                        <input>
+                                        {{ form6.project_name }}
                                     </div>
                                 </div>
 
                                 <div class="field">
+                                  {{ form6.project_status.errors }}
                                     <label>
                                         Status
                                     </label>
 
                                     <div class="ui large input">
-                                        <input>
+                                        {{ form6.project_status }}
                                     </div>
                                 </div>
                             </div>
 
                             <div class="field">
+                              {{ form6.project_link.errors }}
                                 <label>Project Link:</label>
                                 <div class="ui large input fluid">
-                                    <input>
+                                    {{ form6.project_link }}
                                 </div>
                             </div>
 
                             {% comment %}The start and end date input{% endcomment %}
                             <div class="two fields">
                                 <div class="field">
+                                  {{ form6.sdate.errors }}
                                     <label>Start Date:</label>
                                     <div class="ui calendar" id="rangestart3">
                                         <div class="ui input left icon">
                                             <i class="calendar icon"></i>
-                                            <input type="text" placeholder="From">
+                                            {{ form6.sdate }}
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="field">
+                                  {{ form6.edate.errors }}
                                     <label>End Date:</label>
                                     <div class="ui calendar" id="rangeend3">
                                         <div class="ui input left icon">
                                             <i class="calendar icon"></i>
-                                            <input type="text" placeholder="To">
+                                            {{ form6.edate }}
                                         </div>
                                     </div>
                                 </div>
@@ -234,15 +257,17 @@
 
                             <div class="two fields">
                                 <div class="twelve wide field">
+                                  {{ form6.summary.errors }}
                                     <label>Description:</label>
-                                    <textarea rows="2">
+                                    <!--textarea rows="2">
                                         {% comment %}The Institute Name input!{% endcomment %}
-                                    </textarea>
+                                    </textarea-->
+                                    {{ form6.summary }}
                                 </div>
 
                                 <div class="four wide field">
                                     <label><br></label>
-                                    <button class="ui fluid large primary button" type="submit">
+                                    <button name="projectsubmit" value="projectsubmit" class="ui fluid large primary button" type="submit">
                                         Submit
                                     </button>
                                 </div>

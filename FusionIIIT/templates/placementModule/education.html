@@ -97,7 +97,9 @@
                             <div class="two fields">
                               <div class="four wide field">
                                   <label><br></label>
-                                  <button class="ui fluid large primary button" type="submit">
+
+                                  <button name="educationsubmit" name="educationsubmit" class="ui fluid large primary button" type="submit">
+
                                       Submit
                                   </button>
                               </div>
@@ -159,34 +161,41 @@
     <div class="ui tab" data-tab="courses">
             <div class="ui vertical segment">
             {% comment %}Form Tag starts here!{% endcomment %}
-            <form>
+
+            <form method="post" class="ui form" role="form">
+
                 {% comment %}The add a new Course Accordian starts here!{% endcomment %}
                 <div class="ui active accordion field">
                     <div class="title">
                         <i class="icon dropdown"></i>
                         Add a new Course!
                     </div>
-
+                    {{ form3.non_field_errors }}
                     <div class="active content">
                         <div class="ui form" style="padding: 8px; padding-left: 24px; padding-right: 24px;">
+                          {% csrf_token %}
                             <div class="two fields">
                                 <div class="twelve wide field">
-                                    <label>
+                                  {{ form3.course_name.errors }}
+                                  <label for="{{ form3.course_name.id_for_label }}">
                                         Course Name:
                                     </label>
 
                                     <div class="ui large input">
-                                        <input>
+                                      {{ form3.course_name }}
                                     </div>
                                 </div>
 
                                 <div class="four wide field">
-                                    <label>
+
+                                  {{ form3.license_no.errors }}
+                                  <label for="{{ form3.license_no.id_for_label }}">
+
                                         License Number:
                                     </label>
 
                                     <div class="ui large input">
-                                        <input>
+                                      {{ form3.license_no }}
                                     </div>
                                 </div>
                             </div>
@@ -194,21 +203,27 @@
                             {% comment %}The start and end date input{% endcomment %}
                             <div class="two fields">
                                 <div class="field">
-                                    <label>Start Date:</label>
+                                  {{ form3.sdate.errors }}
+                                  <label for="{{ form3.sdate.id_for_label }}">
+                                      Start Date:
+                                    </label>
                                     <div class="ui calendar" id="rangestart1">
                                         <div class="ui input left icon">
                                             <i class="calendar icon"></i>
-                                            <input type="text" placeholder="From">
+                                            {{ form3.sdate }}
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="field">
-                                    <label>End Date:</label>
+                                  {{ form3.edate.errors }}
+                                  <label for="{{ form3.edate.id_for_label }}">
+                                      End Date:
+                                    </label>
                                     <div class="ui calendar" id="rangeend1">
                                         <div class="ui input left icon">
                                             <i class="calendar icon"></i>
-                                            <input type="text" placeholder="To">
+                                            {{ form3.edate }}
                                         </div>
                                     </div>
                                 </div>
@@ -216,15 +231,16 @@
 
                             <div class="two fields">
                                 <div class="twelve wide field">
-                                    <label>Description:</label>
-                                    <textarea rows="2">
-                                        {% comment %}The Institute Name input!{% endcomment %}
-                                    </textarea>
+                                  {{ form3.description.errors }}
+                                    <label for="{{ form3.description.id_for_label }}">
+                                      Description:
+                                    </label>
+                                    {{ form3.description }}
                                 </div>
 
                                 <div class="four wide field">
                                     <label><br></label>
-                                    <button class="ui fluid large primary button" type="submit">
+                                    <button name="coursesubmit" value="coursesubmit" class="ui fluid large primary button" type="submit">
                                         Submit
                                     </button>
                                 </div>
