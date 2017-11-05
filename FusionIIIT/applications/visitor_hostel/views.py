@@ -288,7 +288,7 @@ def meal_book(request):
             else:
                 dinner = False
 
-            # person = request.POST.getlist('persons')[0]
+            person = request.POST.getlist('persons')[0]
             Meal.objects.create(visitor_id=br_id,
                                 morning_tea=m_tea,
                                 eve_tea=e_tea,
@@ -310,17 +310,17 @@ def bill_generation(request):
     if request.method == 'POST':
         v_id = request.POST.getlist('visitor')[0]
         v_id = Visitor.objects.filter(visitor_id=v_id)[0]
-        # meal_bill = request.POST.getlist('mess_bill')[0]
-        # room_bill = request.POST.getlist('room_bill')[0]
-        # status = request.POST.getlist('status')[0]
-        # if status:
-        #     st = True
-        # else:
-        #     st = False
-        # visitor_bill = Visitor_bill.objects.create(visitor_id=v_id,
-        #                                              meal_bill=meal_bill,
-        #                                              room_bill=room_bill,
-        #                                              status=st)
+        meal_bill = request.POST.getlist('mess_bill')[0]
+        room_bill = request.POST.getlist('room_bill')[0]
+        status = request.POST.getlist('status')[0]
+        if status:
+            st = True
+        else:
+            st = False
+        visitor_bill = Visitor_bill.objects.create(visitor_id=v_id,
+                                                   meal_bill=meal_bill,
+                                                   room_bill=room_bill,
+                                                   status=st)
         messages.success(request, 'guest check out successfully')
     else:
         messages.success(request, 'No user selected')
