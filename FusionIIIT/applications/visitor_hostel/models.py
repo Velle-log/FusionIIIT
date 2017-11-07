@@ -1,6 +1,6 @@
+from django import utils
 from django.contrib.auth.models import User
 from django.db import models
-
 
 VISITOR_CATEGORY = (
     ('A', 'A'),
@@ -23,58 +23,58 @@ ROOM_FLOOR = (
 
 ROOM_STATUS = (
     ('Booked', 'Booked'),
-    ('CheckedIn', 'CheckedIn'),
+    ('CheckedIn', 'Occupied'),
     ('Available', 'Available'),
     ('UnderMaintenance', 'UnderMaintenance'),
     )
 
 BOOK_ROOM = (
-    ('Confirm' , 'Confirm'),
-    ('Pending' , 'Pending'),
-    ('Cancel' , 'Cancel'),
+    ('Confirm', 'Confirm'),
+    ('Pending', 'Pending'),
+    ('Cancelled', 'Cancelled'),
     )
 
 
 class Visitor(models.Model):
-    visitor_id = models.AutoField(primary_key=True)
     visitor_name = models.CharField(max_length=40)
     visitor_email = models.CharField(max_length=40)
     visitor_phone = models.CharField(max_length=12)
     visitor_address = models.TextField()
     nationality = models.CharField(max_length=20)
-    intender_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    intender = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.visitor_phone
 
 
 class Book_room(models.Model):
-    br_id = models.AutoField(primary_key=True)
-    visitor_id = models.ForeignKey(Visitor, on_delete=models.CASCADE)
+    visitor = models.ForeignKey(Visitor, on_delete=models.CASCADE)
     room_count = models.IntegerField(default=1)
     visitor_category = models.CharField(max_length=1, choices=VISITOR_CATEGORY)
     person_count = models.IntegerField(default=1)
     purpose = models.TextField()
     booking_from = models.DateField()
-    Booking_to = models.DateField()
-    status = models.CharField(max_length=10, choices=BOOK_ROOM , default ="Pending")
-    remark = models.CharField(max_length=40,blank=True)
+    booking_to = models.DateField()
+    status = models.CharField(max_length=10, choices=BOOK_ROOM, default="Pending")
+    remark = models.CharField(max_length=40, blank=True)
     check_in = models.DateField(null=True, blank=True)
     check_out = models.DateField(null=True, blank=True)
+
     def __str__(self):
-        return str(self.br_id)
+        return str(self.visitor.visitor_name)
+
 
 class Visitor_bill(models.Model):
-    visitor_id = models.ForeignKey(Visitor, on_delete=models.CASCADE)
-    caretaker_id = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    visitor = models.ForeignKey(Visitor, on_delete=models.CASCADE)
+    caretaker = models.OneToOneField(User, on_delete=models.CASCADE)
     meal_bill = models.IntegerField(default=0)
     room_bill = models.IntegerField(default=0)
     payment_status = models.BooleanField(default=False)
 
 
 class Room(models.Model):
-    room_id = models.AutoField(primary_key=True)
-    room_number  = models.CharField(max_length=4, unique=True)
+    room_number = models.CharField(max_length=4, unique=True)
     room_type = models.CharField(max_length=12, choices=ROOM_TYPE)
     room_floor = models.CharField(max_length=12, choices=ROOM_FLOOR)
 
@@ -83,8 +83,8 @@ class Room(models.Model):
 
 
 class Visitor_room(models.Model):
-    room_id = models.ForeignKey(Room, on_delete=models.CASCADE)
-    visitor_id = models.ForeignKey(Visitor, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    visitor = models.ForeignKey(Visitor, on_delete=models.CASCADE)
 
 
 class Meal(models.Model):
@@ -95,10 +95,10 @@ class Meal(models.Model):
     breakfast = models.BooleanField(default=False)
     lunch = models.BooleanField(default=False)
     dinner = models.BooleanField(default=False)
-    persons=models.IntegerField(default=0)
+    persons = models.IntegerField(default=0)
+
 
 class Inventory(models.Model):
-    inventory_id = models.AutoField(primary_key=True)
     item_name = models.CharField(max_length=20)
     opening_stock = models.IntegerField(default=0)
     addition_stock = models.IntegerField(default=0)
@@ -109,10 +109,16 @@ class Inventory(models.Model):
     total_usable = models.IntegerField(default=0)
     remark = models.TextField()
 
+
 class Room_Status(models.Model):
-    date = models.DateField(null=True, blank=True)
-    room_id = models.OneToOneField(Room, on_delete=models.CASCADE)
-    status = models.CharField(max_length=12, choices=ROOM_STATUS, default = "Available")
-    br_id = models.ForeignKey(Book_room , on_delete =models.CASCADE,unique=False, null=True, blank=True)
+    date = models.DateField(default=utils.timezone.now, null=False)
+    room = models.OneToOneField(Room, on_delete=models.CASCADE)
+    status = models.CharField(max_length=12, choices=ROOM_STATUS, default="Available")
+    br_id = models.ForeignKey(Book_room,
+                              on_delete=models.CASCADE,
+                              unique=False,
+                              null=True,
+                              blank=True)
+
     def __str__(self):
-        return str(self.room_id)
+        return str(self.room.room_number)

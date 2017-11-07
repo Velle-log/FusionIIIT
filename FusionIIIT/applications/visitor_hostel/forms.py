@@ -1,15 +1,19 @@
+import datetime
+
 from django import forms
 from django.forms import ModelForm
-from applications.visitor_hostel.models import *
-import datetime
+
+from applications.visitor_hostel.models import Meal
 
 
 #class booking_request(forms.Form):
 CHOICES = (('A', 'A',), ('B', 'B',), ('C', 'C',), ('D', 'D',))
 
+
 class ViewBooking(forms.Form):
-	date_from = forms.DateField(initial=datetime.date.today)
-	date_to = forms.DateField(initial=datetime.date.today)
+    date_from = forms.DateField(initial=datetime.date.today)
+    date_to = forms.DateField(initial=datetime.date.today)
+
 
 class MealBooking(ModelForm):
 	date = forms.DateField(initial=datetime.date.today)
@@ -33,3 +37,9 @@ class Room_booking(forms.Form):
 	purpose = forms.CharField(widget=forms.Textarea)
 	date_from = forms.DateField(initial=datetime.date.today)
 	date_to = forms.DateField(initial=datetime.date.today)
+
+    date = forms.DateField(initial=datetime.date.today)
+
+    class Meta:
+            model = Meal
+            exclude = ['meal_date']
