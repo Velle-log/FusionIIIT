@@ -20,7 +20,7 @@ class Constants:
         ('M.Tech', 'M.Tech'),
         ('M.Des', 'M.Des'),
         ('PhD', 'PhD')
-    )   
+    )
 
     CATEGORY = (
         ('GEN', 'General'),
@@ -29,23 +29,26 @@ class Constants:
         ('OBC', 'Other Backward Classes')
     )
 
+
 class Course(models.Model):
     course_id = models.CharField(max_length=100, unique=True)
     course_name = models.CharField(max_length=100)
     sem = models.IntegerField()
     credits = models.IntegerField()
 
-    class Meta:
-        db_table = 'Course'
-        unique_together = ('course_id', 'course_name', 'sem')
+
+class Meta:
+    db_table = 'Course'
+    unique_together = ('course_id', 'course_name', 'sem')
 
     def __str__(self):
         return self.course_id
 
+
 class Student(models.Model):
     id = models.OneToOneField(ExtraInfo, on_delete=models.CASCADE, primary_key=True)
     name = models.CharField(max_length=50, default='')
-    batch=models.CharField(max_length=10,default='2015')
+    batch = models.CharField(max_length=10, default='2015')
     programme = models.CharField(max_length=10, choices=Constants.PROGRAMME)
     cpi = models.FloatField(default=0)
     category = models.CharField(max_length=10, choices=Constants.CATEGORY, null=False)
@@ -57,7 +60,8 @@ class Student(models.Model):
 
     def __str__(self):
         return str(self.id)
-    
+
+
 class Meeting(models.Model):
     date = models.DateField()
     minutes_file = models.FileField(upload_to='documents/')
@@ -105,9 +109,8 @@ class Student_attendance(models.Model):
     course_id = models.ForeignKey(Course)
 #    attend = models.CharField(max_length=6, choices=Constants.ATTEND_CHOICES)
     date = models.DateField(auto_now=True)
-    present_attend=models.IntegerField(default=0)
-    total_attend=models.IntegerField(default=0)
-
+    present_attend = models.IntegerField(default=0)
+    total_attend = models.IntegerField(default=0)
 
     class Meta:
         db_table = 'Student_attendance'
