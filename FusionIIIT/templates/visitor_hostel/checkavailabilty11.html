@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<h1>hello</h1>
+{% csrf_token %}
+<table>
+<tr>
+    	<th>Room Number</th>
+    	<th>Room Type</th>
+    	<th>Floor</th>
+    	
+ </tr>
+{% for context2 in context %}
+    {% for context1 in context2 %}
+    <div class="context">
+        <tr>
+            <td>{{context1.room_number}}</td> 
+            <td>{{context1.room_type}}</td> 
+            <td>{{context1.room_floor}}</td>
+            
+        </tr>
+     </div>
+    {% endfor %}
+{% endfor %}
+</table>
+
+</body>
+</html>

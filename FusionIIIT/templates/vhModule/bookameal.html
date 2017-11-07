@@ -12,23 +12,14 @@
 
             <form class="ui form">
 
-                <div class="three fields">
-                    <div class="field">
-                        <label>From:</label>
-                        <div class="ui calendar" id="rangestart">
-                            <div class="ui input left icon">
-                                <i class="calendar icon"></i>
-                                <input type="text" placeholder="From">
-                            </div>
-                        </div>
-                    </div>
+                <div class="two fields">
 
                     <div class="field">
-                        <label>To:</label>
+                        <label>For Date:</label>
                         <div class="ui calendar" id="rangeend">
                             <div class="ui input left icon">
                                 <i class="calendar icon"></i>
-                                <input type="text" placeholder="To">
+                                <input type="text" placeholder="Pick a date">
                             </div>
                         </div>
                     </div>
@@ -47,86 +38,74 @@
 
             <table class="ui structured sortable celled table">
                 <thead>
-                <tr>
-                    <th rowspan="2" class="four wide">Name</th>
-                    <th rowspan="2" class="one wide">Category</th>
-                    <th rowspan="2" class="one wide">Room-No.</th>
-                    <th rowspan="2" class="two wide">Date</th>
-                    <th colspan="5">Food Items</th>
-                </tr>
+                    <tr>
+                        <th rowspan="2" class="four wide">Name</th>
+                        <th rowspan="2" class="one wide">Room</th>
+                        <th rowspan="2" class="two wide">Date</th>
+                        <th colspan="5"><center>Meals Served</center></th>
+                    </tr>
 
-                <tr>
-                    <th>Breakfast</th>
-                    <th>Lunch</th>
-                    <th>Dinner</th>
-                    <th>Snack #1</th>
-                    <th>Snack #2</th>
-                </tr>
+                    <tr>
+                        <th>Bed-Tea</th>
+                        <th>Breakfast</th>
+                        <th>Lunch</th>
+                        <th>Eve Tea</th>
+                        <th>Dinner</th>
+                    </tr>
                 </thead>
 
                 <tbody>
-
-                <tr>
-                    <td>
-                        <h4 class="ui image header">
-                            <img src="{% static 'globals/img/zlatan.jpg' %}" class="ui mini circular image">
-
-                            <div class="content">
-                                Zlatan Ibrahimovic
-                                <div class="sub header">gmail@zlatan.com
+                    <tr>
+                        <td>
+                            <h4 class="ui image header">
+                                <div class="content">
+                                    Zlatan Ibrahimovic
+                                    <div class="sub header">gmail@zlatan.com
+                                    </div>
                                 </div>
+                            </h4>
+                        </td>
+
+                        <td>G - 007</td>
+
+                        <td>10<sup>th</sup> Aug'17</td>
+
+                        <td>
+                            <div class="ui checkbox">
+                                <input name="" type="checkbox">
+                                <!-- <input name="" type="checkbox" checked> -->
+                                <label></label>
                             </div>
-                        </h4>
-                    </td>
+                        </td>
 
-                    <td>
-                        A
-                    </td>
+                        <td>
+                            <div class="ui checkbox">
+                                <input name="" type="checkbox">
+                                <label></label>
+                            </div>
+                        </td>
 
-                    <td>
-                        G - 007
-                    </td>
+                        <td>
+                            <div class="ui checkbox">
+                                <input name="" type="checkbox">
+                                <label></label>
+                            </div>
+                        </td>
 
-                    <td>
-                        10<sup>th</sup> Aug'17
-                    </td>
+                        <td>
+                            <div class="ui checkbox">
+                                <input name="" type="checkbox">
+                                <label></label>
+                            </div>
+                        </td>
 
-                    <td>
-                        <div class="ui checkbox">
-                            <input name="" type="checkbox">
-                            <label>&#8377; 50</label>
-                        </div>
-                    </td>
-
-                    <td>
-                        <div class="ui checkbox">
-                            <input name="" type="checkbox">
-                            <label>&#8377; 50</label>
-                        </div>
-                    </td>
-
-                    <td>
-                        <div class="ui checkbox">
-                            <input name="" type="checkbox">
-                            <label>&#8377; 50</label>
-                        </div>
-                    </td>
-
-                    <td>
-                        <div class="ui checkbox">
-                            <input name="" type="checkbox">
-                            <label>&#8377; 50</label>
-                        </div>
-                    </td>
-
-                    <td>
-                        <div class="ui checkbox">
-                            <input name="" type="checkbox">
-                            <label>&#8377; 50</label>
-                        </div>
-                    </td>
-                </tr>
-
+                        <td>
+                            <div class="ui checkbox">
+                                <input name="" type="checkbox">
+                                <label></label>
+                            </div>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

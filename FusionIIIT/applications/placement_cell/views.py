@@ -16,6 +16,8 @@ from .forms import AddEducation
 from .models import (Achievement, Course, Education, Experience, Has, Project,
                      Publication, StudentPlacement)
 
+# from xhtml2pdf import pisa
+
 
 @login_required
 def placement(request):

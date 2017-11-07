@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>checkout</title>
+</head>
+<body>
+<form  method="post">
+   <center>
+    <div class="context">
+        
+            <h1>Name : {{context.visitor}}</h1>
+            <h2>Total meal Bill:{{context.mess_bill}}₹</h2>
+            <h2>Total Room Bill:{{context.room_bill}}₹</h2>
+            <h2>Total bill:{{context.t_bill}}₹</h2>
+        
+     </div>
+
+    <br>
+    <input type="hidden" name="visitor" value={{context.v_id}}>
+    <input type="submit" value="submit"/>
+    </center>
+</form>
+</body>
+</html>

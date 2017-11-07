@@ -110,6 +110,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth',
     'allauth.socialaccount.providers.google',
+    'reset_migrations'
 ]
 
 MIDDLEWARE = [
@@ -152,7 +153,7 @@ DATABASES = {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'fusion',
             'USER': 'root',
-            'PASSWORD': '',
+            'PASSWORD': 'root',
             'HOST': '127.0.0.1',
             'PORT': '3306',
         },
@@ -183,7 +184,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
