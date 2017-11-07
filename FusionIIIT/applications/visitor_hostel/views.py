@@ -66,6 +66,9 @@ def booking_request(request):
 
             elif 'cancel' in request.POST:
                 print ("hello")
+                br_id = request.POST.getlist('cancel')
+                br_id = br_id[0]
+                Book_room.objects.filter(br_id = br_id).update (status = "Cancel" )
                 messages.success(request, 'succesfully cancelled')
                 return HttpResponseRedirect('/visitorhostel/vh_homepage/')
 
@@ -84,6 +87,8 @@ def booking_request(request):
         messages.success(request, 'permission denied')
         return HttpResponseRedirect('/visitorhostel/vh_homepage/')
 
+
+@login_required(login_url='/accounts/login/')
 def all_booking(request):
     user = get_object_or_404(User, username=request.user.username)
     c=ExtraInfo.objects.all().filter(user=user)
@@ -111,6 +116,8 @@ def all_booking(request):
             return render(request, "visitor_hostel/input_booking_date.html" , { 'form' : form})
 
 
+
+@login_required(login_url='/accounts/login/')
 def cancel_booked_booking(request):
     user = get_object_or_404(User, username=request.user.username)
     c=ExtraInfo.objects.all().filter(user=user)
@@ -136,6 +143,8 @@ def cancel_booked_booking(request):
             return render(request, "visitor_hostel/cancel_booked_room.html" , { 'context' : context})
 
 
+
+@login_required(login_url='/accounts/login/')
 def check_in(request):
     user = get_object_or_404(User, username=request.user.username)
     c=ExtraInfo.objects.all().filter(user=user)
@@ -197,7 +206,7 @@ def check_in(request):
 
 
 
-
+@login_required(login_url='/accounts/login/')
 def check_out(request):
     user = get_object_or_404(User, username=request.user.username)
     c=ExtraInfo.objects.all().filter(user=user)
@@ -303,7 +312,7 @@ def check_out(request):
 
 
 
-
+@login_required(login_url='/accounts/login/')
 def meal_book(request):
     user = get_object_or_404(User, username=request.user.username)
     c=ExtraInfo.objects.all().filter(user=user)
@@ -375,6 +384,7 @@ def meal_book(request):
 
 
 
+@login_required(login_url='/accounts/login/')
 def bill_generation(request):
     user = get_object_or_404(User, username=request.user.username)
     c=ExtraInfo.objects.all().filter(user=user)
@@ -408,6 +418,7 @@ def bill_generation(request):
             return HttpResponseRedirect('/visitorhostel/vh_homepage/')
 
 
+@login_required(login_url='/accounts/login/')
 def Room_availabity(request):
     user = get_object_or_404(User, username=request.user.username)
     print(user)
@@ -444,6 +455,7 @@ def Room_availabity(request):
             return render(request,"visitor_hostel/checkavailability1.html",{'form':form})
 
 
+@login_required(login_url='/accounts/login/')
 def BookaRoom(request):
     user = get_object_or_404(User, username=request.user.username)
     print(user)
@@ -467,3 +479,5 @@ def BookaRoom(request):
         else:
             form=Room_booking()
             return render(request,"visitor_hostel/bookaroom1.html",{'form':form})
+
+

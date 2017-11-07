@@ -29,7 +29,7 @@ class Room_booking(forms.Form):
 	address = forms.CharField(max_length=200)
 	country = forms.CharField(max_length=25)
 	category = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)
-	total_person = forms.IntegerField()
+	total_persons = forms.IntegerField()
 	purpose = forms.CharField(widget=forms.Textarea)
 	date_from = forms.DateField(initial=datetime.date.today)
 	date_to = forms.DateField(initial=datetime.date.today)
