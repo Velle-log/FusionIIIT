@@ -1,4 +1,3 @@
-import datetime
 from django.db import models
 
 # Create your models here.
@@ -9,7 +8,7 @@ TIME = (
     ('6', '6 a.m.'),
     ('7', '7 a.m.'),
     ('8', '8 a.m.'),
-    ('9', '9 a.m.'),   
+    ('9', '9 a.m.'),
     ('10', '10 a.m.'),
     ('11', '11 a.m.'),
     ('12', '12 p.m.'),
@@ -36,7 +35,7 @@ CLUB_CATEGORY = (
     ('Sports', 'Sports')
 )
 
-FEST_DOMAIN =(
+FEST_DOMAIN = (
     ('Event Management and Infra', 'Event Management and Infra'),
     ('Finance and Accounts', 'Finance and Accounts'),
     ('Marketing and Sponsorship', 'Marketing and Sponsorship'),
@@ -50,12 +49,14 @@ class Club(models.Model):
     club_id = models.CharField(max_length=20, primary_key=True)
     club_name = models.CharField(max_length=30, unique=True)
     club_co = models.ForeignKey(Student, related_name="club_coordinator", on_delete=models.CASCADE)
-    club_coco = models.ForeignKey(Student, related_name="club_co_coordinator", on_delete=models.CASCADE)
+    club_coco = models.ForeignKey(Student, related_name="club_co_coordinator",
+                                  on_delete=models.CASCADE)
     faculty_co = models.ForeignKey(ExtraInfo, on_delete=models.CASCADE)
     category = models.CharField(max_length=20, choices=CLUB_CATEGORY)
 
     def __str__(self):
         return str(self.club_name)
+
 
 class Club_session(models.Model):
 
@@ -69,7 +70,7 @@ class Club_session(models.Model):
 
     class Meta:
         db_table = 'Club_session'
-        unique_together = ('club_id','session_date', 'session_time', 'session_venue')
+        unique_together = ('club_id', 'session_date', 'session_time', 'session_venue')
 
     def __str__(self):
         return str(self.club_id)
@@ -88,13 +89,18 @@ class Club_member(models.Model):
     def __str__(self):
         return str(self.Student_id)
 
+
 class Fest(models.Model):
     fest_id = models.IntegerField(max_length=10, primary_key=True)
     name = models.CharField(max_length=9, choices=FEST_NAME)
-    convenor_name = models.ForeignKey(Student,max_length=25, related_name="convenor", on_delete=models.CASCADE)
-    counsellor_name = models.ForeignKey(Student,max_length=25, related_name="counsellor", on_delete=models.CASCADE)
+    convenor_name = models.ForeignKey(Student, max_length=25, related_name="convenor",
+                                      on_delete=models.CASCADE)
+    counsellor_name = models.ForeignKey(Student, max_length=25, related_name="counsellor",
+                                        on_delete=models.CASCADE)
+
     def __str__(self):
         return str(self.name)
+
 
 class Budget_Fest(models.Model):
     fest_id = models.ForeignKey(Fest)
@@ -106,6 +112,7 @@ class Budget_Fest(models.Model):
     def __str__(self):
         return str(self.fest_id)
 
+
 class Club_Budget(models.Model):
     club_id = models.ForeignKey(Club)
     attachment = models.CharField(max_length=50)
@@ -116,19 +123,21 @@ class Club_Budget(models.Model):
     def __str__(self):
         return str(self.club_id)
 
+
 class Core_Team(models.Model):
     student_id = models.ForeignKey(Student)
     fest_id = models.ForeignKey(Fest)
     domain = models.CharField(max_length=100, choices=FEST_DOMAIN)
     backlog_details = models.CharField(max_length=1000)
     discplinary_actions = models.CharField(max_length=1000)
-    
+
     class Meta:
         db_table = 'Core_Team'
         unique_together = ('student_id', 'fest_id')
 
     def __str__(self):
         return str(self.student_id)
+
 
 class Trip(models.Model):
     club_id = models.ForeignKey(Club)
@@ -137,11 +146,9 @@ class Trip(models.Model):
     description = models.CharField(max_length=300)
     approve = models.NullBooleanField()
 
-
     class Meta:
         db_table = 'Trip'
         unique_together = ('club_id', 'date')
 
     def __str__(self):
         return str(self.club_id)
-
