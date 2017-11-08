@@ -21,7 +21,6 @@ class Constants:
         ('M.Des', 'M.Des'),
         ('PhD', 'PhD')
     )
-
     CATEGORY = (
         ('GEN', 'General'),
         ('SC', 'Scheduled Castes'),
@@ -39,6 +38,7 @@ class Student(models.Model):
     mother_name = models.CharField(max_length=40, default='')
     hall_no = models.IntegerField(default=1)
     room_no = models.CharField(max_length=10, blank=True, null=True)
+    category = models.CharField(max_length=10, choices=Constants.CATEGORY),
 
     def __str__(self):
         return str(self.id)

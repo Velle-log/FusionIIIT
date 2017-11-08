@@ -36,9 +36,9 @@ urlpatterns = [
     url(r'^ocms/', include('applications.online_cms.urls')),
     url(r'^login/', auth_views.login, name='login'),
     url(r'^logout/', auth_views.logout, name='logout'),
+    url(r'^gymkhana/', include('applications.gymkhana.urls')),
     url(r'^academic-procedures/', include('applications.academic_procedures.urls',
                                           namespace='procedures')),
-
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
