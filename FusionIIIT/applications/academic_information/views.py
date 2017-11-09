@@ -82,7 +82,7 @@ def deleteSenator(request):
 # EDITED BY ANURAAG
 @csrf_exempt
 def senator(request):
-    print(request.POST)
+    # print(request.POST)
     if request.method == 'POST':
         rollno = request.POST['rollno']
         extraInfo = ExtraInfo.objects.get(id=rollno)
@@ -137,8 +137,8 @@ def add_attendance(request):
         student_attend = Student_attendance()
         s_id = request.POST.get('student_id')
         c_id = request.POST.get('course_id')
-        print(s_id)
-        print(c_id)
+        # print(s_id)
+        # print(c_id)
         context = {}
         try:
             student_attend.student_id = Student.objects.get(id_id=s_id)
@@ -174,7 +174,7 @@ def add_attendance(request):
 
 def get_attendance(request):
     course_id = request.GET.get('course_id')
-    print(course_id)
+    # print(course_id)
     c_id = Course.objects.get(course_id=course_id)
     data = Student_attendance.objects.filter(course_id_id=c_id).values_list('course_id_id',
                                                                             'student_id_id',
@@ -191,12 +191,12 @@ def get_attendance(request):
         s_name = s_id.name
         s_programme = s_id.programme
         s_batch = s_id.batch
-        print(s_name)
-        print(s_programme)
+        # print(s_name)
+        # print(s_programme)
         stud_data['name'].append(s_name)
         stud_data['programme'].append(s_programme)
         stud_data['batch'].append(s_batch)
-    print(stud_data)
+    # print(stud_data)
     context = {}
     try:
         context['result'] = 'Success'
@@ -204,9 +204,9 @@ def get_attendance(request):
         context['stud_data'] = stud_data
     except:
         context['result'] = 'Failure'
-    print(data[0][1])
-    print(stud_data['name'][0])
-    print(context)
+    # print(data[0][1])
+    # print(stud_data['name'][0])
+    # print(context)
     return HttpResponse(json.dumps(context), content_type='get_attendance/json')
 
 
@@ -255,7 +255,7 @@ def delete_basic_profile(request):
 
 def delete_advanced_profile(request):
     if request.method == "POST":
-        print(request.POST['delete'])
+        # print(request.POST['delete'])
         if Student.objects.get(id=request.POST['delete']):
             s = Student.objects.get(id=request.POST['delete'])
             s.father_name = ""
@@ -321,7 +321,7 @@ def add_grade(request):
 
 
 def delete_grade(request):
-    print(request.POST['delete'])
+    # print(request.POST['delete'])
     data = request.POST['delete']
     d = data.split("-")
     id = d[0]
@@ -332,7 +332,7 @@ def delete_grade(request):
             s = Grades.objects.filter(student_id=id, sem=sem)
             for p in s:
                 if (str(p.course_id) == course):
-                    print(p.course_id)
+                    # print(p.course_id)
                     p.delete()
         else:
             return HttpResponse("Unable to delete data")
