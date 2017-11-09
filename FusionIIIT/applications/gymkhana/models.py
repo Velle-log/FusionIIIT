@@ -44,28 +44,32 @@ FEST_DOMAIN = (
     ('Design and Development', 'Design and Development')
 )
 
+STATUS = (
+    ('A', 'Accepted'),
+    ('D', 'Declined'),
+    ('N', 'Not Processed Yet'),
+)
+
 
 class Club(models.Model):
-    club_id = models.CharField(max_length=20, primary_key=True)
     club_name = models.CharField(max_length=30, unique=True)
     club_co = models.ForeignKey(Student, related_name="club_coordinator", on_delete=models.CASCADE)
     club_coco = models.ForeignKey(Student, related_name="club_co_coordinator",
                                   on_delete=models.CASCADE)
     faculty_co = models.ForeignKey(ExtraInfo, on_delete=models.CASCADE)
-    category = models.CharField(max_length=20, choices=CLUB_CATEGORY)
+    club_category = models.CharField(max_length=20, choices=CLUB_CATEGORY, default='Sports')
 
     def __str__(self):
         return str(self.club_name)
 
 
 class Club_session(models.Model):
-
     club_id = models.ForeignKey(Club)
     session_date = models.DateField()
     session_time = models.CharField(max_length=20, choices=TIME)
     session_venue = models.CharField(max_length=20)
     session_topic = models.CharField(max_length=200)
-    description = models.CharField(max_length=1000)
+    description = models.TextField(max_length=1000)
     attachment = models.CharField(max_length=50)
 
     class Meta:
@@ -73,14 +77,13 @@ class Club_session(models.Model):
         unique_together = ('club_id', 'session_date', 'session_time', 'session_venue')
 
     def __str__(self):
-        return str(self.club_id)
+        return str(self.session_date)
 
 
 class Club_member(models.Model):
-
     student_id = models.ForeignKey(Student)
     club_id = models.ForeignKey(Club)
-    achievement = models.CharField(max_length=1000)
+    achievement = models.TextField(max_length=1000)
 
     class Meta:
         db_table = 'Club_member'
@@ -91,7 +94,6 @@ class Club_member(models.Model):
 
 
 class Fest(models.Model):
-    fest_id = models.IntegerField(max_length=10, primary_key=True)
     name = models.CharField(max_length=9, choices=FEST_NAME)
     convenor_name = models.ForeignKey(Student, max_length=25, related_name="convenor",
                                       on_delete=models.CASCADE)
@@ -105,50 +107,50 @@ class Fest(models.Model):
 class Budget_Fest(models.Model):
     fest_id = models.ForeignKey(Fest)
     attachment = models.CharField(max_length=50)
-    description = models.CharField(max_length=1000)
-    suggestion = models.CharField(max_length=1000)
-    approve = models.NullBooleanField()
+    description = models.TextField(max_length=1000)
+    suggestion = models.TextField(max_length=1000)
+    approve = models.CharField(max_length=1, choices=STATUS, default='N')
 
     def __str__(self):
-        return str(self.fest_id)
+        return str(self.attachment)
 
 
 class Club_Budget(models.Model):
     club_id = models.ForeignKey(Club)
     attachment = models.CharField(max_length=50)
-    description = models.CharField(max_length=1000)
-    suggestion = models.CharField(max_length=1000)
-    approve = models.NullBooleanField()
+    description = models.TextField(max_length=1000)
+    suggestion = models.TextField(max_length=1000)
+    approve = models.CharField(max_length=1, choices=STATUS, default='N')
 
     def __str__(self):
-        return str(self.club_id)
+        return str(self.attachment)
 
 
 class Core_Team(models.Model):
     student_id = models.ForeignKey(Student)
     fest_id = models.ForeignKey(Fest)
-    domain = models.CharField(max_length=100, choices=FEST_DOMAIN)
-    backlog_details = models.CharField(max_length=1000)
-    discplinary_actions = models.CharField(max_length=1000)
+    domain = models.CharField(max_length=40, choices=FEST_DOMAIN)
+    backlog_details = models.TextField(max_length=1000)
+    discplinary_actions = models.TextField(max_length=1000)
 
     class Meta:
         db_table = 'Core_Team'
         unique_together = ('student_id', 'fest_id')
 
     def __str__(self):
-        return str(self.student_id)
+        return str(self.domain)
 
 
 class Trip(models.Model):
     club_id = models.ForeignKey(Club)
     place = models.CharField(max_length=40)
-    date = models.DateField()
     description = models.CharField(max_length=300)
-    approve = models.NullBooleanField()
+    start_date = models.DateField()
+    end_date = models.DateField()
+    approve = models.CharField(max_length=1, choices=STATUS, default='N')
 
     class Meta:
         db_table = 'Trip'
-        unique_together = ('club_id', 'date')
 
     def __str__(self):
-        return str(self.club_id)
+        return str(self.description)
