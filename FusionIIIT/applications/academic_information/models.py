@@ -21,7 +21,6 @@ class Constants:
         ('M.Des', 'M.Des'),
         ('PhD', 'PhD')
     )
-
     CATEGORY = (
         ('GEN', 'General'),
         ('SC', 'Scheduled Castes'),
