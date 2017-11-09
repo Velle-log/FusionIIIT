@@ -345,22 +345,22 @@ def add_course(request):
             c = Student.objects.get(id=request.POST['roll'])
         except:
             return HttpResponse("Student Does Not Exist")
-        if(request.POST['c1']):
+        if request.POST['c1']:
             c_id = Course.objects.get(course_id=request.POST['c1'])
             c.courses.add(c_id)
-        if(request.POST['c2']):
+        if request.POST['c2']:
             c_id2 = Course.objects.get(course_id=request.POST['c2'])
             c.courses.add(c_id2)
-        if(request.POST['c3']):
+        if request.POST['c3']:
             c_id3 = Course.objects.get(course_id=request.POST['c3'])
             c.courses.add(c_id3)
-        if(request.POST['c4']):
+        if request.POST['c4']:
             c_id4 = Course.objects.get(course_id=request.POST['c4'])
             c.courses.add(c_id4)
-        if(request.POST['c5']):
+        if request.POST['c5']:
             c_id5 = Course.objects.get(course_id=request.POST['c5'])
             c.courses.add(c_id5)
-        if(request.POST['c6']):
+        if request.POST['c6']:
             c_id6 = Course.objects.get(course_id=request.POST['c6'])
             c.courses.add(c_id6)
         c.save()
@@ -368,7 +368,7 @@ def add_course(request):
 
 
 def add_timetable(request):
-    if(request.method == "POST"):
+    if request.method == "POST":
         file = request.POST['file']
         db = Timetable()
         db.time_table = file
@@ -381,7 +381,7 @@ def add_timetable(request):
 
 
 def add_exam_timetable(request):
-    if(request.method == "POST"):
+    if request.method == "POST":
         file = request.POST['file']
         db = Exam_timetable()
         db.exam_time_table = file
