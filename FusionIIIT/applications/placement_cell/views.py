@@ -95,5 +95,7 @@ def cv(request, username):
                                                      'achievements': achievement,
                                                      'publications': publication})
 '''
+
+
 def placement(request):
     pass

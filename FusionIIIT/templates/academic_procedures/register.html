@@ -11,10 +11,10 @@
     <div class="ui active tab" data-tab="complainthistory">
     <div class="ui vertical segment">
 
-   
-    
+
+
             {% if details.check_pre_register %}
-                You have already registered
+              <B><CENTER>   You have already registered </B></CENTER>
             {% else %}
             <table class="ui very basic collapsing celled sortable table"
                    style="padding-left: 2.5%;
@@ -23,7 +23,7 @@
                                                           padding-bottom: 1.5%;
                                                           margin: auto;">
                 <thead>
-                 
+
                 <tr>
                     <th>
                     </th>
@@ -49,7 +49,7 @@
                 </thead>
 
                 <tbody>
-                
+
                     <form id='student_register' action='/academic-procedures/register/' method='post'>
                     {% csrf_token %}
                     {% for items in courses_list %}
@@ -57,10 +57,11 @@
                             <td>
                             </td>
                             <td>
-                                {{ items.course_id }}
-                                {% if items.course_id|length > 5%}
-                                    (optional)
-                                {% endif %}
+                              {{ items.course_id }}
+                              {% if items.optional %}
+                            <B>      (optional)</B>
+
+                              {% endif %}
                                 <input type="text" name='course_id' value='{{ items.course_id}}' hidden="True">
                             </td>
                             <td>
@@ -75,14 +76,14 @@
                                 {{ items.credits }}
                                 <input type="text" name='credits' value='{{ items.credits}}' hidden="True">
                              </td>
-                             <td>
+                             <td><B>
                                 {% if items.optional %}
                                     <input name="choice" type="checkbox" value="{{ items.course_id }}">
                                 {% else %}
                                     <input name="choice" type="checkbox" value="{{ items.course_id }}" onclick="return false;" checked hidden="True">(Compulsory)
                                 {% endif %}
                                 <input type="text" name='user' value='{{ details.current_user}}' hidden="True">
-                             </td>
+                             </td></B>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -101,7 +102,7 @@
         </div>
     </div>
 
-   
+
 
 {% endblock %}
 
@@ -109,10 +110,10 @@
 <script type="text/javascript">
 $(function() {
     $("#student_register").submit(function(event) {
-        
+
         event.preventDefault();
         var friendForm = $(this);
-        
+
         var posting = $.post( friendForm.attr('action'), friendForm.serialize() );
         // if success:
         posting.done(function(data) {
@@ -126,4 +127,3 @@ $(function() {
         });
     });
 });
-</script>

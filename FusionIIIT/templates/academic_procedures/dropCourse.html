@@ -10,8 +10,10 @@
 
     <div class="ui active tab" data-tab="complainthistory">
         <div class="ui vertical segment">
+        {% if courses_list %}
         <form id='drop_courses' action='/academic-procedures/dropCourse/' method='POST'>
         {% csrf_token %}
+
             <table class="ui very basic collapsing celled sortable table"
                    style="padding-left: 2.5%;
                                                           padding-right: 2.5%;
@@ -45,14 +47,20 @@
                 </thead>
 
                 <tbody>
+
                     {% for items in courses_list %}
                         {% for x in final_register %}
+
                             {% if items.course_id == x.course_id.course_id %}
                                 <tr id="{{ items.course_id}}">
                                     <td>
                                     </td>
                                     <td>
                                         {{ items.course_id }}
+                                        {% if items.optional %}
+                                      <B>      (optional)</B>
+
+                                        {% endif %}
                                     </td>
                                     <td>
                                         {{ items.course_name}}
@@ -64,11 +72,11 @@
                                         {{items.sem}}
                                      </td>
                                     <td>
-                                        {% if items.optional %}
+                                    <B>    {% if items.optional %}
                                             <input name="course_id" type="checkbox" value="{{ items.course_id }}">
                                         {% else %}
                                             <input name="course_id" type="checkbox" value="{{ items.course_id }}" onclick="return false;" hidden="True">(Compulsory)
-                                        {% endif %}
+                                        {% endif %}</B>
                                         <input name="user" type="text" value="{{ x.student_id }}" hidden="True">
                                     </td>
                                 </tr>
@@ -85,7 +93,9 @@
             <div class="ui divider"></div>
              <center><button class="ui negative basic button">Drop Course(s)</button></center>
         </form>
-
+        {% else %}
+          <B> YOU HAVE NOT REGISTERED YET</B>
+        {% endif %}
         </div>
     </div>
 

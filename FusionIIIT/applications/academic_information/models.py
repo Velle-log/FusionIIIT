@@ -29,6 +29,19 @@ class Constants:
         ('OBC', 'Other Backward Classes')
     )
 
+    MTechSpecialization = (
+        ('Power and Control', 'Power and Control'),
+        ('Microwave and Communication Engineering', 'Microwave and Communication Engineering'),
+        ('Micro-nano Electronics', 'Micro-nano Electronics'),
+        ('CAD/CAM', 'CAD/CAM'),
+        ('Design', 'Design'),
+        ('Manufacturing', 'Manufacturing'),
+        ('CSE', 'CSE'),
+        ('Mechatronics', 'Mechatronics'),
+        ('MDes', 'MDes'),
+        ('None', 'None')
+    )
+
 
 class Student(models.Model):
     id = models.OneToOneField(ExtraInfo, on_delete=models.CASCADE, primary_key=True)
@@ -39,6 +52,8 @@ class Student(models.Model):
     mother_name = models.CharField(max_length=40, default='')
     hall_no = models.IntegerField(default=1)
     room_no = models.CharField(max_length=10, blank=True, null=True)
+    specialization = models.CharField(max_length=20,
+                                      choices=Constants.MTechSpecialization, null=True)
 
     def __str__(self):
         return str(self.id)
@@ -50,6 +65,7 @@ class Course(models.Model):
     sem = models.IntegerField()
     credits = models.IntegerField()
     optional = models.BooleanField(default=False)
+
     class Meta:
         db_table = 'Course'
         unique_together = ('course_id', 'course_name', 'sem')
@@ -109,14 +125,16 @@ class Grades(models.Model):
 class Student_attendance(models.Model):
     student_id = models.ForeignKey(Student)
     course_id = models.ForeignKey(Course)
-    attend = models.CharField(max_length=6, choices=Constants.ATTEND_CHOICES)
-    date = models.DateField()
+#    attend = models.CharField(max_length=6, choices=Constants.ATTEND_CHOICES)
+    date = models.DateField(auto_now=True)
+    present_attend = models.IntegerField(default=0)
+    total_attend = models.IntegerField(default=0)
 
     class Meta:
         db_table = 'Student_attendance'
 
     def __self__(self):
-        return self.date
+        return self.course_id
 
 
 class Instructor(models.Model):
@@ -146,7 +164,7 @@ class Spi(models.Model):
 
 class Timetable(models.Model):
     upload_date = models.DateTimeField(auto_now_add=True)
-    time_table = models.CharField(max_length=20)
+    time_table = models.FileField(upload_to='documents/%Y/%m/%d')
 
     class Meta:
         db_table = 'Timetable'
@@ -154,7 +172,7 @@ class Timetable(models.Model):
 
 class Exam_timetable(models.Model):
     upload_date = models.DateField(auto_now_add=True)
-    exam_time_table = models.CharField(max_length=20)
+    exam_time_table = models.FileField(upload_to='documents/%Y/%m/%d')
 
     class Meta:
         db_table = 'Exam_Timetable'
