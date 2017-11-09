@@ -43,26 +43,26 @@
                  style="max-width: 320px;">
 
                 <a class="active item" data-tab="first">
-                    Academic/Examination Time Tables
-                    <i class="right floated chevron right icon"></i>
-                </a>
-
-                <a class="item" data-tab="second">
                     Manage Student Profile
                     <i class="right floated chevron right icon"></i>
                 </a>
 
-                <a class="item" data-tab="fourth">
+                <a class="item" data-tab="second" id="timetable">
+                    Academic/Examination Time Tables
+                    <i class="right floated chevron right icon"></i>
+                </a>
+
+                <a class="item" data-tab="third">
                     Academic Calendar
                     <i class="right floated chevron right icon"></i>
                 </a>
 
-                <a class="item" data-tab="fifth">
+                <a class="item" data-tab="fourth">
                     Senate
                     <i class="right floated chevron right icon"></i>
                 </a>
 
-                <a class="item" data-tab="sixth">
+                <a class="item" data-tab="fifth">
                     Attendance
                     <i class="right floated chevron right icon"></i>
                 </a>
@@ -81,49 +81,36 @@
             The central-rail segment starts here!
         {% endcomment %}
         <div class="eight wide column">
-            {% comment %}The Details start here!{% endcomment %}
+            {% comment %}The Student Profile start here!{% endcomment %}
             <div class="ui active tab segment" data-tab="first">
-                {% block timetable %}
+                {% block profile %}
                     {% include 'ais/timetable.html' %}
                 {% endblock %}
             </div>
-            {% comment %}The Personal Details end here!{% endcomment %}
 
-
-            {% comment %}The Publications starts here!{% endcomment %}
-
+            {% comment %}The Timetable starts here!{% endcomment %}
             <div class="ui tab segment" data-tab="second">
-                {% block profile %}
+                {% block timetable %}
                     {% include 'ais/profile.html' %}
                 {% endblock %}
             </div>
 
-            {% comment %}The Publications ends here!{% endcomment %}            
-
-
-            {% comment %}The Thesis Supervision starts here!{% endcomment %}
-
-            <div class="ui tab segment" data-tab="fourth">
+            {% comment %}The Calendar starts here!{% endcomment %}
+            <div class="ui tab segment" data-tab="third">
                 {% block calendar %}
                     {% include 'ais/calendar.html' %}
                 {% endblock %}
             </div>
 
-            {% comment %}The thesis ends here!{% endcomment %}
-
-            {% comment %}The events organised starts here!{% endcomment %}
-
-            <div class="ui tab segment" data-tab="fifth">
+            {% comment %}The Senate starts here!{% endcomment %}
+            <div class="ui tab segment" data-tab="fourth">
                 {% block senate %}
                     {% include 'ais/senate.html' %}
                 {% endblock %}
             </div>
 
-            {% comment %}The event organised ends here!{% endcomment %}
-
-            {% comment %}The visits starts here!{% endcomment %}
-
-            <div class="ui tab segment" data-tab="sixth">
+            {% comment %}The attendance starts here!{% endcomment %}
+            <div class="ui tab segment" data-tab="fifth">
                 {% block attendance %}
                     {% include 'ais/attendance.html' %}
                 {% endblock %}
@@ -162,8 +149,6 @@
 
 
     $(document).ready(function () {
-
-
 
         $(document).on('submit','#cse_attend_form',function (event) {
             event.preventDefault();
@@ -274,13 +259,7 @@
             });
         });
 
-
-
-
-
-
-
-        {#       alert($('button #CS204').length);#}
+        {#alert($('button #CS204').length);#}
         $('#cse_courses').on('click','button',function (event) {
 
             event.preventDefault();

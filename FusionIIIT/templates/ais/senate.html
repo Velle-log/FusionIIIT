@@ -44,19 +44,19 @@
         <th>Action</th>
     </tr>
     </thead>
-    <tbody>
+    <tbody id='senate_list'>
         {% if senates %}
         {% for senate in senates%}                      
-        <tr>
+        <tr id='senate-{{senate.id}}'>
         <td>{{senate.user.username}} </td>
         {% for s in students %}
         {% if s.id == senate %}                       
-            <td>{{s.programme}} </td>                      
-            <td>{{senate.id}}</td>
+            <td>{{s.programme}} </td>
         {% endif %}
-        {% endfor %}
+        {% endfor %}                            
+        <td>{{senate.id}}</td>
         <!-- for deleting -->
-        <td><form method="POST" action="{% url 'academic_information:deleteSenator' %}">{% csrf_token %}<button type="submit" name= "delete" value="{{senate.id}}"> Delete </button></form></td>                                                
+        <td><a id='delete-senate-{{senate.id}}' method="DELETE"><button>delete me</button></form></td>                                                
         </tr>
         {% endfor %}
         {% endif %}
@@ -84,7 +84,7 @@
     <tbody>
         <tr>
         <td>{{Dean.user.username}}</td>
-        <td>DEAN</td>
+        <td>Dean</td>
         <td>{{Dean.department}}</td>
         </tr>
     </tbody>

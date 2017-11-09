@@ -14,6 +14,7 @@ from .models import (Course, Exam_timetable, Grades, Meeting, Student,
 
 def homepage(request):
     form = MinuteForm()
+
     try:
         s = Designation.objects.get(name='senate')
         v = Designation.objects.get(name='Convenor')
@@ -27,7 +28,7 @@ def homepage(request):
         meetings = Meeting.objects.all()
         student = Student.objects.all()
         extra = ExtraInfo.objects.all()
-        course = Course.objects.all()
+        courses = Course.objects.all()
         timetable = Timetable.objects.all()
         exam_t = Exam_timetable.objects.all()
         grade = Grades.objects.all()
@@ -38,8 +39,10 @@ def homepage(request):
         CoConvenor = ""
         meetings = ""
         Dean = ""
+        student = ""
         grade = ""
-        course = ""
+        courses = ""
+        extra = ""
         exam_t = ""
         timetable = ""
     pass
@@ -55,7 +58,7 @@ def homepage(request):
          'student': student,
          'extra': extra,
          'grade': grade,
-         'courses': course,
+         'courses': courses,
          'exam': exam_t,
          'timetable': timetable,
     }
@@ -69,11 +72,16 @@ def homepage(request):
     return render(request, "ais/ais.html", context)
 
 
-def deleteSenator(request):
-    s = Designation.objects.get(name="senate")
-    student = ExtraInfo.objects.get(id=request.POST["delete"])
-    student.designation.remove(s)
-    return HttpResponse("Deleted")
+def deleteSenator(request,pk):
+    try:
+        s = Designation.objects.get(name="senate")
+        student = ExtraInfo.objects.get(id=request.POST["delete"])
+    except Post.DoesNotExist:
+        return HttpResponse(status=404)
+
+    if request.method == 'DELETE':
+        student.designation.remove(s)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @csrf_exempt
