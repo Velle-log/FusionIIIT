@@ -1,4 +1,6 @@
+{% extends 'globals/base.html' %}
 {% load static %}
+{% block body %}
 {% block respondtorequests %}
 
     <div class="ui pointing secondary menu">
@@ -26,6 +28,10 @@
                 <thead>
                 <tr>
                     <th class="four wide">
+                        App Date
+                    </th>
+
+                    <th class="four wide">
                         Student
                     </th>
 
@@ -52,81 +58,52 @@
                 </thead>
 
                 <tbody>
+                    {% for item in leave %}
                 <tr>
+                    <th>
+                        {{item.app_date}}
+                    </th>
                     <td>
                         <h4 class="ui image header">
                             <img src="{% static 'globals/img/zlatan.jpg' %}" class="ui mini circular image">
                             <div class="content">
-                                Zlatan Ibrahimovic
-                                <div class="sub header">
+                                {{item.student_id}}
+                                <!-- <div class="sub header">
                                     2015121
-                                </div>
+                                </div> -->
                             </div>
                         </h4>
                     </td>
 
                     <td>
-                        Casual
+                        {{item.leave_type}}
                     </td>
 
                     <td>
-                        Visit to Home!
+                        {{item.purpose}}
                     </td>
 
                     <td>
-                        10 Aug'17
+                        {{item.start_date}}
                     </td>
 
                     <td>
-                        10 Jan'17
+                        {{item.end_date}}
                     </td>
 
                     <td>
+                        <form action="{{item.pk}}/response/" method="POST" >
+                        {% csrf_token %}
                         <div class="ui buttons">
-                            <button class="ui negative button">R</button>
+                            <button class="ui negative button" name="submit" value="reject" >R</button>
                             <div class="or"></div>
-                            <button class="ui positive button">A</button>
+                            <button class="ui positive button" name="submit" value="approve" >A</button>
                         </div>
+                        </form>
                     </td>
                 </tr>
+                {% endfor %}
 
-                <tr>
-                    <td>
-                        <h4 class="ui image header">
-                            <img src="{% static 'globals/img/zlatan.jpg' %}" class="ui mini circular image">
-                            <div class="content">
-                                Zlatan Ibrahimovic
-                                <div class="sub header">
-                                    2015121
-                                </div>
-                            </div>
-                        </h4>
-                    </td>
-
-                    <td>
-                        Vacation
-                    </td>
-
-                    <td>
-                        Visit to Home!
-                    </td>
-
-                    <td>
-                        10<sup>th</sup> Aug'17
-                    </td>
-
-                    <td>
-                        10<sup>th</sup> Jan'17
-                    </td>
-
-                    <td>
-                        <div class="ui buttons">
-                            <button class="ui negative button">R</button>
-                            <div class="or"></div>
-                            <button class="ui positive button">A</button>
-                        </div>
-                    </td>
-                </tr>
                 </tbody>
             </table>
 
@@ -204,39 +181,7 @@
                     </td>
                 </tr>
 
-                <tr>
-                    <td>
-                        <h4 class="ui image header">
-                            <img src="{% static 'globals/img/zlatan.jpg' %}" class="ui mini circular image">
-                            <div class="content">
-                                Zlatan Ibrahimovic
-                                <div class="sub header">
-                                    2015121
-                                </div>
-                            </div>
-                        </h4>
-                    </td>
-
-                    <td>
-                        Mata rani paap lagayegi!
-                    </td>
-
-                    <td>
-                        CM #1
-                    </td>
-
-                    <td>
-                        CM #2
-                    </td>
-
-                    <td>
-                        <div class="ui buttons">
-                            <button class="ui negative button">R</button>
-                            <div class="or"></div>
-                            <button class="ui positive button">A</button>
-                        </div>
-                    </td>
-                </tr>
+                
                 </tbody>
             </table>
 
@@ -247,4 +192,5 @@
         </div>
     </div>
 
+{% endblock %}
 {% endblock %}

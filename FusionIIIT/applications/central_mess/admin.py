@@ -1,8 +1,8 @@
 from django.contrib import admin
 
 from .models import (Feedback, Menu, Menu_change_request, Mess, Mess_meeting,
-                     Monthly_bill, Nonveg_data, Nonveg_menu, Payments, Rebate,
-                     Special_request, Vacation_food)
+                     Mess_minutes, Monthly_bill, Nonveg_data, Nonveg_menu,
+                     Payments, Rebate, Special_request, Vacation_food)
 
 # Register your models here.
 
@@ -128,7 +128,16 @@ class Mess_meetingAdmin(admin.ModelAdmin):
         ('meeting_time', {'fields': ['meeting_time']}),
         ('mess_minutes', {'fields': ['mess_minutes']}),
         ]
-    list_display = ('meeting_date', 'agenda', 'venue', 'meeting_time', 'mess_minutes')
+    list_display = ('meeting_date', 'agenda', 'venue', 'meeting_time')
+
+
+class Mess_minutesAdmin(admin.ModelAdmin):
+    model = Mess_meeting
+    fieldsets = [
+        ('meeting_date', {'fields': ['meeting_date']}),
+        ('mess_minutes', {'fields': ['mess_minutes']}),
+        ]
+    list_display = ('meeting_date', 'mess_minutes')
 
 
 class FeedbackAdmin(admin.ModelAdmin):
@@ -152,5 +161,6 @@ admin.site.register(Special_request, Special_requestAdmin),
 admin.site.register(Nonveg_menu, Nonveg_menuAdmin),
 admin.site.register(Nonveg_data, Nonveg_dataAdmin),
 admin.site.register(Mess_meeting, Mess_meetingAdmin),
+admin.site.register(Mess_minutes, Mess_minutesAdmin),
 admin.site.register(Feedback, FeedbackAdmin),
 admin.site.register(Menu_change_request, Menu_change_requestAdmin)
