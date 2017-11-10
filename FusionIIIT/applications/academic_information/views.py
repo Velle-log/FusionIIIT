@@ -135,14 +135,14 @@ def delete2(request):
 
 
 def add_attendance(request):
-    if request.method == 'POST':
+    if request.method == 'POST':                            # view to add attendance data to database
 
         s_id = request.POST.get('student_id')
         c_id = request.POST.get('course_id')
 
         context = {}
         try:
-            student_id = Student.objects.get(id_id=s_id)
+            student_id = Student.objects.get(id_id=s_id)    # validating student data
         except:
             error_mess = "Student Data Not Found"
             context['result'] = 'Failure'
@@ -150,7 +150,7 @@ def add_attendance(request):
             return HttpResponse(json.dumps(context), content_type='add_attendance/json')
 
         try:
-            course_id = Course.objects.get(course_id=c_id)
+            course_id = Course.objects.get(course_id=c_id)      # validating course data
         except:
             error_mess = "Course Data Not Found"
             context['result'] = 'Failure'
@@ -160,23 +160,23 @@ def add_attendance(request):
         present_attend = int(request.POST.get('present_attend'))
         total_attend = int(request.POST.get('total_attend'))
 
-        if present_attend > total_attend:
+        if present_attend > total_attend:                       # checking attendance data
             error_mess = "Present attendance should not be greater than Total attendance"
             context['result'] = 'Failure'
             context['message'] = error_mess
             return HttpResponse(json.dumps(context), content_type='add_attendance/json')
 
-        try:
+        try:                                                    # if student already exists in attendance database
             student_attend = Student_attendance.objects.get(student_id_id=student_id,course_id_id=course_id)
             student_attend.present_attend=present_attend
-            student_attend.total_attend=total_attend
+            student_attend.total_attend=total_attend             # update attendance record
             success_mess = "Your Data has been successfully edited"
             student_attend.save()
-        except:
+        except:                                                # if student does not exists in attendance database
             student_attend=Student_attendance()
             student_attend.course_id=course_id
             student_attend.student_id=student_id
-            student_attend.present_attend = present_attend
+            student_attend.present_attend = present_attend       # add student in attendance database
             student_attend.total_attend = total_attend
             success_mess = "Your Data has been successfully added"
             student_attend.save()
@@ -184,13 +184,13 @@ def add_attendance(request):
 
         context['result'] = 'Success'
         context['message'] = success_mess
-        return HttpResponse(json.dumps(context), content_type='add_attendance/json')
+        return HttpResponse(json.dumps(context), content_type='add_attendance/json')        # return response
 
 
-def get_attendance(request):
+def get_attendance(request):                            # view to fetch attendance data
     course_id = request.GET.get('course_id')
 
-    c_id = Course.objects.get(course_id=course_id)
+    c_id = Course.objects.get(course_id=course_id)      # get the course data
     data = Student_attendance.objects.filter(course_id_id=c_id).values_list('course_id_id',
                                                                             'student_id_id',
                                                                             'present_attend',
@@ -219,16 +219,16 @@ def get_attendance(request):
     return HttpResponse(json.dumps(context), content_type='get_attendance/json')
 
 
-def delete_attendance(request):
-    print('check this out')
-    course_id=request.GET.get('course_id')
+def delete_attendance(request):             # view to delete attendance data
+    
+    course_id=request.GET.get('course_id')              # fetching attendance data to delete
     student_id=request.GET.get('student_id')
     c_id=Course.objects.get(course_id=course_id)
     student_attend=Student_attendance.objects.get(student_id_id=student_id,course_id_id=c_id)
     student_attend.delete()
     context={}
     context['result']='Success'
-    return HttpResponse(json.dumps(context), content_type='delete_attendance/json')
+    return HttpResponse(json.dumps(context), content_type='delete_attendance/json')         # return response
 
 
 def deleteMinute(request):
