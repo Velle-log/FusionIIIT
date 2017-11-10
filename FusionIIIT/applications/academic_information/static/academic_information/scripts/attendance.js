@@ -22,7 +22,6 @@ $(document).ready(function () {
                         }
                         else{
                             alert(response.message);
-                            alert(element);
                         }
 
                     }
@@ -36,14 +35,14 @@ $(document).ready(function () {
             });
 
             
-            $('#cse_courses').on('click','.item',function (event) {
+            $('#select_courses').on('click','.item',function (event) {
 
                 event.preventDefault();
                 var course_code=$(this).data('course');
                 alert(course_code);
-                $('#cse_table tbody').find("tr:gt(0)").remove();
+                $('#attend_table tbody').find("tr:gt(0)").remove();
 
-                element = $('#cse_table tbody tr').last();
+                element = $('#attend_table tbody tr').last();
                 $.ajax({
                     url: 'get_attendance',
                     type: 'GET',
@@ -68,20 +67,12 @@ $(document).ready(function () {
                             '<td>' + programme + '</td>' +
                             '<td>' + course + '</td>' +
                             '<td>' + attend_percent + '</td>'+
-                            '<td>  <i class="refresh icon" style="font-size:1.3vw"></i>' +
-                            '<button type="submit" id="'+roll+'"> <i class="trash outline icon" style="font-size:1.3vw"></i> </button></td>' ;
+                            '<td> <a onclick=""> <i  class="edit icon" style="font-size:1.3vw ; color:blue;"></i></a> &ensp; <a class="centered raised item" href=""> <i id="bt" class="trash outline icon" style="font-size:1.3vw; color:red;"></i><br></a></td>';
 
                             txt +='</tr>';
                             element.after(txt);
                         }
 
-                        console.log(response.stud_data.name.length);
-                        console.log(response.tuples.length);
-
-
-
-
-   
                     },
                     error: function (response) {
 
