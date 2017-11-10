@@ -47,26 +47,22 @@
     <tbody id='senate_list'>
         {% if senates %}
         {% for senate in senates%}                      
-        <tr id='senate-{{senate.id}}'>
-        <td>{{senate.user.username}} </td>
-        {% for s in students %}
-        {% if s.id == senate %}                       
-            <td>{{s.programme}} </td>
-        {% endif %}
-        {% endfor %}                            
-        <td>{{senate.id}}</td>
-        <!-- for deleting -->
-        <td><a id='delete-senate-{{senate.id}}' method="DELETE"><button>delete me</button></form></td>                                                
-        </tr>
+            <tr id='senate-{{senate.id}}'>
+            <td>{{senate.user.username}} </td>
+            {% for s in students %}
+            {% if s.id == senate %}                       
+                <td>{{s.programme}} </td>
+            {% endif %}
+            {% endfor %}                            
+            <td>{{senate.id}}</td>
+            <!-- for deleting -->
+            <td><a id='remove-senate-{{senate.id}}'><button>Remove</button></a></td>                                                
+            </tr>
         {% endfor %}
         {% endif %}
     </tbody>                 
     </table>               
     </div>   
-    {% block javascript %}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
-        <script src="{% static 'academic_information/scripts/senate_members.js' %}" type="text/javascript"></script>
-    {% endblock %}
 
     <!-- office bearers -->
     <div class="ui  tab segment" data-tab="office">
@@ -85,32 +81,32 @@
         <tr>
         <td>{{Dean.user.username}}</td>
         <td>Dean</td>
-        <td>{{Dean.department}}</td>
+        <td>{{Dean.department.name}}</td>
         </tr>
     </tbody>
     </table>
 
-    <!-- students -->
+    <!-- students convenor-->
     <h4 class="ui dividing header">Edit Students</h4>
-    <form class="ui form" method="POST" action="{% url 'academic_information:add_convenor' %}">
+    <form class="ui form" method="POST" id="add-convenor">
             {% csrf_token %}
         <div class="field">
             <div class="three fields">
 
-            <div class="field">
-                <label>Roll Number</label>
-                <input placeholder="Roll Number" type="text" name="Roll Number">
-            </div>
+                    <div class="field">
+                            <label>Roll Number</label>
+                            <input placeholder="Roll Number" type="text" name="Roll Number" id = "rollno_convenor">
+                        </div>
 
             <div class="field">
                 <label>Designation</label>
                 <div class="ui fluid search selection dropdown">
-                <input type="hidden" name="Designation">
+                <input type="hidden" name="Designation" id="designation">
                     <i class="dropdown icon"></i>
                     <div class="default text">Designation</div>
                     <div class="menu">
                     <div class="item" data-value="Convenor" name="Convenor">Convenor</div>
-                    <div class="item" data-value="Co_Convenor" name="Co Convenor">Co_Convenor</div>
+                    <div class="item" data-value="Co Convenor" name="Co Convenor">Co Convenor</div>
                 </div>
             </div>
             </div>
@@ -118,7 +114,7 @@
             <div class="fields">
                     <div class="one wide field">
                     <label><br></label>
-                        <input type="submit" value="update" />
+                        <input type="submit" value="Update" />
                     </div> 
             </div>
 
@@ -136,28 +132,30 @@
         <th>Action</th>
         </tr>
     </thead>
-    <tbody>
-        <tr>
+    <tbody id='convenor_list'>        
         {% if Convenor %}
-        {% for Convenor in Convenor %}
-        <td>{{Convenor.user.username}}</td>
+        {% for c in Convenor %}
+        <tr id='convenor-{{c.id}}'>
+        <td>{{c.user.username}}</td>
         <td>Convener</td>
-        <td>{{Convenor.id}}</td>
-        <td><form method="POST" action="{% url 'academic_information:delete1' %}">{% csrf_token %}<button type="submit" name= "delete" value="{{Convenor.id}}"> Delete </button></form></td>
+        <td>{{c.id}}</td>
+        <td><a id='remove-convenor-{{c.id}}'><button>Remove</button></a></td>
         </tr>
         {% endfor %}
         {% endif %}
 
-        <tr>
+        
         {% if CoConvenor %}
-        {% for CoConvenor in CoConvenor %}
-        <td>{{CoConvenor.user.username}}</td>
-        <td>Convener</td>
-        <td>{{CoConvenor.id}}</td>
-        <td><form method="POST" action="{% url 'academic_information:delete2' %}">{% csrf_token %}<button type="submit" name= "delete" value="{{CoConvenor.id}}"> Delete </button></form></td>
+        {% for c in CoConvenor %}
+        <tr id='coconvenor-{{c.id}}'>
+        <td>{{c.user.username}}</td>
+        <td>Co Convener</td>
+        <td>{{c.id}}</td>
+        <td><a id='remove-coconvenor-{{c.id}}'><button>Remove</button></a></td>
+        </tr>
         {% endfor %}
         {% endif %}
-        </tr>
+       
     </tbody>
     </table>
 </div>
@@ -208,10 +206,7 @@
                    </tr>
                    {% endfor %}
                    {% endif %}
-                 </tbody>            
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
-<script src="{% static 'academic_information/scripts/minutes.js' %}" type="text/javascript"></script> -->
-
+                 </tbody>
                    <tfoot>
                           <tr>
                               <th colspan="8">
@@ -234,5 +229,13 @@
 
     
  </div>
+{% block javascript %}
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+ <script src="{% static 'academic_information/scripts/senate_members.js' %}" type="text/javascript"></script>
+
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+ <script src="{% static 'academic_information/scripts/office_bearers.js' %}" type="text/javascript"></script>
+{% endblock %}
+
 
 {% endblock %}

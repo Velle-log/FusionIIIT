@@ -3,7 +3,11 @@ import json
 from django.contrib import messages
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.decorators import api_view
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404
 
 from applications.globals.models import Designation, ExtraInfo
 
@@ -16,14 +20,14 @@ def homepage(request):
     form = MinuteForm()
 
     try:
-        s = Designation.objects.get(name='senate')
-        v = Designation.objects.get(name='Convenor')
-        t = Designation.objects.get(name='Co Convenor')
-        d = Designation.objects.get(name='Dean')
-        senates = ExtraInfo.objects.filter(designation=s)
-        Convenor = ExtraInfo.objects.filter(designation=v)
-        CoConvenor = ExtraInfo.objects.filter(designation=t)
-        Dean = ExtraInfo.objects.get(designation=d)
+        senator_des = Designation.objects.get(name='senate')
+        convenor_des = Designation.objects.get(name='Convenor')
+        coconvenor_des = Designation.objects.get(name='Co Convenor')
+        dean_des = Designation.objects.get(name='Dean')
+        senates = ExtraInfo.objects.filter(designation=senator_des)
+        Convenor = ExtraInfo.objects.filter(designation=convenor_des)
+        CoConvenor = ExtraInfo.objects.filter(designation=coconvenor_des)
+        Dean = ExtraInfo.objects.get(designation=dean_des)
         students = Student.objects.filter(id__in=senates)
         meetings = Meeting.objects.all()
         student = Student.objects.all()
@@ -72,18 +76,7 @@ def homepage(request):
     return render(request, "ais/ais.html", context)
 
 
-def deleteSenator(request,pk):
-    try:
-        s = Designation.objects.get(name="senate")
-        student = ExtraInfo.objects.get(id=request.POST["delete"])
-    except Post.DoesNotExist:
-        return HttpResponse(status=404)
-
-    if request.method == 'DELETE':
-        student.designation.remove(s)
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-
+###############senator##############################
 @csrf_exempt
 def senator(request):
     if request.method == 'POST':
@@ -104,34 +97,60 @@ def senator(request):
         data = {}
         return JsonResponse(data)
 
+@csrf_exempt
+def deleteSenator(request, pk):
+    s = get_object_or_404(Designation,name="senate")
+    student = get_object_or_404(ExtraInfo, id=pk)
+    student.designation.remove(s)
+    data = {}
+    return JsonResponse(data)
+#####################################################
 
+
+###########covenors and coconvenors##################
+@csrf_exempt
 def add_convenor(request):
     s = Designation.objects.get(name='Convenor')
     p = Designation.objects.get(name='Co Convenor')
     if request.method == 'POST':
-        extraInfo = ExtraInfo.objects.get(id=request.POST["Roll Number"])
-        result = request.POST["Designation"]
+        rollno = request.POST.get('rollno_convenor')
+        extraInfo = ExtraInfo.objects.get(id=rollno)
+        result = request.POST.get('designation')
         if result == "Convenor":
             extraInfo.designation.add(s)
             extraInfo.save()
+            designation = 'Convenor'
         else:
             extraInfo.designation.add(p)
             extraInfo.save()
-    return HttpResponse("Data Inputed")
+            designation = 'Co Convenor'
+        data = {
+            'name': extraInfo.user.username,
+            'rollno_convenor': extraInfo.id,
+            'designation': designation,
+        }
+        return JsonResponse(data)
+    else:
+        data = {}
+        return JsonResponse(data)
+    
 
-
-def delete1(request):
-    s = Designation.objects.get(name="Convenor")
-    student = ExtraInfo.objects.get(id=request.POST["delete"])
-    student.designation.remove(s)
-    return HttpResponse("Deleted")
-
-
-def delete2(request):
-    s = Designation.objects.get(name="CoConvenor")
-    student = ExtraInfo.objects.get(id=request.POST["delete"])
-    student.designation.remove(s)
-    return HttpResponse("Deleted")
+@csrf_exempt
+def deleteConvenor(request, pk):
+    s = get_object_or_404(Designation,name="Convenor")
+    c = get_object_or_404(Designation,name="Co Convenor")
+    student = get_object_or_404(ExtraInfo, id=pk)
+    if student.designation.remove(s):
+        designation = "Convenor"
+    else:
+        designation = "Co Convenor" 
+        student.designation.remove(c)
+    data = {
+        'id': pk,
+        'designation': designation,
+    }
+    return JsonResponse(data)
+#######################################################
 
 
 def add_attendance(request):
