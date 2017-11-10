@@ -6,8 +6,9 @@ from __future__ import unicode_literals
 from django.contrib.auth.decorators import login_required
 # from django.contrib.auth.models import PermissionsMixin, User
 from django.db import transaction
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
 from applications.academic_information.models import Student
 from applications.globals.models import ExtraInfo
@@ -93,6 +94,7 @@ def mess(request):
 
 
 @transaction.atomic
+@csrf_exempt
 def leaverequest(request):
     user = request.user
     extrainfo = ExtraInfo.objects.get(user=user)
@@ -104,7 +106,11 @@ def leaverequest(request):
     rebate_obj = Rebate(student_id=student, leave_type=leave_type, start_date=start_date,
                         end_date=end_date, purpose=purpose)
     rebate_obj.save()
-    return HttpResponseRedirect("/mess")
+    data = {
+            'status': 1,
+            # 'table': Rebate.objects.all(),
+    }
+    return JsonResponse(data)
 
 
 @login_required

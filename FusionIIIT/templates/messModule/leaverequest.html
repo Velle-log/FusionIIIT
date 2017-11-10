@@ -38,7 +38,7 @@
                         <div class="two fields">
                             <div class="twelve wide field">
                                 <label>Leave Type:</label>
-                                <select name="leave_type" class="ui search fluid dropdown" required="true">
+                                <select name="leave_type" class="ui search fluid dropdown" required="true" id="leave_type">
                                     {% comment %}
                                         TODO: A backend code to stop sending of empty values to database (SELECT OPTION)
                                     {% endcomment %}
@@ -54,7 +54,7 @@
 
                             <div class="field">
                                 <label><br></label>
-                                <button class="ui primary fluid button" type="submit">
+                                <button class="ui primary fluid button" type="submit" id="submit">
                                     Submit
                                 </button>
                             </div>
@@ -67,7 +67,7 @@
                             <!-- <div class="ui calendar" id="rangestart">
                                 <div class="ui input left icon">
                                     <i class="calendar icon"></i> -->
-                                    <input name="start_date" type="date" placeholder="From" required="true">
+                                    <input name="start_date" type="date" placeholder="From" required="true" id="start_date">
                                 <!-- </div>
                             </div> -->
                         </div>
@@ -77,7 +77,7 @@
                             <!-- <div class="ui calendar" id="rangeend">
                                 <div class="ui input left icon">
                                     <i class="calendar icon"></i> -->
-                                    <input name="end_date" type="date" placeholder="To" required="true">
+                                    <input name="end_date" type="date" placeholder="To" required="true" id="end_date">
                                 <!-- </div>
                             </div> -->
                         </div>
@@ -89,7 +89,7 @@
                     {% endcomment %}
                     <div class="field">
                         <label>Purpose:</label>
-                        <textarea name="purpose" rows="2" required="true"></textarea>
+                        <textarea name="purpose" rows="2" required="true" id="purpose"></textarea>
                         
                     </div>
 
@@ -150,7 +150,7 @@
                         </thead>
 
                         {% for item in rebates %}
-                        <tbody>
+                        <tbody id="ls_table">
                         <tr>
                             <td>
                                 {{item.app_date}}
@@ -216,5 +216,44 @@
 {%  endblock %}
 
 
+{% block javascript %}
 <script type="text/javascript" src="{% static 'globals/js/jquery.min.js' %}"></script>
-<script type="text/javascript">
+
+<script>
+$(document).ready(function() {
+    $('#submit').on('click',function(event){
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: 'leave/',
+                dataType: 'json',
+                data: {
+                    //'csrfmiddlewaretoken': '{{csrf_token}}',
+                    'leave_type':$("#leave_type").val(),
+                    'start_date':$("#start_date").val(),
+                    'end_date':$("#end_date").val(),
+                    'purpose':$("#purpose").val()
+                },                
+                success: function(data) {
+                    if(data.status){
+                        alert("Data Inserted Successfully");
+                        document.getElementById('leave_type').value="";
+                        document.getElementById('start_date').value="";
+                        document.getElementById('end_date').value="";
+                        document.getElementById('purpose').value="";
+                        /*$('#ls_table').prepend("<tr><td>"+table.leave_type"</td><td>"+table.start_date+"</td><td>"+table.end_date+
+                            "</td><td>"+table.purpose+"</td></tr>")*/
+                    }
+                },
+                error: function(data, err) {
+                    alert(err.message);
+                }
+            });
+        });
+
+});
+    
+
+
+</script>
+{% endblock %}

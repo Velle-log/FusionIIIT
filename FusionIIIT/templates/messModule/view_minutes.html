@@ -24,7 +24,7 @@
                     {% for item in minutes %}
                 <tr>
                     <td>{{item.meeting_date}}</td>
-                    <td>{{item.minutes}}</td>
+                    <td><a href="{{item.mess_minutes.url}}">{{item.mess_minutes}}</a></td>
                 </tr>
                 {% endfor %}
                 </tbody>
