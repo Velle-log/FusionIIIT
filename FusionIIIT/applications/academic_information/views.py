@@ -157,8 +157,8 @@ def add_attendance(request):
             context['message'] = error_mess
             return HttpResponse(json.dumps(context), content_type='add_attendance/json')
 
-        student_attend.present_attend = request.POST.get('present_attend')
-        student_attend.total_attend = request.POST.get('total_attend')
+        student_attend.present_attend = int(request.POST.get('present_attend'))
+        student_attend.total_attend = int(request.POST.get('total_attend'))
 
         if student_attend.present_attend > student_attend.total_attend:
             error_mess = "Present attendance should not be greater than Total attendance"
