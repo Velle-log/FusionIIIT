@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^delete2/$', views.delete2, name='delete2'),
     url(r'^deleteMinute/$', views.deleteMinute, name='deleteMinute'),
     url(r'^attendance', views.add_attendance, name="add_attendance"),
+    url(r'^delete_attendance', views.delete_attendance, name="delete_attendance"),
     url(r'^get_attendance', views.get_attendance, name="get_attendance"),
     url(r'^add_basic_profile/$', views.add_basic_profile, name='add_basic_profile'),
     url(r'^add_advanced_profile', views.add_advanced_profile, name='add_advanced_profile'),

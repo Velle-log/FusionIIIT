@@ -1,4 +1,46 @@
+
 $(document).ready(function () {
+
+
+            $('#attend_table').on('click','#edit_tag',function () {
+                var roll=$(this).parents('td').siblings()[2];
+
+                $('#attend_form,#student_id').val(roll.innerHTML);
+            });
+
+            $('#attend_table').on('click','#del_row',function (event) {
+                event.preventDefault();
+                var row_element=$(this).parents('td').parents('tr');
+                var roll=$(this).parents('td').siblings()[2];
+                var course_code=$(this).parents('td').siblings()[5];
+
+                $.ajax({
+                    url: 'delete_attendance',
+                    type: 'GET',
+                    data: {
+                        student_id: roll.innerHTML,
+                        course_id: course_code.innerHTML
+                    },
+                    success: function (response) {
+                        if(response.result==='Success'){
+                            alert('data deleted success fully')
+                            row_element.detach();
+                        }
+                        else{
+                            alert(response.message);
+                        }
+
+                    }
+                });
+
+
+
+
+
+
+            });
+
+
 
             $(document).on('submit','#attend_form',function (event) {
                 event.preventDefault();
@@ -67,7 +109,7 @@ $(document).ready(function () {
                             '<td>' + programme + '</td>' +
                             '<td>' + course + '</td>' +
                             '<td>' + attend_percent + '</td>'+
-                            '<td> <a onclick=""> <i  class="edit icon" style="font-size:1.3vw ; color:blue;"></i></a> &ensp; <a class="centered raised item" href=""> <i id="bt" class="trash outline icon" style="font-size:1.3vw; color:red;"></i><br></a></td>';
+                            '<td> <a id="edit_tag"> <i  class="edit icon" style="font-size:1.3vw ; color:blue;"></i></a> &ensp; <a class="centered raised item" id="del_row"> <i id="bt" class="trash outline icon" style="font-size:1.3vw; color:red;"></i><br></a></td>';
 
                             txt +='</tr>';
                             element.after(txt);

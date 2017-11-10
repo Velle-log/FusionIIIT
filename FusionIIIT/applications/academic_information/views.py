@@ -205,7 +205,16 @@ def get_attendance(request):
     return HttpResponse(json.dumps(context), content_type='get_attendance/json')
 
 
-
+def delete_attendance(request):
+    print('check this out')
+    course_id=request.GET.get('course_id')
+    student_id=request.GET.get('student_id')
+    c_id=Course.objects.get(course_id=course_id)
+    student_attend=Student_attendance.objects.filter(student_id_id=student_id,course_id_id=c_id)
+    print(student_attend[0].student_id_id)
+    context={}
+    context['result']='Success'
+    return HttpResponse(json.dumps(context), content_type='delete_attendance/json')
 
 
 def deleteMinute(request):
