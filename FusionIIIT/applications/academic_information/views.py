@@ -140,11 +140,13 @@ def deleteConvenor(request, pk):
     s = get_object_or_404(Designation,name="Convenor")
     c = get_object_or_404(Designation,name="Co Convenor")
     student = get_object_or_404(ExtraInfo, id=pk)
-    if student.designation.remove(s):
-        designation = "Convenor"
-    else:
-        designation = "Co Convenor" 
-        student.designation.remove(c)
+    for des in student.designation.all():
+        if des.name == s.name:
+            student.designation.remove(s)
+            designation = des.name
+        elif des.name == c.name:
+            designation = des.name 
+            student.designation.remove(c)
     data = {
         'id': pk,
         'designation': designation,

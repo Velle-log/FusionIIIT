@@ -84,14 +84,14 @@
             {% comment %}The Student Profile start here!{% endcomment %}
             <div class="ui active tab segment" data-tab="first">
                 {% block profile %}
-                    {% include 'ais/timetable.html' %}
+                    {% include 'ais/profile.html' %}
                 {% endblock %}
             </div>
 
             {% comment %}The Timetable starts here!{% endcomment %}
             <div class="ui tab segment" data-tab="second">
                 {% block timetable %}
-                    {% include 'ais/profile.html' %}
+                    {% include 'ais/timetable.html' %}
                 {% endblock %}
             </div>
 

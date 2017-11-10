@@ -64,7 +64,7 @@ class Student(models.Model):
 
 class Meeting(models.Model):
     date = models.DateField()
-    minutes_file = models.FileField(upload_to='documents/')
+    minutes_file = models.FileField(upload_to='Administrator/academic_information/')
 
     class Meta:
         db_table = 'Meeting'
