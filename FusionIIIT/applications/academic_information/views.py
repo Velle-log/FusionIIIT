@@ -230,49 +230,62 @@ def delete_basic_profile(request, pk):
 
 
 def add_attendance(request):
-    if request.method == 'POST':
-        student_attend = Student_attendance()
+    if request.method == 'POST':                            # view to add attendance data to database
+
         s_id = request.POST.get('student_id')
         c_id = request.POST.get('course_id')
-        print(s_id)
-        print(c_id)
+
         context = {}
         try:
-            student_attend.student_id = Student.objects.get(id_id=s_id)
+            student_id = Student.objects.get(id_id=s_id)    # validating student data
         except:
             error_mess = "Student Data Not Found"
             context['result'] = 'Failure'
             context['message'] = error_mess
-            messages.error(request, error_mess)
             return HttpResponse(json.dumps(context), content_type='add_attendance/json')
+
         try:
-            student_attend.course_id = Course.objects.get(course_id=c_id)
+            course_id = Course.objects.get(course_id=c_id)      # validating course data
         except:
             error_mess = "Course Data Not Found"
             context['result'] = 'Failure'
             context['message'] = error_mess
-            messages.error(request, error_mess)
             return HttpResponse(json.dumps(context), content_type='add_attendance/json')
-        student_attend.present_attend = request.POST.get('present_attend')
-        student_attend.total_attend = request.POST.get('total_attend')
-        if student_attend.present_attend > student_attend.total_attend:
+
+        present_attend = int(request.POST.get('present_attend'))
+        total_attend = int(request.POST.get('total_attend'))
+
+        if present_attend > total_attend:                       # checking attendance data
             error_mess = "Present attendance should not be greater than Total attendance"
             context['result'] = 'Failure'
             context['message'] = error_mess
             return HttpResponse(json.dumps(context), content_type='add_attendance/json')
-        success_mess = "Your Data has been successfully added"
-        messages.success(request, success_mess)
-        student_attend.save()
+
+        try:                                                    # if student already exists in attendance database
+            student_attend = Student_attendance.objects.get(student_id_id=student_id,course_id_id=course_id)
+            student_attend.present_attend=present_attend
+            student_attend.total_attend=total_attend             # update attendance record
+            success_mess = "Your Data has been successfully edited"
+            student_attend.save()
+        except:                                                # if student does not exists in attendance database
+            student_attend=Student_attendance()
+            student_attend.course_id=course_id
+            student_attend.student_id=student_id
+            student_attend.present_attend = present_attend       # add student in attendance database
+            student_attend.total_attend = total_attend
+            success_mess = "Your Data has been successfully added"
+            student_attend.save()
+
+
         context['result'] = 'Success'
         context['message'] = success_mess
-        messages.error(request, success_mess)
-        return HttpResponse(json.dumps(context), content_type='add_attendance/json')
+        return HttpResponse(json.dumps(context), content_type='add_attendance/json')        # return response
 
 
-def get_attendance(request):
+def get_attendance(request):                            # view to fetch attendance data
     course_id = request.GET.get('course_id')
-    print(course_id)
-    c_id = Course.objects.get(course_id=course_id)
+
+    c_id = Course.objects.get(course_id=course_id)      # get the course data
     data = Student_attendance.objects.filter(course_id_id=c_id).values_list('course_id_id',
                                                                             'student_id_id',
                                                                             'present_attend',
@@ -282,18 +295,14 @@ def get_attendance(request):
     stud_data['programme'] = []
     stud_data['batch'] = []
     for obj in data:
-        roll = data[0][1]
+        roll = obj[1]
         extra_info = ExtraInfo.objects.get(id=roll)
         s_id = Student.objects.get(id=extra_info)
-        s_name = s_id.name
-        s_programme = s_id.programme
-        s_batch = s_id.batch
-        print(s_name)
-        print(s_programme)
-        stud_data['name'].append(s_name)
-        stud_data['programme'].append(s_programme)
-        stud_data['batch'].append(s_batch)
-    print(stud_data)
+
+        stud_data['name'].append(s_id.name)
+        stud_data['programme'].append(s_id.programme)
+        stud_data['batch'].append(s_id.batch)
+
     context = {}
     try:
         context['result'] = 'Success'
@@ -301,12 +310,63 @@ def get_attendance(request):
         context['stud_data'] = stud_data
     except:
         context['result'] = 'Failure'
-    print(data[0][1])
-    print(stud_data['name'][0])
-    print(context)
+
     return HttpResponse(json.dumps(context), content_type='get_attendance/json')
 
 
+def delete_attendance(request):             # view to delete attendance data
+    
+    course_id=request.GET.get('course_id')              # fetching attendance data to delete
+    student_id=request.GET.get('student_id')
+    c_id=Course.objects.get(course_id=course_id)
+    student_attend=Student_attendance.objects.get(student_id_id=student_id,course_id_id=c_id)
+    student_attend.delete()
+    context={}
+    context['result']='Success'
+    return HttpResponse(json.dumps(context), content_type='delete_attendance/json')         # return response
+
+
+def deleteMinute(request):
+    minute = Meeting.objects.get(id=request.POST["delete"])
+    minute.delete()
+    return HttpResponse("Deleted")
+
+
+def add_basic_profile(request):
+    if request.method == "POST":
+        name = request.POST['name']
+        roll = ExtraInfo.objects.get(id=request.POST['roll'])
+        programme = request.POST['programme']
+        batch = request.POST['batch']
+        ph = request.POST['ph']
+        if not Student.objects.filter(id=roll).exists():
+            db = Student()
+            st = ExtraInfo.objects.get(id=roll.id)
+            db.name = name.upper()
+            db.id = roll
+            db.batch = batch
+            db.programme = programme
+            st.phone_no = ph
+            db.save()
+            st.save()
+        else:
+            return HttpResponse("Data Already Exists")
+    students = Student.objects.all()
+    extra = ExtraInfo.objects.all()
+    context = {
+        'students': students,
+        'extra': extra,
+    }
+    return render(request, "ais/ais.html", context)
+
+
+def delete_basic_profile(request):
+    if request.method == "POST":
+        if(Student.objects.get(id=request.POST['delete'])):
+            Student.objects.get(id=request.POST['delete']).delete()
+        else:
+            return HttpResponse("Id Does not exist")
+    return HttpResponse("Data Deleted Successfully")
 
 
 def delete_advanced_profile(request):

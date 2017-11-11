@@ -16,6 +16,7 @@ urlpatterns = [
     #----------------------------------------------#
     #-------------------attendance tab------------------#
     url(r'^attendance', views.add_attendance, name="add_attendance"),
+    url(r'^delete_attendance', views.delete_attendance, name="delete_attendance"),
     url(r'^get_attendance', views.get_attendance, name="get_attendance"),
     #----------------------------------------------#
     #-------------------------student profile tab---------------------#
