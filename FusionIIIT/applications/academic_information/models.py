@@ -37,9 +37,9 @@ class Course(models.Model):
     credits = models.IntegerField()
 
 
-class Meta:
-    db_table = 'Course'
-    unique_together = ('course_id', 'course_name', 'sem')
+    class Meta:
+        db_table = 'Course'
+        unique_together = ('course_id', 'course_name', 'sem')
 
     def __str__(self):
         return self.course_id
