@@ -169,7 +169,7 @@
 <!-- Minutes -->
 
     <div class="ui  tab segment" data-tab="minutes">
-        <form class="ui form" method="POST" enctype="multipart/form-data" id="minutes">
+        <form class="ui form" method="POST" enctype="multipart/form-data" action="{% url 'academic_information:addMinute' %}">
             {% csrf_token %}
                   <div class="field">
                     <div class="three fields">                       
@@ -198,10 +198,10 @@
                     </tr>
                   </thead>
                   
-                <tbody id='minute_list'>
+                <tbody>
                     {% if meetings %}
                     {% for meeting in meetings %}
-                  <tr id='minute-{{meeting.id}}'>
+                  <tr>
                     <td>{{ meeting.minutes_file.name }}</td>
                     <td>{{meeting.date}}</td>
                     <td><a href="{{ meeting.minutes_file.url }}">
@@ -211,7 +211,7 @@
                         </div>
                     </a>
                     </td>
-                    <td><a id='remove-minute-{{meeting.id}}'><button>Remove</button></a></td>
+                    <td><form method="POST" action="{% url 'academic_information:deleteMinute' %}">{% csrf_token %}<button type="submit" name= "delete" value="{{meeting.id}}"> Delete </button></form></td>
                    </tr>
                    {% endfor %}
                    {% endif %}

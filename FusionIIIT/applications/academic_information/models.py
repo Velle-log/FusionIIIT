@@ -36,7 +36,6 @@ class Course(models.Model):
     sem = models.IntegerField()
     credits = models.IntegerField()
 
-
     class Meta:
         db_table = 'Course'
         unique_together = ('course_id', 'course_name', 'sem')

@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Meeting, Timetable, Exam_timetable
+from .models import Exam_timetable, Meeting, Timetable
 
 
 class MinuteForm(forms.ModelForm):
@@ -8,10 +8,12 @@ class MinuteForm(forms.ModelForm):
         model = Meeting
         fields = ('date', 'minutes_file', )
 
+
 class AcademicTimetableForm(forms.ModelForm):
     class Meta:
         model = Timetable
         fields = ('year', 'programme', 'time_table',)
+
 
 class ExamTimetableForm(forms.ModelForm):
     class Meta:
