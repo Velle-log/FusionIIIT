@@ -16,6 +16,11 @@ urlpatterns = [
     url(r'^(?P<course_code>[A-z]+[0-9]+)/create_quiz/$', views.create_quiz, name='create_quiz'),
     url(r'^(?P<course_code>[A-z]+[0-9]+)/edit_quiz/(?P<quiz_code>[0-9]+)/$',
         views.edit_quiz, name='edit_quiz'),
+    
+#    url(r'^(?P<course_code>[A-z]+[0-9]+)/create_prac_quiz/$', views.create_prac_quiz, name='create_prac_quiz'),
+#    url(r'^(?P<course_code>[A-z]+[0-9]+)/edit_prac_quiz/(?P<quiz_code>[0-9]+)/$',
+#        views.edit_prac_quiz, name='edit_prac_quiz'),
+    
     url(r'^(?P<course_code>[A-z]+[0-9]+)/edit_quiz_details/(?P<quiz_code>[0-9]+)/$',
         views.edit_quiz_details, name='edit_quiz_details'),
     url(r'^(?P<quiz_code>[0-9]+)/ajax$', views.ajax_q, name='ajax_q'),

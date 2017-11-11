@@ -18,52 +18,15 @@ Edit Contest
     <div class="ui grid">
         <div class="centered fourteen wide column" style="margin-top:10em;margin-bottom:10em">
             <h2 class="ui center aligned icon header">
-                <i class=" circular file text icon"></i> {{details.quiz_name}}
+                <i class=" circular file text icon"></i> {{details.prac_quiz_name}}
             </h2>
             <div class="ui segment centered fourteen wide column" style="margin-top:5em;margin-bottom:10em">
                 <div class="ui huge list">
                     <div class="item">
                         <div class="header">Description</div>
-                        {% for x in description %}
-                        <p>{{forloop.counter}}){{x}}</p>
-                        {% endfor %}
+                        {{description}}
                     </div>
-                    <div class="item">
-                        <div class="header">Rules</div>
-                        {% for x in rules %}
-                        <p>{{forloop.counter}}){{x}}</p>
-                        {% endfor %}
-                    </div>
-
-                    <div class="item">
-                        <div class="header">Start Time <a class="edit_contest" data-id="edit1"> <i class="edit icon"></i></a></div>
-                        {{details.start_time}}
-                    </div>
-                    <form class="ui form"  id='edit1' style="display:none">
-                      <div class="ui calendar field" >
-                          <label>Start Time</label><br>
-                          {{ form1.startdate }}<br>
-                          <div class="ui input left icon">
-                              <i class="hourglass empty icon"></i>  {{ form1.starttime}}
-                          </div>
-                      </div>
-                      <a class="ui primary button form_submit"data-id="edit1" id="submit_edit1">Submit</a>
-                    </form>
-
-                    <div class="item">
-                        <div class="header">End Time <a class="edit_contest" data-id="edit2"> <i class="edit icon"></i></a></div>
-                        {{details.end_time}}
-                    </div>
-                    <form class="ui form"  id='edit2' style="display:none">
-                    <div class="ui calendar field" >
-                        <label>End Time</label><br>
-                         {{ form1.enddate }}<br>
-                        <div class="ui input left icon">
-                            <i class="hourglass full icon"></i> {{ form1.endtime}}
-                        </div>
-                    </div>
-                    <a class="ui primary button form_submit" data-id="edit2" id="submit_edit2">Submit</a>
-                  </form>
+                    
 
                     <div class="item">
                         <div class="header">Number of Questions <a class="edit_contest" data-id="edit3"> <i class="edit icon"></i></a></div>

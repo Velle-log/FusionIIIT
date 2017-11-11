@@ -40,6 +40,13 @@ class QuizForm(forms.Form):
             raise forms.ValidationError("Start Date but me before End Date")
         return self.cleaned_data
 
+class PracticeQuizForm(forms.Form):
+    name=forms.CharField(label='Practice Quiz Name', max_length=20,widget=forms.TextInput(attrs={'placeholder':'Name'}))    
+    negative_marks=forms.FloatField(label='Penalty',required=False)
+    description=forms.CharField(label='description',max_length=1500,widget=forms.Textarea(attrs={'placeholder':'Description'}))
+    number_of_questions=forms.IntegerField(label='Number Of Questions')
+    per_question_score=forms.IntegerField()
+    
 class QuestionFormObjective(forms.Form):
 
     problem_statement=forms.CharField(label='Question',max_length=1000,widget=forms.Textarea(attrs={'placeholder':'Description'}))

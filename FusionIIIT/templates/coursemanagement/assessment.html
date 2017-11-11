@@ -54,16 +54,16 @@
                     <td>
                       <a class="ui primary button" href="{{sa.upload_url}}">Download</a>
                     </td>
-                    <td>
+                    <td >
                       {% if sa.score %}
-                        {{sa.score}}
+                        <span id="score{{sa.pk}}">{{sa.score}}</span>
                       {% else %}
                         -
                       {% endif %}
                     </td>
-                    <td>
+                    <td >
                       {% if sa.feedback %}
-                        {{sa.feedback}}
+                        <p id="feedback{{sa.pk}}">{{sa.feedback}}</p>
                       {% else %}
                         -
                       {% endif %}
@@ -77,4 +77,8 @@
     </div>
     {% endfor %}
 </div>
+<script>
+    
+</script>
+
 {% endblock %}

@@ -1,7 +1,9 @@
 {% extends 'globals/base.html' %}
 {% load static %}
+<!--
 <link href="http://vjs.zencdn.net/5.8.8/video-js.css" rel="stylesheet">
 <script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+-->
 {% block title %}
     Course Management
 {% endblock %}
@@ -264,22 +266,26 @@
                 </div>
                 <div class="ui tab" id="2" data-tab="assignment" style="display:none">
                 <div class="ui pointing secondary menu">
+<!--
                     <a class="active item assitabs" data-number="21" data-tab="practice">
                      Practice
                    </a>
+-->
 
-                    <a class="item assitabs" data-number="22" data-tab="submitassignment">
+                    <a class="active item assitabs" data-number="21" data-tab="submitassignment">
                      Submit
                    </a>
                 </div>
 
+<!--
                 <div class="ui active tab segment box" id="21" data-tab="practice">
 
                     <h4 class="ui dividing header">Practice</h4>
 
                 </div>
+-->
 
-                <div class="ui tab segment box" id="22" data-tab="submitassignment">
+                <div class="ui active tab segment box" id="21" data-tab="submitassignment">
 
                     <h4 class="ui dividing header">Submitable Assignments </h4>
 
@@ -327,7 +333,7 @@
                                     <div class="header">
                                         {{video.video_name}}
                                     </div>
-                                    <video width="400" onclick="play_pause(this)"  loop controls="" style="height:35em;width:50em">
+                                    <video width="400" id="videoPlayer" onclick="play_pause(this)"  loop controls="" style="height:35em;width:50em">
                                       <source src="{{video.video_url}}.mp4" type="video/mp4">
                                         Your browser does not support HTML5 video.
                                     </video>
@@ -399,12 +405,7 @@
             </div>
         </div>
         <div class="three wide column">
-            <div class="row">
-
-                {% block note %} {% include 'coursemanagement/note.html' %} {% endblock %}
-            </div>
-            <div class="row" style="margin-top:1em">
-
+            <div class="row" style="margin-top:1em;">
                 {% block comments %} {% include 'coursemanagement/comments.html' %} {% endblock %}
             </div>
 
@@ -417,20 +418,27 @@
 {% endblock %}
 
 {% block javascript %}
+     <script type="text/javascript" src="{% static 'globals/js/jquery.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'globals/js/editProfile.js' %}"></script>
     <script type="text/javascript" src="{% static 'globals/js/tablesort.js' %}"></script>
-    <script type="text/javascript" src="{% static 'globals/js/jquery.min.js' %}"></script>
+   
     <script type="text/javascript" src="{% static 'globals/js/semantic.min.js' %}"></script>
     <!-- <script>
         $(document).ready(function() {
             $('table').tablesort();
         });
     </script> -->
-
+    
     <script>
+         $(".pointing.pagination.menu")
+            .tab()
+        ;
+        
+    
     function assess_student(element){
       if(event.key === 'Enter') {
         var pk=element.getAttribute("data-assign");
+                
         var csrf = $('input[name=csrfmiddlewaretoken]').val();
         // alert(pk);
         $.ajax({
@@ -442,7 +450,8 @@
                 'csrfmiddlewaretoken': csrf
             },
             success: function(data) {
-                alert(data)
+                alert(data);
+                $('#score'+pk).text(element.value);
             },
             error: function(data, err) {
                 alert(err.message);
@@ -450,16 +459,18 @@
         });
       }
     }
-    function play_pause(element){
-      var vid = document.getElementById("myVideo");
-      var video=$(vid);
-      video.addEventListener('playing', function(){
-          video.play();
-    })
-     video.addEventListener('pause', function(){
-           video.pause();
-    })
-    }
+//    function play_pause(element){
+//      var vid = document.getElementById("videoPlayer");
+//       var button = document.getElementById("play");
+//    if (vid.paused) {
+//          vid.play();
+////          button.textContent = "||";
+//       } else {
+//          vid.pause();
+////          button.textContent = ">";
+//       }
+//      
+//    }
     function assess_feedback(element){
       if(event.key === 'Enter') {
         var pk=element.getAttribute("data-feedback");
@@ -474,7 +485,8 @@
                 'csrfmiddlewaretoken': csrf
             },
             success: function(data) {
-                alert(data)
+                alert(data);
+                
             },
             error: function(data, err) {
                 alert(err.message);
@@ -632,6 +644,7 @@
           .modal('show');
       });
     </script>
+
     <script type="text/javascript">
       //reseting the form
       function resetForm($form1) {
@@ -667,7 +680,7 @@
                         '" id = "remove' + data.pk + '"name = "remove' + data.pk + '">remove</a></div></div></div><div class="comments answer" style="padding:10px"><div class="ui form field" style="margin-bottom:10px"><input type="text" onkeydown="key_down(this)" id="reply_n_' + data.pk + '" data-pk="' + data.pk + '" name="comment' + data.pk + '" placeholder="Enter Your Comment"></div><input type="submit" id="button_r' + data.pk + '" onclick="reply_q(this)" class="ui blue submit button submit_r" data-pk="' + data.pk + '" name="submit" value="Reply"></input></div>').insertBefore(parent);
                 },
                 error: function(data, err) {
-                    alert(err.message);
+                    alert("err");
                 }
             });
         } else {
@@ -939,6 +952,9 @@
             }
         });
     });
+        
+       
+    
 </script>
 
 

@@ -66,6 +66,37 @@ class QuizQuestion(models.Model):
             self.options2, self.options3, self.options4,
             self.options5, self.answer, self.announcement)
 
+    
+class Practice(models.Model):
+    course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
+    prac_quiz_name = models.CharField(max_length=20)
+    negative_marks = models.FloatField(default=0)
+    number_of_question = models.IntegerField(default=0)
+    description = models.TextField(max_length=1000)
+    total_score = models.IntegerField(default=0)
+
+    def __str__(self):
+        return '{} - {} - {} - {} - {}'.format(
+                self.pk, self.course_id,
+                self.negative_marks)
+
+
+class PracticeQuestion(models.Model):
+    prac_quiz_id = models.ForeignKey(Practice, on_delete=models.CASCADE)
+    question = models.TextField(max_length=1000)
+    options1 = models.CharField(null=True, max_length=100)
+    options2 = models.CharField(null=True, max_length=100)
+    options3 = models.CharField(null=True, max_length=100)
+    options4 = models.CharField(null=True, max_length=100)
+    options5 = models.CharField(null=True, max_length=100)
+    answer = models.IntegerField()
+    image = models.TextField(max_length=1000, null=True)
+
+    def __str__(self):
+        return '{} - {} - {} - {} - {} - {} - {} - {} - {}'.format(
+            self.pk, self.quiz_id, self.options1,
+            self.options2, self.options3, self.options4,
+            self.options5, self.answer, self.announcement)
 
 class StudentAnswer(models.Model):
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)

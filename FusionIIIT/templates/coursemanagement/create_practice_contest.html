@@ -68,33 +68,13 @@ Create Contest
 
             </div>
 
-            <label>Start Date</label> {{ form.startdate }}
-
-            <div class="ui calendar field" id='example6'>
-                <label>Start Time</label>
-                <div class="ui input left icon">
-                    <i class="hourglass empty icon"></i> {{ form.starttime}}
-                </div>
-            </div>
-            <label>End Date</label> {{ form.enddate }}
-            <div class="ui calendar field" id='example7'>
-                <label>End Time</label>
-                <div class="ui input left icon">
-                    <i class="hourglass full icon"></i> {{ form.endtime}}
-                </div>
-            </div>
             <div class="ui calendar field">
                 <label>Description</label>
                 <div class="ui input left icon">
                     <i class="comments icon"></i> {{ form.description }}
                 </div>
             </div>
-            <div class="ui calendar field">
-                <label>Rules And Regulations</label>
-                <div class="ui input left icon">
-                    {{ form.rules }}
-                </div>
-            </div>
+            
             <div class="ui field">
                 <label>Number Of Questions</label>
                 <div class="ui input">
@@ -118,49 +98,12 @@ Create Contest
         </div>
         
     </div>
-<!--
-    <div class="three wide column">
-        <div class="row">
 
-            {% block note %} {% include 'coursemanagement/note.html' %} {% endblock %}
-        </div>
-    </div>
--->
     <div class="column"></div>
 
 </div>
 
-{% endblock %} {% block Javascript %} {% if user.is_authenticated %}
-<script src="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.js"></script>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-        window.history.pushState(null, "", window.location.href);
-        window.onpopstate = function() {
-            window.history.pushState(null, "", window.location.href);
-        };
-    });
-
-</script>
-
-{% endif %}
-<script>
-    $('#example2').calendar({
-        type: 'date'
-    });
-    $('#example3').calendar({
-        type: 'time'
-    });
-    $('#example6').calendar({
-        ampm: false,
-        type: 'time'
-    });
-    $('#example7').calendar({
-        ampm: false,
-        type: 'time'
-    });
-
-</script>
 
 <script type="text/javascript">
     $(document).ready(function() {

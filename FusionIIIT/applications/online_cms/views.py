@@ -353,8 +353,10 @@ def ajax_new(request, course_code):
     f.save()
     name = request.user.first_name + " " + request.user.last_name
     time = f.comment_time.strftime('%b. %d, %Y, %I:%M %P')
+    
     data = {'pk': f.pk, 'question': f.comment, 'replier': f.commenter_id.user.username,
             'time': time, 'name': name}
+    print(f.pk)
     return HttpResponse(json.dumps(data), content_type='application/json')
 
 
@@ -415,7 +417,7 @@ def add_assignment(request, course_code):
             cmd = "mkdir " + full_path
             subprocess.call(cmd, shell=True)
         fs = FileSystemStorage(full_path, url)
-        fs.save(assi.name, assi)
+        fs.save(filename+file_extenstion, assi)
         uploaded_file_url = "/media/online_cms/" + course_code + "/assi/"
         uploaded_file_url = uploaded_file_url + name + "/" + name + file_extenstion
         name = request.POST.get('name')
@@ -429,6 +431,7 @@ def add_assignment(request, course_code):
         return HttpResponse("Upload successful.")
     else:
         return HttpResponse("not found")
+
 
 
 @login_required
@@ -502,6 +505,42 @@ def submit(request, quiz_code):
     data = {'message': 'you have submitted, cant enter again now', 'score': quiz_res.score}
     return HttpResponse(json.dumps(data), content_type="application/json")
 
+#@login_required
+#def create_prac_quiz(request, course_code):
+#    extrainfo = ExtraInfo.objects.get(user=request.user)
+#    print("tatti")
+#    if extrainfo.user_type == 'faculty':
+#        instructor = Instructor.objects.filter(instructor_id=extrainfo)
+#        for ins in instructor:
+#            if ins.course_id.course_id == course_code:
+#                course = ins.course_id
+#        form = PracticeQuizForm(request.POST or None)
+#        errors = None
+#        if form.is_valid():
+#            total_score = form.cleaned_data[
+#                'number_of_questions'] * form.cleaned_data[
+#                'per_question_score']
+#            description = form.cleaned_data['description']
+#            obj = Practice.objects.create(
+#                course_id=course,
+#                prac_quiz_name=form.cleaned_data['name'],
+#                description=description,
+#                number_of_question=form.cleaned_data['number_of_questions'],
+#                negative_marks=form.cleaned_data['negative_marks'],
+#                total_score=total_score
+#                            )
+#            # print "Done"
+#            return redirect('/ocms/' + course_code + '/edit_prac_quiz/' + str(obj.pk))
+#            '''except:
+#                return HttpResponse('Unexpected Error')'''
+#        if form.errors:
+#            errors = form.errors
+#        print("ASDAS")
+#        return render(request, 'coursemanagement/create_practice_contest.html',
+#                      {'form': form, 'errors': errors})
+#
+#    else:
+#        return HttpResponse("unautherized Access!!It will be reported!!")
 
 @login_required
 def create_quiz(request, course_code):
@@ -597,7 +636,79 @@ def edit_quiz_details(request, course_code, quiz_code):
 
     else:
         return HttpResponse("unautherized Access!!It will be reported!!")
-
+    
+#@login_required
+#def edit_prac_quiz(request, course_code, quiz_code):
+#    extrainfo = ExtraInfo.objects.get(user=request.user)
+#    if extrainfo.user_type == 'faculty':
+#        instructor = Instructor.objects.filter(instructor_id=extrainfo)
+#        for ins in instructor:
+#            if ins.course_id.course_id == course_code:
+#                course = ins.course_id
+#        # errors = None
+#        practice = Practice.objects.get(pk=quiz_code)
+#        if request.method == 'POST':
+#            print (practice)
+#            form = QuestionFormObjective(request.POST, request.FILES)
+#            if(form.is_valid()):
+#                
+#                
+#                options1 = form.cleaned_data['option1']
+#                options2 = form.cleaned_data['option2']
+#                options3 = form.cleaned_data['option3']
+#                options4 = form.cleaned_data['option4']
+#                options5 = form.cleaned_data['option5']
+#                question = form.cleaned_data['problem_statement']
+#                marks = form.cleaned_data['score']
+#                answer = form.cleaned_data['answer']
+#                try:
+#                    filename, file_extenstion = os.path.splitext(request.FILES['image'].name)
+#                    image = request.FILES['image']
+#                    full_path = settings.MEDIA_ROOT + "/online_cms/" + course_code
+#                    full_path = full_path + "/practice_quiz/" + quiz_code + "/"
+#                    url = settings.MEDIA_URL + filename
+#                    if not os.path.isdir(full_path):
+#                        cmd = "mkdir " + full_path
+#                        subprocess.call(cmd, shell=True)
+#                    fs = FileSystemStorage(full_path, url)
+#                    fs.save(image.name, image)
+#                    uploaded_file_url = "/media/online_cms/" + course_code
+#                    uploaded_file_url = uploaded_file_url + "/practice_quiz/" + quiz_code + "/" + image.name
+#                    PracticeQuestion.objects.create(prac_quiz_id=practice, image=uploaded_file_url,
+#                                            question=question,
+#                                            answer=answer,
+#                                            options1=options1, options2=options2,
+#                                            options3=options3, options4=options4,
+#                                            options5=options5)
+#                except:
+#                    PracticeQuestion.objects.create(prac_quiz_id=quiz,
+#                                            question=question,
+#                                            answer=answer,
+#                                            options1=options1, options2=options2,
+#                                            options3=options3, options4=options4,
+#                                            options5=options5)
+#            
+#                practice.total_score += form.cleaned_data['score']
+#                practice.save()
+#                PracticeQuestion.objects.filter(prac_quiz_id=quiz)
+#                # print obj3
+#                # return render(request,'/quiz/'+'edit_contest/'+str(obj.pk),
+##                {'form1': form1 ,'form2':form2,'obj':obj3})
+#                return redirect('/ocms/' + course_code + '/edit_prac_quiz/' + str(quiz.pk))
+#            elif(form.errors):
+#                form.errors
+#        else:
+#            form1 = QuizForm()
+#            form = QuestionFormObjective()
+#            questions = PracticeQuestion.objects.filter(prac_quiz_id=practice)
+#            description = Practice.description
+#            print(description,'asdasd')
+#            return render(request, 'coursemanagement/edit_practice_contest.html',
+#                          {'form1': form1, 'form': form, 'details': practice,
+#                           'course': course, 'questions': questions,
+#                           'description': description})
+#    else:
+#        return HttpResponse("unautherized Access!!It will be reported!!")
 
 @login_required
 def edit_quiz(request, course_code, quiz_code):
@@ -612,8 +723,8 @@ def edit_quiz(request, course_code, quiz_code):
         if request.method == 'POST':
             form = QuestionFormObjective(request.POST, request.FILES)
             if(form.is_valid()):
-                image = request.FILES['image']
-                filename, file_extenstion = os.path.splitext(request.FILES['image'].name)
+                
+                
                 options1 = form.cleaned_data['option1']
                 options2 = form.cleaned_data['option2']
                 options3 = form.cleaned_data['option3']
@@ -622,24 +733,36 @@ def edit_quiz(request, course_code, quiz_code):
                 question = form.cleaned_data['problem_statement']
                 marks = form.cleaned_data['score']
                 answer = form.cleaned_data['answer']
-                full_path = settings.MEDIA_ROOT + "/online_cms/" + course_code
-                full_path = full_path + "/quiz/" + quiz_code + "/"
-                url = settings.MEDIA_URL + filename
-                if not os.path.isdir(full_path):
-                    cmd = "mkdir " + full_path
-                    subprocess.call(cmd, shell=True)
-                fs = FileSystemStorage(full_path, url)
-                fs.save(image.name, image)
-                uploaded_file_url = "/media/online_cms/" + course_code
-                uploaded_file_url = uploaded_file_url + "/quiz/" + quiz_code + "/" + image.name
-                # print uploaded_file_url
-
-                QuizQuestion.objects.create(quiz_id=quiz, image=uploaded_file_url,
+                try:
+                    filename, file_extenstion = os.path.splitext(request.FILES['image'].name)
+                    image = request.FILES['image']
+                    full_path = settings.MEDIA_ROOT + "/online_cms/" + course_code
+                    full_path = full_path + "/quiz/" + quiz_code + "/"
+                    url = settings.MEDIA_URL + filename
+                    if not os.path.isdir(full_path):
+                        cmd = "mkdir " + full_path
+                        subprocess.call(cmd, shell=True)
+                    fs = FileSystemStorage(full_path, url)
+                    fs.save(image.name, image)
+                    uploaded_file_url = "/media/online_cms/" + course_code
+                    uploaded_file_url = uploaded_file_url + "/quiz/" + quiz_code + "/" + image.name
+                    QuizQuestion.objects.create(quiz_id=quiz, image=uploaded_file_url,
                                             question=question,
                                             answer=answer,
                                             options1=options1, options2=options2,
                                             options3=options3, options4=options4,
                                             options5=options5)
+                except:
+                    QuizQuestion.objects.create(quiz_id=quiz,
+                                            question=question,
+                                            answer=answer,
+                                            options1=options1, options2=options2,
+                                            options3=options3, options4=options4,
+                                            options5=options5)
+            
+                # print uploaded_file_url
+
+                
                 # print "HOGAYA"
                 quiz.total_score += form.cleaned_data['score']
                 quiz.save()
@@ -693,4 +816,4 @@ def ajax_feedback(request, course_code):
     sa.feedback = request.POST.get('feedback')
     sa.save()
 #    print(sa,"qwerty")
-    return HttpResponse("Marks uploaded")
+    return HttpResponse("Feedback uploaded")
