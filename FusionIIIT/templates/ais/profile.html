@@ -22,20 +22,20 @@
 
       
 
-       <form class="ui form" method="post" action="{% url 'academic_information:add_basic_profile' %}" id="form1">
+       <form class="ui form" method="post" id="addBasicProfile">
             {% csrf_token %}
             <div class="field">
                  <div class="three fields">
                     <div class="field">
                         <label>Name</label>
-                        <input placeholder="Name" type="text" name="name">
+                        <input placeholder="Name" type="text" name="name" id="studentName">
                            
                     </div>
 
                     <div class="field">
                         <label>Batch</label>
                             <div class="ui fluid search selection dropdown">
-                                    <input type="hidden" name="batch">
+                                    <input type="hidden" name="batch" id="studentBatch">
                                     <i class="dropdown icon"></i>
                                     <div class="default text">Batch</div>
                                     <div class="menu">
@@ -50,7 +50,7 @@
                 
                  <div class="field">
                         <label>Roll No.</label>
-                        <input placeholder="Roll No." type="text" name="roll">
+                        <input placeholder="Roll No." type="text" name="roll" id="studentRollNo">
                     </div>
                     
                 </div>
@@ -60,14 +60,14 @@
                     <div class="six wide field">
                         <div class="field">
                             <label>Phone Number</label>
-                            <input placeholder="Phone Number" type="text" name="ph">
+                            <input placeholder="Phone Number" type="text" name="ph" id="phoneNo">
                         </div>
                     </div>
                      <div class="six wide field">
                         <div class="field">
                             <label>Programme</label>
                             <div class="ui fluid search selection dropdown">
-                                    <input type="hidden" name="programme">
+                                    <input type="hidden" name="programme" id="studentProgramme">
                                     <i class="dropdown icon"></i>
                                     <div class="default text">Programme</div>
                                     <div class="menu">
@@ -83,11 +83,10 @@
 
                     <div class="four wide field">
                         <label><br></label>
-                        <a href="#" onclick="document.getElementById('form1').submit();">
-                        <div class="ui primary button">Save
+                        <button class="ui primary button" type="submit">
+                            Save
                             <i class="ui save icon right floated"></i>
-                        </div>
-                             </a>
+                        </button>
 
                     </div> 
                 </div>
@@ -142,27 +141,21 @@
             </tr>
             </thead>
 
-            <tbody>
-            <form action="{% url 'academic_information:delete_basic_profile' %}" method="post">
-            {% csrf_token %}
+            <tbody id='basic_profile_list'>
+            
             {% for s in student %}
-            <tr>
+            <tr id='student-{{s.id.id}}'>
                 <!--<td><input type="radio" value="{{ s.id }}" name="delete"></input></td>-->
                 <td>{{ s.name }}</td>
-                <td>{{ s.id }}</td>
+                <td>{{ s.id.id }}</td>
                 <td>{{ s.batch }}</td>
                 <td>{{ s.programme }}</td>
                 <td></td>
 
-                <td><button type="submit" value="{{ s.id }}" name="delete"><i class="trash outline icon" style="font-size:1.3vw;color:red;"></i></button></td>
+                <td><a id='remove-student-{{s.id.id}}'><button><i class="trash outline icon" style="font-size:1.3vw;color:red;"></i></button></a></td>
             </tr>
 
             {% endfor %}
-            <tr>
-            </form>
-               
-            </tr>
-
             <tr>
               
             </tr>
@@ -276,11 +269,12 @@
                 {% csrf_token %}
             {% for s in student %}
               <tr>
+                  <td>{{ forloop.counter }}</td>
                 <td>
                   <h4 class="ui image header">
                     <img src="{% static 'fusion/img/jenny.jpg' %}" class="ui  rounded image">
                     <div class="content">
-                      <div class="sub header">{{ s.id }}
+                      <div class="sub header">{{ s.id.id }}
                     </div>
                   </div>
                 </h4></td>
@@ -430,8 +424,11 @@
               
             </tr>
             {% for g in grade %}
+            <form method = "post" action="{% url 'academic_information:delete_grade' %}">
+                {% csrf_token %}
             <tr>
-                <td>{{ g.student_id }}</td>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ g.student_id.id }}</td>
                 <td>{{ g.sem }}</td>
                 <td>{{ g.course_id }}</td>
                 <td>{{ g.grade }}</td>
@@ -666,7 +663,11 @@
 
     </div>
 
-
+    {% block javascript %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+    <script src="{% static 'academic_information/scripts/student.js' %}" type="text/javascript"></script>
+   
+   {% endblock %}
 
 
     {% endblock %}

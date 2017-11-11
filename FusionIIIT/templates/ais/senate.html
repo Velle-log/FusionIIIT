@@ -30,7 +30,10 @@
         <div class="fields">
         <div class="one wide field">
             <label><br></label>
-                <input type="submit" value="Save" />
+            <button class="ui primary button" type="submit">
+                Save
+                <i class="ui save icon right floated"></i>
+            </button>
         </div> 
         </div>
     </form>  
@@ -114,7 +117,10 @@
             <div class="fields">
                     <div class="one wide field">
                     <label><br></label>
-                        <input type="submit" value="Update" />
+                    <button class="ui primary button" type="submit">
+                        Save
+                        <i class="ui save icon right floated"></i>
+                    </button>
                     </div> 
             </div>
 
@@ -167,10 +173,13 @@
             {% csrf_token %}
                   <div class="field">
                     <div class="three fields">                       
-                            {{ form.as_p }} 
+                            {{ minuteForm.as_p }} 
                          <div class="field">
                            <label><br></label>
-                                <input type="submit" value="Save" />
+                           <button class="ui primary button" type="submit">
+                            Save
+                            <i class="ui save icon right floated"></i>
+                        </button>
                         </div>
                          </div>
                     </div>
@@ -189,10 +198,10 @@
                     </tr>
                   </thead>
                   
-                <tbody>
+                <tbody id='minute_list'>
                     {% if meetings %}
                     {% for meeting in meetings %}
-                  <tr>
+                  <tr id='minute-{{meeting.id}}'>
                     <td>{{ meeting.minutes_file.name }}</td>
                     <td>{{meeting.date}}</td>
                     <td><a href="{{ meeting.minutes_file.url }}">
@@ -202,7 +211,7 @@
                         </div>
                     </a>
                     </td>
-                    <td><form method="POST" action="{% url 'academic_information:deleteMinute' %}">{% csrf_token %}<button type="submit" name= "delete" value="{{meeting.id}}"> Delete </button></form></td>
+                    <td><a id='remove-minute-{{meeting.id}}'><button>Remove</button></a></td>
                    </tr>
                    {% endfor %}
                    {% endif %}
@@ -231,10 +240,7 @@
  </div>
 {% block javascript %}
  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
- <script src="{% static 'academic_information/scripts/senate_members.js' %}" type="text/javascript"></script>
-
- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
- <script src="{% static 'academic_information/scripts/office_bearers.js' %}" type="text/javascript"></script>
+ <script src="{% static 'academic_information/scripts/senate.js' %}" type="text/javascript"></script>
 {% endblock %}
 
 

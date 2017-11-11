@@ -11,14 +11,16 @@ from django.shortcuts import get_object_or_404
 
 from applications.globals.models import Designation, ExtraInfo
 
-from .forms import MinuteForm
+from .forms import MinuteForm, AcademicTimetableForm, ExamTimetableForm
+from applications.globals.models import Designation, ExtraInfo
 from .models import (Course, Exam_timetable, Grades, Meeting, Student,
                      Student_attendance, Timetable)
 
 
 def homepage(request):
-    form = MinuteForm()
-
+    minuteForm = MinuteForm()
+    examTtForm = ExamTimetableForm()
+    acadTtForm = AcademicTimetableForm()        
     try:
         senator_des = Designation.objects.get(name='senate')
         convenor_des = Designation.objects.get(name='Convenor')
@@ -57,7 +59,9 @@ def homepage(request):
          'Convenor': Convenor,
          'CoConvenor': CoConvenor,
          'meetings': meetings,
-         'form': form,
+         'minuteForm': minuteForm,
+         'acadTtForm': acadTtForm,
+         'examTtForm': examTtForm,
          'Dean': Dean,
          'student': student,
          'extra': extra,
@@ -65,14 +69,7 @@ def homepage(request):
          'courses': courses,
          'exam': exam_t,
          'timetable': timetable,
-    }
-    if request.method == 'POST' and request.FILES:
-        form = MinuteForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('sucess')
-        else:
-            return HttpResponse('not uploaded')
+    }    
     return render(request, "ais/ais.html", context)
 
 
@@ -155,6 +152,83 @@ def deleteConvenor(request, pk):
 #######################################################
 
 
+###########Senate meeting Minute##################
+@csrf_exempt
+def addMinute(request):
+    minuteForm = MinuteForm()
+    if request.method == 'POST':
+        minuteForm = MinuteForm(request.POST, request.FILES)
+        if minuteForm.is_valid():
+            print(request.POST.get('date'))
+            print(request.POST.get('minutes_file'))
+            minuteForm.save()
+            data = {
+                'date': request.POST.get('date'),
+                'minutes_file': request.POST.get('minutes_file')
+            }
+            return JsonResponse(data)
+        else:
+            data = {}
+            return JsonResponse(data)
+    else:
+        data = {}
+        return JsonResponse(data)
+
+
+def deleteMinute(request):
+    minute = Meeting.objects.get(id=request.POST["delete"])
+    minute.delete()
+    return HttpResponse("Deleted")
+#######################################################
+
+
+###########Student basic profile##################
+@csrf_exempt
+def add_basic_profile(request):
+    if request.method=="POST":
+        name = request.POST.get('name')
+        roll = ExtraInfo.objects.get(id=request.POST.get('rollno'))
+        programme = request.POST.get('programme')
+        batch = request.POST.get('batch')
+        ph = request.POST.get('phoneno')
+        if not Student.objects.filter(id=roll).exists():
+            db = Student()
+            st = ExtraInfo.objects.get(id=roll.id)
+            db.name = name.upper()
+            db.id = roll
+            db.batch = batch
+            db.programme = programme
+            st.phone_no = ph
+            db.save()
+            st.save()
+            data = {
+                'name': name,
+                'rollno': roll.id,
+                'programme': programme,
+                'phoneno': ph,
+                'batch': batch
+            }
+            print(data)
+            return JsonResponse(data)
+        else:
+            data = {}
+            return JsonResponse(data)
+    else:
+        data = {}
+        return JsonResponse(data)
+
+
+@csrf_exempt
+def delete_basic_profile(request, pk):
+    if(Student.objects.get(id=pk)):
+        Student.objects.get(id=pk).delete()
+    else:
+        return HttpResponse("Id Does not exist")
+    data = {}
+    return JsonResponse(data)
+##########################################################
+
+
 def add_attendance(request):
     if request.method == 'POST':
         student_attend = Student_attendance()
@@ -233,72 +307,35 @@ def get_attendance(request):
     return HttpResponse(json.dumps(context), content_type='get_attendance/json')
 
 
-def deleteMinute(request):
-    minute = Meeting.objects.get(id=request.POST["delete"])
-    minute.delete()
-    return HttpResponse("Deleted")
-
-
-def add_basic_profile(request):
-    if request.method == "POST":
-        name = request.POST['name']
-        roll = ExtraInfo.objects.get(id=request.POST['roll'])
-        programme = request.POST['programme']
-        batch = request.POST['batch']
-        ph = request.POST['ph']
-        if not Student.objects.filter(id=roll).exists():
-            db = Student()
-            st = ExtraInfo.objects.get(id=roll.id)
-            db.name = name.upper()
-            db.id = roll
-            db.batch = batch
-            db.programme = programme
-            st.phone_no = ph
-            db.save()
-            st.save()
-        else:
-            return HttpResponse("Data Already Exists")
-    students = Student.objects.all()
-    extra = ExtraInfo.objects.all()
-    context = {
-        'students': students,
-        'extra': extra,
-    }
-    return render(request, "ais/ais.html", context)
-
-
-def delete_basic_profile(request):
-    if request.method == "POST":
-        if(Student.objects.get(id=request.POST['delete'])):
-            Student.objects.get(id=request.POST['delete']).delete()
-        else:
-            return HttpResponse("Id Does not exist")
-    return HttpResponse("Data Deleted Successfully")
 
 
 def delete_advanced_profile(request):
-    if request.method == "POST":
-        print(request.POST['delete'])
-        if Student.objects.get(id=request.POST['delete']):
-            s = Student.objects.get(id=request.POST['delete'])
-            s.father_name = ""
-            s.mother_name = ""
-            s.hall_no = 1
-            s.room_no = ""
+    if request.method=="POST":
+        st = request.POST['delete']
+        arr = st.split("-")
+        stu = arr[0]
+        if Student.objects.get(id=stu):
+            s = Student.objects.get(id=stu)
+            s.father_name=""
+            s.mother_name=""
+            s.hall_no=1
+            s.room_no=""
             s.save()
         else:
             return HttpResponse("Data Does Not Exist")
+
     return HttpResponse("Data Deleted Successfully")
 
 
 def add_advanced_profile(request):
-    if request.method == "POST":
+    if request.method=="POST":
         try:
             roll = ExtraInfo.objects.get(id=request.POST['roll'])
             father = request.POST['father']
             mother = request.POST['mother']
             hall = request.POST['hall']
             room = request.POST['room']
+            dp = request.POST['dp']
         except:
             return HttpResponse("Student Does Not Exist")
         try:
@@ -317,59 +354,72 @@ def add_advanced_profile(request):
 
 
 def add_grade(request):
-    if request.method == "POST":
+    if request.method=="POST":
         try:
             roll = Student.objects.get(id=request.POST['roll'])
         except:
             return HttpResponse("Student Does Not Exist")
+        subject = request.POST['course']
         sem = request.POST['sem']
-        course = Course.objects.get(course_id=request.POST['course'])
         grade = request.POST['grade']
-
-        # print(Grades.objects.filter(student_id=roll, course_id=course).count())
-        if not Grades.objects.filter(student_id=roll, course_id=course).exists():
-            db = Grades()
-            db.student_id = roll
-            db.course_id = course
-            db.sem = sem
-            db.grade = grade
-            db.save()
-        else:
-            return HttpResponse("Data Already Exists")
+        course = Course.objects.get(course_id=subject)
+        arr = []
+        for c in roll.courses.all():
+            arr.append(c)
+        flag = 1
+        print(arr)
+        for i in arr:
+            if(subject == str(i)):
+                if(sem == str(c.sem)):
+                    if not Grades.objects.filter(student_id=roll, course_id=course).exists():
+                        db = Grades()
+                        db.student_id = roll
+                        db.course_id = course
+                        db.sem = sem
+                        db.grade = grade
+                        db.save()
+                        flag = 0
+                        break
+                    else:
+                        return HttpResponse("Data Already Exists")
+                else:
+                    return HttpResponse("Student did not take " + subject + " in semester " + sem)
+        if(flag == 1):
+            return HttpResponse("Student did not opt for course")
         grades = Grades.objects.all()
-        context = {
-            'grades': grades,
+        context={
+            'grades':grades,
         }
     return render(request, "ais/ais.html", context)
 
 
 def delete_grade(request):
     print(request.POST['delete'])
-    data = request.POST['delete']
+    data =request.POST['delete']
     d = data.split("-")
     id = d[0]
-    course = d[1]
-    sem = int(d[2])
-    if request.method == "POST":
+    course = d[2]
+    sem = int(d[3])
+    #print(course)
+    if request.method=="POST":
         if(Grades.objects.filter(student_id=id, sem=sem)):
             s = Grades.objects.filter(student_id=id, sem=sem)
             for p in s:
-                if (str(p.course_id) == course):
+                if (str(p.course_id)==course):
                     print(p.course_id)
                     p.delete()
         else:
             return HttpResponse("Unable to delete data")
     return HttpResponse("Data Deleted SuccessFully")
 
-
 def add_course(request):
-    if request.method == "POST":
+    if request.method=="POST":
         try:
             c = Student.objects.get(id=request.POST['roll'])
         except:
             return HttpResponse("Student Does Not Exist")
         if(request.POST['c1']):
-            c_id = Course.objects.get(course_id=request.POST['c1'])
+            c_id=Course.objects.get(course_id=request.POST['c1'])
             c.courses.add(c_id)
         if(request.POST['c2']):
             c_id2 = Course.objects.get(course_id=request.POST['c2'])
@@ -386,35 +436,46 @@ def add_course(request):
         if(request.POST['c6']):
             c_id6 = Course.objects.get(course_id=request.POST['c6'])
             c.courses.add(c_id6)
+
         c.save()
+        print(c.courses.all())
     return HttpResponse("Data Entered Successfully")
 
 
 def add_timetable(request):
-    if(request.method == "POST"):
-        file = request.POST['file']
-        db = Timetable()
-        db.time_table = file
-        db.save()
-    # timetable = Timetable.objects.all()
-    # context = {
-    #     'timetable': timetable,
-    # }
-    return HttpResponse("Added")
+    acadTtForm = AcademicTimetableForm()
+    if request.method == 'POST' and request.FILES:
+        acadTtForm = AcademicTimetableForm(request.POST, request.FILES)
+        if acadTtForm.is_valid():
+            acadTtForm.save()
+            return HttpResponse('sucess')
+    else:
+        return HttpResponse('not uploaded')
 
 
 def add_exam_timetable(request):
-    if(request.method == "POST"):
-        file = request.POST['file']
-        db = Exam_timetable()
-        db.exam_time_table = file
-        db.save()
-    return HttpResponse("Data Deleted SuccessFully")
+    examTtForm = ExamTimetableForm()
+    if request.method == 'POST' and request.FILES:        
+        examTtForm = ExamTimetableForm(request.POST, request.FILES)
+        if examTtForm.is_valid():
+            examTtForm.save()
+            return HttpResponse('sucess')
+    else:
+        return HttpResponse('not uploaded')
 
 
 def delete_timetable(request):
     if request.method == "POST":
         data = request.POST['delete']
-        t = Timetable.objects.get(time_table=data)
+        t = Timetable.objects.get(time_table = data)
         t.delete()
+
+    return HttpResponse("TimeTable Deleted")
+
+def delete_exam_timetable(request):
+    if request.method == "POST":
+        data = request.POST['delete']
+        t = Exam_timetable.objects.get(exam_time_table = data)
+        t.delete()
+
     return HttpResponse("TimeTable Deleted")
