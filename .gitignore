@@ -93,7 +93,10 @@ docs/_templates
 
 # media
 FusionIIIT/media
+
 #ignoring settings.py
 FusionIIIT/Fusion/settings.py
 
-FusionIIIT/Fusion/settings.py
+#ignoring misc
+.vscode/
+FusionIIIT/.vscode/
