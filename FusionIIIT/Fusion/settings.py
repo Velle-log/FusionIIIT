@@ -25,7 +25,7 @@ SECRET_KEY = '=&w9due426k@l^ju1=s1)fj1rnpf0ok8xvjwx+62_nc-f12-8('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.5']
+ALLOWED_HOSTS = []
 
 # Google authentication
 SOCIALACCOUNT_PROVIDERS = {
@@ -98,6 +98,7 @@ INSTALLED_APPS = [
     'applications.complaint_system.apps.ComplaintSystemConfig',
     'applications.file_tracking.apps.FileTrackingConfig',
     'applications.finance_accounts.apps.FinanceAccountsConfig',
+    'applications.gymkhana.apps.GymkhanaConfig',
     'applications.globals.apps.GlobalsConfig',
     'applications.health_center.apps.HealthCenterConfig',
     'applications.leave.apps.LeaveConfig',
@@ -110,6 +111,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth',
     'allauth.socialaccount.providers.google',
+    'semanticuiforms',
 ]
 
 MIDDLEWARE = [
@@ -152,7 +154,7 @@ DATABASES = {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'fusion',
             'USER': 'root',
-            'PASSWORD': '',
+            'PASSWORD': 'root',
             'HOST': '127.0.0.1',
             'PORT': '3306',
         },
