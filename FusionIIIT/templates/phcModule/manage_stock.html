@@ -17,6 +17,9 @@
         <a class="item" data-tab="viewinventory">
           View Inventory
         </a>
+        <a class="item" data-tab="thresholdstock">
+          Threshold Stock
+        </a>
     </div>
 
     {% comment %}the add stock tab starts here {% endcomment %}
@@ -60,7 +63,7 @@
         <div class="ui vertical segment">
             <form class="ui form" method="POST" style="padding: 8px; padding-left: 24px; padding-right: 24px;">{% csrf_token %}
               <div class="field">
-                <label>Quantity</label>
+                <label>Medicine Name</label>
                 <div class="ui fluid large input">
                     <input placeholder="Medicine Name" name="new_medicine" type="text">
                 </div>
@@ -69,6 +72,12 @@
                     <label>Quantity</label>
                     <div class="ui fluid large input">
                         <input placeholder="Quantity" name="new_quantity" type="number">
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Threshold</label>
+                    <div class="ui fluid large input">
+                        <input placeholder="Threshold" name="threshold" type="number">
                     </div>
                 </div>
                 <div class="field">
@@ -168,4 +177,49 @@
         </div>
     </div>
     {% comment %}the view inventory tab ends here {% endcomment %}
+
+        {% comment %}the threshold stock tab starts here {% endcomment %}
+        <div class="ui tab" data-tab="thresholdstock">
+            <div class="ui vertical segment" >
+                <table class="ui very basic collapsing celled large fluid sortable table"
+                       style="padding-left: 2.5%;padding-right: 2.5%;padding-top: 1%;padding-bottom: 1.5%;margin: auto;">
+                    <thead>
+                    <tr>
+                        <th class="three wide">
+                            Medicine
+                        </th>
+
+                        <th class="three wide" >
+                            Available
+                        </th>
+                        <th class="three wide" >
+                            Minimum
+                        </th>
+
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for stock in stocks %}
+                    {% if stock.quantity < stock.threshold %}
+                    <tr>
+
+                        <td>
+                           {{stock.medicine_name}}
+                        </td>
+
+                        <td>
+                            {{stock.quantity}}
+                        </td>
+                        <td>
+                            {{stock.threshold}}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% comment %}the view inventory tab ends here {% endcomment %}
 {% endblock %}

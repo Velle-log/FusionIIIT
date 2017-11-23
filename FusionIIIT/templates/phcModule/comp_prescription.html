@@ -19,8 +19,17 @@
             <form class="ui form" method="POST">{% csrf_token %}
                 <div class="two fields">
                   <div class="field">
+                      <label>Appointment</label>
+                      <select class="ui search fluid dropdown" id="appointment" name="appointment">
+                        <option selected hidden>--SELECT--</option>
+                        {% for appointment in appointments_today %}
+                        <option value="{{appointment.id}}">{{appointment.user_id.id}}</option>
+                        {% endfor %}
+                      </select>
+                   </div>
+                  <div class="field">
                       <label>Patient</label>
-                      <select class="ui search fluid dropdown" name="user" required="true">
+                      <select class="ui search fluid dropdown" id="user" name="user" required="true">
                         <option selected hidden>--SELECT--</option>
                         {% for user in users %}
                         <option value="{{user.id}}">{{user.id}}-{{user.user}}</option>
@@ -30,7 +39,7 @@
 
                    <div class="field">
                        <label>Doctor</label>
-                       <select class="ui search fluid dropdown" name="doctor" required="true">
+                       <select class="ui search fluid dropdown" name="doctor" id="doctor" required="true">
                          <option selected hidden>--SELECT--</option>
                          {% for doctor in doctors %}
                          <option value="{{doctor.id}}">{{doctor.doctor_name}}</option>
@@ -41,7 +50,7 @@
 
                 <div class="field">
                     <label>Detail of Disease</label>
-                    <textarea name="details" rows="2"></textarea>
+                    <textarea name="details" id="details" rows="2"></textarea>
                 </div>
 
                 <div class="two fields">
@@ -58,9 +67,21 @@
                    <div class="field">
                      <label>Quantity</label>
                      <div class="ui fluid large input">
-                         <input placeholder="Quantitys" id="quantity" name="quantity" type="number">
+                         <input placeholder="Quantity" id="quantity" name="quantity" type="number">
                      </div>
                     </div>
+                    <div class="field">
+                      <label>No of days</label>
+                      <div class="ui fluid large input">
+                          <input placeholder="No of days" id="days" name="days" type="number">
+                      </div>
+                     </div>
+                     <div class="field">
+                       <label>Times per day</label>
+                       <div class="ui fluid large input">
+                           <input placeholder="No of times per day" id="times" name="times" type="number">
+                       </div>
+                      </div>
                      <div class="field">
                          <label><br></label>
                          <input type="submit" id="medicine" name="medicine" value="Add"class="ui small left floated primary button" />
@@ -68,16 +89,16 @@
                      </div>
                 </div>
                 <div class="field">
-                    <label>Extra Medicines</label>
-                    <textarea rows="2" name="extra_meds"></textarea>
+                    <label>Tests Suggested</label>
+                    <textarea rows="2" id="tests" name="extra_meds"></textarea>
                 </div>
                 <div class="field">
                     <label><br></label>
-                    <input type="submit" name="prescribe" value="Submit"class="ui large right floated primary button" />
+                    <input type="submit" id="prescribe" name="prescribe" value="Submit"class="ui large right floated primary button" />
                 </div>
 
             </form>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+            <script src="{% static 'globals/js/jquery.min.js' %}"></script>
             <script type="text/javascript">
                   $('#medicine').on('click',function(e)
                                                       {
@@ -88,17 +109,48 @@
                                                           data: {
                                                           csrfmiddlewaretoken: '{{ csrf_token }}',
                                                           quantity:$("#quantity").val(),
-                                                          medicine_name:$("#medicine_id").val()
+                                                          medicine_name:$("#medicine_id").val(),
+                                                          days:$("#days").val(),
+                                                          times:$("#times").val()
                                                         },
                                                           success: function(data){
                                                             if (data.status == 1){
-                                                              alert("anjali");
+                                                              alert("added medicine");
                                                               document.getElementById("quantity").value=""
                                                               document.getElementById("medicine_id").value=""
+                                                              document.getElementById("days").value=""
+                                                              document.getElementById("times").value=""
                                                             }
                                                         }
                                                       });
                                                       });
+
+            $('#prescribe').on('click',function(e)
+                                                  {
+                                                    e.preventDefault();
+                                                    $.ajax({
+                                                      type:'post',
+                                                      url:'/healthcenter/compounder/',
+                                                      data: {
+                                                      csrfmiddlewaretoken: '{{ csrf_token }}',
+                                                      user:$("#user").val(),
+                                                      doctor:$("#doctor").val(),
+                                                      details:$("#details").val(),
+                                                      tests:$("#tests").val(),
+                                                      appointment:$("#appointment").val(),
+                                                      prescribe:$("#prescribe").val()
+                                                    },
+                                                      success: function(data){
+                                                        if (data.status == 1){
+                                                          alert("prescribed medicine");
+                                                          document.getElementById("user").value=""
+                                                          document.getElementById("doctor").value=""
+                                                          document.getElementById("details").value=""
+                                                          document.getElementById("tests").value=""
+                                                        }
+                                                    }
+                                                  });
+                                                  });
               </script>
 
             <br>
@@ -142,18 +194,17 @@
               <div class="two fields">
                   <div class="field">
                       <label>Admission Date</label>
-
-                          <div class="ui input left icon">
-                              <i class="calendar icon"></i>
-                              <input type="date" placeholder="Date" name="admission_date"  required="true">
-                          </div>
-
+                      <input type="date" placeholder="Date" name="admission_date"  required="true">
 
                   </div>
 
                   <div class="field">
                       <label>Hospital</label>
                       <input type='text' required=true placeholder="Hospital Name" name='hospital_name' />
+                  </div>
+                  <div class="field">
+                      <label>Hospital Doctor</label>
+                      <input type='text' placeholder="Hospital Doctor" name='hospital_doctor' />
                   </div>
               </div>
           </div>

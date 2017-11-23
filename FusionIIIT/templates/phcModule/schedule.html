@@ -1,0 +1,169 @@
+{% load static %}
+{% block schedule %}
+    {% comment %}the main tab starts here {% endcomment %}
+    <div class="ui pointing secondary menu">
+        <a class="active item" data-tab="viewschedule">
+            View Schedule
+        </a>
+
+        <a class="item" data-tab="editschedule">
+            Edit Schedule
+        </a>
+    </div>
+
+    {% comment %}the doctor appointment tab starts here {% endcomment %}
+    <div class="ui active tab" data-tab="viewschedule">
+        <div class="ui vertical segment">
+            <div class="field">
+                  <div class="field">
+                      <label>Day</label>
+                      <select id="day" class="ui search fluid" name="day" required="true">
+                        <option selected hidden>--SELECT--</option>
+                        {% for p,day in days %}
+                        <option value="{{p}}">{{day}}</option>
+                        {% endfor %}
+                      </select>
+                  </div>
+                  <!-- on selection of day the schedule of the day displays in the table -->
+                  <table  class="ui very basic collapsing celled small fluid sortable table"
+                         style="padding-left: 2.5%;padding-right: 2.5%;margin: auto;">
+                      <thead>
+                      <tr>
+                          <th class="two wide">
+                              Doctor
+                          </th>
+
+                          <th class="two wide" >
+                              From Time
+                          </th>
+
+                          <th class="wide">
+                                To Time
+                          </th>
+                          <th class="wide">
+                                Room
+                          </th>
+                      </tr>
+                      </thead>
+
+                      <tbody id="sche">
+
+                      <tr>
+
+                          <td>
+                              <h4 class="ui image header">
+                                  <img src="{% static 'globals/img/zlatan.jpg' %}" class="ui mini circular image">
+                              </h4>
+                                    <!-- Doctor name {{pre.doctor_id}} -->
+                          </td>
+
+                          <td>
+                              <!-- from time {{pre.date}} -->
+                          </td>
+
+                          <td>
+                              <!-- to time {{pre.details}} -->
+                          </td>
+                      </tr>
+                      </tbody>
+                      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+                      <script type="text/javascript">
+                              $('#day').change(function()
+                              {
+                                  $.ajax({
+                                  type:'post',
+                                  url:'/healthcenter/compounder/',
+                                  data: {
+                                  csrfmiddlewaretoken: '{{ csrf_token }}',
+                                  day:$("#day").val(),
+                                  },
+                                  success: function(data){
+                                     $('#sche').empty();
+                                     var response=JSON.stringify(data);
+                                    $.each(data, function(key, value) {
+                                      $('#sche').append("<tr><td>" + value.doctor + "</td><td>" + value.from_time + "</td><td>" + value.to_time + "</td><td>" + value.room + "</td></tr>");
+                                });
+}
+                               });
+                             });
+                      </script>
+                  </table>
+        </div>
+      </div>
+    </div>
+    {% comment %}the view schedule tab ends here {% endcomment %}
+
+    {% comment %}the edit schedule tab starts here {% endcomment %}
+    <div class="ui tab" data-tab="editschedule">
+      <div class="ui vertical segment">
+        <form class="ui form" method="POST" style="padding: 8px; padding-left: 24px; padding-right: 24px;">{% csrf_token %}
+            <div class="field">
+              <div class="two fields">
+                <div class="field">
+                    <label>Doctor</label>
+                    <select id="docto" class="ui search fluid " name="doctor_id" required="true">
+                      <option selected hidden>--SELECT--</option>
+                      {% for doctor in doctors %}
+                      <option value="{{doctor.id}}">{{doctor.doctor_name}}</option>
+                      {% endfor %}
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Day</label>
+                    <!-- on selection of doctor few days should be displayed -->
+                    <select id="day_id" class="ui search fluid " name="day" required="true">
+                      <option selected hidden>--SELECT--</option>
+                    </select>
+                </div>
+              </div>
+              <div class="three fields">
+                <div class="field">
+                        <label>Time In</label>
+                        <input type="time" name="time_in" id="time_in" required="true">
+                        <!-- enter the time in  -->
+                    </div>
+
+                    <div class="field">
+                        <label>Time out </label>
+                        <input type="time" name="time_out" id="time_out" required="true">
+                    </div>
+                    <div class="field">
+                        <label>Room No</label>
+                        <input type="text" name="room" id="room" required="true">
+                    </div>
+
+                <div class="field">
+                    <label> </label>  <br><label></label>
+                      <input type="submit" name="schedule_edit" name="edit" value="Submit"class="ui large right floated primary button" />
+
+                </div>
+                </div>
+              </div>
+          </form>
+          <script type="text/javascript">
+          $('#docto').change(function()
+          {
+              $.ajax({
+              type:'post',
+              url:'/healthcenter/compounder/',
+              data: {
+              csrfmiddlewaretoken: '{{ csrf_token }}',
+              doct:$("#docto").val(),
+              },
+              success: function(data){
+                  $.each(data, function(key, value) {
+                 $("#day_id").append("<option value="+value.id +">" + value.day+"-"+value.from_time+"-"+value.to_time+"</option>");
+              });
+
+            }
+           });
+         });
+  </script>
+
+
+    </div>
+    </div>
+
+
+    {% comment %}the ambulance appointment tab ends here {% endcomment %}
+{% endblock %}

@@ -37,9 +37,12 @@
                 <th>
                     Date
                 </th>
+                <th>
+                    From<br>Time
+                </th>
 
                 <th class="three wide">
-                    Time
+                    To<br>Time
                 </th>
 
                 <th>
@@ -70,14 +73,15 @@
                 </td>
 
                 <td>
-                    {{appointment.appointment_date}}
+                    {{appointment.date}}
+                </td>
+                <td>
+                    {{appointment.schedule.from_time}}
+                </td>
+                <td>
+                    {{appointment.schedule.to_time}}
                 </td>
 
-                {% if appointment.appointment_time == 0 %}
-                        <td>00:00</td>
-                {% else %}
-                        <td>{{appointment.appointment_time}}:00</td>
-                {% endif %}
                 <form method='POST'>{% csrf_token %}
                 <input type="hidden" name="id" value={{appointment.id}} />
                 <td><input type="submit" name="approve" class="ui primary right floated button" value="Approve"/>
@@ -107,13 +111,15 @@
                 <th class="four wide">
                     Description
                 </th>
-
                 <th>
                     Date
                 </th>
+                <th>
+                    From Time
+                </th>
 
-                <th class="three wide">
-                    Time
+                <th >
+                    To Time
 
                   </th>
             </tr>
@@ -138,16 +144,17 @@
                 <td>
                     {{appointment.description}}
                 </td>
-
                 <td>
-                    {{appointment.appointment_date}}
+                    {{appointment.date}}
+                </td>
+                <td>
+                    {{appointment.schedule.from_time}}
                 </td>
 
-                {% if appointment.appointment_time == 0 %}
-                        <td>00:00</td>
-                {% else %}
-                        <td>{{appointment.appointment_time}}:00</td>
-                {% endif %}
+                <td>
+                    {{appointment.schedule.to_time}}
+                </td>
+
             </tr>
             {% endfor %}
             </tbody>
@@ -176,7 +183,7 @@
                   </th>
 
                   <th>
-                    Requested Date
+                    Requested<br>Date
                   </th>
 
                   <th>
@@ -198,7 +205,7 @@
                     <h4 class="ui image header">
                         <img src="{% static 'globals/img/zlatan.jpg' %}" class="ui mini circular image">
                         <div class="content">
-                          {{ambulance.user_id}}
+                          {{ambulance.user_id.user}}
                         </div>
                     </h4>
                 </td>
@@ -207,7 +214,7 @@
                   </td>
 
                   <td>
-                      {{ambulance.date_request}}
+                      {{ambulance.date_request.date}}
                   </td>
 
                   <td>
@@ -235,7 +242,7 @@
       {% comment %}the view hospital admission tab starts here {% endcomment %}
       <div class="ui tab" data-tab="viewhospitaladmission">
           <div class="ui vertical segment" >
-              <table class="ui very basic collapsing celled large sortable table">
+              <table class="ui very basic collapsing celled small sortable table">
                   <thead>
                   <tr>
                     <th class="four wide">
@@ -243,7 +250,11 @@
                     </th>
 
                     <th class="four wide">
-                        Doctor
+                        Institute<br>Doctor
+                    </th>
+
+                    <th class="four wide">
+                        Hospital<br>Doctor
                     </th>
 
                       <th class="four wide">
@@ -273,7 +284,7 @@
                         <h4 class="ui image header">
                             <img src="{% static 'globals/img/zlatan.jpg' %}" class="ui mini circular image">
                             <div class="content">
-                                {{hospital.user_id}}
+                                {{hospital.user_id.user}}
                             </div>
                         </h4>
                     </td>
@@ -292,6 +303,10 @@
                       </td>
 
                       <td>
+                          {{hospital.hospital_doctor}}
+                      </td>
+
+                      <td>
                           {{hospital.hospital_name}}
                       </td>
                       <td>
@@ -302,7 +317,7 @@
                         {% if hospital.discharge_date == None %}
                         <form method='POST'>{% csrf_token %}
                         <input type="hidden" name="id" value={{hospital.id}} />
-                        <td><input type="submit" name="discharge" class="ui small right floated primary button" value="Discharge"/></td>
+                        <td><input type="submit" name="discharge" class="ui small floated primary button" value="Discharge"/></td>
                         </form>
                         {% else %}
                         <td>{{hospital.discharge_date}}</td>

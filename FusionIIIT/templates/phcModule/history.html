@@ -18,18 +18,18 @@
             Appointments
         </a>
         <a class="item" data-tab="complainthistory">
-            Complaint
+            Feedback
         </a>
     </div>
 
     <div class="ui active tab" data-tab="prescriptionhistory">
         <div class="ui vertical segment" >
-            <table class="ui very basic collapsing celled large fluid sortable table"
-                   style="padding-left: 2.5%;padding-right: 2.5%;padding-top: 1%;padding-bottom: 1.5%;margin: auto;">
+            <table class="ui very basic collapsing celled small fluid sortable table"
+                  style="padding-left: 2.5%;padding-right: 2.5%;margin: auto;" >
                 <thead>
                 <tr>
                     <th class="two wide">
-                        Treated By
+                        Treated<br> By
                     </th>
 
                     <th class="two wide" >
@@ -39,9 +39,16 @@
                     <th class="wide">
                           Details
                     </th>
+                    <th class="wide">
+                          Test
+                    </th>
 
                     <th class="four wide">
-                        Medicines<br>Prescribed
+                      <table>
+
+                                  <tr><td>Medicine</td><td>D</td><td>T</td></tr>
+
+                      </table>
                     </th>
                     <th class="two wide">
                         Feedback
@@ -57,10 +64,10 @@
                     <td>
                         <h4 class="ui image header">
                             <img src="{% static 'globals/img/zlatan.jpg' %}" class="ui mini circular image">
-                            <div class="content">
-                              {{pre.doctor_id}}
-                            </div>
                         </h4>
+                              {{pre.doctor_id}}
+
+
                     </td>
 
                     <td>
@@ -68,35 +75,60 @@
                     </td>
 
                     <td>
-                        {{pre.details}}
+                        {{pre.appointment.id}}<br>{{pre.details}}
+                    </td>
+                    <td>
+                        {{pre.test}}
                     </td>
 
                     <td>
                       <table>
                         {% for medicine in medicines %}
                             {% if medicine.prescription_id.id == pre.id %}
-                                  <tr><td>{{medicine.medicine_id}}</td><td>{{medicine.quantity}}</td></tr>
+                                  <tr><td>{{medicine.medicine_id}}</td><td>{{medicine.days}}</td><td>{{medicine.times}}</td></tr>
                             {% endif %}
                         {% endfor%}
                       </table>
                     </td>
 
+                    <form method='POST' enctype="multipart/form-data">{% csrf_token %}
 
                       {% if pre.feedback == None %}
-                      <form method='POST'>{% csrf_token %}
-                      <td>  <textarea class="ui textarea" cols="17" rows="3" name="feedback" required="true"></textarea><br>
+
+                      <td>
+                         <textarea class="ui textarea" cols="10" rows="1" name="feedback"></textarea>
+                         <br>
+                         {% if pre.test == None %}
+
+                         {% else %}
+                             {% if pre.test_file == None %}
+                            <input type="file" name"test_file" id="test_file_id" />
+                             {% endif %}
+                         {% endif %}
                       <input type="hidden" name="id" value={{pre.id}} />
-                      <input type="submit" name="feed" class="ui small right floated primary button" value="Submit"/>
-
-                    </td>
-                      </form>
+                      <br>
+                      <input type="submit" name="feed" class="ui small left floated primary button" value="Submit"/>
+                      <br>
+                        </td>
                       {%else%}
-                      <td>{{pre.feedback}}</td>
+                        <td>{{pre.feedback}}
+                        {% if pre.test == None %}
+
+                        {% else %}
+                            {% if pre.test_file == None %}
+                           <input type="file" name"test_file" id="test_file_id" />
+                           <input type="hidden" name="id" value={{pre.id}} />
+                           <br>
+                           <input type="submit" name="feedb" class="ui small left floated primary button" value="Submit"/>
+
+                            {% endif %}
+                        {% endif %}
+
+                        </td>
                       {% endif %}
-
-
-                    {% endfor %}
+                    </form>
                 </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -240,7 +272,7 @@
 
     <div class="ui tab" data-tab="appointmenthistory">
         <div class="ui vertical segment" style="padding: 8px; padding-left: 24px; padding-right: 24px;">
-            <table class="ui very basic collapsing celled large fluid sortable table"
+            <table class="ui very basic collapsing celled small fluid sortable table"
                    style="padding-left: 2.5%;padding-right: 2.5%;padding-top: 1%;padding-bottom: 1.5%;margin: auto;">
                 <thead>
                 <tr>
@@ -254,15 +286,19 @@
                     </th>
 
                     <th>
-                        Appointment Date
+                        Date
+                    </th>
+
+                    <th>
+                        From Time
                     </th>
 
                     <th class="four wide">
-                        Appointment Time
+                        To Time
                     </th>
 
                     <th class="four wide">
-                        Approval
+                        Status
                     </th>
                 </tr>
                 </thead>
@@ -282,23 +318,24 @@
                     <td>
                       {{appointment.description}}
                     </td>
-
                     <td>
-                      {{appointment.appointment_date}}
+                      {{appointment.date}}
+                    </td>
+                    <td>
+                      {{appointment.schedule.from_time}}
                     </td>
 
-                    {% if appointment.appointment_time == 0 %}
-                            <td>00:00</td>
-                    {% else %}
-                            <td>{{appointment.appointment_time}}:00</td>
-                    {% endif %}
+                    <td>
+                      {{appointment.schedule.to_time}}
+                    </td>
+
 
                     {% if  appointment.approval == None %}
                     <td>Not yet updated</td>
                     {% elif appointment.approval == True%}
-                    <td>Approved</td>
+                    <td>Confirmed</td>
                     {% else %}
-                    <td>Disapproved</td>
+                    <td>Doctor not available</td>
                     {% endif %}
                 </tr>
                 {% endfor %}
@@ -313,11 +350,11 @@
                 <thead>
                 <tr>
                     <th class="four wide">
-                        Complaint
+                      Feedback
                     </th >
 
                     <th class="six wide">
-                      Feedback
+                      Response
                     </th>
 
                     <th class="four wide">

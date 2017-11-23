@@ -16,34 +16,15 @@ class Constants:
             ('6', 'Opthomology'),
             ('7', 'Dental'),
     )
-
-    TIME = (
-            ('0', '12 a.m.'),
-            ('1', '1 a.m.'),
-            ('2', '2 a.m.'),
-            ('3', '3 a.m.'),
-            ('4', '4 a.m.'),
-            ('5', '5 a.m.'),
-            ('6', '6 a.m.'),
-            ('7', '7 a.m.'),
-            ('8', '8 a.m.'),
-            ('9', '9 a.m.'),
-            ('10', '10 a.m.'),
-            ('11', '11 a.m.'),
-            ('12', '12 p.m.'),
-            ('13', '1 p.m.'),
-            ('14', '2 p.m.'),
-            ('15', '3 p.m.'),
-            ('16', '4 p.m.'),
-            ('17', '5 p.m.'),
-            ('18', '6 p.m.'),
-            ('19', '7 p.m.'),
-            ('20', '8 p.m.'),
-            ('21', '9 p.m.'),
-            ('22', '10 p.m.'),
-            ('23', '11 p.m.'),
-            )
-
+    DAYS_OF_WEEK=(
+        (0,'Monday'),
+        (1,'Tuesday'),
+        (2,'Wednesday'),
+        (3,'Thursday'),
+        (4,'Friday'),
+        (5,'Saturday'),
+        (6,'Sunday')
+    )
 
 class Doctor(models.Model):
     doctor_name = models.CharField(max_length=50)
@@ -59,17 +40,6 @@ class Health_Card(models.Model):
     user_id = models.ForeignKey(ExtraInfo)
 
 
-class Prescription(models.Model):
-    user_id = models.ForeignKey(ExtraInfo)
-    doctor_id = models.ForeignKey(Doctor)
-    feedback = models.CharField(max_length=100, null=True, blank=True)
-    details = models.CharField(max_length=100)
-    date = models.DateField()
-    extra_meds = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.details
-
 
 class Complaint(models.Model):
     user_id = models.ForeignKey(ExtraInfo)
@@ -81,15 +51,15 @@ class Complaint(models.Model):
 class Stock(models.Model):
     medicine_name = models.CharField(max_length=100)
     quantity = models.IntegerField(default=0)
-
+    threshold=models.IntegerField(default=10)
     def __str__(self):
         return self.medicine_name
-
 
 class Medicine(models.Model):
     medicine_id = models.ForeignKey(Stock)
     quantity = models.IntegerField(default=0)
-
+    days=models.IntegerField(default=0)
+    times=models.IntegerField(default=0)
 
 class Stockinventory(models.Model):
     medicine_id = models.ForeignKey(Stock)
@@ -100,13 +70,13 @@ class Stockinventory(models.Model):
         return self.medicine_id.medicine_name
 
 
-class Prescribed_medicine(models.Model):
-    prescription_id = models.ForeignKey(Prescription)
-    medicine_id = models.ForeignKey(Stock)
-    quantity = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.medicine_id.medicine_name
+class Schedule(models.Model):
+    doctor_id=models.ForeignKey(Doctor)
+    day=models.IntegerField(choices=Constants.DAYS_OF_WEEK)
+    from_time=models.TimeField()
+    to_time=models.TimeField()
+    room=models.IntegerField()
+    date=models.DateField()
 
 
 class Appointment(models.Model):
@@ -114,12 +84,36 @@ class Appointment(models.Model):
     doctor_id = models.ForeignKey(Doctor)
     description = models.CharField(max_length=50)
     approval = models.NullBooleanField()
-    appointment_date = models.DateField()
-    appointment_time = models.CharField(max_length=10, choices=Constants.TIME)
+    schedule=models.ForeignKey(Schedule, null=True, blank=True)
+    date=models.DateField()
 
     def __str__(self):
         return self.description
 
+
+class Prescription(models.Model):
+    user_id = models.ForeignKey(ExtraInfo)
+    doctor_id = models.ForeignKey(Doctor)
+    feedback = models.CharField(max_length=100, null=True, blank=True)
+    details = models.CharField(max_length=100)
+    date = models.DateField()
+    test = models.CharField(max_length=200, null=True, blank=True)
+    test_file=models.FileField(upload_to='Administrator/health_center/', null=True, blank=True)
+    appointment=models.ForeignKey(Appointment, null=True, blank=True)
+
+    def __str__(self):
+        return self.details
+
+
+class Prescribed_medicine(models.Model):
+    prescription_id = models.ForeignKey(Prescription)
+    medicine_id = models.ForeignKey(Stock)
+    quantity = models.IntegerField(default=0)
+    days=models.IntegerField(default=0)
+    times=models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.medicine_id.medicine_name
 
 class Ambulance_request(models.Model):
     user_id = models.ForeignKey(ExtraInfo)
@@ -132,6 +126,7 @@ class Ambulance_request(models.Model):
 class Hospital_admit(models.Model):
     user_id = models.ForeignKey(ExtraInfo)
     doctor_id = models.ForeignKey(Doctor, null=True, blank=True)
+    hospital_doctor=models.CharField(max_length=100)
     hospital_name = models.CharField(max_length=50)
     admission_date = models.DateField()
     discharge_date = models.DateField(null=True, blank=True)

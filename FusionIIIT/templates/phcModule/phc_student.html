@@ -48,7 +48,7 @@
                     </a>
 
                     <a class="item" data-tab="third">
-                        Complaints/Feedback
+                        Feedback
                         <i class="right floated chevron right icon"></i>
                     </a>
 
@@ -66,7 +66,7 @@
             {% comment %}The Appointments Form starts here!{% endcomment %}
             <div class="ui active tab segment" data-tab="first">
                 {% block appointment %}
-                    {% include 'phcModule/appointment.html' with users=users doctors=doctors ch=ch%}
+                    {% include 'phcModule/appointment.html' with users=users doctors=doctors%}
                 {% endblock %}
             </div>
             {% comment %}The appointment Form ends here!{% endcomment %}

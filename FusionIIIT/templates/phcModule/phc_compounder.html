@@ -38,7 +38,7 @@
                 {% comment %}The Tab-Menu starts here!{% endcomment %}
                 <div class="ui large fluid vertical pointing menu">
                     <a class="active item" data-tab="third">
-                        Complaints/Feedback
+                        Response
                         <i class="right floated chevron right icon"></i>
                     </a>
                     <a class="item" data-tab="fourth">
@@ -51,6 +51,10 @@
                     </a>
                     <a class="item" data-tab="seventh">
                         Manage Stock
+                        <i class="right floated chevron right icon"></i>
+                    </a>
+                    <a class="item" data-tab="eigth">
+                        Schedule
                         <i class="right floated chevron right icon"></i>
                     </a>
                 </div>
@@ -83,16 +87,24 @@
             {% comment %}The compounder prescription tab starts here!{% endcomment %}
             <div class="ui tab segment" data-tab="fifth">
                 {% block comp_prescription %}
-                    {% include 'phcModule/comp_prescription.html' with stocks=stocks doctors=doctors users=users %}
+                    {% include 'phcModule/comp_prescription.html' with appointments_today=appointments_today stocks=stocks doctors=doctors users=users %}
                 {% endblock %}
             </div>
             {% comment %}The appointment approval tab ends here!{% endcomment %}
 
-          
+
             {% comment %}The Manage Stocks Form starts here!{% endcomment %}
             <div class="ui tab segment" data-tab="seventh">
                 {% block stock %}
                     {% include 'phcModule/manage_stock.html' with stocks=stocks inventories=inventories %}
+                {% endblock %}
+            </div>
+            {% comment %}The Manage Stocks Form ends here!{% endcomment %}
+
+            {% comment %}The Manage Stocks Form starts here!{% endcomment %}
+            <div class="ui tab segment" data-tab="eigth">
+                {% block schedule %}
+                    {% include 'phcModule/schedule.html' with days=days doctors=doctors%}
                 {% endblock %}
             </div>
             {% comment %}The Manage Stocks Form ends here!{% endcomment %}
