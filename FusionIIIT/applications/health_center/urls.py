@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from .views import (compounder_view, healthcenter, student_view)
+from .views import compounder_view, healthcenter, student_view
 
 app_name = 'healthcenter'
 

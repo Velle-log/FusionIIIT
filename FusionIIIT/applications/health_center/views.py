@@ -1,16 +1,20 @@
-from datetime import datetime,timedelta
 import json
+from datetime import datetime, timedelta
+
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
-from django.shortcuts import render
 from django.core import serializers
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import render
+
 from applications.globals.models import ExtraInfo
 
 from .models import (Ambulance_request, Appointment, Complaint, Constants,
                      Doctor, Hospital_admit, Medicine, Prescribed_medicine,
                      Prescription, Schedule, Stock, Stockinventory)
+
+
 def datetime_handler(x):
-    if hasattr(x,'isoformat'):
+    if hasattr(x, 'isoformat'):
         return x.isoformat()
     else:
         raise TypeError
@@ -23,6 +27,7 @@ def healthcenter(request):
         return HttpResponseRedirect("/healthcenter/student")
     elif usertype == 'compounder':
         return HttpResponseRedirect("/healthcenter/compounder")
+
 
 @login_required
 def compounder_view(request):
@@ -64,15 +69,15 @@ def compounder_view(request):
                 Stock.objects.filter(id=medicine).update(quantity=quantity)
                 return HttpResponseRedirect("/healthcenter/compounder")
             elif 'schedule_edit' in request.POST:
-                doctor=request.POST.get('doctor_id')
-                day=request.POST.get('day')
-                day=int(day)-1
-                time_in=request.POST.get('time_in')
-                time_out=request.POST.get('time_out')
-                room=request.POST.get('room')
-                Schedule.objects.filter(doctor_id=doctor,day=day).update(from_time=time_in)
-                Schedule.objects.filter(doctor_id=doctor,day=day).update(to_time=time_out)
-                Schedule.objects.filter(doctor_id=doctor,day=day).update(room=room)
+                doctor = request.POST.get('doctor_id')
+                day = request.POST.get('day')
+                day = int(day)-1
+                time_in = request.POST.get('time_in')
+                time_out = request.POST.get('time_out')
+                room = request.POST.get('room')
+                Schedule.objects.filter(doctor_id=doctor, day=day).update(from_time=time_in)
+                Schedule.objects.filter(doctor_id=doctor, day=day).update(to_time=time_out)
+                Schedule.objects.filter(doctor_id=doctor, day=day).update(room=room)
                 return HttpResponseRedirect("/healthcenter/compounder")
             elif 'add_medicine' in request.POST:
                 medicine = request.POST.get('new_medicine')
@@ -121,35 +126,36 @@ def compounder_view(request):
                     days=days,
                     times=times
                 )
-
-
                 data = {
                         'status': 1
                         }
                 return JsonResponse(data)
             elif 'day' in request.POST:
-                day=request.POST.get('day')
-                sche=Schedule.objects.filter(day=day)
-                list=[]
+                day = request.POST.get('day')
+                sche = Schedule.objects.filter(day=day)
+                list = []
                 for s in sche:
-                    list.append({'room':s.room,'id':s.id,'doctor':s.doctor_id.doctor_name,'from_time':s.from_time,'to_time':s.to_time})
+                    list.append({'room': s.room, 'id': s.id, 'doctor': s.doctor_id.doctor_name,
+                                 'from_time': s.from_time, 'to_time': s.to_time})
 
-                sches=json.dumps(list,default=datetime_handler)
-                return HttpResponse(sches,content_type='json')
+                sches = json.dumps(list, default=datetime_handler)
+                return HttpResponse(sches, content_type='json')
             elif 'main' in request.POST:
                 data = {
                         'status': 1
                         }
                 return JsonResponse(data)
             elif 'doct' in request.POST:
-                doctor_id=request.POST.get('doct')
-                schedule=Schedule.objects.filter(doctor_id=doctor_id);
-                list=[]
+                doctor_id = request.POST.get('doct')
+                schedule = Schedule.objects.filter(doctor_id=doctor_id)
+                list = []
                 for s in schedule:
-                    list.append({'room':s.room,'id':s.id,'doctor':s.doctor_id.doctor_name,'day':s.get_day_display(),'from_time':s.from_time,'to_time':s.to_time})
+                    list.append({'room': s.room, 'id': s.id, 'doctor': s.doctor_id.doctor_name,
+                                 'day': s.get_day_display(), 'from_time': s.from_time,
+                                 'to_time': s.to_time})
 
-                sches=json.dumps(list,default=datetime_handler)
-                return HttpResponse(sches,content_type='json')
+                sches = json.dumps(list, default=datetime_handler)
+                return HttpResponse(sches, content_type='json')
 
             elif 'prescribe' in request.POST:
                 user_id = request.POST.get('user')
@@ -158,11 +164,11 @@ def compounder_view(request):
                 doctor = Doctor.objects.get(id=doctor_id)
                 details = request.POST.get('details')
                 tests = request.POST.get('tests')
-                appointment_id=request.POST.get('appointment')
+                appointment_id = request.POST.get('appointment')
                 if appointment_id == "--SELECT--":
-                    appointment=None
+                    appointment = None
                 else:
-                    appointment=Appointment.objects.get(id=appointment_id)
+                    appointment = Appointment.objects.get(id=appointment_id)
                 Prescription.objects.create(
                     user_id=user,
                     doctor_id=doctor,
@@ -176,8 +182,8 @@ def compounder_view(request):
                 for medicine in query:
                     medicine_id = medicine.medicine_id
                     quantity = medicine.quantity
-                    days=medicine.days
-                    times=medicine.times
+                    days = medicine.days
+                    times = medicine.times
                     Prescribed_medicine.objects.create(
                         prescription_id=prescribe,
                         medicine_id=medicine_id,
@@ -199,17 +205,19 @@ def compounder_view(request):
             all_hospitals = Hospital_admit.objects.all().order_by('-admission_date')
             all_ambulances = Ambulance_request.objects.all().order_by('-date_request')
             appointments_approve = Appointment.objects.filter(approval=None).order_by('date')
-            appointments_today = Appointment.objects.filter(approval=True,date=datetime.now()).order_by('-date')
+            a = Appointment.objects.filter(approval=True, date=datetime.now()).order_by('-date')
+            appointments_today = a
             users = ExtraInfo.objects.filter(user_type='student')
             doctors = Doctor.objects.all()
             inventories = Stockinventory.objects.all().order_by('-date')
             stocks = Stock.objects.all()
-            days=Constants.DAYS_OF_WEEK
+            days = Constants.DAYS_OF_WEEK
             return render(request, 'phcModule/phc_compounder.html',
-                          {'inventories': inventories, 'days': days, 'users': users, 'doctors': doctors,
+                          {'inventories': inventories, 'days': days, 'users': users,
                            'stocks': stocks, 'appointments_approve': appointments_approve,
-                           'all_hospitals': all_hospitals, 'appointments_today': appointments_today,
-                           'all_ambulances': all_ambulances, 'all_complaints': all_complaints})
+                           'all_hospitals': all_hospitals, 'all_ambulances': all_ambulances,
+                           'appointments_today': appointments_today, 'doctors': doctors,
+                           'all_complaints': all_complaints})
     elif usertype == 'student':
         return HttpResponseRedirect("/healthcenter/student")
 
@@ -235,12 +243,12 @@ def student_view(request):
                 return HttpResponseRedirect("/healthcenter/student")
             elif "appointment" in request.POST:
                 user_id = ExtraInfo.objects.get(user=request.user)
-                doctor_id=request.POST.get('doctor')
-                doctor=Doctor.objects.get(id=doctor_id)
-                date=request.POST.get('date')
-                schedule=Schedule.objects.get(id=date)
-                datei=schedule.date
-                description=request.POST.get('description')
+                doctor_id = request.POST.get('doctor')
+                doctor = Doctor.objects.get(id=doctor_id)
+                date = request.POST.get('date')
+                schedule = Schedule.objects.get(id=date)
+                datei = schedule.date
+                description = request.POST.get('description')
                 Appointment.objects.create(
                     user_id=user_id,
                     doctor_id=doctor,
@@ -261,27 +269,27 @@ def student_view(request):
             elif 'feedb' in request.POST:
                 pk = request.POST.get('id')
                 if 'test_file' in request.FILES:
-                    test_file=request.FILES['test_file']
+                    test_file = request.FILES['test_file']
                 else:
-                    test_file=None
+                    test_file = None
 
                 Prescription.objects.filter(id=pk).update(test_file=test_file)
                 return HttpResponseRedirect("/healthcenter/student")
             elif 'doctor' in request.POST:
-                doctor_id=request.POST.get('doctor')
-                schedule=Schedule.objects.filter(doctor_id=doctor_id)
-                days=Schedule.objects.filter(doctor_id=doctor_id).values('day')
+                doctor_id = request.POST.get('doctor')
+                schedule = Schedule.objects.filter(doctor_id=doctor_id)
+                days = Schedule.objects.filter(doctor_id=doctor_id).values('day')
                 for day in days:
-                    for i in range(0,7):
-                        date=(datetime.today()+timedelta(days=i)).date()
-                        dayi=date.weekday()
-                        d=day.get('day')
+                    for i in range(0, 7):
+                        date = (datetime.today()+timedelta(days=i)).date()
+                        dayi = date.weekday()
+                        d = day.get('day')
                         print(dayi)
                         if dayi == d:
-                            Schedule.objects.filter(doctor_id=doctor_id,day=dayi).update(date=date)
-                schedule=Schedule.objects.filter(doctor_id=doctor_id)
-                schedules=serializers.serialize('json',schedule)
-                return HttpResponse(schedules,content_type='json')
+                            Schedule.objects.filter(doctor_id=doctor_id, day=dayi).update(date=date)
+                schedule = Schedule.objects.filter(doctor_id=doctor_id)
+                schedules = serializers.serialize('json', schedule)
+                return HttpResponse(schedules, content_type='json')
             elif 'complaint' in request.POST:
                 user_id = ExtraInfo.objects.get(user=request.user)
                 complaint = request.POST.get('Complaint')
@@ -303,8 +311,9 @@ def student_view(request):
             doctors = Doctor.objects.all()
 
             return render(request, 'phcModule/phc_student.html',
-                          {'complaints': complaints, 'medicines': medicines, 'ambulances': ambulances,
+                          {'complaints': complaints, 'medicines': medicines,
+                           'ambulances': ambulances, 'doctors': doctors,
                            'hospitals': hospitals, 'appointments': appointments,
-                           'prescription': prescription, 'users': users, 'doctors': doctors})
+                           'prescription': prescription, 'users': users})
     elif usertype == 'compounder':
         return HttpResponseRedirect("/healthcenter/compounder")
