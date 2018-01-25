@@ -375,10 +375,12 @@ def branch_change_request(request):
         extraInfo_user = ExtraInfo.objects.all().filter(user=current_user).first()
         student = Student.objects.all().filter(id=extraInfo_user.id).first()
         department = DepartmentInfo.objects.all().filter(name=request.POST['change']).first()
+        second_department = DepartmentInfo.objects.all().filter(name=request.POST['change_second']).first()
         # print(department)
         change_save = BranchChange(
             branches=department,
-            user=student
+            user=student,
+            second_branch_choice = second_department
             )
         change_save.save()
         messages.info(request, 'Apply for branch change successfull')

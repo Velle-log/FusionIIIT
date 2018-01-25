@@ -76,6 +76,7 @@ class BranchChange(models.Model):
     branches = models.ForeignKey(DepartmentInfo, on_delete=models.CASCADE)
     user = models.ForeignKey(Student, on_delete=models.CASCADE)
     applied_date = models.DateField(default=datetime.datetime.now())
+    second_branch_choice = models.CharField(max_length=100)
 
     def __str__(self):
         return str(self.user) + " " + str(self.branches)

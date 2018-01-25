@@ -15,13 +15,27 @@
             <form id='branch_change' method="post" action="/academic-procedures/brach-change-request/">
             {% csrf_token %}
             <B><CENTER>    <h3>Your CPI meets the minimum requirement for branch change</h3> </B></CENTER>
-                <h4>Choose the branch</h4>
+                <h4>First Preference</h4>
                 {% for i in change_branch.branches %}
                    <div class="ui form">
                       <div class="grouped fields">
                         <div class="field">
                           <div class="ui radio checkbox">
                             <input name="change" checked="checked" type="radio" required="required" value="{{ i }}">
+
+                            <label>{{ i }}</label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                {% endfor %}
+                <h4>Second Preference</h4>
+                {% for i in change_branch.branches %}
+                    <div class="ui form">
+                      <div class="grouped fields">
+                        <div class="field">
+                          <div class="ui radio checkbox">
+                            <input name="change_second" checked="checked" type="radio" required="required" value="{{ i }}">
 
                             <label>{{ i }}</label>
                           </div>
