@@ -29,7 +29,7 @@
                   <div class="field">
                         <label>Medicine</label>
                         <select class="ui search fluid dropdown" name="medicine_id" required="true">
-                          <option selected hidden>--SELECT--</option>
+                        <option value="" disabled selected>--SELECT--</option>
                           {% for stock in stocks %}
                           <option value="{{stock.id}}">{{stock.medicine_name}}</option>
                           {% endfor %}

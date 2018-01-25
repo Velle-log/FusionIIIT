@@ -17,8 +17,8 @@
             <div class="field">
                   <div class="field">
                       <label>Day</label>
-                      <select id="day" class="ui search fluid" name="day" required="true">
-                        <option selected hidden>--SELECT--</option>
+                      <select id="day" class="ui search fluid " name="day" required="true">
+                        <option value="" disabled selected>--SELECT--</option>
                         {% for p,day in days %}
                         <option value="{{p}}">{{day}}</option>
                         {% endfor %}
@@ -48,23 +48,6 @@
 
                       <tbody id="sche">
 
-                      <tr>
-
-                          <td>
-                              <h4 class="ui image header">
-                                  <img src="{% static 'globals/img/zlatan.jpg' %}" class="ui mini circular image">
-                              </h4>
-                                    <!-- Doctor name {{pre.doctor_id}} -->
-                          </td>
-
-                          <td>
-                              <!-- from time {{pre.date}} -->
-                          </td>
-
-                          <td>
-                              <!-- to time {{pre.details}} -->
-                          </td>
-                      </tr>
                       </tbody>
                       <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
                       <script type="text/javascript">
@@ -101,8 +84,8 @@
               <div class="two fields">
                 <div class="field">
                     <label>Doctor</label>
-                    <select id="docto" class="ui search fluid " name="doctor_id" required="true">
-                      <option selected hidden>--SELECT--</option>
+                    <select id="doctor_id" class="ui search fluid dropdown" name="doctor" required="true">
+                      <option value="" disabled selected>--SELECT--</option>
                       {% for doctor in doctors %}
                       <option value="{{doctor.id}}">{{doctor.doctor_name}}</option>
                       {% endfor %}
@@ -111,8 +94,11 @@
                 <div class="field">
                     <label>Day</label>
                     <!-- on selection of doctor few days should be displayed -->
-                    <select id="day_id" class="ui search fluid " name="day" required="true">
-                      <option selected hidden>--SELECT--</option>
+                    <select id="day_id" class="ui search fluid dropdown" name="day" required="true">
+                      <option value="" disabled selected>--SELECT--</option>
+			                   {% for p,day in days %}
+                        <option value="{{p}}">{{day}}</option>
+                        {% endfor %}
                     </select>
                 </div>
               </div>
@@ -134,31 +120,41 @@
 
                 <div class="field">
                     <label> </label>  <br><label></label>
-                      <input type="submit" name="schedule_edit" name="edit" value="Submit"class="ui large right floated primary button" />
+                      <input type="button" id="edit" name="edit" value="Submit"class="ui large right floated primary button" />
 
                 </div>
                 </div>
               </div>
           </form>
-          <script type="text/javascript">
-          $('#docto').change(function()
-          {
-              $.ajax({
-              type:'post',
-              url:'/healthcenter/compounder/',
-              data: {
-              csrfmiddlewaretoken: '{{ csrf_token }}',
-              doct:$("#docto").val(),
-              },
-              success: function(data){
-                  $.each(data, function(key, value) {
-                 $("#day_id").append("<option value="+value.id +">" + value.day+"-"+value.from_time+"-"+value.to_time+"</option>");
-              });
 
-            }
-           });
-         });
-  </script>
+
+         <script type="text/javascript">
+                     $('#edit').click(function(e)
+                                                           {
+                                                             $.ajax({
+                                                               type:'post',
+                                                               url:'/healthcenter/compounder/',
+                                                               data: {
+                                                               csrfmiddlewaretoken: '{{ csrf_token }}',
+                                                               doctor:$("#doctor_id").val(),
+                                                               day:$("#day_id").val(),
+                                                               room:$("#room").val(),
+                                                               time_in:$("#time_in").val(),
+                                                               time_out:$("#time_out").val(),
+                                                               edit:$("#edit").val()
+                                                             },
+                                                               success: function(data){
+                                                                   alert("edited schedule");
+                                                                   document.getElementById("doctor_id").value="";
+                                                                   document.getElementById("day_id").value="";
+                                                                   document.getElementById("room").value="";
+                                                                   document.getElementById("time_in").value="";
+                                                                   document.getElementById("time_out").value="";
+
+                                                             },
+                                                           });
+                                                           });
+                       </script>
 
 
     </div>

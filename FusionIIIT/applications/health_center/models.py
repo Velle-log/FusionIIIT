@@ -58,6 +58,7 @@ class Stock(models.Model):
 
 
 class Medicine(models.Model):
+    patient = models.ForeignKey(ExtraInfo)
     medicine_id = models.ForeignKey(Stock)
     quantity = models.IntegerField(default=0)
     days = models.IntegerField(default=0)
@@ -79,7 +80,7 @@ class Schedule(models.Model):
     from_time = models.TimeField()
     to_time = models.TimeField()
     room = models.IntegerField()
-    date = models.DateField()
+    date = models.DateField(auto_now=True)
 
 
 class Appointment(models.Model):
@@ -96,7 +97,7 @@ class Appointment(models.Model):
 
 class Prescription(models.Model):
     user_id = models.ForeignKey(ExtraInfo)
-    doctor_id = models.ForeignKey(Doctor)
+    doctor_id = models.ForeignKey(Doctor, null=True, blank=True)
     feedback = models.CharField(max_length=100, null=True, blank=True)
     details = models.CharField(max_length=100)
     date = models.DateField()

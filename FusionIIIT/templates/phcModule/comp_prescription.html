@@ -21,7 +21,7 @@
                   <div class="field">
                       <label>Appointment</label>
                       <select class="ui search fluid dropdown" id="appointment" name="appointment">
-                        <option selected hidden>--SELECT--</option>
+                        <option value="" disabled selected>--SELECT--</option>
                         {% for appointment in appointments_today %}
                         <option value="{{appointment.id}}">{{appointment.user_id.id}}</option>
                         {% endfor %}
@@ -30,7 +30,7 @@
                   <div class="field">
                       <label>Patient</label>
                       <select class="ui search fluid dropdown" id="user" name="user" required="true">
-                        <option selected hidden>--SELECT--</option>
+                        <option value="" disabled selected>--SELECT--</option>
                         {% for user in users %}
                         <option value="{{user.id}}">{{user.id}}-{{user.user}}</option>
                         {% endfor %}
@@ -40,7 +40,7 @@
                    <div class="field">
                        <label>Doctor</label>
                        <select class="ui search fluid dropdown" name="doctor" id="doctor" required="true">
-                         <option selected hidden>--SELECT--</option>
+                         <option value="" disabled selected>--SELECT--</option>
                          {% for doctor in doctors %}
                          <option value="{{doctor.id}}">{{doctor.doctor_name}}</option>
                          {% endfor %}
@@ -56,8 +56,9 @@
                 <div class="two fields">
                   <div class="field">
                       <label>Medicine</label>
-                        <option selected hidden>--SELECT--</option>
+
                         <select class="ui search fluid dropdown" id="medicine_id" name="medicine_id" required="true">
+                        <option value="" disabled selected>--SELECT--</option>
                         {% for medicine in stocks %}
                         <option value="{{medicine.id}}">{{medicine.medicine_name}}</option>
                         {% endfor %}
@@ -84,50 +85,79 @@
                       </div>
                      <div class="field">
                          <label><br></label>
-                         <input type="submit" id="medicine" name="medicine" value="Add"class="ui small left floated primary button" />
+                         <input type="button" id="medicine" name="medicine" value="Add"class="ui small left floated primary button" />
 
                      </div>
                 </div>
+                <table  class="ui very basic collapsing celled small fluid sortable table"
+                       style="padding-left: 2.5%;padding-right: 2.5%;margin: auto;">
+                    <thead>
+                    <tr>
+                        <th class="two wide">
+                            Medicine
+                        </th>
+
+                        <th class="two wide" >
+                            Quantity
+                        </th>
+
+                        <th class="wide">
+                            Days
+                        </th>
+                        <th class="wide">
+                            Times
+                        </th>
+                    </tr>
+                    </thead>
+
+                    <tbody id="sched">
+
+                    </tbody>
+                </table>
                 <div class="field">
                     <label>Tests Suggested</label>
                     <textarea rows="2" id="tests" name="extra_meds"></textarea>
                 </div>
                 <div class="field">
                     <label><br></label>
-                    <input type="submit" id="prescribe" name="prescribe" value="Submit"class="ui large right floated primary button" />
+                    <input type="button" id="prescribe" name="prescribe" value="Submit"class="ui large right floated primary button" />
                 </div>
 
             </form>
             <script src="{% static 'globals/js/jquery.min.js' %}"></script>
             <script type="text/javascript">
-                  $('#medicine').on('click',function(e)
+                  $('#medicine').click(function(e)
                                                       {
-                                                        e.preventDefault();
                                                         $.ajax({
                                                           type:'post',
                                                           url:'/healthcenter/compounder/',
                                                           data: {
                                                           csrfmiddlewaretoken: '{{ csrf_token }}',
+                                                          user:$("#user").val(),
                                                           quantity:$("#quantity").val(),
                                                           medicine_name:$("#medicine_id").val(),
                                                           days:$("#days").val(),
                                                           times:$("#times").val()
                                                         },
                                                           success: function(data){
-                                                            if (data.status == 1){
                                                               alert("added medicine");
                                                               document.getElementById("quantity").value=""
                                                               document.getElementById("medicine_id").value=""
                                                               document.getElementById("days").value=""
                                                               document.getElementById("times").value=""
-                                                            }
+                                                              var response=JSON.stringify(data);
+                                                               $('#sched').empty();
+                                                              $.each(data, function(key, value) {
+                                                               $('#sched').append("<tr><td>" + value.medicine + "</td><td>" +
+                                                               value.quantity + "</td><td>" + value.times + "</td><td>" + value.days + "</td></tr>");
+                                                             });
                                                         }
                                                       });
-                                                      });
-
-            $('#prescribe').on('click',function(e)
+                                                    });
+</script>
+<script type="text/javascript">
+            $('#prescribe').click(function(e)
                                                   {
-                                                    e.preventDefault();
                                                     $.ajax({
                                                       type:'post',
                                                       url:'/healthcenter/compounder/',
@@ -143,12 +173,13 @@
                                                       success: function(data){
                                                         if (data.status == 1){
                                                           alert("prescribed medicine");
-                                                          document.getElementById("user").value=""
-                                                          document.getElementById("doctor").value=""
-                                                          document.getElementById("details").value=""
-                                                          document.getElementById("tests").value=""
+                                                          document.getElementById("user").value="";
+                                                          document.getElementById("doctor").value="";
+                                                          document.getElementById("details").value="";
+                                                          document.getElementById("tests").value="";
+                                                          $('#sched').empty();
                                                         }
-                                                    }
+                                                    },
                                                   });
                                                   });
               </script>
@@ -174,7 +205,7 @@
               <div class="field">
                   <label>Doctor</label>
                   <select class="ui search fluid dropdown" name="doctor_id" required="true">
-                    <option selected hidden>--SELECT--</option>
+                    <option value="" disabled selected>--SELECT--</option>
                     {% for doctor in doctors %}
                     <option value="{{doctor.id}}">{{doctor.doctor_name}}</option>
                     {% endfor %}
@@ -184,7 +215,7 @@
               <div class="field">
                   <label>User</label>
                   <select class="ui search fluid dropdown" name="user_id" required="true">
-                    <option selected hidden>--SELECT--</option>
+                    <option value="" disabled selected>--SELECT--</option>
                     {% for user in users %}
                     <option value="{{user.id}}">{{user.id}}-{{user.user}}</option>
                     {% endfor %}
