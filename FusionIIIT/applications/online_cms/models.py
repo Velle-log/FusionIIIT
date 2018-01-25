@@ -1,6 +1,6 @@
 from django.db import models
 
-from applications.academic_information.models import Course, Student
+from applications.academic_information.models import Course, Student, Instructor
 from applications.globals.models import ExtraInfo
 
 
@@ -24,6 +24,41 @@ class CourseVideo(models.Model):
 
     def __str__(self):
         return '{} - {}'.format(self.course_id, self.video_name)
+
+class Topics(models.Model):
+    course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
+    topic_name = models.TextField(max_length=200)
+
+    def __str__(self):
+        return '{} - {} - {}'.format(self.pk,self.course_id,self.topic_name)
+
+class QuestionBank(models.Model):
+    instructor_id = models.ForeignKey(ExtraInfo, on_delete=models.CASCADE)
+    course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return '{} - {} - {}'.format(self.pk,self.instructor_id,self.name)
+
+class Question(models.Model):
+    question_bank = models.ForeignKey(QuestionBank, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topics, on_delete=models.CASCADE)
+    question = models.TextField(max_length=1000)
+    options1 = models.CharField(null=True, max_length=100)
+    options2 = models.CharField(null=True, max_length=100)
+    options3 = models.CharField(null=True, max_length=100)
+    options4 = models.CharField(null=True, max_length=100)
+    options5 = models.CharField(null=True, max_length=100)
+    answer = models.IntegerField()
+    image = models.TextField(max_length=1000, null=True)
+    marks = models.IntegerField()
+
+    def __str__(self):
+        return '{} - {} - {} - {} - {} - {} - {} - {} - {} - {} - {}'.format(
+            self.pk, self.question_bank, self.question, self.topic, self.options1,
+            self.options2, self.options3, self.options4,
+            self.options5, self.answer)
+
 
 
 class Quiz(models.Model):
@@ -49,24 +84,13 @@ class Quiz(models.Model):
 
 class QuizQuestion(models.Model):
     quiz_id = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    question = models.TextField(max_length=1000)
-    options1 = models.CharField(null=True, max_length=100)
-    options2 = models.CharField(null=True, max_length=100)
-    options3 = models.CharField(null=True, max_length=100)
-    options4 = models.CharField(null=True, max_length=100)
-    options5 = models.CharField(null=True, max_length=100)
-    answer = models.IntegerField()
-    announcement = models.TextField(max_length=2000, null=True, blank=True)
-    image = models.TextField(max_length=1000, null=True)
-    # marks = models.IntegerField()
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
     def __str__(self):
-        return '{} - {} - {} - {} - {} - {} - {} - {} - {}'.format(
-            self.pk, self.quiz_id, self.options1,
-            self.options2, self.options3, self.options4,
-            self.options5, self.answer, self.announcement)
+        return '{} - {}'.format(
+            self.pk, self.question)
 
-    
+
 class Practice(models.Model):
     course_id = models.ForeignKey(Course, on_delete=models.CASCADE)
     prac_quiz_name = models.CharField(max_length=20)

@@ -4,6 +4,8 @@
 <link href="http://vjs.zencdn.net/5.8.8/video-js.css" rel="stylesheet">
 <script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
 -->
+
+
 {% block title %}
     Course Management
 {% endblock %}
@@ -48,7 +50,11 @@
                 <a class="item sidetab" data-tab="fifth" data-num="15">
                   Assessment
                   <i class="right floated chevron right icon"></i>
-              </a>
+                </a>
+                <a class="item sidetab" data-tab="sixth" data-num="16">
+                  Question Bank
+                  <i class="right floated chevron right icon"></i>
+                </a>
               {% endif %}
             </div>
         </div>
@@ -317,6 +323,10 @@
             </div>
                 <div class="ui tab segment" id="3" data-tab="videos" style="display:none">
                     <div class="ui four column grid">
+                      <div class="row" style="margin-left:20px">
+                          <h4 class="ui dividing header">{{course.course_name}}</h4><br>
+                      </div>
+                      {% if videos %}
                         <div class="row">
                             {% for video in videos %}
                             <div class="column">
@@ -341,15 +351,21 @@
                             </div>
                             {% endfor %}
                         </div>
+                        {% else %}
+                        <div class="row" style="margin-left:20px">
+                            <h4 class="ui  header">No videos</h4><br>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
 
                 <div class="ui tab segment" id="4" data-tab="slides" style="display:none">
                     <div class="ui four column grid">
+
                         <div class="row" style="margin-left:20px">
                             <h4 class="ui dividing header">{{course.course_name}}</h4><br>
                         </div>
-
+                        {% if slides %}
                         <div class="row">
 
                             {% for slide in slides %}
@@ -362,6 +378,11 @@
                             {% endfor %}
 
                         </div>
+                        {% else %}
+                        <div class="row" style="margin-left:20px">
+                            <h4 class="ui header">No slides</h4><br>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
 
@@ -403,6 +424,10 @@
             <div class="ui tab segment" id="14" data-tab="fourth" style="display:none">
                 {% block addcontent %} {% include 'coursemanagement/addcontent.html' %} {% endblock %}
             </div>
+
+            <div class="ui tab segment" id="16" data-tab="sixth" style="display:none">
+                {% block questionbank %} {% include 'coursemanagement/questionbank.html' %} {% endblock %}
+            </div>
         </div>
         <div class="three wide column">
             <div class="row" style="margin-top:1em;">
@@ -421,24 +446,24 @@
      <script type="text/javascript" src="{% static 'globals/js/jquery.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'globals/js/editProfile.js' %}"></script>
     <script type="text/javascript" src="{% static 'globals/js/tablesort.js' %}"></script>
-   
+
     <script type="text/javascript" src="{% static 'globals/js/semantic.min.js' %}"></script>
     <!-- <script>
         $(document).ready(function() {
             $('table').tablesort();
         });
     </script> -->
-    
+
     <script>
          $(".pointing.pagination.menu")
             .tab()
         ;
-        
-    
+
+
     function assess_student(element){
       if(event.key === 'Enter') {
         var pk=element.getAttribute("data-assign");
-                
+
         var csrf = $('input[name=csrfmiddlewaretoken]').val();
         // alert(pk);
         $.ajax({
@@ -469,7 +494,7 @@
 //          vid.pause();
 ////          button.textContent = ">";
 //       }
-//      
+//
 //    }
     function assess_feedback(element){
       if(event.key === 'Enter') {
@@ -486,7 +511,7 @@
             },
             success: function(data) {
                 alert(data);
-                
+
             },
             error: function(data, err) {
                 alert(err.message);
@@ -494,6 +519,43 @@
         });
       }
     }
+    $('.qbremove').click(function(){
+      var pk=$(this).attr('data-pk');
+      var csrf = $('input[name=csrfmiddlewaretoken]').val();
+
+      $.ajax({
+          type: 'POST',
+          url: '/ocms/{{course.course_id}}/remove_bank',
+          data: {
+              'pk': pk,
+              'csrfmiddlewaretoken': csrf
+          },
+          success: function(data) {
+            alert(data.message);
+            var x = document.getElementById("qb"+pk);
+            x.style.display = "none";
+            alert(data.qb);
+            if(data.qb == 0)
+            {
+              var y = document.getElementById("qbtable");
+              y.style.display="none";
+              $('<div class="row" style="margin-left:20px"><h4 class="ui header">No Question Banks added till Now</h4><br></div>').insertBefore('#create_qbank');
+
+            }
+          },
+          error: function(data, err) {
+              alert(err.message);
+          }
+      });
+    });
+    $('#create_qbank').click(function(){
+      var x = document.getElementById("qbank");
+      if(x.style.display === "none")
+        x.style.display = "block";
+      else {
+        x.style.display = "none";
+      }
+    });
     $(document).ready(function(){
       var quiz_btn=document.getElementsByClassName('quiz_btn');
       for (i = 0; i < quiz_btn.length; i++) {
@@ -579,7 +641,7 @@
         x.removeClass = "active";
         ini = num;
     });
-        
+
 
         var assini = 21;
     $('.assitabs').click(function() {
@@ -953,9 +1015,9 @@
             }
         });
     });
-        
-       
-    
+
+
+
 </script>
 
 

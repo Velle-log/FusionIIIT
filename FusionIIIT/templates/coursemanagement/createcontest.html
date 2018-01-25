@@ -67,21 +67,19 @@ Create Contest
                 </div>
 
             </div>
-
-            <label>Start Date</label> {{ form.startdate }}
-
-            <div class="ui calendar field" id='example6'>
-                <label>Start Time</label>
-                <div class="ui input left icon">
-                    <i class="hourglass empty icon"></i> {{ form.starttime}}
-                </div>
-            </div>
-            <label>End Date</label> {{ form.enddate }}
-            <div class="ui calendar field" id='example7'>
-                <label>End Time</label>
-                <div class="ui input left icon">
-                    <i class="hourglass full icon"></i> {{ form.endtime}}
-                </div>
+            <div class="ui two fields">
+              <div class="ui calendar field" >
+                  <label>Start Time</label>
+                  <div class="ui input left icon">
+                      <i class="hourglass empty icon"></i> <input type="date" id="startDate" name="startdate" required><input type="time" id="startTime" name="starttime" required>
+                  </div>
+              </div>
+              <div class="ui calendar field" >
+                  <label>End Time </label>
+                  <div class="ui input left icon">
+                      <i class="hourglass empty icon"></i> <input type="date" id="endDate" name="enddate" required><input type="time" id="endTime" name="endtime" required>
+                  </div>
+              </div>
             </div>
             <div class="ui calendar field">
                 <label>Description</label>
@@ -102,12 +100,6 @@ Create Contest
                 </div>
             </div>
             <div class="ui field">
-                <label>Marks per Question</label>
-                <div class="ui input">
-                    {{ form.per_question_score }}
-                </div>
-            </div>
-            <div class="ui field">
 
                 <label>Enable Penalty</label>
                 {{form.negative_marks}}
@@ -116,16 +108,9 @@ Create Contest
             <input type="submit" class="ui primary button" value="Submit" />
         </form>
         </div>
-        
-    </div>
-<!--
-    <div class="three wide column">
-        <div class="row">
 
-            {% block note %} {% include 'coursemanagement/note.html' %} {% endblock %}
-        </div>
     </div>
--->
+
     <div class="column"></div>
 
 </div>

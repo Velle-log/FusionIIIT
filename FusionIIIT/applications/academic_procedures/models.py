@@ -35,24 +35,24 @@ class Register(models.Model):
         return str(self.r_id)
 
 
-class Thesis(models.Model):
-    reg_id = models.ForeignKey(ExtraInfo, on_delete=models.CASCADE)
-    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
-    supervisor_id = models.ForeignKey(Faculty, on_delete=models.CASCADE)
-    topic = models.CharField(max_length=1000)
-
-    class Meta:
-        db_table = 'Thesis'
-
-    def __str__(self):
-        return self.topic & self.reg_id & self.student_id & self.supervisor_id
-
-
-class FinalRegistrations(models.Model):
-    reg_id = models.ForeignKey(ExtraInfo, on_delete=models.CASCADE)
-    semester = models.IntegerField()
-    student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
-    registration = models.BooleanField(default=False)
-
-    def __str__(self):
-        return str(self.id)
+# class Thesis(models.Model):
+#     reg_id = models.ForeignKey(ExtraInfo, on_delete=models.CASCADE)
+#     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
+#     supervisor_id = models.ForeignKey(Faculty, on_delete=models.CASCADE)
+#     topic = models.CharField(max_length=1000)
+#
+#     class Meta:
+#         db_table = 'Thesis'
+#
+#     def __str__(self):
+#         return self.topic & self.reg_id & self.student_id & self.supervisor_id
+#
+#
+# class FinalRegistrations(models.Model):
+#     reg_id = models.ForeignKey(ExtraInfo, on_delete=models.CASCADE)
+#     semester = models.IntegerField()
+#     student_id = models.ForeignKey(Student, on_delete=models.CASCADE)
+#     registration = models.BooleanField(default=False)
+#
+#     def __str__(self):
+#         return str(self.id)

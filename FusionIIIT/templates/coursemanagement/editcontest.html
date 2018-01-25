@@ -20,104 +20,103 @@ Edit Contest
             <h2 class="ui center aligned icon header">
                 <i class=" circular file text icon"></i> {{details.quiz_name}}
             </h2>
-            <div class="ui segment centered fourteen wide column" style="margin-top:5em;margin-bottom:10em">
-                <div class="ui huge list">
-                    <div class="item">
-                        <div class="header">Description</div>
-                        {% for x in description %}
-                        <p>{{forloop.counter}}){{x}}</p>
-                        {% endfor %}
-                    </div>
-                    <div class="item">
-                        <div class="header">Rules</div>
-                        {% for x in rules %}
-                        <p>{{forloop.counter}}){{x}}</p>
-                        {% endfor %}
-                    </div>
+            <div class="ui segment centered fourteen wide column" style="margin-top:5em;margin-bottom:10em;padding:2em">
+                <div class="ui two column grid">
+                  <div class="ui eight wide column huge list" style="border-right:1px solid black">
+                      <div class="item">
+                          <div class="header">Description</div>
+                          {% for x in description %}
+                          <p>{{forloop.counter}}){{x}}</p>
+                          {% endfor %}
+                      </div>
+                      <div class="item">
+                          <div class="header">Rules</div>
+                          {% for x in rules %}
+                          <p>{{forloop.counter}}){{x}}</p>
+                          {% endfor %}
+                      </div>
 
-                    <div class="item">
-                        <div class="header">Start Time <a class="edit_contest" data-id="edit1"> <i class="edit icon"></i></a></div>
-                        {{details.start_time}}
-                    </div>
-                    <form class="ui form"  id='edit1' style="display:none">
+                      <div class="item">
+                          <div class="header">Start Time <a class="edit_contest" data-id="edit1"> <i class="edit icon"></i></a></div>
+                          {{details.start_time}}
+                      </div>
+                      <form class="ui form"  id='edit1' style="display:none">
+                        <div class="ui calendar field" >
+                            <label>Start Time</label><br>
+                            {{ form.startdate }}<br>
+                            <div class="ui input left icon">
+                                <i class="hourglass empty icon"></i>  {{ form.starttime}}
+                            </div>
+                        </div>
+                        <a class="ui primary button form_submit"data-id="edit1" id="submit_edit1">Submit</a>
+                      </form>
+
+                      <div class="item">
+                          <div class="header">End Time <a class="edit_contest" data-id="edit2"> <i class="edit icon"></i></a></div>
+                          {{details.end_time}}
+                      </div>
+                      <form class="ui form"  id='edit2' style="display:none">
                       <div class="ui calendar field" >
-                          <label>Start Time</label><br>
-                          {{ form1.startdate }}<br>
+                          <label>End Time</label><br>
+                           {{ form.enddate }}<br>
                           <div class="ui input left icon">
-                              <i class="hourglass empty icon"></i>  {{ form1.starttime}}
+                              <i class="hourglass full icon"></i> {{ form.endtime}}
                           </div>
                       </div>
-                      <a class="ui primary button form_submit"data-id="edit1" id="submit_edit1">Submit</a>
+                      <a class="ui primary button form_submit" data-id="edit2" id="submit_edit2">Submit</a>
                     </form>
 
-                    <div class="item">
-                        <div class="header">End Time <a class="edit_contest" data-id="edit2"> <i class="edit icon"></i></a></div>
-                        {{details.end_time}}
-                    </div>
-                    <form class="ui form"  id='edit2' style="display:none">
-                    <div class="ui calendar field" >
-                        <label>End Time</label><br>
-                         {{ form1.enddate }}<br>
-                        <div class="ui input left icon">
-                            <i class="hourglass full icon"></i> {{ form1.endtime}}
-                        </div>
-                    </div>
-                    <a class="ui primary button form_submit" data-id="edit2" id="submit_edit2">Submit</a>
-                  </form>
+                      <div class="item">
+                          <div class="header">Number of Questions <a class="edit_contest" data-id="edit3"> <i class="edit icon"></i></a></div>
+                          {{details.number_of_question}}
+                      </div>
+                    <form class="ui form"  id='edit3' style="display:none">
+                      <div class="ui field" >
+                          <label>Number Of Questions</label>
+                          <div class="ui input" onkeydown="submit_on_enter()">
+                              {{ form.number_of_questions }}
+                          </div>
+                      </div>
+                      <a class="ui primary button form_submit" data-id="edit3" id="submit_edit3">Submit</a>
+                    </form>
 
-                    <div class="item">
-                        <div class="header">Number of Questions <a class="edit_contest" data-id="edit3"> <i class="edit icon"></i></a></div>
-                        {{details.number_of_question}}
-                    </div>
-                  <form class="ui form"  id='edit3' style="display:none">
-                    <div class="ui field" >
-                        <label>Number Of Questions</label>
-                        <div class="ui input" onkeydown="submit_on_enter()">
-                            {{ form1.number_of_questions }}
-                        </div>
-                    </div>
-                    <a class="ui primary button form_submit" data-id="edit3" id="submit_edit3">Submit</a>
-                  </form>
+                      <div class="item">
+                          <div class="header">Total Score <a class="edit_contest" data-id="edit4"> <i class="edit icon"></i></a></div>
+                          {{details.total_score}}
+                      </div>
+                      <form class="ui form"  id='edit4' style="display:none">
+                      <div class="ui field">
+                          <label>Marks per Question</label>
+                          <div class="ui input"  onkeydown="submit_on_enter()~">
+                              {{ form.per_question_score }}
+                          </div>
+                      </div>
+                      <a class=" ui primary button form_submit"data-id="edit4" id="submit_edit4">Submit</a>
+                    </form>
 
-                    <div class="item">
-                        <div class="header">Total Score <a class="edit_contest" data-id="edit4"> <i class="edit icon"></i></a></div>
-                        {{details.total_score}}
-                    </div>
-                    <form class="ui form"  id='edit4' style="display:none">
-                    <div class="ui field">
-                        <label>Marks per Question</label>
-                        <div class="ui input"  onkeydown="submit_on_enter()~">
-                            {{ form1.per_question_score }}
-                        </div>
-                    </div>
-                    <a class=" ui primary button form_submit"data-id="edit4" id="submit_edit4">Submit</a>
-                  </form>
+                  </div>
+                  <div class="ui eight wide column" >
+                    <table class="ui sixteen wide column very basic collapsing celled large table" style="margin-left:2em">
+                      <thead>
+                        <tr>
+                          <th class="ui thirteen wide column">topic</th>
+                          <th class="ui three wide column">No. of Questions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for key, value in counter.items %}
+                        <tr>
+                          <td>{{key.topic_name}}</td>
+                          <td>{{value}}</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
 
+                    </table>
+                    <a href="#" class="ui blue button" style="margin-left:1em">Preview Question Paper</a>
+                  </div>
                 </div>
 
-
-
-                {% for question in questions %}
-                <div class="ui segment">
-                    <div class="ui big list">
-                        <div class="item">
-                            <div class="header">Q>{{question.question}}</div>
-                            {% if question.options1 %}<span>(1){{question.options1}}</span>{% endif %}<br> {% if question.options2 %}<span>(2){{question.options2}}</span>{% endif %}<br> {% if question.options3 %}<span>(3){{question.options3}}</span>{% endif %}<br> {% if question.options4 %}<span>(4){{question.options4}}</span>{% endif %}<br> {% if question.options5 %}<span>(5){{question.options5}}</span>{% endif %}<br>
-                        </div>
-                    
-                        <div class="item">
-                            <div class="header">Answer:</div>
-                            {{question.answer}}
-                        </div>
-                        {% if question.image %}
-                        <div class="item">
-                            <div class="header">Image</div>
-                            <img src="{{ question.image }}" style="height:400px;width:600px" />
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-                {% endfor %}
 
                 <a id="showbox">
                     <div class="ui primary button">
@@ -126,61 +125,38 @@ Edit Contest
                 </a>
 
                 <div class="ui segment" id="ques_div" style="display:none">
-                    <form class="ui large form" method="post" enctype="multipart/form-data">
+                    <form class="ui large form" method="post"  enctype="multipart/form-data">
                         {% csrf_token %}
-                        <label>Problem Statement</label>
-                        <div class="field">
-                            <div class="ui input left icon">
-                                <i class="comments icon"></i> {{ form.problem_statement }}
-                            </div>
+                        <div class="ui two fields">
+                          <div class="ui field">
+                            <label>Question Bank</label>
+                              <select name="qbank" id="questionbank" class="ui fluid dropdown">
+                              <option value="">Question Bank</option>
+                              {% for qb in questionbank %}
+                               <option value="{{qb.pk}}">{{qb.name}}</option>
+                              {% endfor %}
+                            </select>
+                          </div>
+                          <div class="ui field">
+                            <label>Topics</label>
+                            <select name="topic" id="topicquestion" class="ui fluid dropdown">
+                              <option value="">Topic</option>
+                              {% for topic in topics %}
+                               <option value="{{topic.pk}}">{{topic.topic_name}}</option>
+                               {% endfor %}
+                             </select>
+                          </div>
                         </div>
-                        <label>Upload Image</label> {{ form.image }}
-                        <br>
-                        <label>Option 1</label>
-                        <div class="field">
-                            <div class="ui input left icon">
-                                <i class="percent icon"></i> {{ form.option1 }}
-                            </div>
+                        <!-- <div class="ui field" id="questiondiv" style="display">
+                          <label>Questions</label>
+                          <select name="qbank" id="questions" class="ui fluid dropdown">
+                            <option value="">Question Bank</option>
+                          </select>
+                        </div> -->
+                        <div class="ui blue button" id="submitquestion">
+                          Submit
                         </div>
-                        <label>Option 2</label>
-                        <div class="field">
-                            <div class="ui input left icon">
-                                <i class="percent icon"></i> {{ form.option2 }}
-                            </div>
-                        </div>
-                        <label>Option 3</label>
-                        <div class="field">
-                            <div class="ui input left icon">
-                                <i class="percent icon"></i> {{ form.option3 }}
-                            </div>
-                        </div>
-                        <label>Option 4</label>
-                        <div class="field">
-                            <div class="ui input left icon">
-                                <i class="percent icon"></i> {{ form.option4 }}
-                            </div>
-                        </div>
-                        <label>Option 5</label>
-                        <div class="field">
-                            <div class="ui input left icon">
-                                <i class="percent icon"></i> {{ form.option5 }}
-                            </div>
-                        </div>
-                        <label>Answer</label>
-                        <div class="field">
-                            <div class="ui input left icon">
-                                <i class="percent icon"></i> {{ form.answer }}
-                            </div>
-                        </div>
-                        <label>Score</label>
-                        <div class="field">
-                            <div class="ui input left icon">
-                                <i class="percent icon"></i> {{ form.score }}
-                            </div>
-                        </div>
-                        <input type="submit" class="ui primary button" value="Submit" />
-
-                    </form>
+                      </form>
 
                 </div>
                 <a class="ui blue button" href="/ocms/{{course.course_id}}/">
@@ -191,7 +167,12 @@ Edit Contest
     </div>
 </div>
 <script type="text/javascript">
+    $('#submitquestion').click(function(){
+      event.preventDefault();
+      var qb = $('#questionbank').val();
+      alert(qb);
 
+    });
    $('.edit_contest').click(function(){
      id=$(this).attr('data-id');
      $('#'+id).toggle();
@@ -220,8 +201,9 @@ Edit Contest
 
   $('.form_submit').click(function(){
     event.preventDefault();
-      var data = new FormData();
+    var data = new FormData();
     var pk=$(this).attr('data-id');
+    alert(pk+"ADSD");
     var other_data = $('#'+pk).serializeArray();
     $.each(other_data, function(key, input) {
         // alert(input.name);
