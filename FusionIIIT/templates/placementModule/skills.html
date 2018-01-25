@@ -56,7 +56,7 @@
             {% comment %}A skill row starts here!{% endcomment %}
             <div class="ui row">
                 {% comment %}The Left margin{% endcomment %}
-                <div class="three wide column"></div>
+                <div class="two wide column"></div>
 
                 <div class="ten wide column">
                     <div class="ui indicating large progress active" data-percent="{{ skill.skill_rating }}">
@@ -66,7 +66,14 @@
                               <div class="label">{{ skill.skill_id.skill }}</div>
                             </div>
                 </div>
-
+                <div class="two wide column">
+                <form method="post" class="ui form" role="form">
+                  {% csrf_token %}
+                  <button name="deleteskill" value="{{ skill.pk }}" class="ui inverted huge circular icon button" style="margin: auto;" type="submit">
+                      <i class="delete red icon"></i>
+                  </button>
+                  </form>
+                  </div>
             </div>
             {% comment %}A skill row ends here!{% endcomment %}
             {% endfor %}

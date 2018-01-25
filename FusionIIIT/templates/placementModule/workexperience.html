@@ -14,9 +14,7 @@
 
         <div class="ui vertical segment">
             {% comment %}Form Tag starts here!{% endcomment %}
-
             <form method="post" class="ui form" role="form">
-
                 {% comment %}The add a new internship Accordian starts here!{% endcomment %}
                 <div class="ui active accordion field">
                     <div class="title">
@@ -42,7 +40,6 @@
                                   {{ form8.location.errors }}
                                 <label for="{{ form8.location.id_for_label }}">
                                   Location:</label>
-
                                 <div class="ui fluid large input">
                                     {% comment %}The Institute Name input!{% endcomment %}
                                     {{ form8.location }}
@@ -80,14 +77,12 @@
 
                         <div class="two fields">
                             <div class="sixteen wide field">
-
                               {{ form8.description.errors }}
                                 <label for="{{ form8.description.id_for_label }}">
                                   Description:</label>
                                 <div class="ui fluid large input">
                                     {% comment %}The Institute description input!{% endcomment %}
                                     {{ form8.description }}
-
                                 </div>
                             </div>
                         </div>
@@ -108,12 +103,9 @@
                                 <label for="{{ form3.status.id_for_label }}">
                                     Status
                                 </label>
+
                                 {{ form8.status }}
-                                <!--select class="ui search fluid large dropdown">
-                                    <option value="">Status</option>
-                                    <option value="complete">Completed</option>
-                                    <option value="ongoing">Ongoing</option>
-                                </select-->
+
                             </div>
 
                             <div class="three wide field">
@@ -138,12 +130,13 @@
             <thead>
             <tr>
                 <th class="four wide">Organisation Name</th>
-                <th>Title</th>
-                <th>Status</th>
-                <th class="two wide">Start Date</th>
+                <th class="two wide">Title</th>
+                <th class="three wide">Status</th>
+                <th class="three wide">Start Date</th>
                 <th class="two wide">End Date</th>
                 <th class="two wide">Location</th>
                 <th class="three wide">Description</th>
+                <th class="two wide">Delete</th>
             </tr>
             </thead>
             <tbody>
@@ -175,6 +168,15 @@
 
                 <td>
                     {{ experience.description }}
+                </td>
+
+                <td>
+                  <form method="post" class="ui form" role="form">
+                    {% csrf_token %}
+                    <button name="deleteexp" value="{{ experience.pk }}" class="ui inverted huge circular icon button" style="margin: auto;" type="submit">
+                        <i class="delete red icon"></i>
+                    </button>
+                    </form>
                 </td>
             </tr>
             {% endfor %}
@@ -287,11 +289,12 @@
                 <thead>
                 <tr>
                     <th class="three wide">Project Name</th>
-                    <th>Status</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th class="three wide">Description</th>
-                    <th>Link</th>
+                    <th class="three wide">Status</th>
+                    <th class="three wide">Start Date</th>
+                    <th class="three wide">End Date</th>
+                    <th class="five wide">Description</th>
+                    <th class="two wide">Link</th>
+                    <th class="two wide">Delete</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -319,6 +322,15 @@
 
                     <td>
                         <a href="{{ project.project_link }}">Click Here</a>
+                    </td>
+
+                    <td>
+                      <form method="post" class="ui form" role="form">
+                        {% csrf_token %}
+                        <button name="deletepro" value="{{ project.pk }}" class="ui inverted huge circular icon button" style="margin: auto;" type="submit">
+                            <i class="delete red icon"></i>
+                        </button>
+                        </form>
                     </td>
 
                 </tr>

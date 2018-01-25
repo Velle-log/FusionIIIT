@@ -9,41 +9,36 @@
     <div class="ui active tab" data-tab="achievements">
         <div class="ui vertical segment">
             {% comment %}Form Tag starts here!{% endcomment %}
-
             <form method="post" class="ui form" role="form">
-
                 {% comment %}Then add a new achievement Accordian starts here!{% endcomment %}
                 <div class="ui active accordion field">
                     <div class="title">
                         <i class="icon dropdown"></i>
                         Add a new Achievement!
                     </div>
-                    {{ form4.non_field_errors }}
+                    {{ form12.non_field_errors }}
                     <div class="active content">
                         <div class="ui form" style="padding: 8px; padding-left: 24px; padding-right: 24px;">
                           {% csrf_token %}
                             <div class="two fields">
                                 <div class="twelve wide field">
-                                  {{ form4.achievement.errors }}
-                                  <label for="{{ form4.achievement.id_for_label }}">
+                                  {{ form12.achievement.errors }}
+                                  <label for="{{ form12.achievement.id_for_label }}">
                                       Achievement Name:
                                     </label>
                                     <div class="ui fluid large input">
                                         {% comment %}The Achievement Name input!{% endcomment %}
-
-                                        {{ form4.achievement }}
-
+                                        {{ form12.achievement }}
                                     </div>
                                 </div>
 
                                 <div class="four wide field">
-
-                                  {{ form4.achievement_type.errors }}
-                                  <label for="{{ form4.achievement_type.id_for_label }}">
+                                  {{ form12.achievement_type.errors }}
+                                  <label for="{{ form12.achievement_type.id_for_label }}">
                                     Type:
                                   </label>
                                     <div class="ui fluid large input">
-                                      {{ form4.achievement_type }}
+                                      {{ form12.achievement_type }}
                                     </div>
                                 </div>
                             </div>
@@ -51,46 +46,36 @@
                             {% comment %}The from date input{% endcomment %}
                             <div class="two fields">
                               <div class="four wide field">
-                                {{ form4.date_earned.errors }}
-                                <label for="{{ form4.date_earned.id_for_label }}">
+                                {{ form12.date_earned.errors }}
+                                <label for="{{ form12.date_earned.id_for_label }}">
                                   Date:
                                 </label>
-
                                 <div class="ui calendar" id="rangestart2">
-                                    <div class="ui input left icon">
+                                    <div class="ui input large left icon">
                                         <i class="calendar icon"></i>
-                                        {{ form4.date_earned }}
+                                        {{ form12.date_earned }}
                                     </div>
                                 </div>
                               </div>
                                 <div class="twelve wide field">
-                                  {{ form4.issuer.errors }}
-                                  <label for="{{ form4.issuer.id_for_label }}">
+                                  {{ form12.issuer.errors }}
+                                  <label for="{{ form12.issuer.id_for_label }}">
                                         Issuer
                                     </label>
                                     <div class="ui fluid large input">
-                                        {{ form4.issuer }}
-                                    </div>
-                                </div>
-                              </div>
-                                <div class="twelve wide field">
-                                    <label>
-                                        Issuer
-                                    </label>
-                                    <div class="ui fluid large input">
-                                        <input>
+                                        {{ form12.issuer }}
                                     </div>
                                 </div>
                             </div>
 
                             <div class="two fields">
                                 <div class="twelve wide field">
-                                  {{ form4.description.errors }}
-                                  <label for="{{ form4.description.id_for_label }}">
+                                  {{ form12.description.errors }}
+                                  <label for="{{ form12.description.id_for_label }}">
                                         Description
                                     </label>
 
-                                    {{ form4.description }}
+                                    {{ form12.description }}
                                 </div>
 
                                 <div class="four wide field">
@@ -114,13 +99,12 @@
             <table class="ui fixed sortable celled table">
                 <thead>
                 <tr>
-
                     <th class="four wide">Achievement Name</th>
-
-                    <th>Type</th>
-                    <th>Issuer</th>
-                    <th>Date</th>
+                    <th class="three wide">Type</th>
+                    <th class="two wide">Issuer</th>
+                    <th class="two wide">Date</th>
                     <th class="four wide">Description</th>
+                    <th class="two wide">Delete</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -144,6 +128,15 @@
 
                     <td>
                         {{ achievement.description }}
+                    </td>
+
+                    <td>
+                      <form method="post" class="ui form" role="form">
+                        {% csrf_token %}
+                        <button name="deleteach" value="{{ course.pk }}" class="ui inverted huge circular icon button" style="margin: auto;" type="submit">
+                            <i class="delete red icon"></i>
+                        </button>
+                        </form>
                     </td>
                 </tr>
                 {% endfor %}

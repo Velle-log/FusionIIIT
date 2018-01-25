@@ -10,11 +10,17 @@
          style="max-width: 320px;">
 
         <div class="image">
+          {% if profile.profile_picture %}
+            <img src="{{ profile.profile_picture.url }}">
+          {% else %}
             <img src="{% static 'globals/img/zlatan.jpg' %}">
+          {% endif %}
         </div>
 
         <div class="content">
-            {% comment %}http://web.iiitdmj.ac.in/~vkjain{% endcomment %}
+            {% comment %}
+                TODO: Add a If-Else here!
+            {% endcomment %}
             <div class="ui large header" href="">
                 {{ request.user.first_name}}
                 {{ request.user.last_name}}
