@@ -72,7 +72,7 @@ class ExtraInfo(models.Model):
     sex = models.CharField(max_length=2, choices=Constants.SEX_CHOICES, default='M')
     age = models.IntegerField(default=18)
     address = models.TextField(max_length=1000, default="")
-    phone_no = models.BigIntegerField()
+    phone_no = models.BigIntegerField(null=True)
     user_type = models.CharField(max_length=20, choices=Constants.USER_CHOICES)
     designation = models.ForeignKey(Designation, on_delete=models.CASCADE,
                                     related_name='holds_designation', null=True)

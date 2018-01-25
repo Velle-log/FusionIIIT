@@ -9,10 +9,18 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^dashboard/$', views.dashboard, name='dashboard'),
 
+<<<<<<< HEAD
+    url(r'^login/', views.login, name='login'),
+
+    url(r'^dashboard/', views.dashboard, name='dashboard'),
+
+
+=======
     # Feedback and issues url
     url(r'^feedback/$', views.feedback, name="feedback"),
     url(r'^issue/$', views.issue, name="issue"),
     url(r'^view_issue/(?P<id>\d+)/$', views.view_issue, name="view_issue"),
     url(r'^support_issue/(?P<id>\d+)/$', views.support_issue, name="support_issue"),
     url(r'^logout/$', views.logout_view, name="logout_view"),
+>>>>>>> upstream/master
 ]
