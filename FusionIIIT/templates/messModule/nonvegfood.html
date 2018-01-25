@@ -53,14 +53,14 @@
                                         <div class="ui row">
                                             <div class="two fields">
                                                 {% for x in nonveg %}
-                                                <div class="field">
                                                     {% if x.order_interval == 'Breakfast' %}
+                                                <div class="field">
                                                     
                                                     <div class="ui input">
-                                                        <input type="checkbox" name='dish' value='{{x.dish}}'>{{x.dish}} - {{x.price}}
+                                                        <input type="radio" name='dish' value='{{x.dish}}' id="dish">{{x.dish}} - {{x.price}}
                                                     </div>
-                                                    {% endif %}
                                                 </div>
+                                                    {% endif %}
                                                 {% endfor %}
                                                 
                                             </div>
@@ -68,7 +68,7 @@
 
                                         <div class="ui row">
                                             <br>
-                                            <button type="submit" class="ui primary button right floated">
+                                            <button type="submit" id="submit" class="ui primary button right floated">
                                                 Place Order
                                             </button>
                                         </div>
@@ -81,15 +81,15 @@
                                         <div class="ui row">
                                             <div class="two fields">
                                             {% for x in nonveg %}
-                                                <div class="field">
                                                     {% if x.order_interval == 'Lunch' %}
+                                                <div class="field">
 
                                                     <div class="ui input">
                                                         
-                                                        <input type="checkbox" name='dish' value='{{x.dish}}'>{{x.dish}} - {{x.price}}
+                                                        <input type="radio" name='dish' value='{{x.dish}}' id="">{{x.dish}} - {{x.price}}
                                                     </div>
-                                                    {% endif %}
                                                 </div>
+                                                    {% endif %}
                                             {% endfor %}
 
                                             </div>
@@ -97,7 +97,7 @@
 
                                         <div class="ui row">
                                             <br>
-                                            <button type="submit" class="ui primary button right floated">
+                                            <button type="submit" id="submit" class="ui primary button right floated">
                                                 Place Order
                                             </button>
                                         </div>
@@ -111,14 +111,14 @@
                                             
                                             <div class="two fields">
                                                 {% for x in nonveg %}
-                                                <div class="field">
                                                     {% if x.order_interval == 'Dinner' %}
+                                                <div class="field">
 
                                                     <div class="ui input">
-                                                        <input type="checkbox" name='dish' value='{{x.dish}}'>{{x.dish}} - {{x.price}}
+                                                        <input type="radio" name='dish' value='{{x.dish}}' id="dish">{{x.dish}} - {{x.price}}
                                                     </div>
-                                                    {% endif %}
                                                 </div>
+                                                    {% endif %}
                                                 {% endfor %}
 
                                             </div>
@@ -126,7 +126,7 @@
 
                                         <div class="ui row">
                                             <br>
-                                            <button type="submit" class="ui primary button right floated">
+                                            <button type="submit" id="submit" class="ui primary button right floated">
                                                 Place Order
                                             </button>
                                         </div>
@@ -198,10 +198,7 @@
                             <h4 class="ui image header">
                                 <img src="{% static 'globals/img/zlatan.jpg' %}" class="ui mini circular image">
                                 <div class="content">
-                                    {{extrainfo.user.username}}
-                                    <div class="sub header">
-                                        {{extrainfo.id}}
-                                    </div>
+                                    {{info.student_id}}
                                 </div>
                             </h4>
                         </td>
@@ -304,4 +301,37 @@
         </div>
     </div>
 {% endblock %}
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="{% static 'globals/js/jquery.min.js' %}"></script>
+
+<script>
+$(document).ready(function() {
+    $('#submit').on('click',function(event){
+            event.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: 'mess:placeorder',
+                dataType: 'json',
+                data: {
+                    'dish':$("#dish").val(),
+                },          
+                success: function(data) {
+                    if(data.status){
+                        alert("Data Inserted Successfully");
+                        document.getElementById('dish').value="";
+                    }
+                },
+                error: function(data, err) {
+                    alert(err.message);
+                }
+            });
+        });
+
+});
+    
+
+
+</script>
 {% endblock %}

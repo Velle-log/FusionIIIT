@@ -1,25 +1,30 @@
 from django.contrib import admin
 
-from .models import (Feedback, Menu, Menu_change_request, Mess, Mess_meeting,
-                     Monthly_bill, Nonveg_data, Nonveg_menu, Payments, Rebate,
+from .models import (Feedback, Menu, Menu_change_request, Mess_meeting,
+                     Mess_minutes, Mess_reg, Messinfo, Monthly_bill,
+                     Nonveg_data, Nonveg_menu, Payments, Rebate,
                      Special_request, Vacation_food)
 
 # Register your models here.
 
 
-class MessAdmin(admin.ModelAdmin):
-    model = Mess
+class MessinfoAdmin(admin.ModelAdmin):
+    model = Messinfo
     fieldsets = [
         ('mess_option', {'fields': ['mess_option']}),
-        ('student', {'fields': ['student']}),
-        ('nonveg_total_bill', {'fields': ['nonveg_total_bill']}),
-        ('rebate_count', {'fields': ['rebate_count']}),
-        ('count', {'fields': ['count']}),
-        ('current_bill', {'fields': ['current_bill']})
+        ('student_id', {'fields': ['student_id']}),
 
     ]
-    list_display = ('student', 'mess_option', 'nonveg_total_bill',
-                    'rebate_count', 'count', 'current_bill')
+    list_display = ('student_id', 'mess_option')
+
+
+class Mess_minutesAdmin(admin.ModelAdmin):
+    model = Mess_meeting
+    fieldsets = [
+        ('meeting_date', {'fields': ['meeting_date']}),
+        ('mess_minutes', {'fields': ['mess_minutes']}),
+        ]
+    list_display = ('meeting_date', 'mess_minutes')
 
 
 class MenuAdmin(admin.ModelAdmin):
@@ -32,14 +37,30 @@ class MenuAdmin(admin.ModelAdmin):
     list_display = ('mess_option', 'meal_time', 'dish')
 
 
+class Mess_regAdmin(admin.ModelAdmin):
+    model = Mess_reg
+    fieldsets = [
+        ('sem', {'fields': ['sem']}),
+        ('start_reg', {'fields': ['start_reg']}),
+        ('end_reg', {'fields': ['end_reg']}),
+        ]
+    list_display = ('start_reg', 'end_reg')
+
+
 class Monthly_billAdmin(admin.ModelAdmin):
     model = Monthly_bill
     fieldsets = [
         ('student_id', {'fields': ['student_id']}),
         ('month', {'fields': ['month']}),
         ('amount', {'fields': ['amount']}),
+        ('nonveg_total_bill', {'fields': ['nonveg_total_bill']}),
+        ('rebate_count', {'fields': ['rebate_count']}),
+        ('rebate_amount', {'fields': ['rebate_amount']}),
+        ('total_bill', {'fields': ['total_bill']}),
+
         ]
-    list_display = ('student_id', 'month', 'amount')
+    list_display = ('student_id', 'month', 'amount',
+                    'nonveg_total_bill', 'rebate_count', 'rebate_amount', 'total_bill')
 
 
 class PaymentsAdmin(admin.ModelAdmin):
@@ -125,14 +146,12 @@ class Menu_change_requestAdmin(admin.ModelAdmin):
 class Mess_meetingAdmin(admin.ModelAdmin):
     model = Mess_meeting
     fieldsets = [
-        ('meeting_date', {'fields': ['meeting_date']}),
+        ('meet_date', {'fields': ['meet_date']}),
         ('agenda', {'fields': ['agenda']}),
         ('venue', {'fields': ['venue']}),
         ('meeting_time', {'fields': ['meeting_time']}),
-        ('mess_minutes', {'fields': ['mess_minutes']}),
         ]
-    list_display = ('meeting_date', 'agenda', 'venue',
-                    'meeting_time', 'mess_minutes')
+    list_display = ('meet_date', 'agenda', 'venue', 'meeting_time')
 
 
 class FeedbackAdmin(admin.ModelAdmin):
@@ -146,8 +165,10 @@ class FeedbackAdmin(admin.ModelAdmin):
     list_display = ('student_id', 'fdate', 'description', 'feedback_type')
 
 
-admin.site.register(Mess, MessAdmin),
+admin.site.register(Mess_minutes, Mess_minutesAdmin),
+admin.site.register(Messinfo, MessinfoAdmin),
 admin.site.register(Menu, MenuAdmin),
+admin.site.register(Mess_reg, Mess_regAdmin),
 admin.site.register(Monthly_bill, Monthly_billAdmin),
 admin.site.register(Payments, PaymentsAdmin),
 admin.site.register(Rebate, RebateAdmin),
