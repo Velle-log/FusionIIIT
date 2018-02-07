@@ -111,14 +111,15 @@
                 <div class="two fields" >
                     <div class="field">
                         <label>From</label>
-
-                                <input type="date" placeholder="From" name="start_date">
+                                <input type="date" placeholder="From" id="start_date" name="start_date">
+                                <p id="stdt"></p>
 
                     </div>
                     <div class="field">
                         <label>To</label>
 
-                          <input type="date" placeholder="To" name="end_date">
+                          <input type="date" placeholder="To" id="end_date" name="end_date">
+                          <p id="endt"></p>
 
 
                     </div>
@@ -128,18 +129,56 @@
                 <div class="field">
                     <label>Reason</label>
                     <div class="ui fluid input">
-                        <textarea class="ui textarea" rows="2" name="reason"></textarea>
+                        <textarea class="ui textarea" rows="2" id="reason" name="reason"></textarea>
                     </div>
                 </div>
 
                 <div class="field">
                     <label><br></label>
                     <div >
-                      <input type="submit" name="Submit2" value="Submit"class="ui large right floated primary button" />
+                      <input type="button" id="amb_submit" name="amb_submit" value="Submit"class="ui large right floated primary button" />
                     </div>
                 </div>
 
             </form>
+            <script type="text/javascript">
+              $('#amb_submit').click(function(e)
+                                                  {
+                                                    var startDate = document.getElementById('start_date').value;
+                                                    var endDate = document.getElementById('end_date').value;
+                                                    var start = new Date(startDate);
+                                                    var end=new Date(endDate);
+                                                    var today = new Date();
+                                                    $('#stdt').html('');
+                                                    $('#endt').html('');
+                                                    if ( start < today ) {
+                                                        $('#stdt').html('You cannot enter a date before today!.');
+                                                        return false;
+                                                    }
+                                                    if ( end < start ) {
+                                                        $('#endt').html('You cannot enter a date before start date!.');
+                                                        return false;
+                                                    }
+                                                    $.ajax({
+                                                      type:'post',
+                                                      url:'/healthcenter/student/',
+                                                      data: {
+                                                      csrfmiddlewaretoken: '{{ csrf_token }}',
+                                                      start_date:$("#start_date").val(),
+                                                      end_date:$("#end_date").val(),
+                                                      reason:$("#reason").val(),
+                                                      amb_submit:$("#amb_submit").val()
+                                                    },
+                                                      success: function(data){
+                                                      document.getElementById("start_date").value="";
+                                                      document.getElementById("end_date").value="";
+                                                      document.getElementById("reason").value="";
+
+                                                    }
+                                                  });
+                                                });
+
+</script>
             <br>
             <br>
         </div>

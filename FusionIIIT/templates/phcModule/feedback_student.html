@@ -23,17 +23,37 @@
                     <br>
                     <div class="field">
                         <label>Feedback:</label>
-                        <textarea rows="3" name='Complaint' ></textarea>
+                        <textarea rows="3" id='feedback' name='feedback' ></textarea>
                     </div>
 
                     <div class="field">
                         <label><br></label>
-                            <input type='submit' name='complaint' value="Submit" class="ui primary right floated button" >
+                            <input type='button' id='feed_submit' name='feed_submit' value="Submit" class="ui primary right floated button" >
                     </div>
                 </div>
             </form>
             {% comment %}Form Tag ends here!{% endcomment %}
+            <script type="text/javascript">
 
+                  $('#feed_submit').on('click',function(e){
+                       e.preventDefault();
+                       $.ajax({
+                       type:'post',
+                       url:'/healthcenter/student/',
+                       data: {
+                       csrfmiddlewaretoken: '{{ csrf_token }}',
+                       feedback:$("#feedback").val(),
+                       feed_submit:$("#feed_submit").val(),
+                       },
+                       success: function(data){
+                         if (data.status == 1){
+                           document.getElementById("feedback").value=""
+                         }
+                     }
+                   });
+                 });
+
+                </script>
             <br>
             <br>
             <div class="ui divider"></div>

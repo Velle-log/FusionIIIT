@@ -31,14 +31,18 @@ def healthcenter(request):
 
 @login_required
 def compounder_view(request):
+
     usertype = ExtraInfo.objects.get(user=request.user).user_type
     if usertype == 'compounder':
         if request.method == 'POST':
+
             if 'feed_com' in request.POST:
-                pk = request.POST.get('id')
-                feedback = request.POST.get('feedback')
+                print("anjali")
+                pk = request.POST.get('com_id')
+                feedback = request.POST.get('feed')
                 Complaint.objects.filter(id=pk).update(feedback=feedback)
-                return HttpResponseRedirect("/healthcenter/compounder")
+                data = {'feedback': feedback}
+                return JsonResponse(data)
             elif 'approve' in request.POST:
                 pk = request.POST.get('id')
                 Appointment.objects.filter(id=pk).update(approval=True)
@@ -243,7 +247,7 @@ def student_view(request):
     usertype = ExtraInfo.objects.get(user=request.user).user_type
     if usertype == 'student':
         if request.method == 'POST':
-            if 'Submit2' in request.POST:
+            if 'amb_submit' in request.POST:
                 user_id = ExtraInfo.objects.get(user=request.user)
                 reason = request.POST.get('reason')
                 start_date = request.POST.get('start_date')
@@ -257,7 +261,8 @@ def student_view(request):
                      end_date=end_date,
                      reason=reason
                  )
-                return HttpResponseRedirect("/healthcenter/student")
+                data = {'status': 1}
+                return JsonResponse(data)
             elif "appointment" in request.POST:
                 user_id = ExtraInfo.objects.get(user=request.user)
                 doctor_id = request.POST.get('doctor')
@@ -278,11 +283,13 @@ def student_view(request):
                         }
                 return JsonResponse(data)
 
-            elif 'feed' in request.POST:
+            elif 'submit_feed' in request.POST:
                 pk = request.POST.get('id')
-                feedback = request.POST.get('feedback')
+
+                feedback = request.POST.get('pre_feed')
                 Prescription.objects.filter(id=pk).update(feedback=feedback)
-                return HttpResponseRedirect("/healthcenter/student")
+                data = {"feedback": feedback}
+                return JsonResponse(data)
             elif 'feedb' in request.POST:
                 pk = request.POST.get('id')
                 if 'test_file' in request.FILES:
@@ -306,15 +313,16 @@ def student_view(request):
                 schedule = Schedule.objects.filter(doctor_id=doctor_id)
                 schedules = serializers.serialize('json', schedule)
                 return HttpResponse(schedules, content_type='json')
-            elif 'complaint' in request.POST:
+            elif 'feed_submit' in request.POST:
                 user_id = ExtraInfo.objects.get(user=request.user)
-                complaint = request.POST.get('Complaint')
+                feedback = request.POST.get('feedback')
                 Complaint.objects.create(
                     user_id=user_id,
-                    complaint=complaint,
+                    complaint=feedback,
                     date=datetime.now()
                 )
-                return HttpResponseRedirect("/healthcenter/student")
+                data = {'status': 1}
+                return JsonResponse(data)
         else:
             users = ExtraInfo.objects.all()
             user_id = ExtraInfo.objects.get(user=request.user)

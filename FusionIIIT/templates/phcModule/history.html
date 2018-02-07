@@ -96,39 +96,44 @@
                       {% if pre.feedback == None %}
 
                       <td>
-                         <textarea class="ui textarea" cols="10" rows="1" name="feedback"></textarea>
+                         <textarea class="ui textarea" cols="10" rows="1" id="pre_feed" name="pre_feed"></textarea>
                          <br>
-                         {% if pre.test == None %}
+                      <p id="update_feedback"></p>
+                      <input type="button" id="submit_feed" name="submit_feed" class="ui small left floated primary button" value="Submit"/>
+                      <input type="hidden" id="feed_id" name="feed_id" value="{{pre.id}}"/>
 
-                         {% else %}
-                             {% if pre.test_file == None %}
-                            <input type="file" name"test_file" id="test_file_id" />
-                             {% endif %}
-                         {% endif %}
-                      <input type="hidden" name="id" value={{pre.id}} />
-                      <br>
-                      <input type="submit" name="feed" class="ui small left floated primary button" value="Submit"/>
                       <br>
                         </td>
                       {%else%}
                         <td>{{pre.feedback}}
-                        {% if pre.test == None %}
-
-                        {% else %}
-                            {% if pre.test_file == None %}
-                           <input type="file" name"test_file" id="test_file_id" />
-                           <input type="hidden" name="id" value={{pre.id}} />
-                           <br>
-                           <input type="submit" name="feedb" class="ui small left floated primary button" value="Submit"/>
-
-                            {% endif %}
-                        {% endif %}
-
                         </td>
                       {% endif %}
                     </form>
+
                 </tr>
                 {% endfor %}
+                <script type="text/javascript">
+                      $('#submit_feed').on('click',function(e){
+                           e.preventDefault();
+                           $.ajax({
+                           type:'post',
+                           url:'/healthcenter/student/',
+                           data: {
+                           csrfmiddlewaretoken: '{{ csrf_token }}',
+                           id:$("#feed_id").val(),
+                           pre_feed:$("#pre_feed").val(),
+                           submit_feed:$("#submit_feed").val(),
+                           },
+                           success: function(data){
+                             alert("feedback submitted");
+                             $('#update_feedback').html(data.feedback);
+                             document.getElementById("pre_feed").style.visibility='hidden';
+                             document.getElementById("submit_feed").style.visibility='hidden';
+                          }
+                         });
+                      });
+
+                    </script>
                 </tbody>
             </table>
         </div>

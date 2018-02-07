@@ -17,6 +17,7 @@
                 padding-right: 3.5%;">
 
             <form class="ui form" method="POST">{% csrf_token %}
+                <p id="usr"></p>
                 <div class="two fields">
                   <div class="field">
                       <label>Appointment</label>
@@ -35,6 +36,7 @@
                         <option value="{{user.id}}">{{user.id}}-{{user.user}}</option>
                         {% endfor %}
                       </select>
+
                    </div>
 
                    <div class="field">
@@ -69,18 +71,21 @@
                      <label>Quantity</label>
                      <div class="ui fluid large input">
                          <input placeholder="Quantity" id="quantity" name="quantity" type="number">
+
                      </div>
-                    </div>
+                  </div>
                     <div class="field">
                       <label>No of days</label>
                       <div class="ui fluid large input">
                           <input placeholder="No of days" id="days" name="days" type="number">
+
                       </div>
                      </div>
                      <div class="field">
                        <label>Times per day</label>
                        <div class="ui fluid large input">
                            <input placeholder="No of times per day" id="times" name="times" type="number">
+
                        </div>
                       </div>
                      <div class="field">
@@ -123,11 +128,22 @@
                     <input type="button" id="prescribe" name="prescribe" value="Submit"class="ui large right floated primary button" />
                 </div>
 
-            </form>
+
+
+            </form></div></div>
             <script src="{% static 'globals/js/jquery.min.js' %}"></script>
             <script type="text/javascript">
-                  $('#medicine').click(function(e)
-                                                      {
+                  $('#medicine').click(function(e){
+                                                        var user = document.getElementById('user').value;
+                                                        var quantity = document.getElementById('quantity').value;
+                                                        var medicine = document.getElementById('medicine_id').value;
+                                                        var days = document.getElementById('days').value;
+                                                        var times = document.getElementById('times').value;
+                                                        if(user=="" || days=="" || days<0 || times=="" || times<0 || quantity=="" || quantity<0)
+                                                        {
+                                                        $('#usr').html("Enter Valid Information");
+                                                        return false;
+                                                        }
                                                         $.ajax({
                                                           type:'post',
                                                           url:'/healthcenter/compounder/',
@@ -141,10 +157,10 @@
                                                         },
                                                           success: function(data){
                                                               alert("added medicine");
-                                                              document.getElementById("quantity").value=""
-                                                              document.getElementById("medicine_id").value=""
-                                                              document.getElementById("days").value=""
-                                                              document.getElementById("times").value=""
+                                                              document.getElementById("quantity").value="";
+                                                              document.getElementById("medicine_id").value="";
+                                                              document.getElementById("days").value="";
+                                                              document.getElementById("times").value="";
                                                               var response=JSON.stringify(data);
                                                                $('#sched').empty();
                                                               $.each(data, function(key, value) {
@@ -156,8 +172,14 @@
                                                     });
 </script>
 <script type="text/javascript">
-            $('#prescribe').click(function(e)
-                                                  {
+                    $('#prescribe').click(function(e){
+                                                    var user = document.getElementById('user').value;
+                                                    var details = document.getElementById('details').value;
+                                                    if(user=="" || details=="")
+                                                    {
+                                                    $('#usr').html("Improve");
+                                                    return false;
+                                                    }
                                                     $.ajax({
                                                       type:'post',
                                                       url:'/healthcenter/compounder/',
@@ -173,7 +195,6 @@
                                                       success: function(data){
                                                         if (data.status == 1){
                                                           alert("prescribed medicine");
-                                                          document.getElementById("user").value="";
                                                           document.getElementById("doctor").value="";
                                                           document.getElementById("details").value="";
                                                           document.getElementById("tests").value="";
@@ -184,14 +205,9 @@
                                                   });
               </script>
 
-            <br>
-            <br>
 
-        </div>
 
-        <br>
         <div class="extra content"></div>
-    </div>
     {% comment %}the compounder prescription tab ends here {% endcomment %}
 {% endblock %}
 
@@ -260,6 +276,6 @@
       <br>
       <br>
   </div>
+</div>
   <br>
   <div class="extra segment"></div>
-</div>
