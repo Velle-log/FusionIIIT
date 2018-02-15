@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.csrf import csrf_exempt
 
-from applications.globals.models import Designation, ExtraInfo
+from applications.globals.models import Designation, ExtraInfo, HoldsDesignation
 
 from .forms import AcademicTimetableForm, ExamTimetableForm, MinuteForm
 from .models import (Course, Exam_timetable, Grades, Meeting, Student,
@@ -15,17 +15,38 @@ def homepage(request):
     minuteForm = MinuteForm()
     examTtForm = ExamTimetableForm()
     acadTtForm = AcademicTimetableForm()
+
+    senator_des = Designation.objects.get(name='senate')
+    senates_d = HoldsDesignation.objects.filter(designation=senator_des)
+    senates = []
+    for s in senates_d:
+        s1 = ExtraInfo.objects.get(user=s.user)
+        senates.append(s1)
+
+    convenor_des = Designation.objects.get(name='Convenor')
+    Convenor_d = HoldsDesignation.objects.filter(designation=convenor_des)
+    Convenor = []
+    for s in Convenor_d:
+        s1 = ExtraInfo.objects.get(user=s.user)
+        Convenor.append(s1)
+
+    coconvenor_des = Designation.objects.get(name='Co Convenor')
+    CoConvenor_d = HoldsDesignation.objects.filter(designation=coconvenor_des)
+    CoConvenor = []
+    for s in CoConvenor_d:
+        s1 = ExtraInfo.objects.get(user=s.user)
+        CoConvenor.append(s1)
+
+    dean_des = Designation.objects.get(name='Dean')
+    Dean_d = HoldsDesignation.objects.filter(designation=dean_des)
+    Dean = []
+    for s in Dean_d:
+        s1 = ExtraInfo.objects.get(user=s.user)
+        Dean.append(s1)
+    
     try:
-        senator_des = Designation.objects.get(name='senate')
-        convenor_des = Designation.objects.get(name='Convenor')
-        coconvenor_des = Designation.objects.get(name='Co Convenor')
-        dean_des = Designation.objects.get(name='Dean')
-        senates = ExtraInfo.objects.filter(designation=senator_des)
-        Convenor = ExtraInfo.objects.filter(designation=convenor_des)
-        CoConvenor = ExtraInfo.objects.filter(designation=coconvenor_des)
-        Dean = ExtraInfo.objects.get(designation=dean_des)
-        students = Student.objects.filter(id__in=senates)
-        meetings = Meeting.objects.all()
+        meetings = Meeting.objects.all()  
+        students = Student.objects.filter(id__in=senates)        
         student = Student.objects.all()
         extra = ExtraInfo.objects.all()
         courses = Course.objects.all()
@@ -33,12 +54,8 @@ def homepage(request):
         exam_t = Exam_timetable.objects.all()
         grade = Grades.objects.all()
     except:
-        senates = ""
         students = ""
-        Convenor = ""
-        CoConvenor = ""
         meetings = ""
-        Dean = ""
         student = ""
         grade = ""
         courses = ""
@@ -74,8 +91,11 @@ def senator(request):
         rollno = request.POST.get('rollno')
         extraInfo = ExtraInfo.objects.get(id=rollno)
         s = Designation.objects.get(name='senate')
-        extraInfo.designation.add(s)
-        extraInfo.save()
+        hDes = HoldsDesignation()
+        hDes.user = extraInfo.user
+        hDes.working = extraInfo.user
+        hDes.designation = s
+        hDes.save()
         student = Student.objects.get(id=extraInfo)
         data = {
             'name': extraInfo.user.username,
@@ -93,7 +113,8 @@ def senator(request):
 def deleteSenator(request, pk):
     s = get_object_or_404(Designation, name="senate")
     student = get_object_or_404(ExtraInfo, id=pk)
-    student.designation.remove(s)
+    hDes = get_object_or_404( HoldsDesignation, user = student.user)
+    hDes.delete()
     data = {}
     return JsonResponse(data)
 # ####################################################
@@ -101,25 +122,25 @@ def deleteSenator(request, pk):
 
 # ##########covenors and coconvenors##################
 @csrf_exempt
-def add_convenor(request):
-    s = Designation.objects.get(name='Convenor')
-    p = Designation.objects.get(name='Co Convenor')
+def add_convenor(request):    
     if request.method == 'POST':
         rollno = request.POST.get('rollno_convenor')
         extraInfo = ExtraInfo.objects.get(id=rollno)
+        s = Designation.objects.get(name='Convenor')
+        p = Designation.objects.get(name='Co Convenor')
         result = request.POST.get('designation')
-        if result == "Convenor":
-            extraInfo.designation.add(s)
-            extraInfo.save()
-            designation = 'Convenor'
-        else:
-            extraInfo.designation.add(p)
-            extraInfo.save()
-            designation = 'Co Convenor'
+        hDes = HoldsDesignation()
+        hDes.user = extraInfo.user
+        hDes.working = extraInfo.user
+        if result == "Convenor":            
+            hDes.designation = s
+        else:            
+            hDes.designation = p
+        hDes.save()
         data = {
             'name': extraInfo.user.username,
             'rollno_convenor': extraInfo.id,
-            'designation': designation,
+            'designation': hDes.designation.name,
         }
         return JsonResponse(data)
     else:
@@ -132,13 +153,12 @@ def deleteConvenor(request, pk):
     s = get_object_or_404(Designation, name="Convenor")
     c = get_object_or_404(Designation, name="Co Convenor")
     student = get_object_or_404(ExtraInfo, id=pk)
-    for des in student.designation.all():
-        if des.name == s.name:
-            student.designation.remove(s)
-            designation = des.name
-        elif des.name == c.name:
-            designation = des.name
-            student.designation.remove(c)
+    hDes = HoldsDesignation.objects.filter(user = student.user)
+    designation = []
+    for des in hDes:
+        if des.designation == s or des.designation == c:
+            designation = des.designation.name
+            des.delete()
     data = {
         'id': pk,
         'designation': designation,
@@ -150,15 +170,20 @@ def deleteConvenor(request, pk):
 # ##########Senate meeting Minute##################
 @csrf_exempt
 def addMinute(request):
-    if request.method == 'POST' and request.FILES:
-        form = MinuteForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return HttpResponse('sucess')
-        else:
-            return HttpResponse('not uploaded')
-        return render(request, "ais/ais.html", {})
-
+    if request.method == 'POST':
+        print("kk")
+        meet = Meeting(date = request.POST.get('date'), minutes_file = request.POST.get('minutes_file'))
+        meet.save()
+        data = {
+            'file_name': meet.minutes_file.name,
+            'date': meet.date,
+            'minute': ' '
+        }
+        return JsonResponse(data)
+    else:
+        data = {}
+        return JsonResponse(data)
+            
 
 def deleteMinute(request):
     minute = Meeting.objects.get(id=request.POST["delete"])
@@ -440,28 +465,16 @@ def add_course(request):
         print(c.courses.all())
     return HttpResponse("Data Entered Successfully")
 
-
+# #############Academic timetable###############
+@csrf_exempt
 def add_timetable(request):
-    acadTtForm = AcademicTimetableForm()
     if request.method == 'POST' and request.FILES:
         acadTtForm = AcademicTimetableForm(request.POST, request.FILES)
         if acadTtForm.is_valid():
             acadTtForm.save()
             return HttpResponse('sucess')
-    else:
-        return HttpResponse('not uploaded')
-
-
-def add_exam_timetable(request):
-    examTtForm = ExamTimetableForm()
-    if request.method == 'POST' and request.FILES:
-        examTtForm = ExamTimetableForm(request.POST, request.FILES)
-        if examTtForm.is_valid():
-            examTtForm.save()
-            return HttpResponse('sucess')
-    else:
-        return HttpResponse('not uploaded')
-
+        else:
+            return HttpResponse('The file is either empty or invalid')
 
 def delete_timetable(request):
     if request.method == "POST":
@@ -470,6 +483,18 @@ def delete_timetable(request):
         t.delete()
 
     return HttpResponse("TimeTable Deleted")
+# #########################################################
+
+# ####################Exam time table###########################
+@csrf_exempt
+def add_exam_timetable(request):
+    if request.method == 'POST' and request.FILES:
+        examTtForm = ExamTimetableForm(request.POST, request.FILES)
+        if examTtForm.is_valid():
+            examTtForm.save()
+            return HttpResponse('sucess')
+        else:
+            return HttpResponse('The file is either empty or invalid')
 
 
 def delete_exam_timetable(request):
@@ -479,3 +504,5 @@ def delete_exam_timetable(request):
         t.delete()
 
     return HttpResponse("TimeTable Deleted")
+
+##########################################

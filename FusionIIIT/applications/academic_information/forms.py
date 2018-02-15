@@ -7,6 +7,17 @@ class MinuteForm(forms.ModelForm):
     class Meta:
         model = Meeting
         fields = ('date', 'minutes_file', )
+        widgets = {
+            'date': forms.DateInput(attrs={
+                'id': 'date', 
+                'required': True, 
+                'placeholder': 'dd/mm/yyyy'
+            }),
+            'minutes_file': forms.FileInput(attrs={
+                'id': 'minutes_file', 
+                'required': True,
+            }),
+        }
 
 
 class AcademicTimetableForm(forms.ModelForm):
