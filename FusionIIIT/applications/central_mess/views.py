@@ -8,7 +8,7 @@ from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 
 from applications.academic_information.models import Student
-from applications.globals.models import ExtraInfo
+from applications.globals.models import ExtraInfo, HoldsDesignation
 
 from .forms import MinuteForm
 from .models import (Feedback, Menu, Menu_change_request, Mess_meeting,
@@ -20,6 +20,8 @@ from .models import (Feedback, Menu, Menu_change_request, Mess_meeting,
 def mess(request):
     user = request.user
     extrainfo = ExtraInfo.objects.get(user=user)
+    holds_designations = HoldsDesignation.objects.get(user=user)
+    desig = holds_designations.designation.name
     form = MinuteForm()
     current_date = date.today()
     mess_reg = Mess_reg.objects.get()
@@ -140,7 +142,8 @@ def mess(request):
                    'count6': count6,
                    'count7': count7,
                    'count8': count8,
-                   'form': form
+                   'form': form,
+                   'desig': desig
             }
 
         return render(request, "messModule/mess.html", context)
@@ -160,7 +163,8 @@ def mess(request):
                    'info': extrainfo,
                    'leave': leave,
                    'current_date': current_date,
-                   'mess_reg': mess_reg
+                   'mess_reg': mess_reg,
+                   'desig': desig
         }
 
         return render(request, "messModule/mess.html", context)
@@ -204,7 +208,7 @@ def mess(request):
                        'minutes': minutes, 'count1': count1,
                        'count2': count2, 'count3': count3, 'feed': feed,
                        'count4': count4, 'form': form, 'count5': count5,
-                       'count6': count6, 'count7': count7, 'count8': count8})
+                       'count6': count6, 'count7': count7, 'count8': count8, 'desig': desig})
 
 
 @login_required
@@ -218,18 +222,13 @@ def placeorder(request):
 
         stu = Messinfo.objects.get(student_id=student)
         if stu.mess_option == 'mess1':
-            dish = Nonveg_menu.objects.get(dish=request.POST.get("dish"))
+            dish = Nonveg_menu.objects.get(dish=request.POST.get("dish"), order_interval=request.POST.get('interval'))
             order_interval = dish.order_interval
             order_date = datetime.datetime.now().date()
             nonveg_obj = Nonveg_data(student_id=student, order_date=order_date,
                                      order_interval=order_interval, dish=dish)
             nonveg_obj.save()
-
-            data = {
-                'status': 1,
-            }
-
-            return JsonResponse(data)
+            return HttpResponseRedirect("/mess")
 
         else:
             return HttpResponse("you can't apply for this application")
@@ -287,8 +286,9 @@ def vacasubmit(request):
 def menusubmit(request):
     user = request.user
     extrainfo = ExtraInfo.objects.get(user=user)
-
-    if extrainfo.designation.name == 'mess_convener':
+    holds_designations = HoldsDesignation.objects.get(user=user)
+    desig = holds_designations.designation.name
+    if desig == 'mess_convener':
 
         dish = Menu.objects.get(dish=request.POST.get("dish"))
         newdish = request.POST.get("newdish")
@@ -310,8 +310,10 @@ def menusubmit(request):
 def response(request, ap_id):
     user = request.user
     extrainfo = ExtraInfo.objects.get(user=user)
-
-    if extrainfo.designation.name == 'mess_manager':
+    holds_designations = HoldsDesignation.objects.get(user=user)
+    desig = holds_designations.designation.name
+    
+    if desig == 'mess_manager':
         application = Menu_change_request.objects.get(pk=ap_id)
 
         if(request.POST.get('submit') == 'approve'):
@@ -336,8 +338,10 @@ def response(request, ap_id):
 def processvacafood(request, ap_id):
     user = request.user
     extrainfo = ExtraInfo.objects.get(user=user)
+    holds_designations = HoldsDesignation.objects.get(user=user)
+    desig = holds_designations.designation.name
 
-    if extrainfo.designation.name == 'mess_manager':
+    if desig == 'mess_manager':
         applications = Vacation_food.objects.get(pk=ap_id)
 
         if(request.POST.get('submit') == 'approve'):
@@ -377,8 +381,10 @@ def regsubmit(request):
 def regadd(request):
     user = request.user
     extrainfo = ExtraInfo.objects.get(user=user)
+    holds_designations = HoldsDesignation.objects.get(user=user)
+    desig = holds_designations.designation.name
 
-    if extrainfo.designation.name == 'mess_manager':
+    if desig == 'mess_manager':
 
         sem = request.POST.get('sem')
         start_reg = request.POST.get('start_date')

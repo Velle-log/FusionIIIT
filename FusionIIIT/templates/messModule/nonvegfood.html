@@ -49,13 +49,13 @@
 
                             <div class="ui twelve wide column">
                                 <div class="ui active tab" data-tab="breakfast">
-                                    <form class="ui form">
+                                    <form class="ui form" method="post" action="{% url 'mess:placeorder' %}">
                                         <div class="ui row">
                                             <div class="two fields">
                                                 {% for x in nonveg %}
                                                     {% if x.order_interval == 'Breakfast' %}
                                                 <div class="field">
-                                                    
+                                                    <input type="text" name="interval" value="breakfast" hidden>
                                                     <div class="ui input">
                                                         <input type="radio" name='dish' value='{{x.dish}}' id="dish">{{x.dish}} - {{x.price}}
                                                     </div>
@@ -85,7 +85,7 @@
                                                 <div class="field">
 
                                                     <div class="ui input">
-                                                        
+                                                        <input type="text" name="interval" value="lunch" hidden>
                                                         <input type="radio" name='dish' value='{{x.dish}}' id="">{{x.dish}} - {{x.price}}
                                                     </div>
                                                 </div>
@@ -115,6 +115,7 @@
                                                 <div class="field">
 
                                                     <div class="ui input">
+                                                        <input type="text" name="interval" value="dinner" hidden>
                                                         <input type="radio" name='dish' value='{{x.dish}}' id="dish">{{x.dish}} - {{x.price}}
                                                     </div>
                                                 </div>
@@ -223,74 +224,6 @@
                             &#8377; {{info.dish.price}}
                         </td>
                     </tr>
-
-                    <!-- <tr>
-                        <td>
-                            <h4 class="ui image header">
-                                <img src="{% static 'globals/img/zlatan.jpg' %}" class="ui mini circular image">
-                                <div class="content">
-                                    Zlatan Ibrahimovic
-                                    <div class="sub header">
-                                        Zlatan doesn't do Auditions
-                                    </div>
-                                </div>
-                            </h4>
-                        </td>
-
-                        <td>
-                            14 Oct'17
-                        </td>
-
-                        <td>
-                            Breakfast
-                        </td>
-
-                        <td>
-                            Omelette
-                        </td>
-
-                        <td>
-                            1
-                        </td>
-
-                        <td>
-                            &#8377; 19
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <h4 class="ui image header">
-                                <img src="{% static 'globals/img/zlatan.jpg' %}" class="ui mini circular image">
-                                <div class="content">
-                                    Zlatan Ibrahimovic
-                                    <div class="sub header">
-                                        God Of Manchester
-                                    </div>
-                                </div>
-                            </h4>
-                        </td>
-
-                        <td>
-                            14 Oct'17
-                        </td>
-
-                        <td>
-                            Dinner
-                        </td>
-
-                        <td>
-                            Chicken Curry
-                        </td>
-
-                        <td>
-                            1
-                        </td>
-
-                        <td>
-                            &#8377; 25
-                        </td>
-                    </tr> -->
                     {% endfor %}
 
                 </tbody>
@@ -301,37 +234,4 @@
         </div>
     </div>
 {% endblock %}
-{% endblock %}
-
-{% block javascript %}
-<script type="text/javascript" src="{% static 'globals/js/jquery.min.js' %}"></script>
-
-<script>
-$(document).ready(function() {
-    $('#submit').on('click',function(event){
-            event.preventDefault();
-            $.ajax({
-                type: 'POST',
-                url: 'mess:placeorder',
-                dataType: 'json',
-                data: {
-                    'dish':$("#dish").val(),
-                },          
-                success: function(data) {
-                    if(data.status){
-                        alert("Data Inserted Successfully");
-                        document.getElementById('dish').value="";
-                    }
-                },
-                error: function(data, err) {
-                    alert(err.message);
-                }
-            });
-        });
-
-});
-    
-
-
-</script>
 {% endblock %}
