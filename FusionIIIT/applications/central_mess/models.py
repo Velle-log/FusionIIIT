@@ -174,7 +174,7 @@ class Vacation_food(models.Model):
 
 class Nonveg_menu(models.Model):
     dish = models.CharField(max_length=20)
-    price = models.IntegerField()
+    price = models.FloatField()
     order_interval = models.CharField(max_length=20, choices=INTERVAL,
                                       default='Breakfast')
 
