@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from PIL import Image
 
 from applications.globals.forms import IssueForm, WebFeedbackForm
-from applications.globals.models import Feedback, Issue, IssueImage
+from applications.globals.models import Feedback, Issue, IssueImage, ExtraInfo, HoldsDesignation
 from Fusion.settings import LOGIN_URL
 
 
@@ -23,7 +23,12 @@ def login(request):
 
 @login_required(login_url=LOGIN_URL)
 def dashboard(request):
-    context = {}
+    user = request.user
+    extrainfo = ExtraInfo.objects.get(user=user)
+    holds_designations = HoldsDesignation.objects.filter(user=user)
+    desig = holds_designations
+    # desig = holds_designations.designation.name
+    context = {'desig' : desig}
     return render(request, "dashboard/dashboard.html", context)
 
 

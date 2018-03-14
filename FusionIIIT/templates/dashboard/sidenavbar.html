@@ -44,10 +44,14 @@
                                 <h4>Complaint Module</h4>
                             </a>
 
-                            <a class="item" href="{% url 'mess:mess' %}">
-                                <h4>Central Mess Module</h4>
-                            </a>
-
+                            {% for d in desig %}
+                                {% if d.designation.name == 'mess_committee' or d.designation.name == 'mess_manager' or d.designation.name == 'mess_warden' or d.designation.name == 'student' %}
+                                    <a class="item" href="{% url 'mess:mess' %}">
+                                        <h4>Central Mess Module</h4>
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                                
                             <a class="item" href="{% url 'gymkhana:gymkhana' %}">
                                 <h4>Gymkhana Module</h4>
                             </a>
