@@ -28,6 +28,7 @@ def genericModule(request):
 
     return render(request, "officeModule/genericModule/genericModule.html", context)
 
+
 def directorOffice(request):
     context = {}
 
