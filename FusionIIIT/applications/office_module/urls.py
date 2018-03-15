@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^officeOfRegistrar/', views.officeOfRegistrar, name='officeOfRegistrar'),
     url(r'^officeOfDeanRSPC/', views.officeOfDeanRSPC, name='officeOfDeanRSPC'),
     url(r'^genericModule/', views.genericModule, name='genericModule'),
+    url(r'^directorOffice/', views.directorOffice, name='directorOffice'),
 ]
