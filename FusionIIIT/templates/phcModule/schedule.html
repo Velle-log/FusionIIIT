@@ -15,66 +15,43 @@
     <div class="ui active tab" data-tab="viewschedule">
         <div class="ui vertical segment">
             <div class="field">
-                  <div class="field">
-                      <label>Day</label>
-                      <select id="day" class="ui search fluid " name="day" required="true">
-                        <option value="" disabled selected>--SELECT--</option>
-                        {% for p,day in days %}
-                        <option value="{{p}}">{{day}}</option>
-                        {% endfor %}
-                      </select>
-                  </div>
-                  <!-- on selection of day the schedule of the day displays in the table -->
-                  <table  class="ui very basic collapsing celled small fluid sortable table"
+                  <table  border=1 class="ui very basic celled small fluid table"
                          style="padding-left: 2.5%;padding-right: 2.5%;margin: auto;">
                       <thead>
-                      <tr>
-                          <th class="two wide">
-                              Doctor
-                          </th>
 
-                          <th class="two wide" >
-                              From Time
-                          </th>
+                        <tr>
+                          <th>Schedule</th>
+                          {% for d in doctors %}
+                          <th>{{d.doctor_name}}</th>
+                          {% endfor %}
+                        <tr>
 
-                          <th class="wide">
-                                To Time
-                          </th>
-                          <th class="wide">
-                                Room
-                          </th>
-                      </tr>
+                          {% for p,day in days %}
+
+                          <tr>
+                            <td>{{day}}{{p}}</td>
+
+                            {% for s in schedule %}
+                            {% if s.day == p%}
+                            {% for d in doctors %}
+                            {% if s.doctor_id.id == d.id %}
+                            <td>  {{s.day}}{{s.doctor_id.doctor_name}}p{{s.from_time}}--{{s.to_time}}</td>
+                            {% break %}
+                            {% elif s.doctor_id.id != d.id %}
+                            <td></td>
+                            {% endif %}
+                            {% endfor %}
+                            {% endif %}
+                            {% endfor %}
+                          </tr>
+
+                          {% endfor %}
                       </thead>
-
-                      <tbody id="sche">
-
-                      </tbody>
-                      <script type="text/javascript">
-                              $('#day').change(function()
-                              {
-                                  $.ajax({
-                                  type:'post',
-                                  url:'/healthcenter/compounder/',
-                                  data: {
-                                  csrfmiddlewaretoken: '{{ csrf_token }}',
-                                  day:$("#day").val(),
-                                  },
-                                  success: function(data){
-                                     $('#sche').empty();
-                                     var response=JSON.stringify(data);
-                                    $.each(data, function(key, value) {
-                                      $('#sche').append("<tr><td>" + value.doctor + "</td><td>" + value.from_time + "</td><td>" + value.to_time + "</td><td>" + value.room + "</td></tr>");
-                                });
-}
-                               });
-                             });
-                      </script>
                   </table>
         </div>
       </div>
     </div>
     {% comment %}the view schedule tab ends here {% endcomment %}
-
     {% comment %}the edit schedule tab starts here {% endcomment %}
     <div class="ui tab" data-tab="editschedule">
       <div class="ui vertical segment">
@@ -83,7 +60,7 @@
               <div class="two fields">
                 <div class="field">
                     <label>Doctor</label>
-                    <select id="doctor_id" class="ui search fluid dropdown" name="doctor" required="true">
+                    <select id="doctor_a" class="ui search fluid dropdown" name="doctor" required="true">
                       <option value="" disabled selected>--SELECT--</option>
                       {% for doctor in doctors %}
                       <option value="{{doctor.id}}">{{doctor.doctor_name}}</option>
@@ -93,7 +70,7 @@
                 <div class="field">
                     <label>Day</label>
                     <!-- on selection of doctor few days should be displayed -->
-                    <select id="day_id" class="ui search fluid dropdown" name="day" required="true">
+                    <select id="day_a" class="ui search fluid dropdown" name="day" required="true">
                       <option value="" disabled selected>--SELECT--</option>
 			                   {% for p,day in days %}
                         <option value="{{p}}">{{day}}</option>
@@ -128,15 +105,24 @@
 
 
          <script type="text/javascript">
-                     $('#edit').click(function(e)
-                                                           {
+                     $('#edit').click(function(e){
+                                                         var doc = document.getElementById('doctor_a').value;
+                                                         var day = document.getElementById('day_a').value;
+                                                         var time_in = document.getElementById('time_in').value;
+                                                         var time_out = document.getElementById('time_out').value;
+                                                         var room = document.getElementById('room').value;
+                                                          if(doc=="" || day=="" || time_in==""|| room=="" || time_out=="")
+                                                         {
+                                                         $('#valid_sche').html("Enter Valid Information");
+                                                         return false;
+                                                         }
                                                              $.ajax({
                                                                type:'post',
                                                                url:'/healthcenter/compounder/',
                                                                data: {
                                                                csrfmiddlewaretoken: '{{ csrf_token }}',
-                                                               doctor:$("#doctor_id").val(),
-                                                               day:$("#day_id").val(),
+                                                               doctor:$("#doctor_a").val(),
+                                                               day:$("#day_a").val(),
                                                                room:$("#room").val(),
                                                                time_in:$("#time_in").val(),
                                                                time_out:$("#time_out").val(),
@@ -144,8 +130,8 @@
                                                              },
                                                                success: function(data){
                                                                    alert("edited schedule");
-                                                                   document.getElementById("doctor_id").value="";
-                                                                   document.getElementById("day_id").value="";
+                                                                   document.getElementById("doctor_a").value="";
+                                                                   document.getElementById("day_a").value="";
                                                                    document.getElementById("room").value="";
                                                                    document.getElementById("time_in").value="";
                                                                    document.getElementById("time_out").value="";

@@ -14,9 +14,6 @@
           View Stock
         </a>
 
-        <a class="item" data-tab="viewinventory">
-          View Inventory
-        </a>
         <a class="item" data-tab="thresholdstock">
           Threshold Stock
         </a>
@@ -24,11 +21,12 @@
 
     {% comment %}the add stock tab starts here {% endcomment %}
     <div class="ui active tab" data-tab="addstock">
+      <p id="medicine_add"></p>
         <div class="ui vertical segment">
             <form class="ui form" method="POST" style="padding: 8px; padding-left: 24px; padding-right: 24px;">{% csrf_token %}
                   <div class="field">
                         <label>Medicine</label>
-                        <select class="ui search fluid dropdown" name="medicine_id" required="true">
+                        <select class="ui search fluid dropdown" id="medicine_a" name="medicine_a" required="true">
                         <option value="" disabled selected>--SELECT--</option>
                           {% for stock in stocks %}
                           <option value="{{stock.id}}">{{stock.medicine_name}}</option>
@@ -38,18 +36,46 @@
                     <div class="field">
                         <label>Quantity</label>
                         <div class="ui fluid large input">
-                            <input placeholder="Quantitys" name="quantity" type="number">
+                            <input placeholder="Quantitys" id="quantity_a" name="quantity_a" type="number">
                         </div>
                     </div>
                     <div class="field">
                     <label><br></label>
 
                     <div >
-                      <input type="submit" name="add_stock" value="Submit"class="ui large right floated primary button" />
+                      <input type="button" id="add_stock" name="add_stock" value="Submit"class="ui large right floated primary button" />
                     </div>
 
                    </div>
             </form>
+            <script type="text/javascript">
+              $('#add_stock').click(function(e)
+                                                  {
+                                                    var medicine = document.getElementById('medicine_a').value;
+                                                    var qty = document.getElementById('quantity_a').value;
+                                                    if ( medicine==""||qty==""||qty<=0) {
+                                                        $('#medicine_add').html('Enter valid details');
+                                                        return false;
+                                                    }
+
+                                                    $.ajax({
+                                                      type:'post',
+                                                      url:'/healthcenter/compounder/',
+                                                      data: {
+                                                      csrfmiddlewaretoken: '{{ csrf_token }}',
+                                                      medicine_id:$("#medicine_a").val(),
+                                                      quantity:$("#quantity_a").val(),
+                                                      add_stock:$("#add_stock").val()
+                                                    },
+                                                      success: function(data){
+                                                      alert("added stock ");
+                                                      document.getElementById("medicine_a").value="";
+                                                      document.getElementById("quantity").value="";
+                                                    }
+                                                  });
+                                                });
+
+      </script>
             <br>
             <br>
         </div>
@@ -60,35 +86,67 @@
 
     {% comment %}the add medicine tab starts here {% endcomment %}
     <div class="ui tab" data-tab="addmedicine">
+      <p id="med_add"></p>
         <div class="ui vertical segment">
             <form class="ui form" method="POST" style="padding: 8px; padding-left: 24px; padding-right: 24px;">{% csrf_token %}
               <div class="field">
                 <label>Medicine Name</label>
                 <div class="ui fluid large input">
-                    <input placeholder="Medicine Name" name="new_medicine" type="text">
+                    <input placeholder="Medicine Name" id="new_medicine" name="new_medicine" type="text">
                 </div>
                 </div>
                 <div class="field">
                     <label>Quantity</label>
                     <div class="ui fluid large input">
-                        <input placeholder="Quantity" name="new_quantity" type="number">
+                        <input placeholder="Quantity" id="new_quantity" name="new_quantity" type="number">
                     </div>
                 </div>
                 <div class="field">
                     <label>Threshold</label>
                     <div class="ui fluid large input">
-                        <input placeholder="Threshold" name="threshold" type="number">
+                        <input placeholder="Threshold" id="threshold" name="threshold" type="number">
                     </div>
                 </div>
                 <div class="field">
                 <label><br></label>
 
                 <div >
-                  <input type="submit" name="add_medicine" value="Submit"class="ui large right floated primary button" />
+                  <input type="button" id="add_medicine" name="add_medicine" value="Submit"class="ui large right floated primary button" />
                 </div>
 
                </div>
             </form>
+            <script type="text/javascript">
+              $('#add_medicine').click(function(e)
+                                                  {
+                                                    var new_medicine = document.getElementById('new_medicine').value;
+                                                    var threshold = document.getElementById('threshold').value;
+                                                    var new_quantity = document.getElementById('new_quantity').value;
+                                                    if ( new_medicine==""||new_quantity==""||new_quantity<=0||threshold==""||threshold<0) {
+                                                        $('#med_add').html('Enter valid details');
+                                                        return false;
+                                                    }
+
+                                                    $.ajax({
+                                                      type:'post',
+                                                      url:'/healthcenter/compounder/',
+                                                      data: {
+                                                      csrfmiddlewaretoken: '{{ csrf_token }}',
+                                                      new_medicine:$("#new_medicine").val(),
+                                                      new_quantity:$("#new_quantity").val(),
+                                                      threshold:$("#threshold").val(),
+                                                      add_medicine:$('#add_medicine').val()
+                                                    },
+                                                      success: function(data){
+                                                      alert("added new medicine");
+                                                      document.getElementById("new_medicine").value="";
+                                                      document.getElementById("threshold").value="";
+                                                      document.getElementById("new_quantity").value="";
+                                                    }
+                                                  });
+                                                });
+
+      </script>
             <br>
             <br>
         </div>
@@ -134,49 +192,6 @@
         </div>
     </div>
     {% comment %}the view stock tab ends here {% endcomment %}
-
-    {% comment %}the view inventory tab starts here {% endcomment %}
-    <div class="ui tab" data-tab="viewinventory">
-        <div class="ui vertical segment" >
-            <table class="ui very basic collapsing celled large fluid sortable table"
-                   style="padding-left: 2.5%;padding-right: 2.5%;padding-top: 1%;padding-bottom: 1.5%;margin: auto;">
-                <thead>
-                <tr>
-                    <th class="three wide">
-                        Medicine
-                    </th>
-
-                    <th class="three wide" >
-                        Quantity
-                    </th>
-                    <th class="three wide" >
-                        Date
-                    </th>
-
-                </tr>
-                </thead>
-
-                <tbody>
-                {% for inventory in inventories %}
-                <tr>
-
-                    <td>
-                       {{inventory.medicine_id}}
-                    </td>
-
-                    <td>
-                        {{inventory.quantity}}
-                    </td>
-                    <td>
-                        {{inventory.date}}
-                    </td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-    {% comment %}the view inventory tab ends here {% endcomment %}
 
         {% comment %}the threshold stock tab starts here {% endcomment %}
         <div class="ui tab" data-tab="thresholdstock">
