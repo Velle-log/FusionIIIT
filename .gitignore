@@ -83,6 +83,7 @@ ENV/
 
 # DS
 .DS_Store
+._.DS_Store
 
 # docs
 docs/_build
@@ -93,7 +94,9 @@ docs/_templates
 
 # media
 FusionIIIT/media
-#ignoring settings.py
+# ignoring settings.py
 FusionIIIT/Fusion/settings.py
 
-FusionIIIT/Fusion/settings.py
+
+# dbinsertscripts
+FusionIIIT/dbinsertscripts

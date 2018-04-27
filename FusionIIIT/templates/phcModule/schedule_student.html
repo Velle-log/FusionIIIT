@@ -11,6 +11,7 @@
     <div class="ui active tab" data-tab="viewschedule">
         <div class="ui vertical segment">
             <div class="field">
+<<<<<<< HEAD
               <table  border=1 class="ui very basic celled small fluid table"
                      style="padding-left: 2.5%;padding-right: 2.5%;margin: auto;">
                   <thead>
@@ -50,6 +51,40 @@
                       {% endfor %}
                   </thead>
               </table>
+=======
+                  <table  border=1 class="ui very basic celled small fluid table"
+                         style="padding-left: 2.5%;padding-right: 2.5%;margin: auto;">
+                      <thead>
+
+                        <tr>
+                          <th>Schedule</th>
+                          {% for d in doctors %}
+                          <th>{{d.doctor_name}}</th>
+                          {% endfor %}
+                        <tr>
+
+                          {% for p,day in days %}
+
+                          <tr>
+                            <td>{{day}}</td>
+                            {% for s in schedule %}
+
+
+                            {% if s.day == p %}
+                            {% for d in doctors %}
+                            {% if s.doctor_id.id == d.id %}
+                            <td>{{s.from_time}}--{{s.to_time}}</td>
+                            {% endif %}
+                            {% endfor %}
+
+                            {% endif %}
+                            {% endfor %}
+                          </tr>
+
+                          {% endfor %}
+                      </thead>
+                  </table>
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
         </div>
       </div>
     </div>

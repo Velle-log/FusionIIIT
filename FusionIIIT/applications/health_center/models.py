@@ -21,11 +21,23 @@ class Doctor(models.Model):
     doctor_name = models.CharField(max_length=50)
     doctor_phone = models.CharField(max_length=10)
     specialization = models.CharField(max_length=100)
+<<<<<<< HEAD
     active = models.BooleanField(default=True)
 
     def __str__(self):
         return self.doctor_name
 
+=======
+
+    def __str__(self):
+        return self.doctor_name
+
+
+class Health_Card(models.Model):
+    health_card = models.CharField(max_length=20, primary_key=True)
+    user_id = models.ForeignKey(ExtraInfo)
+
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
 
 class Complaint(models.Model):
     user_id = models.ForeignKey(ExtraInfo)
@@ -38,6 +50,20 @@ class Stock(models.Model):
     medicine_name = models.CharField(max_length=100)
     quantity = models.IntegerField(default=0)
     threshold = models.IntegerField(default=10)
+<<<<<<< HEAD
+=======
+
+    def __str__(self):
+        return self.medicine_name
+
+
+class Medicine(models.Model):
+    patient = models.ForeignKey(ExtraInfo)
+    medicine_id = models.ForeignKey(Stock)
+    quantity = models.IntegerField(default=0)
+    days = models.IntegerField(default=0)
+    times = models.IntegerField(default=0)
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
 
     def __str__(self):
         return self.medicine_name
@@ -67,7 +93,10 @@ class Medicine(models.Model):
     days = models.IntegerField(default=0)
     times = models.IntegerField(default=0)
 
+    def __str__(self):
+        return self.medicine_id.medicine_name
 
+<<<<<<< HEAD
 class Schedule(models.Model):
     doctor_id = models.ForeignKey(Doctor)
     day = models.IntegerField(choices=Constants.DAYS_OF_WEEK)
@@ -106,6 +135,17 @@ class Counter(models.Model):
     def empty_count(self):
         self.count=0
         return ""
+=======
+
+class Schedule(models.Model):
+    doctor_id = models.ForeignKey(Doctor)
+    day = models.IntegerField(choices=Constants.DAYS_OF_WEEK)
+    from_time = models.TimeField()
+    to_time = models.TimeField()
+    room = models.IntegerField()
+    date = models.DateField(auto_now=True)
+
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
 
 class Appointment(models.Model):
     user_id = models.ForeignKey(ExtraInfo)
@@ -124,6 +164,11 @@ class Prescription(models.Model):
     details = models.CharField(max_length=100)
     date = models.DateField()
     test = models.CharField(max_length=200, null=True, blank=True)
+<<<<<<< HEAD
+=======
+    test_file = models.FileField(
+        upload_to='healthcenter/', null=True, blank=True)
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
     appointment = models.ForeignKey(Appointment, null=True, blank=True)
 
     def __str__(self):
@@ -131,8 +176,13 @@ class Prescription(models.Model):
 
 
 class Prescribed_medicine(models.Model):
+<<<<<<< HEAD
     prescription_id = models.ForeignKey(Prescription)#pk
     medicine_id = models.ForeignKey(Stock)#pk
+=======
+    prescription_id = models.ForeignKey(Prescription)
+    medicine_id = models.ForeignKey(Stock)
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
     quantity = models.IntegerField(default=0)
     days = models.IntegerField(default=0)
     times = models.IntegerField(default=0)
@@ -153,7 +203,11 @@ class Hospital_admit(models.Model):
     user_id = models.ForeignKey(ExtraInfo)
     doctor_id = models.ForeignKey(Doctor, null=True, blank=True)
     hospital_doctor = models.CharField(max_length=100)
+<<<<<<< HEAD
     hospital_name = models.ForeignKey(Hospital)
+=======
+    hospital_name = models.CharField(max_length=50)
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
     admission_date = models.DateField()
     discharge_date = models.DateField(null=True, blank=True)
     reason = models.CharField(max_length=50)
