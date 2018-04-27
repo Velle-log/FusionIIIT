@@ -9,6 +9,7 @@
         <a class="item" data-tab="addmedicine">
           Add New Medicine
         </a>
+<<<<<<< HEAD
         <a class="item" data-tab="viewexpiredstock">
           Expired Medicine
         </a>
@@ -16,6 +17,16 @@
           Live Medicine
         </a>
 
+=======
+
+        <a class="item" data-tab="viewstock">
+          View Stock
+        </a>
+
+        <a class="item" data-tab="viewinventory">
+          View Inventory
+        </a>
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
         <a class="item" data-tab="thresholdstock">
           Threshold Stock
         </a>
@@ -42,6 +53,7 @@
                         </div>
                     </div>
                     <div class="field">
+<<<<<<< HEAD
                         <label>Supplier</label>
                         <div class="ui fluid large input">
                             <input placeholder="Supplier" id="supplier" name="supplier" type="text">
@@ -54,6 +66,8 @@
                         </div>
                     </div>
                     <div class="field">
+=======
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
                     <label><br></label>
 
                     <div >
@@ -67,9 +81,13 @@
                                                   {
                                                     var medicine = document.getElementById('medicine_a').value;
                                                     var qty = document.getElementById('quantity_a').value;
+<<<<<<< HEAD
                                                     var supplier = document.getElementById('supplier').value;
                                                     var expiry_date = document.getElementById('expiry_date').value;
                                                     if ( medicine==""||supplier==""||expiry_date==""||qty==""||qty<=0) {
+=======
+                                                    if ( medicine==""||qty==""||qty<=0) {
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
                                                         $('#medicine_add').html('Enter valid details');
                                                         return false;
                                                     }
@@ -81,10 +99,14 @@
                                                       csrfmiddlewaretoken: '{{ csrf_token }}',
                                                       medicine_id:$("#medicine_a").val(),
                                                       quantity:$("#quantity_a").val(),
+<<<<<<< HEAD
                                                       supplier:$("#supplier").val(),
                                                       expiry_date:$("#expiry_date").val(),
                                                       add_stock:$("#add_stock").val()
 
+=======
+                                                      add_stock:$("#add_stock").val()
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
                                                     },
                                                       success: function(data){
                                                       alert("added stock ");
@@ -127,6 +149,7 @@
                     </div>
                 </div>
                 <div class="field">
+<<<<<<< HEAD
                     <label>Supplier</label>
                     <div class="ui fluid large input">
                         <input placeholder="Supplier" id="new_supplier" name="new_supplier" type="text">
@@ -139,6 +162,8 @@
                     </div>
                 </div>
                 <div class="field">
+=======
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
                 <label><br></label>
 
                 <div >
@@ -153,9 +178,13 @@
                                                     var new_medicine = document.getElementById('new_medicine').value;
                                                     var threshold = document.getElementById('threshold').value;
                                                     var new_quantity = document.getElementById('new_quantity').value;
+<<<<<<< HEAD
                                                     var new_supplier = document.getElementById('new_supplier').value;
                                                     var new_expiry_date = document.getElementById('new_expiry_date').value;
                                                     if ( new_medicine==""||new_expiry_date==""||new_supplier==""||new_quantity==""||new_quantity<=0||threshold==""||threshold<0) {
+=======
+                                                    if ( new_medicine==""||new_quantity==""||new_quantity<=0||threshold==""||threshold<0) {
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
                                                         $('#med_add').html('Enter valid details');
                                                         return false;
                                                     }
@@ -168,8 +197,11 @@
                                                       new_medicine:$("#new_medicine").val(),
                                                       new_quantity:$("#new_quantity").val(),
                                                       threshold:$("#threshold").val(),
+<<<<<<< HEAD
                                                       new_supplier:$("#new_supplier").val(),
                                                       new_expiry_date:$("#new_expiry_date").val(),
+=======
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
                                                       add_medicine:$('#add_medicine').val()
                                                     },
                                                       success: function(data){
@@ -177,8 +209,11 @@
                                                       document.getElementById("new_medicine").value="";
                                                       document.getElementById("threshold").value="";
                                                       document.getElementById("new_quantity").value="";
+<<<<<<< HEAD
                                                       document.getElementById("new_supplier").value="";
                                                       document.getElementById("new_expiry_date").value="";
+=======
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
                                                     }
                                                   });
                                                 });
@@ -194,7 +229,11 @@
 
 
     {% comment %}the view stock tab starts here {% endcomment %}
+<<<<<<< HEAD
     <div class="ui tab" data-tab="viewlivestock">
+=======
+    <div class="ui tab" data-tab="viewstock">
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
         <div class="ui vertical segment" >
             <table class="ui very basic collapsing celled large fluid sortable table"
                    style="padding-left: 2.5%;padding-right: 2.5%;padding-top: 1%;padding-bottom: 1.5%;margin: auto;">
@@ -230,13 +269,19 @@
     </div>
     {% comment %}the view stock tab ends here {% endcomment %}
 
+<<<<<<< HEAD
     {% comment %}the view stock tab starts here {% endcomment %}
     <div class="ui tab" data-tab="viewexpiredstock">
+=======
+    {% comment %}the view inventory tab starts here {% endcomment %}
+    <div class="ui tab" data-tab="viewinventory">
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
         <div class="ui vertical segment" >
             <table class="ui very basic collapsing celled large fluid sortable table"
                    style="padding-left: 2.5%;padding-right: 2.5%;padding-top: 1%;padding-bottom: 1.5%;margin: auto;">
                 <thead>
                 <tr>
+<<<<<<< HEAD
                     <th class="two wide">
                         Medicine
                     </th>
@@ -252,12 +297,24 @@
                     </th>
                     <th class="two wide" >
                         Return
+=======
+                    <th class="three wide">
+                        Medicine
+                    </th>
+
+                    <th class="three wide" >
+                        Quantity
+                    </th>
+                    <th class="three wide" >
+                        Date
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
                     </th>
 
                 </tr>
                 </thead>
 
                 <tbody>
+<<<<<<< HEAD
                 {% for view in expired %}
                 <tr>
 
@@ -305,6 +362,28 @@
         </div>
     </div>
     {% comment %}the view stock tab ends here {% endcomment %}
+=======
+                {% for inventory in inventories %}
+                <tr>
+
+                    <td>
+                       {{inventory.medicine_id}}
+                    </td>
+
+                    <td>
+                        {{inventory.quantity}}
+                    </td>
+                    <td>
+                        {{inventory.date}}
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% comment %}the view inventory tab ends here {% endcomment %}
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
 
         {% comment %}the threshold stock tab starts here {% endcomment %}
         <div class="ui tab" data-tab="thresholdstock">

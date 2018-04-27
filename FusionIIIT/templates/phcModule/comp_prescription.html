@@ -4,10 +4,20 @@
     {% comment %}the compounder prescription tab starts here {% endcomment %}
     <div class="ui pointing secondary menu">
         <a class="active item" data-tab="prescribe_app">
+<<<<<<< HEAD
             Prescribe with Appointment
         </a>
         <a class="item" data-tab="prescribe">
             Prescribe without Appointment
+        </a>
+        <a class="item" data-tab="hospitaladmit">
+            Hospital Admission
+=======
+            Prescribe Appointment
+        </a>
+        <a class="item" data-tab="prescribe">
+            Prescribe
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
         </a>
         <a class="item" data-tab="hospitaladmit">
             Hospital Admission
@@ -103,11 +113,19 @@
 
                     </tbody>
                 </table>
+<<<<<<< HEAD
                 <div class="field">
                     <label>Tests Suggested</label>
                     <textarea rows="2" id="tests" name="extra_meds"></textarea>
                 </div>
                 <div class="field">
+=======
+                <div class="field">
+                    <label>Tests Suggested</label>
+                    <textarea rows="2" id="tests" name="extra_meds"></textarea>
+                </div>
+                <div class="field">
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
                     <label><br></label>
                     <input type="button" id="prescribe" name="prescribe" value="Submit"class="ui large right floated primary button" />
                 </div>
@@ -140,8 +158,11 @@
                                                           times:$("#times").val()
                                                         },
                                                           success: function(data){
+<<<<<<< HEAD
                                                             if(data.status==1)
                                                             {
+=======
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
                                                               alert("added medicine");
                                                               document.getElementById("quantity").value="";
                                                               document.getElementById("medicine_id").value="";
@@ -153,10 +174,13 @@
                                                                $('#sched').append("<tr><td>" + value.medicine + "</td><td>" +
                                                                value.quantity + "</td><td>" + value.days + "</td><td>" + value.times + "</td></tr>");
                                                              });
+<<<<<<< HEAD
                                                            }
                                                            else{
                                                              alert("quantity not available only"+data.stock);
                                                            }
+=======
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
                                                         }
                                                       });
                                                     });
@@ -418,6 +442,7 @@
 
                   <div class="field">
                       <label>Hospital</label>
+<<<<<<< HEAD
                       <select class="ui search fluid dropdown" name="hospital_name" id="hospital_name" required="true">
                         <option value="" disabled selected>--SELECT--</option>
                         {% for h in hospitals %}
@@ -425,6 +450,10 @@
                         {% endfor %}
                       </select>
                     </div>
+=======
+                      <input type='text' required=true placeholder="Hospital Name" name='hospital_name' id='hospital_name' />
+                  </div>
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
                   <div class="field">
                       <label>Hospital Doctor</label>
                       <input type='text' placeholder="Hospital Doctor" name='hospital_doctor' id='hospital_doctor' />

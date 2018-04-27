@@ -22,18 +22,27 @@
 
     <div class="ui active tab" data-tab="prescriptionhistory">
         <div class="ui vertical segment" >
+<<<<<<< HEAD
             <table class="ui very basic collapsing celled large sortable table"
                   style="padding-left: 2.5%;padding-right: 2.5%;margin: auto;" >
                 <thead>
                 <tr>
                     <th>
+=======
+            <table class="ui very basic collapsing celled small fluid table"
+                  style="padding-left: 2.5%;padding-right: 2.5%;margin: auto;" >
+                <thead>
+                <tr>
+                    <th class="two wide">
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
                         Treated<br> By
                     </th>
 
-                    <th>
+                    <th class="two wide" >
                         Date
                     </th>
 
+<<<<<<< HEAD
                     <th>
                           Details
                     </th>
@@ -42,6 +51,16 @@
                     </th>
 
                     <th>
+=======
+                    <th class="wide">
+                          Details
+                    </th>
+                    <th class="wide">
+                          Test
+                    </th>
+
+                    <th class="four wide">
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
                       <table>
 
                         <tr><td>Medicine</td><td>D</td><td>T</td></tr>
@@ -74,6 +93,10 @@
                     </td>
                     <td>
                         {{pre.test}}
+<<<<<<< HEAD
+=======
+
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
                     </td>
 
                     <td>
@@ -91,7 +114,10 @@
                 </tbody>
             </table>
 
+<<<<<<< HEAD
           </div>
+=======
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
         </div>
 
     <div class="ui tab" data-tab="ambulancehistory">
@@ -130,6 +156,7 @@
                 <tr>
                     <td>
                         {{ambulance.reason}}
+<<<<<<< HEAD
                     </td>
 
                     <td>
@@ -144,6 +171,22 @@
                         {{ambulance.end_date}}
                     </td>
 
+=======
+                    </td>
+
+                    <td>
+                        {{ambulance.date_request}}
+                    </td>
+
+                    <td>
+                        {{ambulance.start_date}}
+                    </td>
+
+                    <td>
+                        {{ambulance.end_date}}
+                    </td>
+
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
                 </tr>
                 {% endfor %}
                 </tbody>
@@ -325,12 +368,21 @@
                         {% else %}
                         {{complaint.feedback}}
                       {% endif %}
+<<<<<<< HEAD
                     </td>
 
                     <td>
                         {{complaint.date}}
                     </td>
 
+=======
+                    </td>
+
+                    <td>
+                        {{complaint.date}}
+                    </td>
+
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
 
                 </tr>
                 {% endfor %}
