@@ -1,4 +1,4 @@
--{% extends 'globals/base.html' %}
+{% extends 'globals/base.html' %}
 {% load static %}
 
 {% block title %}
@@ -108,7 +108,7 @@
             {% comment %}The Schedule Form starts here!{% endcomment %}
             <div class="ui tab segment" data-tab="eigth">
                 {% block schedule %}
-                    {% include 'phcModule/schedule.html' with days=days doctors=doctors%}
+                    {% include 'phcModule/schedule.html' with days=days count=count doctors=doctors%}
                 {% endblock %}
             </div>
             {% comment %}The Schedule Form ends here!{% endcomment %}

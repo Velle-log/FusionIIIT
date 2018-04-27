@@ -11,6 +11,8 @@
         </a>
     </div>
 
+
+
     {% comment %}the doctor appointment tab starts here {% endcomment %}
     <div class="ui active tab" data-tab="viewschedule">
         <div class="ui vertical segment">
@@ -21,27 +23,34 @@
 
                         <tr>
                           <th>Schedule</th>
-                          {% for d in doctors %}
+                          {% for d in doctors_active %}
+                          {{count.doctor_count}}
                           <th>{{d.doctor_name}}</th>
                           {% endfor %}
                         <tr>
 
                           {% for p,day in days %}
-
+                          {{count.empty_fine}}
                           <tr>
-                            <td>{{day}}{{p}}</td>
+                            <td>{{day}}</td>
 
                             {% for s in schedule %}
-                            {% if s.day == p%}
-                            {% for d in doctors %}
-                            {% if s.doctor_id.id == d.id %}
-                            <td>  {{s.day}}{{s.doctor_id.doctor_name}}p{{s.from_time}}--{{s.to_time}}</td>
-                            {% break %}
-                            {% elif s.doctor_id.id != d.id %}
+                            {% for d in doctors_active %}
+                            {% if s.day == p %}
+                            {% if d.id == s.doctor_id.id %}
+                            {% for r in count.range_count %}
                             <td></td>
+                            {% endfor %}
+                            {{count.increment_fine}}
+                            {{count.empty_count}}
+
+                            <td>{{s.from_time}}--{{s.to_time}}</td>
+
+                            {% else %}
+                            {{count.increment}}
+                            {% endif %}
                             {% endif %}
                             {% endfor %}
-                            {% endif %}
                             {% endfor %}
                           </tr>
 
