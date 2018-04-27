@@ -11,6 +11,11 @@
         </a>
     </div>
 
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
     {% comment %}the doctor appointment tab starts here {% endcomment %}
     <div class="ui active tab" data-tab="viewschedule">
         <div class="ui vertical segment">
@@ -21,12 +26,40 @@
 
                         <tr>
                           <th>Schedule</th>
+<<<<<<< HEAD
+                          {% for d in doctors_active %}
+                          {{count.doctor_count}}
+=======
                           {% for d in doctors %}
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
                           <th>{{d.doctor_name}}</th>
                           {% endfor %}
                         <tr>
 
                           {% for p,day in days %}
+<<<<<<< HEAD
+                          {{count.empty_fine}}
+                          <tr>
+                            <td>{{day}}</td>
+
+                            {% for s in schedule %}
+                            {% for d in doctors_active %}
+                            {% if s.day == p %}
+                            {% if d.id == s.doctor_id.id %}
+                            {% for r in count.range_count %}
+                            <td></td>
+                            {% endfor %}
+                            {{count.increment_fine}}
+                            {{count.empty_count}}
+
+                            <td>{{s.from_time}}--{{s.to_time}}</td>
+
+                            {% else %}
+                            {{count.increment}}
+                            {% endif %}
+                            {% endif %}
+                            {% endfor %}
+=======
 
                           <tr>
                             <td>{{day}}</td>
@@ -41,6 +74,7 @@
                             {% endfor %}
 
                             {% endif %}
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
                             {% endfor %}
                           </tr>
 

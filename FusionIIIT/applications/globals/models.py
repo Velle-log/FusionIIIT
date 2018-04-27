@@ -97,6 +97,11 @@ class ExtraInfo(models.Model):
     address = models.TextField(max_length=1000, default="")
     phone_no = models.BigIntegerField(null=True, default=9999999999)
     user_type = models.CharField(max_length=20, choices=Constants.USER_CHOICES)
+<<<<<<< HEAD
+    department = models.ForeignKey(DepartmentInfo, on_delete=models.CASCADE, null=True, blank=True)
+    profile_picture = models.ImageField(null=True, blank=True)
+    about_me = models.TextField(default='', max_length=1000, blank=True)
+=======
     department = models.ForeignKey(
         DepartmentInfo, on_delete=models.CASCADE, null=True, blank=True)
     profile_picture = models.ImageField(
@@ -113,9 +118,19 @@ class ExtraInfo(models.Model):
         timedelta = timezone.localtime(
             timezone.now()).date() - self.date_of_birth
         return int(timedelta.days / 365)
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
 
     def __str__(self):
         return '{} - {}'.format(self.id, self.user.username)
+
+class HoldsDesignation(models.Model):
+    user = models.ForeignKey(User, related_name='holds_designations', on_delete=models.CASCADE)
+    working = models.ForeignKey(User, related_name='current_designation')
+    designation = models.ForeignKey(Designation, related_name='designees', on_delete=models.CASCADE)
+    held_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return '{} - {}'.format(self.user.username,self.designation)
 
 
 class HoldsDesignation(models.Model):

@@ -25,7 +25,10 @@ urlpatterns = [
     url(r'^eis/', include('applications.eis.urls',namespace='eis')),
     url(r'^mess/', include('applications.central_mess.urls')),
     url(r'^complaint/', include('applications.complaint_system.urls')),
+<<<<<<< HEAD
+=======
     url(r'^healthcenter/', include('applications.health_center.urls')),
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
     url(r'^leave/', include('applications.leave.urls')),
     url(r'^notifications/', include('notification_channels.urls')),
     url(r'^placement/', include('applications.placement_cell.urls',namespace='placement')),

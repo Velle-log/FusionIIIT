@@ -968,7 +968,7 @@ def issue(request):
                     image = IssueImage.objects.create(
                         image=image, user=request.user)
                     issue.images.add(image)
-                except Exception as e:
+                except Exception:
                     pass
             issue.save()
             openissue = Issue.objects.filter(closed=False)
@@ -1008,7 +1008,7 @@ def view_issue(request, id):
                     image = IssueImage.objects.create(
                         image=image, user=request.user)
                     issue.images.add(image)
-                except Exception as e:
+                except Exception:
                     pass
             issue.save()
             form = IssueForm(instance=issue)

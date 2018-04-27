@@ -11,6 +11,47 @@
     <div class="ui active tab" data-tab="viewschedule">
         <div class="ui vertical segment">
             <div class="field">
+<<<<<<< HEAD
+              <table  border=1 class="ui very basic celled small fluid table"
+                     style="padding-left: 2.5%;padding-right: 2.5%;margin: auto;">
+                  <thead>
+
+                    <tr>
+                      <th>Schedule</th>
+                      {% for d in doctors_active %}
+                      {{count.doctor_count}}
+                      <th>{{d.doctor_name}}</th>
+                      {% endfor %}
+                    <tr>
+
+                      {% for p,day in days %}
+                      {{count.empty_fine}}
+                      <tr>
+                        <td>{{day}}</td>
+
+                        {% for s in schedule %}
+                        {% for d in doctors_active %}
+                        {% if s.day == p %}
+                        {% if d.id == s.doctor_id.id %}
+                        {% for r in count.range_count %}
+                        <td></td>
+                        {% endfor %}
+                        {{count.increment_fine}}
+                        {{count.empty_count}}
+                        <td>{{s.from_time}}--{{s.to_time}}</td>
+
+                        {% else %}
+                        {{count.increment}}
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                        {% endfor %}
+                      </tr>
+
+                      {% endfor %}
+                  </thead>
+              </table>
+=======
                   <table  border=1 class="ui very basic celled small fluid table"
                          style="padding-left: 2.5%;padding-right: 2.5%;margin: auto;">
                       <thead>
@@ -43,6 +84,7 @@
                           {% endfor %}
                       </thead>
                   </table>
+>>>>>>> da2946e1cfafc8a828075685182d40ebba922cd8
         </div>
       </div>
     </div>
