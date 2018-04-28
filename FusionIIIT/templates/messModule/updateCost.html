@@ -1,0 +1,42 @@
+{% load static %}
+
+{% block updateCost %}
+    <div class="ui pointing secondary menu">
+        <a class="active item" data-tab="updateCost">
+            Update Cost
+        </a>
+    </div>
+
+    <div class="ui active tab" data-tab="updateCost">
+        <div class="ui vertical segment">
+			<form class="ui form" method="POST" action="{%url 'mess:updatecost' %}">
+            {% csrf_token %}
+	            	<div class="ui fields">
+	            		<div class="eight wide field">
+	            			<label>Current Monthly Cost</label>
+	            			<input class="ui large fluid input"
+	            					value="&#8377; {{ amt }}" 
+	            					type="text" name="" id="" readonly>
+	            		</div>
+	            	</div>
+            	
+            	<div class="ui fields">
+	                <div class="eight wide field">
+            			<label>Update Monthly Cost (in &#8377;)</label>
+            			<input class="ui large fluid input" type="text" name="newcost" id="newcost">
+            		</div>
+            	
+	            	<div class="eight wide field">
+	            			<label><br></label>
+	            			<button type="submit"
+	            					class="ui right floated primary button">
+	            				Update	
+	            			</button>
+	            	</div>
+            	</div>
+        	</form>
+        <div class="ui divider"></div>
+
+		</div>
+	</div>
+{% endblock %}

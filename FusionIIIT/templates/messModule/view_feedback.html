@@ -5,21 +5,21 @@
 
     {% comment %}The tab menu starts here!{% endcomment %}
     <div class="ui pointing secondary menu">
-        <a class="active item" data-tab="1">
+        <a class="active item" data-tab="foodFeed">
             Food Feedback
         </a>
-        <a class=" item" data-tab="2">
+        <a class=" item" data-tab="cleanFeed">
             Cleanliness Feedback
         </a>
-        <a class=" item" data-tab="3">
+        <a class=" item" data-tab="maintainFeed">
             Maintenance Feedback
         </a>
-        <a class=" item" data-tab="4">
+        <a class=" item" data-tab="otherFeed">
             Others Feedback
         </a>
     </div>
 
-    <div class="ui active tab" data-tab="1">
+    <div class="ui active tab" data-tab="foodFeed">
         <div class="ui vertical segment">
 
             <table class="ui very basic collapsing celled table sortable centered" style="margin: auto;">
@@ -36,7 +36,7 @@
                     {% if item.feedback_type == 'Food' %}
                 <tr>
                     <td>{{item.fdate}}</td>
-                    <td>{{item.student_id}}</td>
+                    <td>{{item.student_id.id}}</td>
                     <td>{{item.feedback_type}}</td>
                     <td>{{item.description}}</td>
                 </tr>
@@ -49,13 +49,13 @@
             <br>
         </div>
     </div>
-    <div class="ui tab" data-tab="2">
+    <div class="ui tab" data-tab="cleanFeed">
         <div class="ui vertical segment">
 
             <table class="ui very basic collapsing celled table sortable centered" style="margin: auto;">
                 <thead>
                 <tr>
-                    <th>Fedback Date</th>
+                    <th>Feedback Date</th>
                     <th>Student ID</th>
                     <th>Feedback Type</th>
                     <th>Description</th>
@@ -66,7 +66,7 @@
                     {% if item.feedback_type == 'Cleanliness' %}
                 <tr>
                     <td>{{item.fdate}}</td>
-                    <td>{{item.student_id}}</td>
+                    <td>{{item.student_id.id}}</td>
                     <td>{{item.feedback_type}}</td>
                     <td>{{item.description}}</td>
                 </tr>
@@ -79,7 +79,7 @@
             <br>
         </div>
     </div>
-    <div class="ui  tab" data-tab="3">
+    <div class="ui  tab" data-tab="maintainFeed">
         <div class="ui vertical segment">
 
             <table class="ui very basic collapsing celled table sortable centered" style="margin: auto;">
@@ -96,7 +96,7 @@
                     {% if item.feedback_type == 'Maintenance' %}
                 <tr>
                     <td>{{item.fdate}}</td>
-                    <td>{{item.student_id}}</td>
+                    <td>{{item.student_id.id}}</td>
                     <td>{{item.feedback_type}}</td>
                     <td>{{item.description}}</td>
                 </tr>
@@ -109,13 +109,13 @@
             <br>
         </div>
     </div>
-    <div class="ui tab" data-tab="4">
+    <div class="ui tab" data-tab="otherFeed">
         <div class="ui vertical segment">
 
             <table class="ui very basic collapsing celled table sortable centered" style="margin: auto;">
                 <thead>
                 <tr>
-                    <th>Fedback Date</th>
+                    <th>Feedback Date</th>
                     <th>Student ID</th>
                     <th>Feedback Type</th>
                     <th>Description</th>
@@ -126,7 +126,7 @@
                     {% if item.feedback_type == 'Others' %}
                 <tr>
                     <td>{{item.fdate}}</td>
-                    <td>{{item.student_id}}</td>
+                    <td>{{item.student_id.id}}</td>
                     <td>{{item.feedback_type}}</td>
                     <td>{{item.description}}</td>
                 </tr>

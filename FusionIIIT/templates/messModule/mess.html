@@ -33,11 +33,11 @@
 
             {% comment %}The Tab-Menu starts here!{% endcomment %}
             <div class="ui huge fluid vertical pointing menu"
-                 style="max-width: 320px;">
+                 style="max-width: 320px; max-height: 320px; overflow-y: auto; overflow-x: hidden;">
 
             {% for d in desig %}
                 {% if info.user_type == 'student' and d.designation.name == 'student' %}
-                    <a class="active item" data-tab="first">
+                    <a class="item" data-tab="first">
                         Feedback
                         <i class="right floated chevron right icon"></i>
                     </a>
@@ -52,7 +52,7 @@
                         <i class="right floated chevron right icon"></i>
                     </a>
 
-                    <a class="item" data-tab="fourth">
+                    <a class="active item" data-tab="fourth">
                         Menu | Bill | Payment Details
                         <i class="right floated chevron right icon"></i>
                     </a>
@@ -119,7 +119,7 @@
                         <i class="right floated chevron right icon"></i>
                     </a>
 
-                    <a class="item" data-tab="thirteenth">
+                    <a class=" active item" data-tab="thirteenth">
                         View Menu
                         <i class="right floated chevron right icon"></i>
                     </a>
@@ -128,11 +128,16 @@
                         Start Registration
                         <i class="right floated chevron right icon"></i>
                     </a>
+
+                    <a class="item" data-tab="twenty">
+                        Update Cost
+                        <i class="right floated chevron right icon"></i>
+                    </a>
                 {% endif %}
 
                 {% if info.user_type == 'faculty' and d.designation.name == 'mess_warden' %}
 
-                    <a class="item" data-tab="thirteenth">
+                    <a class=" active item" data-tab="thirteenth">
                         View Menu
                         <i class="right floated chevron right icon"></i>
                     </a>
@@ -199,7 +204,7 @@
 
 
             {% comment %}The ... starts here!{% endcomment %}
-            <div class="ui tab segment" data-tab="fourth">
+            <div class="ui active tab segment" data-tab="fourth">
             {% block views %}
                     {%  include 'messModule/views.html' %}
                 {%  endblock %}
@@ -273,7 +278,7 @@
             {% comment %}The ... ends here!{% endcomment %}
 
             {% comment %}The ... starts here!{% endcomment %}
-            <div class="ui tab segment" data-tab="thirteenth">
+            <div class="ui active tab segment" data-tab="thirteenth">
             {% block viewmenu %}
                     {%  include 'messModule/viewmenu.html' %}
                 {%  endblock %}
@@ -312,6 +317,14 @@
             </div>
             {% comment %}The ... ends here!{% endcomment %}
 
+            {% comment %}The ... starts here!{% endcomment %}
+            <div class="ui tab segment" data-tab="twenty">
+            {% block updateCost %}
+                    {%  include 'messModule/updateCost.html' %}
+                {%  endblock %}
+            </div>
+            {% comment %}The ... ends here!{% endcomment %}
+
         </div>
         {% comment %}The central-rail segment ends here!{% endcomment %}
 
@@ -339,8 +352,6 @@
     <script type="text/javascript" src="{% static 'globals/js/tablesort.js' %}"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
     <script type="text/javascript" src="{% static 'globals/js/chartjs/src/chart.js' %}"></script>
-
-
 
     <script>
         var ctx = document.getElementById("myChart").getContext('2d');

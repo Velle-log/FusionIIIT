@@ -18,7 +18,7 @@
         <div class="ui vertical segment">
 
             {% comment %}Form Tag starts here!{% endcomment %}
-            <form method="post" action="{% url 'mess:placeorder' %}">
+            <form method="POST"> <!-- action="{% url 'mess:placeorder' %}" -->
                 {% csrf_token %}
                 {% comment %}The add a new skill Accordian starts here!{% endcomment %}
                 <div class="ui form" style="padding: 8px; padding-left: 24px; padding-right: 24px;">
@@ -49,15 +49,18 @@
 
                             <div class="ui twelve wide column">
                                 <div class="ui active tab" data-tab="breakfast">
-                                    <form class="ui form" method="post" action="{% url 'mess:placeorder' %}">
+                                    <form class="ui form" method="POST" id="breakfast-form"> <!-- action="{% url 'mess:placeorder' %}"> -->
                                         <div class="ui row">
                                             <div class="two fields">
                                                 {% for x in nonveg %}
                                                     {% if x.order_interval == 'Breakfast' %}
+
                                                 <div class="field">
-                                                    <input type="text" name="interval" value="breakfast" hidden>
+                                                    <input type="text" name="interval" value="Breakfast" hidden>
                                                     <div class="ui input">
-                                                        <input type="radio" name='dish' value='{{x.dish}}' id="dish">{{x.dish}} - {{x.price}}
+                                                        <input type="radio" name='dish' value='{{x.dish}}' id="{{x.dish}}">{{x.dish}} - {{x.price}}
+                                                        <br>
+                                                        {{ x.dish }} {{ x.order_interval }}
                                                     </div>
                                                 </div>
                                                     {% endif %}
@@ -68,7 +71,7 @@
 
                                         <div class="ui row">
                                             <br>
-                                            <button type="submit" id="submit" class="ui primary button right floated">
+                                            <button type="submit" id="submit" onclick="return bnvrequest('{{ x.dish }}', '{{ x.order_interval }}')" class="ui primary button right floated">
                                                 Place Order
                                             </button>
                                         </div>
@@ -76,7 +79,7 @@
                                 </div>
 
                                 <div class="ui tab" data-tab="lunch">
-                                    <form class="ui form" method="post" action="{% url 'mess:placeorder' %}">
+                                    <form class="ui form" method="POST"> <!-- action="{% url 'mess:placeorder' %}"> -->
                                         {% csrf_token %}
                                         <div class="ui row">
                                             <div class="two fields">
@@ -85,8 +88,8 @@
                                                 <div class="field">
 
                                                     <div class="ui input">
-                                                        <input type="text" name="interval" value="lunch" hidden>
-                                                        <input type="radio" name='dish' value='{{x.dish}}' id="">{{x.dish}} - {{x.price}}
+                                                        <input type="text" name="interval" id="{{x.order_interval}}" value="Lunch" hidden>
+                                                        <input type="radio" name='dish' value='{{x.dish}}' id="{{x.dish}}">{{x.dish}} - {{x.price}}
                                                     </div>
                                                 </div>
                                                     {% endif %}
@@ -97,7 +100,7 @@
 
                                         <div class="ui row">
                                             <br>
-                                            <button type="submit" id="submit" class="ui primary button right floated">
+                                            <button type="submit" id="submit" class="ui primary button right floated" onclick="return lnvrequest()">
                                                 Place Order
                                             </button>
                                         </div>
@@ -105,7 +108,7 @@
                                 </div>
 
                                 <div class="ui tab" data-tab="dinner">
-                                    <form class="ui form" method="post" action="{% url 'mess:placeorder' %}">
+                                    <form class="ui form" method="post"> <!-- action="{% url 'mess:placeorder' %}"> -->
                                         {% csrf_token %}
                                         <div class="ui row">
                                             
@@ -115,8 +118,8 @@
                                                 <div class="field">
 
                                                     <div class="ui input">
-                                                        <input type="text" name="interval" value="dinner" hidden>
-                                                        <input type="radio" name='dish' value='{{x.dish}}' id="dish">{{x.dish}} - {{x.price}}
+                                                        <input type="text" name="interval" id="{{x.order_interval}}" value="Dinner" hidden>
+                                                        <input type="radio" name='dish' value='{{x.dish}}' id="{{x.dish}}">{{x.dish}} - {{x.price}}
                                                     </div>
                                                 </div>
                                                     {% endif %}
@@ -127,7 +130,7 @@
 
                                         <div class="ui row">
                                             <br>
-                                            <button type="submit" id="submit" class="ui primary button right floated">
+                                            <button type="submit" id="submit" class="ui primary button right floated" onclick="return dnvrequest()">
                                                 Place Order
                                             </button>
                                         </div>
@@ -145,12 +148,7 @@
 
             <div class="ui divider"></div>
 
-            {% comment %}
-                TODO: Price Table!
-            {% endcomment %}
-            <div class="extra content">
-                TODO!
-            </div>
+        
         </div>
     </div>
 
@@ -234,4 +232,120 @@
         </div>
     </div>
 {% endblock %}
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript" src="{% static 'globals/js/jquery.min.js' %}"></script>
+
+<script>
+        function bnvrequest(dish, interval){
+            dish = dish;
+            interval = interval;
+            alert(dish, interval);
+            $.ajax({
+                type: 'POST',
+                url: 'placeorder/',
+                dataType: 'json',
+                data: {
+                    'csrfmiddlewaretoken' : '{{ csrf_token }}',
+                    'interval':interval,
+                    'dish':dish,
+                },                
+                success: function(data) {
+                    if(data.status){
+                        alert("Data Inserted Successfully");
+                        
+                        /*$('#ls_table').prepend("<tr><td>"+ $("#leave_type").val()+ "</td><td>"+ 
+                            $("#start_date").val() + "</td><td>" + $("end_date").val()+
+                            "</td><td>"+ $("#purpose").val()+ "</td></tr>")*/
+
+                        document.getElementById('breakfast-form').reset();
+                        
+                    }
+                    else{
+                        alert("Could not place your order"); 
+                    }
+                },
+                error: function(data, err) {
+                    alert(err.message);
+                }
+            });
+        return false;
+    }
+    
+        function lnvrequest(){
+
+
+
+            $.ajax({
+                type: 'POST',
+                url: 'placeorder/',
+                dataType: 'json',
+                data: {
+                    'csrfmiddlewaretoken' : '{{ csrf_token }}',
+                    'interval':$("#linterval").val(),
+                    'dish':$("#ldish").val(),
+                },                
+                success: function(data) {
+                    if(data.status){
+                        alert("Data Inserted Successfully");
+                        
+                        /*$('#ls_table').prepend("<tr><td>"+ $("#leave_type").val()+ "</td><td>"+ 
+                            $("#start_date").val() + "</td><td>" + $("end_date").val()+
+                            "</td><td>"+ $("#purpose").val()+ "</td></tr>")*/
+
+                        document.getElementById('ldish').value="";
+                        document.getElementById('linterval').value="";
+                        
+                    }
+                    else{
+                        alert("Could not place your order"); 
+                    }
+                },
+                error: function(data, err) {
+                    alert(err.message);
+                }
+            });
+        return false;
+    }
+    
+        function dnvrequest(){
+
+
+
+            $.ajax({
+                type: 'POST',
+                url: 'placeorder/',
+                dataType: 'json',
+                data: {
+                    'csrfmiddlewaretoken' : '{{ csrf_token }}',
+                    'interval':$("#dinterval").val(),
+                    'dish':$("#ddish").val(),
+                },                
+                success: function(data) {
+                    if(data.status){
+                        alert("Data Inserted Successfully");
+                        
+                        /*$('#ls_table').prepend("<tr><td>"+ $("#leave_type").val()+ "</td><td>"+ 
+                            $("#start_date").val() + "</td><td>" + $("end_date").val()+
+                            "</td><td>"+ $("#purpose").val()+ "</td></tr>")*/
+
+                        document.getElementById('ddish').value="";
+                        document.getElementById('dinterval').value="";
+                        
+                    }
+                    else{
+                        alert("Could not place your order"); 
+                    }
+                },
+                error: function(data, err) {
+                    alert(err.message);
+                }
+            });
+        return false;
+    }
+    
+
+
+</script>
 {% endblock %}

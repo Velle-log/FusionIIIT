@@ -1,5 +1,6 @@
 import datetime
 from datetime import date
+from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
@@ -7,6 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 
+from django.contrib.auth.models import User 
 from applications.academic_information.models import Student
 from applications.globals.models import ExtraInfo, HoldsDesignation
 
@@ -95,8 +97,9 @@ def mess(request):
                 count8 += 1
 
         for bill in monthly_bill:
+
             for z in data:
-                if z.order_date.strftime("%b") == bill.month:
+                if z.order_date.strftime("%B") == bill.month:
                     nonveg_total_bill = nonveg_total_bill + z.dish.price
                     bill.nonveg_total_bill = nonveg_total_bill
 
@@ -105,7 +108,9 @@ def mess(request):
 
             for r in rebates:
                 if r.status == '2':
-                    if r.start_date.strftime("%b") == bill.month:
+                    print(bill.month)
+                    print(r.start_date.strftime("%B"))
+                    if r.start_date.strftime("%B") == bill.month:
                         rebate_count = rebate_count + abs((r.end_date - r.start_date).days) + 1
                         bill.rebate_count = rebate_count
 
@@ -151,13 +156,12 @@ def mess(request):
         return render(request, "messModule/mess.html", context)
 
     elif extrainfo.user_type == 'staff':
-
+        # make info with diff name and then pass context
         newmenu = Menu_change_request.objects.all()
         vaca_all = Vacation_food.objects.all()
         y = Menu.objects.all()
         x = Nonveg_menu.objects.all()
         leave = Rebate.objects.filter(status='1')
-
         context = {
                    'menu': y,
                    'newmenu': newmenu,
@@ -166,7 +170,7 @@ def mess(request):
                    'leave': leave,
                    'current_date': current_date,
                    'mess_reg': mess_reg,
-                   'desig': desig
+                   'desig': desig,
         }
 
         return render(request, "messModule/mess.html", context)
@@ -224,16 +228,25 @@ def placeorder(request):
 
         stu = Messinfo.objects.get(student_id=student)
         if stu.mess_option == 'mess1':
-            dish = Nonveg_menu.objects.get(dish=request.POST.get("dish"), order_interval=request.POST.get('interval'))
+            dish = Nonveg_menu.objects.get(
+                                           dish=request.POST.get("dish"),
+                                           order_interval=request.POST.get('interval'))
             order_interval = dish.order_interval
-            order_date = datetime.datetime.now().date()
+            order_date = datetime.now().date()
             nonveg_obj = Nonveg_data(student_id=student, order_date=order_date,
                                      order_interval=order_interval, dish=dish)
             nonveg_obj.save()
-            return HttpResponseRedirect("/mess")
 
-        else:
-            return HttpResponse("you can't apply for this application")
+            data = {
+            'status': 1,
+            }
+
+
+            return JsonResponse(data)
+            # return HttpResponseRedirect("/mess")
+
+        # else:
+        #     return HttpResponse("you can't apply for this application")
 
 
 @csrf_exempt
@@ -275,12 +288,12 @@ def vacasubmit(request):
                                  end_date=end_date, purpose=purpose)
 
         vaca_obj.save()
-        return HttpResponseRedirect("/mess")
-        # data = {
-        #     'status':1
-        # }
+        #return HttpResponseRedirect("/mess")
+        data = {
+             'status':1
+         }
 
-        # return JsonResponse(data)
+        return JsonResponse(data)
 
 
 @login_required
@@ -299,7 +312,14 @@ def menusubmit(request):
             reason = request.POST.get("reason")
             app_obj = Menu_change_request(dish=dish, request=newdish, reason=reason)
             app_obj.save()
-            return HttpResponseRedirect("/mess")
+            # return HttpResponseRedirect("/mess")
+
+            data = {
+             'status':1
+            }
+
+            return JsonResponse(data)
+
 
     return render(request, 'mess.html', context)
 
@@ -399,6 +419,7 @@ def regsubmit(request):
 
 
 @login_required
+
 @transaction.atomic
 def regadd(request):
     user = request.user
@@ -421,6 +442,7 @@ def regadd(request):
 @transaction.atomic
 @csrf_exempt
 def leaverequest(request):
+    flag = 1 
     user = request.user
     extrainfo = ExtraInfo.objects.get(user=user)
     student = Student.objects.get(id=extrainfo)
@@ -428,12 +450,35 @@ def leaverequest(request):
     start_date = request.POST.get('start_date')
     end_date = request.POST.get('end_date')
     purpose = request.POST.get('purpose')
-    rebate_obj = Rebate(student_id=student, leave_type=leave_type, start_date=start_date,
-                        end_date=end_date, purpose=purpose)
-    rebate_obj.save()
+
+    rebates = Rebate.objects.filter(student_id=student)
+
+    for r in rebates:
+        if r.status == '1' or r.status == '2':
+            print(r.start_date)
+            print("compare")
+            print(start_date)
+            date_format = "%Y-%m-%d"
+            a = datetime.strptime(str(r.start_date), date_format)
+            b = datetime.strptime(str(start_date), date_format)
+            c = datetime.strptime(str(r.end_date), date_format)
+            d = datetime.strptime(str(end_date), date_format)
+            print((b <= a and (d >= a and d <= c)) or (b >= a and (d >= a and d <= c)) or (b <= a and (d >= c)) or ((b >= a and b<=c) and (d >= c)))
+            print((b >= a and b<=c) and (d >= c))
+            if ((b <= a and (d >= a and d <= c)) or (b >= a and (d >= a and d <= c)) or (b <= a and (d >= c)) or ((b >= a and b<=c) and (d >= c))):
+                flag = 0
+                break
+
+    if flag == 1:
+        rebate_obj = Rebate(student_id=student, leave_type=leave_type, start_date=start_date,
+                                end_date=end_date, purpose=purpose)
+        rebate_obj.save()
+    
     data = {
-            'status': 1,
+            'status': flag,
     }
+
+
     return JsonResponse(data)
 
 
@@ -452,16 +497,20 @@ def minutes(request):
 @csrf_exempt
 @transaction.atomic
 def invitation(request):
-    date = request.POST.get('date')
+    current_date = date.today()
+    date1 = request.POST.get('date')
+    
+    print(date1, current_date)
+
     venue = request.POST.get('venue')
     agenda = request.POST.get('agenda')
     time = request.POST.get('time')
-    invitation_obj = Mess_meeting(meet_date=date, agenda=agenda, venue=venue, meeting_time=time)
+    invitation_obj = Mess_meeting(meet_date=date1, agenda=agenda, venue=venue, meeting_time=time)
     invitation_obj.save()
-    data = {
-            'status': 1,
-    }
-    return JsonResponse(data)
+    # data = {
+    #         'status': 1,
+    # }
+    return HttpResponseRedirect("/mess")
 
 
 def responserebate(request, ap_id):
@@ -480,18 +529,24 @@ def placerequest(request):
     user = request.user
     extrainfo = ExtraInfo.objects.get(user=user)
     if extrainfo.user_type == 'student':
+        print (request.POST)
         extrainfo = ExtraInfo.objects.get(user=user)
         student = Student.objects.get(id=extrainfo)
-        fr = request.POST.get("from")
-        to = request.POST.get("to")
+        fr = request.POST.get("start_date")
+        to = request.POST.get("end_date")
+        print (fr, to, "dates")
         food1 = request.POST.get("food1")
         food2 = request.POST.get("food2")
         purpose = request.POST.get("purpose")
 
+        print ("Hello")
         spfood_obj = Special_request(student_id=student, start_date=fr, end_date=to,
                                      item1=food1, item2=food2, request=purpose)
         spfood_obj.save()
-        return HttpResponseRedirect("/mess")
+        data = {
+             'status': 1,
+        }
+        return JsonResponse(data)
 
 
 def responsespl(request, ap_id):
@@ -502,4 +557,17 @@ def responsespl(request, ap_id):
         sprequest.status = '0'
 
     sprequest.save()
+    return HttpResponseRedirect("/mess")
+
+def updatecost(request):
+    user = request.user
+    extrainfo = ExtraInfo.objects.get(user=user)
+    cost = request.POST.get("newcost")
+
+    monthlybill = Monthly_bill.objects.all()
+
+    for temp in monthlybill:
+        temp.amount = cost
+        temp.save()
+
     return HttpResponseRedirect("/mess")

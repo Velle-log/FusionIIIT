@@ -220,7 +220,7 @@ class Mess_meeting(models.Model):
 
 class Mess_minutes(models.Model):
     meeting_date = models.OneToOneField(Mess_meeting, on_delete=models.CASCADE)
-    mess_minutes = models.FileField(upload_to='central_mess/')
+    mess_minutes = models.FileField(upload_to='media/central_mess/')
 
     def __str__(self):
         return '{} - {}'.format(self.meeting_date.meet_date, self.mess_minutes)

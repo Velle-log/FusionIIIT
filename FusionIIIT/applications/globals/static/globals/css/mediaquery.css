@@ -51,3 +51,16 @@
         transform-origin: 0 0;
     }
 }
+
+@media only screen and (width: 3840px){
+    #body {
+        min-width: 100%;
+        max-width: 100%;
+
+        min-height: 100%;
+        max-height: 149%;
+
+        transform: scale(2.0);
+        transform-origin: 0 0;
+    }
+}
