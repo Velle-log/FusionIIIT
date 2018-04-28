@@ -32,8 +32,12 @@ class Constants:
 
     MTechSpecialization = (
         ('Power and Control', 'Power and Control'),
+<<<<<<< HEAD
+        ('Microwave and Communication Engineering', 'Microwave and Communication Engineering'),
+=======
         ('Microwave and Communication Engineering',
          'Microwave and Communication Engineering'),
+>>>>>>> upstream/master
         ('Micro-nano Electronics', 'Micro-nano Electronics'),
         ('CAD/CAM', 'CAD/CAM'),
         ('Design', 'Design'),
@@ -58,9 +62,12 @@ class Student(models.Model):
     room_no = models.CharField(max_length=10, blank=True, null=True)
     specialization = models.CharField(max_length=20,
                                       choices=Constants.MTechSpecialization, null=True)
+<<<<<<< HEAD
+=======
 
     def __str__(self):
         return str(self.id)
+>>>>>>> upstream/master
 
 
 class Course(models.Model):

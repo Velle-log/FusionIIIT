@@ -12,12 +12,15 @@ from PIL import Image
 
 from applications.globals.forms import IssueForm, WebFeedbackForm
 from applications.globals.models import Feedback, Issue, IssueImage, ExtraInfo, HoldsDesignation
+<<<<<<< HEAD
+=======
 from applications.placement_cell.models import (Achievement, Course, Education, Experience, Has,
                                                 Project, Publication, Skill, Patent)
 from applications.academic_information.models import Student
 from applications.placement_cell.forms import (AddEducation, AddProfile, AddSkill, AddCourse, AddProfile,
                                                AddAchievement, AddProject, AddPublication, AddPatent, AddExperience)
 
+>>>>>>> upstream/master
 from Fusion.settings import LOGIN_URL
 
 
@@ -674,6 +677,14 @@ def about(request):
 @login_required(login_url=LOGIN_URL)
 def dashboard(request):
     user = request.user
+<<<<<<< HEAD
+    extrainfo = ExtraInfo.objects.get(user=user)
+    holds_designations = HoldsDesignation.objects.filter(user=user)
+    desig = holds_designations
+    # desig = holds_designations.designation.name
+    context = {'desig' : desig}
+    return render(request, "dashboard/dashboard.html", context)
+=======
     profile = get_object_or_404(ExtraInfo, Q(user=user))
     if(str(request.user.extrainfo.user_type) == 'faculty'):
         return HttpResponseRedirect('/eis/profile')
@@ -875,6 +886,7 @@ def dashboard(request):
     else:
         context = {}
         return render(request, "dashboard/dashboard.html", context)
+>>>>>>> upstream/master
 
 
 @login_required(login_url=LOGIN_URL)

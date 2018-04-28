@@ -53,11 +53,26 @@
                             <a class="item" href="{% url 'complaint:complaint' %}">
                                 <h4>Complaint Module</h4>
                             </a>
+<<<<<<< HEAD
+
+                            {% for d in desig %}
+                                {% if d.designation.name == 'mess_committee' or d.designation.name == 'mess_manager' or d.designation.name == 'mess_warden' or d.designation.name == 'student' %}
+                                    <a class="item" href="{% url 'mess:mess' %}">
+                                        <h4>Central Mess Module</h4>
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                                
+                            <a class="item" href="{% url 'gymkhana:gymkhana' %}">
+                                <h4>Gymkhana Module</h4>
+                            </a>
+=======
                               {% if user.extrainfo.user_type != 'faculty' %}
                             <a class="item" href="{% url 'mess:mess' %}">
                                 <h4>Central Mess Module</h4>
                             </a>
                             {% endif %}
+>>>>>>> upstream/master
 
                             <a class="item" href="{% url 'healthcenter:healthcenter' %}">
                                 <h4>Health Center Module</h4>

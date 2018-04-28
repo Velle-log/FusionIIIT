@@ -1,3 +1,140 @@
+<<<<<<< HEAD
+{% load static %}
+{% block changemenu %}
+    <div class="ui pointing secondary menu">
+        <a class="active item" data-tab="changemenu">
+            Request For Menu Change
+        </a>
+    </div>
+    <div class="ui active tab" data-tab="changemenu">
+        <div class="ui vertical segment">
+
+            {% comment %}Form Tag starts here!{% endcomment %}
+            {% comment %}The add a new skill Accordian starts here!{% endcomment %}
+            <div class="ui form" style="padding: 8px; padding-left: 24px; padding-right: 24px;">
+
+                <div class="ui header">
+                    Menu Card:
+                </div>
+                <br>
+
+                <div class="ui stackable grid doubling">
+                    <div class="ui row">
+                        <div class="four wide column">
+                            <div class="ui secondary vertical pointing small menu">
+                                <a class="active item" data-tab="changemenu">
+                                    Change Menu
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ui twelve wide column">
+                            <div class="ui active tab" data-tab="changemenu">
+                                <form class="ui form" method="POST"><!--  action="{% url 'mess:menusubmit'%}"> -->
+                                    {% csrf_token %}
+                                    <div class="ui row">
+                                        <div class="three fields">
+                                            <div class="field">
+                                                <label>
+                                                    Dish
+                                                </label>
+
+                                                <select class="ui search fluid dropdown" name="dish" id="dish">
+                                                    {% for item in menu %}
+                                                    <option value="{{item.dish}}">{{item.dish}}-{{item.meal_time}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+
+                                            <div class="field">
+                                                <label>
+                                                    Change To
+                                                </label>
+
+                                                <div class="ui input">
+                                                    <input placeholder="Food" name="newdish" id="newdish" required>
+                                                </div>
+                                            </div>
+
+                                            <div class="field">
+                                                <label>
+                                                    Reason
+                                                </label>
+
+                                                <div class="ui input">
+                                                    <input placeholder="Why?" name="reason" id="reason" required="true">
+                                                </div>
+                                            </div>
+
+                                        </div> 
+                                    </div>
+                                
+
+                                    <div class="ui row">
+                                        <br>
+                                        <button type="submit" class="ui primary button right floated" onclick="return menurequest()">
+                                            Place Request
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
+{% block javascript %}
+<script type="text/javascript" src="{% static 'globals/js/jquery.min.js' %}"></script>
+
+<script>
+        function menurequest(){
+            $.ajax({
+                type: 'POST',
+                url: 'menusubmit/',
+                dataType: 'json',
+                data: {
+                    'csrfmiddlewaretoken' : '{{ csrf_token }}',
+                    'dish':$("#dish").val(),
+                    'newdish':$("#newdish").val(),
+                    'reason':$("#reason").val(),
+                },                
+                success: function(data) {
+                    if(data.status){
+                        alert("Data Inserted Successfully");
+                        
+                        /*$('#ls_table').prepend("<tr><td>"+ $("#leave_type").val()+ "</td><td>"+ 
+                            $("#start_date").val() + "</td><td>" + $("end_date").val()+
+                            "</td><td>"+ $("#purpose").val()+ "</td></tr>")*/
+
+                        document.getElementById('dish').value="";
+                        document.getElementById('newdish').value="";
+                        document.getElementById('reason').value="";
+                        
+                    }
+                    else{
+                        alert("Could not update menu"); 
+                    }
+                },
+                error: function(data, err) {
+                    console.log(data);
+                    alert("unsuccessful");
+                }
+            });
+        return false;
+    }
+    
+
+
+</script>
+{% endblock %}
+=======
 {% load static %}
 {% block changemenu %}
     <div class="ui pointing secondary menu">
@@ -89,3 +226,4 @@
 
 
 {% endblock %}
+>>>>>>> upstream/master
