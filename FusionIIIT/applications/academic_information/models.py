@@ -6,7 +6,8 @@ from applications.globals.models import ExtraInfo
 class Constants:
     HOLIDAY_TYPE = (
         ('restricted', 'restricted'),
-        ('closed', 'closed')
+        ('closed', 'closed'),
+        ('vacation', 'vacation')
     )
 
     ATTEND_CHOICES = (
@@ -31,7 +32,12 @@ class Constants:
 
     MTechSpecialization = (
         ('Power and Control', 'Power and Control'),
+<<<<<<< HEAD
         ('Microwave and Communication Engineering', 'Microwave and Communication Engineering'),
+=======
+        ('Microwave and Communication Engineering',
+         'Microwave and Communication Engineering'),
+>>>>>>> upstream/master
         ('Micro-nano Electronics', 'Micro-nano Electronics'),
         ('CAD/CAM', 'CAD/CAM'),
         ('Design', 'Design'),
@@ -44,16 +50,24 @@ class Constants:
 
 
 class Student(models.Model):
-    id = models.OneToOneField(ExtraInfo, on_delete=models.CASCADE, primary_key=True)
+    id = models.OneToOneField(
+        ExtraInfo, on_delete=models.CASCADE, primary_key=True)
     programme = models.CharField(max_length=10, choices=Constants.PROGRAMME)
     cpi = models.FloatField(default=0)
-    category = models.CharField(max_length=10, choices=Constants.CATEGORY, null=False)
+    category = models.CharField(
+        max_length=10, choices=Constants.CATEGORY, null=False)
     father_name = models.CharField(max_length=40, default='')
     mother_name = models.CharField(max_length=40, default='')
     hall_no = models.IntegerField(default=1)
     room_no = models.CharField(max_length=10, blank=True, null=True)
     specialization = models.CharField(max_length=20,
                                       choices=Constants.MTechSpecialization, null=True)
+<<<<<<< HEAD
+=======
+
+    def __str__(self):
+        return str(self.id)
+>>>>>>> upstream/master
 
 
 class Course(models.Model):
@@ -61,6 +75,8 @@ class Course(models.Model):
     course_name = models.CharField(max_length=100)
     sem = models.IntegerField()
     credits = models.IntegerField()
+    optional = models.BooleanField(default=False)
+    acad_selection = models.BooleanField(default=False)
 
     class Meta:
         db_table = 'Course'
@@ -98,8 +114,9 @@ class Calendar(models.Model):
 
 class Holiday(models.Model):
     holiday_date = models.DateField()
-    holiday_type = models.CharField(max_length=30, choices=Constants.HOLIDAY_TYPE),
     holiday_name = models.CharField(max_length=40)
+    holiday_type = models.CharField(default='restricted', max_length=30,
+                                    choices=Constants.HOLIDAY_TYPE)
 
     class Meta:
         db_table = 'Holiday'
@@ -121,14 +138,16 @@ class Grades(models.Model):
 class Student_attendance(models.Model):
     student_id = models.ForeignKey(Student)
     course_id = models.ForeignKey(Course)
-    attend = models.CharField(max_length=6, choices=Constants.ATTEND_CHOICES)
-    date = models.DateField()
+#    attend = models.CharField(max_length=6, choices=Constants.ATTEND_CHOICES)
+    date = models.DateField(auto_now=True)
+    present_attend = models.IntegerField(default=0)
+    total_attend = models.IntegerField(default=0)
 
     class Meta:
         db_table = 'Student_attendance'
 
     def __self__(self):
-        return self.date
+        return self.course_id
 
 
 class Instructor(models.Model):
@@ -140,7 +159,7 @@ class Instructor(models.Model):
         unique_together = ('course_id', 'instructor_id')
 
     def __self__(self):
-        return self.course_id
+        return '{} - {}'.format(self.course_id, self.instructor_id)
 
 
 class Spi(models.Model):
@@ -158,7 +177,10 @@ class Spi(models.Model):
 
 class Timetable(models.Model):
     upload_date = models.DateTimeField(auto_now_add=True)
-    time_table = models.CharField(max_length=20)
+    time_table = models.FileField(
+        upload_to='Administrator/academic_information/')
+    year = models.IntegerField(default="2015")
+    programme = models.CharField(max_length=30, default="B.Tech")
 
     class Meta:
         db_table = 'Timetable'
@@ -166,7 +188,10 @@ class Timetable(models.Model):
 
 class Exam_timetable(models.Model):
     upload_date = models.DateField(auto_now_add=True)
-    exam_time_table = models.CharField(max_length=20)
+    exam_time_table = models.FileField(
+        upload_to='Administrator/academic_information/')
+    year = models.IntegerField(default="2015")
+    programme = models.CharField(max_length=30, default="B.Tech")
 
     class Meta:
         db_table = 'Exam_Timetable'
